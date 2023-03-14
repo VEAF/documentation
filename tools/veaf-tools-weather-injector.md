@@ -91,6 +91,8 @@ Here are the available options, with each time the command-line option followed 
 
 - `--start`, `time`: the starting time of the mission in seconds after midnight
 
+- `--date`, `date`: the starting date of the mission, with an optional clock time (e.g. `20230126` or `202301260635` for 6:35am)
+
 - `--variable`, `variableForMetar`: the name of the variable that will be replaced by the METAR fetched from CheckWX; it's a useful feature to show the weather in the briefing.
 
 - `--weather`, `weatherFile`: the path to the DCS weather file to use as a static weather definition.
@@ -150,17 +152,18 @@ Example of a versions file:
     {
       "version": "beforesunrise-real",
       "realweather": true,
-      "moment": "onehour_tosunrise"
+      "moment": "onehour_tosunrise",
+      "date": "20230126"
     },
     {
       "version": "dawn-broken",
       "weatherfile": "broken-1.lua",
-      "moment": "dawn"
+      "date": "202301260617"
     },
     {
       "version": "dawn-crosswind-vaziani",
       "weather": "UG27 221130Z 04515KT CAVOK Q1020 NOSIG",
-      "moment": "dawn"
+      "time": "20680"
     }
   ]
 }
