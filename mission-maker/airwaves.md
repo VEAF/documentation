@@ -17,13 +17,15 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 
 # Table des matières
 
-TBD
+- Principes - [ici](#principes)
+- Configuration - [ici](#comment-configurer-une-zone-airwaves)
+- 
 
 # Introduction
 
 Le module *AirWaves* permet de créer facilement des zones d'entrainement, sur le modèle de la [QRA](qra.md) (en tout cas pour ce qui est des paramètres), dans lesquelles les joueurs font face à des vagues d'ennemis IA successives qu'ils doivent vaincre les unes après les autres.
 
-A la base, les zones *AirWaves* font spawner des groupes aériens, mais il est tout à fait possible de spawner des unités au sol ou des navires. Le principe reste le même: vaincre toutes les vagues les unes après les autres.
+A la base, les zones *AirWaves* font apparaître des groupes aériens, mais il est tout à fait possible de faire aussi apparaître des unités au sol ou des navires. Le principe reste le même: vaincre toutes les vagues les unes après les autres.
 
 En cas d'échec (perte du combat contre les IA), la zone est remise à zéro et les groupes IA restants sont détruits. De cette manière, tout est prêt pour le joueur suivant.
 
@@ -36,14 +38,26 @@ Une zone *AirWaves* est constituée de :
 - une ou des vagues d'IA composées de :
     - un ou des groupes d'IA :
         - placés dans l'éditeur de DCS, en activation retardée
-        - définis par des commandes VEAF, qui se déclenchent au moment du spawn
+        - définis par des commandes VEAF, qui se déclenchent au moment du déploiement de la vague
 - des paramètres
 
+<u>Exemple 1 - zone définie par une trigger zone circulaire, avec des groupes DCS</u>
+
+![airwave_zone_example_01]
+
+<u>Exemple 2 - zone définie par une trigger zone de type quadrilatère, avec des groupes DCS</u>
+
+![airwave_zone_example_02]
+
+<u>Exemple 3 - zone définie dans le code (coordonnées, rayon, commandes VEAF)</u>
+
+![airwave_zone_example_03]
+
 La zone a un état qui correspond à son activité :
-- tout d'abord elle est prête, et attend qu'on y pénètre ou qu'on y spawn
+- tout d'abord elle est prête, et attend qu'on y pénètre ou qu'on y prenne un slot
 - plus elle déploie la première vague, et devient active pendant toute la durée de leur vol
 - ensuite, si cette vague est détruite ou déroutée, la zone déploie la vague suivante
-- si toutes les vagues sont épuisées, la zone est marquée comme *gagnée* et est réinitialisée dès que les joueurs l'ayant déclenchée ont despawné.
+- si toutes les vagues sont épuisées, la zone est marquée comme *gagnée* et est réinitialisée dès que les joueurs l'ayant déclenchée ont disparu.
 - si les joueurs sont tous détruits, la zone est marquée comme *perdue* et est réinitialisée
 
 Ceci est le schéma standard. En pratique, des dizaines d'options (décrites plus loin) vous permettent d'adapter le comportement des zones *AirWaves* comme vous le souhaitez.
@@ -60,7 +74,7 @@ Le principe de configuration est simple.
 
 Tout d'abord on crée un "objet" de type *AirWaveZone* en appelant `AirWaveZone:new()`. Cet appel renvoie une instance de *AirWaveZone*, qu'on peut stocker dans une variable (`local maZone = AirWaveZone:new()`) ou utiliser tout de suite avec une [désignation chaînée](https://fr.wikipedia.org/wiki/D%C3%A9signation_cha%C3%AEn%C3%A9e) (en enchainant les appels aux méthodes de configuration qui renvoient toutes, tour à tour, la même instance de *AirWaveZone*).
 
-Exemple de chainage:
+<u>Exemple de chainage:</u>
 
 ```lua
 AirWaveZone:new()
@@ -70,7 +84,7 @@ AirWaveZone:new()
 
 L'avantage de cette méthode est sa simplicité.
 
-Exemple d'utilisation d'une variable:
+<u>Exemple d'utilisation d'une variable:</u>
 
 ```lua
 local zoneMinevody = AirWaveZone:new()
@@ -80,9 +94,9 @@ zoneMinevody:setTriggerZone("Minevody")
 
 L'avantage de la seconde méthode est qu'on peut, plus loin dans le fichier `missionConfig.lua`, utiliser une référence à la variable qu'on a définie pour accéder à l'instance de *AirWaveZone* (par exemple, dans la définition d'un alias, d'une commande "mission maker", ou dans un menu radio).
 
-# Structure d'une déclaration de zone *AirWaves*
+## Structure d'une déclaration de zone *AirWaves*
 
-## Création de la zone
+### Création de la zone
 
 Création d'une nouvelle instance de *AirWaveZone*: une instance définit une zone et son comportement; exemple: la zone de Minevody.
 
@@ -92,7 +106,7 @@ Utiliser soit une variable locale, soit une désignation chaînée (voir (ce cha
 AirWaveZone.new()
 ```
 
-## Paramètres obligatoires
+### Paramètres obligatoires
 
 Définition du nom technique de la QRA: ce nom sert à retrouver la QRA avec la commande `veafQraManager.get()`; exemple: `veafQraManager.get("QRA_Minevody")`
 
@@ -144,7 +158,7 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 :addPlayerCoalition(coalition.side.BLUE)
 ```
 
-## Paramètres optionnels
+### Paramètres optionnels
 
 Définition d'un plancher et d'un plafond (en pieds); les joueurs qui pénètrent dans la zone ne sont pas détectés s'ils sont au dessus du plafond ou en dessous du plancher (càd que la zone ne se déclenche pas).
 
@@ -161,7 +175,7 @@ Dessin de la zone sur la carte F10; par défaut, pas de dessin.
 :setDrawZone(true)
 ```
 
-## Gestion des vagues
+### Gestion des vagues
 
 A la base, le but de ce script est d'opposer à la présence de joueurs des vagues d'avions IA qui viennent les affronter.
 
@@ -169,9 +183,9 @@ Il est possible d'utiliser des groupes d'avions placés dans l'éditeur de DCS (
 
 Le fait qu'on puisse utiliser des commandes VEAF fait qu'on peut opposer aux joueurs toutes sortes d'ennemis (SAM, manpads, unités blindées, convois, navires); on peut aller jusqu'à détourner l'usage classique de ce script pour déclencher des actions (une combat zone, la mise en déplacement d'un porte-avion).
 
-### Paramètres
+#### Paramètres
 
-Choix de la position de spawn par défaut, relativement au centre de la zone (en mètres, positif vers l'Est et le Sud, négatif vers l'Ouest et le Nord).
+Choix de la position du spawn par défaut, relativement au centre de la zone (en mètres, positif vers l'Est et le Sud, négatif vers l'Ouest et le Nord).
 
 Cette position est utilisée quand on ne peut pas déterminer la position de départ du groupe (ça arrive parfois avec DCS, de manière inexpliquée), ou quand le groupe est en fait une commande VEAF et qu'on n'a pas précisé de position dans la commande.
 
@@ -179,7 +193,7 @@ Cette position est utilisée quand on ne peut pas déterminer la position de dé
 :setRespawnDefaultOffset(0, -45000) -- 45km north of the zone's center
 ```
 
-Choix du rayon d'apparition; on peut préciser un cercle (en mètres) autour du point de spawn, dans lequel on choisira aléatoirement le point d'apparition de chaque groupe (ou commande).
+Choix du rayon de spawn; on peut préciser un cercle (en mètres) autour du point de spawn, dans lequel on choisira aléatoirement le point de spawn de chaque groupe (ou commande).
 
 Ce paramètre est appliqué __en plus__ de la position de spawn déterminée par le groupe (dans l'éditeur DCS), par le décalage par défaut (*setRespawnDefaultOffset*), ou par les coordonnées dans la commande.
 
@@ -187,7 +201,7 @@ Ce paramètre est appliqué __en plus__ de la position de spawn déterminée par
 :setRespawnRadius(10000)
 ```
 
-Exemple:
+<u>Exemple:</u>
 
 ```lua
 AirWaveZone:new()
@@ -200,19 +214,19 @@ AirWaveZone:new()
 
 Dans ce cas, le groupe `[0, 30000]-cap mig29-fox1` (une commande VEAF) a des coordonnées (décalage à partir du centre de la zone) spécifiées dans la définition de la commande VEAF (entre crochets).
 
-Il va donc spawner à 30km au sud du centre de la zone, qui correspond à la trigger zone *Minevody*.
+Il va donc apparaître à 30km au sud du centre de la zone, qui correspond à la trigger zone *Minevody*.
 
-Mais on ajoute un *respawn radius* de 10km, ce qui fait qu'en pratique il spawnera à une position aléatoire dans un cercle de 10km autour de ce point.
+Mais on ajoute un *respawn radius* de 10km, ce qui fait qu'en pratique il apparaîtra à une position aléatoire dans un cercle de 10km autour de ce point.
 
-Le groupe `zone1_su27` (un groupe DCS) n'a pas de coordonnées. Si DCS fonctionne correctement, il va spawner à l'emplacement où il a été placé dans l'éditeur.
+Le groupe `zone1_su27` (un groupe DCS) n'a pas de coordonnées. Si DCS fonctionne correctement, il va apparaître à l'emplacement où il a été placé dans l'éditeur.
 
-Mais ici aussi on doit tenir compte du *respawn radius*: il spawnera à une position aléatoire dans un cercle de 10km autour de ce point.
+Mais ici aussi on doit tenir compte du *respawn radius*: il apparaîtra à une position aléatoire dans un cercle de 10km autour de ce point.
 
-Le dernier groupe `-sa15` (lui aussi une commande VEAF) n'a pas de coordonnées intrinsèques. Il va donc spawner à l'emplacement par défaut, qui est précisé par la commande `setRespawnDefaultOffset` par rapport au centre de la zone (ici, 45km au nord).
+Le dernier groupe `-sa15` (lui aussi une commande VEAF) n'a pas de coordonnées intrinsèques. Il va donc apparaître à l'emplacement par défaut, qui est précisé par la commande `setRespawnDefaultOffset` par rapport au centre de la zone (ici, 45km au nord).
 
-Et bien sûr on appliquera le *respawn radius*: il spawnera à une position aléatoire dans un cercle de 10km autour de ce point.
+Et bien sûr on appliquera le *respawn radius*: il apparaîtra à une position aléatoire dans un cercle de 10km autour de ce point.
 
-### Choix aléatoire
+#### Choix aléatoire
 
 La définition d'une vague, qu'elle soit composée de groupes DCS, de commandes VEAF ou des deux, se fait en choisissant aléatoirement un nombre déterminé de groupes/commandes dans une liste, en appliquant un biais optionnel.
 
@@ -220,19 +234,19 @@ Tout d'abord, il faut définir une liste de groupes et/ou de commandes VEAF. En 
 
 On utilisera la méthode `:addRandomWave()` qui prend en premier paramètre cette liste, et en second le nombre de groupes/commandes à spawner pour cette vague. Le troisième paramètre (optionnel) est le biais (voir plus bas).
 
-Exemple où on définit 4 groupes dont 2 commandes VEAF et 2 groupes DCS, et où on en spawn 2:
+<u>Exemple où on définit 4 groupes dont 2 commandes VEAF et 2 groupes DCS, et où on en spawn 2:</u>
 
 ```lua
 :addRandomWave({"groupe 1", "-sa15", "groupe 2", "[10000, 15000]-cap mig29, size 2, hdg 180"}, 2)
 ```
 
-Attention, il est tout à fait possible que les groupes spawnés soient dupliqués (par exemple, 2 fois "groupe 1" dans notre exemple)
+Attention, il est tout à fait possible que les groupes qu'on fait apparaître soient dupliqués (par exemple, 2 fois "groupe 1" dans notre exemple)
 
 Au moment du déploiement, on va aléatoirement choisir un nombre entre 1 (+ le biais) et la taille de la liste (+ le biais), et on va prendre l'élément correspondant dans la liste (ou le dernier si le choix est trop grand) pour le spawner; et ce autant de fois qu'il le faut (2, dans notre exemple).
 
 Le biais permet donc de décaler vers la droite de la liste le choix aléatoire.
 
-Exemple sans biais:
+<u>Exemple sans biais:</u>
 
 ```lua
 :addRandomWave({"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, 1)
@@ -240,7 +254,7 @@ Exemple sans biais:
 
 Ici, on choisit aléatoirement un groupe dans la liste
 
-Exemple avec biais:
+<u>Exemple avec biais:</u>
 
 ```lua
 :addRandomWave({"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, 1, 1)
@@ -248,7 +262,7 @@ Exemple avec biais:
 
 Ici, on décide délibéremment de ne jamais choisir "groupe 1" ; on choisit donc aléatoirement un groupe dans la liste "groupe 2", "groupe 3", "groupe 4".
 
-Exemple complet:
+<u>Exemple complet:</u>
 
 ```lua
 AirWaveZone:new()
@@ -263,65 +277,65 @@ AirWaveZone:new()
 
 Avec la même ligne ou presque, on définit trois vagues très différentes !
 
-### Choix systématique
+#### Choix systématique
 
 On peut aussi définir, pour une vague, un seul groupe (ou une seule commande VEAF), en utilisant la méthode `addWave`.
 
-Exemple:
+<u>Exemple:</u>
 
 ```lua
 :addWave("groupe 1")
 ```
 
-### Utilisation de commandes
+#### Utilisation de commandes
 
 Un groupe dans une vague (dans la liste, entre les accolades) peut donc correspondre au nom d'un groupe d'avions de DCS, défini dans l'éditeur de mission, ou une commande VEAF.
 
-Les commandes VEAF sont définies dans les différents scripts qui composent la bibliothèque VEAF, et peuvent avoir des effets très variés (déclencher une frappe d'artillerie, démarrer le déplacement d'un groupe naval - porte-avion -, lancer une *combat zone*, éclairer une zone, spawner des blindés, des SAM, un convoi, un FARP, une FOB, ...).
+Les commandes VEAF sont définies dans les différents scripts qui composent la bibliothèque VEAF, et peuvent avoir des effets très variés (déclencher une frappe d'artillerie, démarrer le déplacement d'un groupe naval - porte-avion -, lancer une *combat zone*, éclairer une zone, apparaître des blindés, des SAM, un convoi, un FARP, une FOB, ...).
 
 Pour faire simple, tout ce que les scripts VEAF reconnaissent dans un marqueur sur la carte F10 peut être utilisé ici.
 
-Le point de spawn calculé (voir le paragraphe plus haut qui explique ce concept) sera en fait le point d'ancrage de la commande (ce sera comme si on avait mis un marqueur ici sur la vue F10). Si la commande n'est pas localisée (ex: déclenchement d'une *combat zone*) ou si elle contient des coordonnées absolues (ex `U37TCL5297`), ce point d'ancrage n'aura aucun effet.
+Le point d'apparition calculé (voir le paragraphe plus haut qui explique ce concept) sera en fait le point d'ancrage de la commande (ce sera comme si on avait mis un marqueur ici sur la vue F10). Si la commande n'est pas localisée (ex: déclenchement d'une *combat zone*) ou si elle contient des coordonnées absolues (ex `U37TCL5297`), ce point d'ancrage n'aura aucun effet.
 
-Entre crochets, on peut (optionnellement) spécifier un point de spawn (relatif au centre de la zone), qui modifiera le point d'ancrage.
+Entre crochets, on peut (optionnellement) spécifier un point d'apparition (relatif au centre de la zone), qui modifiera le point d'ancrage.
 
-Exemple, déclenchement d'une cap:
+<u>Exemple, déclenchement d'une cap:</u>
 
 ```lua
 :addWave("-cap mig29")
 ```
 
-Exemple, déclenchement d'une cap avec offset par rapport au centre de la zone:
+<u>Exemple, déclenchement d'une cap avec offset par rapport au centre de la zone:</u>
 
 ```lua
 :addWave("[-15000, 30000]-cap mig29, hdg 135, dist 40")
 ```
 
-Exemple, spawn d'un SA15 au centre de la zone
+<u>Exemple, création d'un SA15 au centre de la zone:</u>
 
 ```lua
 :addWave("[0, 0]-sa15")
 ```
 
-Exemple, création d'un convoi blindé qui se déplace du centre de la zone vers Kobuleti
+<u>Exemple, création d'un convoi blindé qui se déplace du centre de la zone vers Kobuleti:</u>
 
 ```lua
 :addWave("[0, 0]-convoy, armor 4, defense 2, dest kobuleti")
 ```
 
-Exemple, appel d'une frappe d'artillerie antiaérienne
+<u>Exemple, appel d'une frappe d'artillerie antiaérienne:</u>
 
 ```lua
 :addWave("-flak")
 ```
 
-Exemple, appel d'une frappe d'artillerie sur coordonnées
+<u>Exemple, appel d'une frappe d'artillerie sur coordonnées:</u>
 
 ```lua
 :addWave("-shell#U37TGG2164791685")
 ```
 
-## Options de personnalisation (messages et callbacks)
+### Options de personnalisation (messages et callbacks)
 
 Pour chaque zone, il est possible de choisir les messages émis par le système à chaque évènement, et même de spécifier une fonction qui sera appelée quand l'évènement surviendra.
 
@@ -334,7 +348,8 @@ Les évènements sont:
 - LOST : la zone a été perdue, plus de joueurs (`:setMessageLost()`, `:setOnLost()`)
 - STOP : arrêt de la zone, si `:stop()` est appelée (`:setMessageStop()`, `:setOnStop()`)
 
-Exemples:
+<u>Exemples:</u>
+
 ```lua
 -- message when the zone is activated
 zone:setMessageStart("%s est maintenant fonctionnelle")
@@ -373,13 +388,13 @@ zone:setMessageStop("%s n'est plus active")
 zone:setOnStop(bluejaag.eventExporter.onStop)
 ```
 
-## Lancement de la zone
+## Dernière étape
 
 Une fois configurée, la zone doit être lancée. 
 
 Selon le choix qu'on a fait (variable locale ou désignation chaînée), on appelle la méthode `:start()`.
 
-Exemple, désignation chaînée:
+<u>Exemple, désignation chaînée:</u>
 
 ```lua
 AirWaveZone:new()
@@ -388,7 +403,7 @@ AirWaveZone:new()
     :start()
 ```
 
-Exemple, variable locale:
+<u>Exemple, variable locale:</u>
 
 ```lua
 local zone = AirWaveZone:new()
@@ -397,175 +412,118 @@ zone:setTriggerZone("Minevody")
 zone:start()
 ```
 
+Si vous souhaitez démarrer la zone dans un trigger, vous pouvez utiliser la méthode `get()` du module pour retrouver l'instance correspondante.
 
+```lua
+veafAirWaves.get("Minevody"):start()
+```
 
+Bien sûr, il est aussi possible d'appeler d'autres méthodes, telles que `stop()`
 
+```lua
+veafAirWaves.get("Minevody"):stop()
+```
 
+# Exemples complets
 
+Voici un exemple de configuration fonctionnel et complet (toutes les fonctions disponibles sont présentes)
 
+```lua
+  -- example zone 01 (can easily be copy/pasted, nothing to set in the editor except player slots and if desired trigger zones)
+  local zone01 = AirWaveZone:new()
+    -- technical name (AirWave instance name)
+    :setName("Zone 01")
 
+    -- description for the messages
+    :setDescription("Zone 01 - FOX1 fighters")
+    -- coalitions of the players (only human units from these coalitions will be monitored)
+    :addPlayerCoalition(coalition.side.BLUE)
 
+    -- trigger zone name (if set, we'll use a DCS trigger zone)
+    --:setTriggerZone("airWave_HARD")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### Options pour le comportement d'une QRA Multi-Groupe
-
-Concernant l'utilisation de multiples groupes dans une QRA : 
-
-    :addRandomGroup(*groups*, *number*, *bias*) --Ajoute aléatoirement *number* groupes pris parmis la liste des *groups* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) avec un biais vers l'élément numéro *bias*
-
-    :setGroupsToDeployByEnemyQuantity(*enemyNb*, *groupsToDeploy*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que les groupes de la liste *groupsToDeploy* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés
-
-    :setRandomGroupsToDeployByEnemyQuantity(*enemyNb*, *groups*, *number*, *bias*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que aléatoirement, *number* des groupes parmis la liste *groups* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés.
-                                                                                     Avec un biais vers l'élément numéro *bias* de la liste.
-
-## Mise en place dans l'éditeur DCS
-
-Tout d'abord, le groupe QRA doit exister au sein de la mission. Tout type d'aéronef (démarrage en vol ou au sol) peut être utilisé et leur charge utile/plan de vol existant sera conservé.
-
-Cette étape est similaire à toute autre mission, placez le groupe de votre choix, configurez-le, **enclenchez l'activation différée** et donnez-lui un nom facilement reconnaissable car il sera utilisé par la suite.
-
-
-De plus, vous devrez créer une zone de déclenchement. Avec un nom reconnaissable (qui peut être identique à celui du groupe d'aéronefs) que nous utiliserons aussi par la suite.
-
-Ceci est simplement pour avoir un point de référence pour la zone de déploiement du QRA, son rayon dans DCS n'a pas d'importance et sera défini ultérieurement.
-
-## Mise en place dans le fichier missionConfig
-
-Maintenant que le groupe existe dans la mission et a été configuré avec succès dans DCS, nous allons indiquer aux scripts qu'il s'agit d'un groupe QRA.
-
-Cette étape doit être effectuée (ou refaite) avant d'exécuter le script de "build".
-
-#### Options Logistique
-
-De plus, il est possibble de contrôler étroitement la logistique de la QRA. Vous pouvez :
-
-
-- Spécifier combien de déclenchements la QRA peut effectuer au départ (1 déclenchement = tous les groupes d'avion qui apparaîssent au lancement d'une QRA, les avions ne sont pas comptés individuellement ici)
-  (vous pouvez utiliser cela pour rendre la QRA progressivement plus difficile à épuiser en commençant avec peu de déclenchements)
-
-    :setQRAcount(\*QRAcount\*) --Supérieur ou égal à -1 : Nombre actuel d'ensembles d'avions disponibles pour le déploiement. Par défaut, cela est réglé sur -1, ce qui signifie qu'un nombre infini de groupes est disponible, aucune logistique ne prend place n'est effectué.
+    -- center (point in the center of the circle, when not using a DCS trigger zone) - can be set with coordinates either in LL or MGRS
+    :setZoneCenterFromCoordinates("U37TCL5297") -- U=UTM (MGRS); 37T=grid number; CL=square; 52000=latitude; 97000=longitude
     
--> C'est votre "master arm" pour le reste de ces options.
+    -- radius (size of the circle, when not using a zone) - in meters
+    :setZoneRadius(90000) -- 50 nm
 
+    -- draw the zone on screen
+    :setDrawZone(true)
 
-- Spécifier le nombre de "places de parking" disponibles pour une QRA, qui ne peuvent pas être dépassées et, vu qu'elles sont limitées, peuvent conduire à l'épuisement de la QRA avec le temps
+    -- default position for respawns (im meters, lat/lon, relative to the zone center)
+    :setRespawnDefaultOffset(0, -45000) -- 45km north of the zone's center
 
-    :setQRAmaxCount(\*maxQRAcount\*) --Supérieur ou égal à -1 : Nombre maximal d'ensembles d'avions déployables à tout moment pour la QRA. Par défaut, cela est réglé sur -1, ce qui signifie qu'un nombre infini d'avions peut être accumulé pour le déploiement.
-    
--> Exemple : Une QRA a 2 places sur 6 de remplies et prêtes pour le déploiement, 6 correspond au maxQRAcount, 2 au QRAcount actuel.
+    -- radius of the waves groups spawn
+    :setRespawnRadius(10000)
 
+    ---add a wave of ennemy planes
+    --@param groups any a list of groups or VEAF commands; VEAF commands can be prefixed with [lat, lon], specifying the location of their spawn relative to the center of the zone; default value is set with "setRespawnDefaultOffset"
+    --@param number any how many of these groups will actually be spawned (can be multiple times the same group!)
+    --@param bias any shifts the random generator to the right of the list
+    :addRandomWave( { "[0, 0]-cap Mig25-Fox2-solo, hdg 180, dist 30"  }, 1) -- a single Mig25 with FOX2 missiles spawning near
+    :addRandomWave( { "[0, -30000]-cap Mig21-Fox1, size 2, hdg 180, dist 50", "[0, -30000]-cap Mig23S-Fox1, size 2, hdg 180, dist 50", "[0, -30000]-cap Mig25-Fox1, size 2, hdg 180, dist 50" }, 1) -- 1 group from FOX1 fighter pairs spawning at 30km to the north
+    :addRandomWave( { "[0, -60000]-cap Su27-Fox1, hdg 180, dist 50", "[0, -60000]-cap Su33-Fox1, hdg 180, dist 50", "[0, -60000]-cap Mig29A-Fox1, hdg 180, dist 50" }, 2) -- 2 groups from modern FOX1 fighter pairs spawning at 60km to the north
+    --:addRandomWave({ "airWave_EASY-1-1", "airWave_EASY-1-2"}, 1) -- one group
+    --:addRandomWave({ "airWave_EASY-2-1", "airWave_EASY-2-1"}, 2) -- two groups
 
-- Spécifier le nombre d'avions en "stockage" qui peuvent être expédiés aux "places de parking" mentionnées précédemment
+    -- players in the zone will only be detected above this altitude (in feet)
+    :setMaximumAltitudeInFeet(40000) -- hard ceiling
 
-    :setQRAmaxResupplyCount(\*maxResupplyCount\*) --Supérieur ou égal à -1 : Nombre total de groupes d'avions pouvant être provisionnés à la QRA. Par défaut, cela est réglé sur -1, ce qui signifie qu'une quantité infinie de stock est disponible. 0 signifie qu'aucun stock n'est disponible, aucun réapprovisionnement ne se produira, c'est votre "master arm" pour les réapprovisionnements. 
-    
--> Prenons l'exemple précédent : nous avons besoin de 4 groupes (4 "places de parking" vides) mais nous n'en avons que 3 en stock pour réapprovisionner la QRA, 3 correspond au QRAmaxResupplyCount.
-    
+    -- players in the zone will only be detected below this altitude (in feet)
+    :setMinimumAltitudeInFeet(1500) -- hard floor
 
-- Spécifier un seuil pour le nombre d'ensembles d'avions disponibles, en dessous duquel un réapprovisionnement est lancé :
+      -- message when the zone is activated
+    :setMessageStart("%s est maintenant fonctionnelle")
 
-    :setQRAminCountforResupply(\*minCountforResupply\*) --Égal à -1 ou supérieur à 0 : Nombre d'ensembles d'avions que la QRA doit avoir à tous temps, sinon un réapprovisionnement sera lancé. Par défaut, cela est réglé sur -1, ce qui signifie qu'un réapprovisionnement sera lancé dès qu'un ensemble d'avions est perdu.
-    
--> Prenons l'exemple précédent : le nombre minimum d'ensembles d'avions déployables que nous souhaitons avoir en tout temps pour notre QRA est de 1, mais nous en avons 2, donc aucun réapprovisionnement ne se produira pour le moment. 1 correspond au minCountforResupply.
-    
+      -- event when the zone is activated
+    :setOnStart(bluejaag.eventExporter.onStart)
 
-- Spécifier combien d'avions sont expédiés avec chaque réapprovionnements :
+      -- message when a wave is triggered
+    :setMessageDeploy("%s déploie la vague numéro %s")
 
-    :setResupplyAmount(\*resupplyAmount\*) --Supérieur ou égal à 1 : Nombre de groupes d'avions qui seront fournis à la QRA lorsqu'un réapprovisionnement se produit. Par défaut, cela est égal à 1. 
-    
--> Prenons l'exemple précédent : nous venons de perdre nos deux znsembles, ce qui signifie que nous n'en avons plus, cela déclenchera un réapprovisionnement, qui apportera soit le nombre désiré d'ensembles soit le nombre d'avions que nous avons en stock si cette quantité est inférieure. Le réapprovisionnement sera également limité par le nombre maximum d'ensembles que nous pouvons avoir en même temps.
-    
+      -- event when a wave is triggered
+    :setOnDeploy(bluejaag.eventExporter.onDeploy)
 
-- Spécifier combien de temps prend un réapprovisionnement :
+      -- message when a wave is destroyed
+    :setMessageDestroyed("%szone: la vague %s a été détruite")
 
-    :setQRAresupplyDelay(\*resupplyDelay\*) --Supérieur ou égal à 0 : Temps nécessaire pour effectuer un réapprovisionnement
+      -- event when a wave is destroyed
+    :setOnDestroyed(bluejaag.eventExporter.onDestroyed)
 
+      -- message when all waves are finished (won)
+    :setMessageWon("%szone: c'est gagné (plus d'ennemi) !")
 
-**Plusieurs choses à noter ici :**
+      -- event when all waves are finished (won)
+    :setOnWon(bluejaag.eventExporter.onWon)
 
-- Seul un réapprovisionnement peut avoir lieu à la fois, ils peuvent être programmés à chaque occasion possible (à chaque fois qu'un groupe QRA est perdu par exemple) mais n'auront lieu qu'un à la fois.
-        
-- Les groupes QRA qui viennent d'être provisionnés devront être réarmés (voir le délai et les contraintes associés [ici](#general-options))
+      -- message when all players are dead (lost)
+    :setMessageLost("%szone: c'est perdu (joueur mort ou sorti) !")
 
-#### Options pour le lien avec un aéroport / une base
+      -- event when all players are dead (lost)
+    :setOnLost(bluejaag.eventExporter.onLost)
 
-Enfin, il est possible de lier les mécanismes de déploiement et de logistique de la QRA à la possesion (ou non) d'une base aérienne, d'un FARP, d'un navire ou d'un bâtiment par la coalition de la dite QRA :
+      -- message when the zone is deactivated
+    :setMessageStop("%s n'est plus active")
 
-    :setAirportLink("*airbase_name*") --Nom de l'unité / de la base aérienne : la QRA sera liée à cette base et cessera de fonctionner si la base est perdue (il peut s'agir d'un FARP (utilisez le nom de l'unité du FARP), d'un navire (utilisez le nom de l'unité du navire), d'un aérodrome ou d'un bâtiment (plateformes pétrolières, etc.))
-    
-**Non fonctionnel à ce jour :**
+      -- event when the zone is deactivated
+    :setOnStop(bluejaag.eventExporter.onStop)
 
-    :setAirportMinLifePercent(*value*) --Comprise entre 0 et 1 : pourcentage minimum de vie de l'aéroport lié pour que le QRA fonctionne. Les aéroports (pistes) et les navires ne devraient perdre de la vie que lorsqu'ils sont bombardés, cela nécessite des tests manuels pour savoir ce qui fonctionne le mieux.
+  -- start the zone
+  zone01:start()
+```
 
-**Plusieurs choses à noter ici :**
+Voici un autre exemple, qui recopie une zone existante (`mist.utils.deepCopy`) au lieu de l'initialiser avec `new()` et qui reconfigure les points de la copie qui seront différents (pratique pour faire plusieurs zones similaires):
 
-- La partie logistique est interrompue lorsque l'aérodrome est perdu.
+```lua
+  mist.utils.deepCopy(veafAirWaves.get("Zone 01"))
+  :setName("Zone 03")
+  :setDescription("Zone 03 - FOX1 fighters")
+  :setZoneCenterFromCoordinates("U37TCH2163")
+  :start()
+```
 
-- Une QRA qui est activée après la prise de son aérodrome par sa coalition devra être réarmée (voir le délai et les contraintes associés [ici](#general-options))
-
-#### Dernière étape
-
-Après avoir enchaîné ces options, vous pouvez ajouter cela :
-
-    :start()
-
-Comme son nom l'indique, cela démarre la QRA. Sinon, elle restera inactive.
-
-
-Ou si vous souhaitez la démarrer ultérieurement dans l'un de vos scripts :
-
-    if QRA_*NameOfQRA* then QRA_*NameOfQRA*:start() end
-
-
-Vous pouvez également utiliser pour faire l'action inverse :
-
-    if QRA_*NameOfQRA* then QRA_*NameOfQRA*:stop() end --utilisez ceci si vous souhaitez arrêter la QRA à un moment donné (dans un déclencheur, etc.). Elle peut être redémarrée en utilisant la méthode précédemment mentionnée.
-
-Cela rend inactif la QRA (stop toute vérification d'aéroport, toutes les opérations de logistique, etc.).
-
-### Options Avancées
-
-En plus de ce qui a été dit précedemment, il est possible de modifier certaines options de "bas niveau".
-
-#### Messages Joueur
-
-Cette section concerne la modification des messages affichés aux joueurs des coalitions qui deuvent déclencher la QRA selon ses états :
-
-    :setMessageStart("*value*") --Lorsque :start() est utilisé
-
-    :setMessageDeploy("*value*") --Lorsque la QRA est déployée
-
-    :setMessageDestroyed("*value*") --Lorsque la QRA est détruite
-
-    :setMessageReady("*value*") --Lorsque la QRA est de nouveau prête au déploiement
-
-    :setMessageOut("*value*") --Lorque la QRA est à court d'ensembles d'avions
-
-    :setMessageResupplied("*value*") --Lorsque la QRA possède de nouveau des avions
-
-    :setMessageAirbaseDown("*value*") --Lorsque la QRA perd sa base
-
-    :setMessageAirbaseUp("*value*") --Lorsque la QRA regagne sa base
-
-    :setMessageStop("*value*") --Lorsque :stop() est utilisé
-
-## Contacts
+# Contacts
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
@@ -590,4 +548,6 @@ Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouv
 [VEAF-Multiplayer-Missions-repository]: https://github.com/VEAF/VEAF-Multiplayer-Missions
 [VEAF-Open-Training-Mission-documentation]: https://www.veaf.org/opentraining
 
-[demo-mission-structure]: ../images/demo-mission-structure.png
+[airwave_zone_example_01]: ../images/airwave_zone_example_01.png
+[airwave_zone_example_02]: ../images/airwave_zone_example_02.png
+[airwave_zone_example_03]: ../images/airwave_zone_example_03.png
