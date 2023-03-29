@@ -103,7 +103,13 @@ Voir la documentation détaillée [ici](airwaves.md)
 
 ## QRA
 
-TBD
+Une QRA (Quick Reaction Alert)[https://fr.wikipedia.org/wiki/Quick_Reaction_Alert] est un vol d'appareils de chasse prêt à décoller pour intercepter tout appareil ou missile de croisière menaçant une zone (typiquement une base aérienne, ou une zone sensible).
+
+Grâce à ce module, vous pourrez facilement définir une ou plusieurs zones, circulaires ou polygonales, qui déclencheront le décollage d'un ou plusieurs groupes d'interception si elles sont violées par un pilote humain.
+
+Le but de ce qui suit est de fournir toutes les informations nécessaires pour configurer une QRA (Quick Reaction Alert) dans une mission utilisant les scripts VEAF.
+
+Voir la documentation détaillée [ici](qra.md)
 
 ## Assets
 
