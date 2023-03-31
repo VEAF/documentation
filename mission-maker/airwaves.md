@@ -183,6 +183,26 @@ Il est possible d'utiliser des groupes d'avions placés dans l'éditeur de DCS (
 
 Le fait qu'on puisse utiliser des commandes VEAF fait qu'on peut opposer aux joueurs toutes sortes d'ennemis (SAM, manpads, unités blindées, convois, navires); on peut aller jusqu'à détourner l'usage classique de ce script pour déclencher des actions (une combat zone, la mise en déplacement d'un porte-avion).
 
+#### Réinitialisation
+
+On peut utiliser la commande `:resetWaves()` pour réinitialiser les vagues d'une zone (les supprimer toutes). C'est utile dans le cas où on copie une zone à partir d'une autre existante, et qu'on veut changer complètement les vagues (et non pas juste en ajouter).
+
+<u>Exemple de copie:</u>
+
+```lua
+  mist.utils.deepCopy(veafAirWaves.get("Zone 01 - EASY CAP"))
+  :setName("Zone 03 - HARD CAP")
+  :setDescription("Zone 03 - HARD VEAF CAP")
+  :setZoneCenterFromCoordinates("U37TCH2163")
+  :resetWaves()
+  :addRandomWave( { "[0, 0]-cap hard x1, hdg 180, dist 30"  }, 1) -- a single fighter spawning near
+  :addRandomWave( { "[0, -30000]-cap hard x2, hdg 180, dist 50"  }, 1) -- a pair of fighters spawning a bit further away
+  :addRandomWave( { "[0, -60000]-cap hard x2, size 2, hdg 180, dist 50"  }, 1) -- two flights of fighters spawning further again
+  :start()
+```
+
+
+
 #### Paramètres
 
 Choix de la position du spawn par défaut, relativement au centre de la zone (en mètres, positif vers l'Est et le Sud, négatif vers l'Ouest et le Nord).
@@ -355,37 +375,37 @@ Les évènements sont:
 zone:setMessageStart("%s est maintenant fonctionnelle")
 
 -- event when the zone is activated
-zone:setOnStart(bluejaag.eventExporter.onStart)
+zone:setOnStart(eventExporter.onStart)
 
 -- message when a wave is triggered
 zone:setMessageDeploy("%s déploie la vague numéro %s")
 
 -- event when a wave is triggered
-zone:setOnDeploy(bluejaag.eventExporter.onDeploy)
+zone:setOnDeploy(eventExporter.onDeploy)
 
 -- message when a wave is destroyed
-zone:setMessageDestroyed("%szone: la vague %s a été détruite")
+zone:setMessageDestroyed("%s: la vague %s a été détruite")
 
 -- event when a wave is destroyed
-zone:setOnDestroyed(bluejaag.eventExporter.onDestroyed)
+zone:setOnDestroyed(eventExporter.onDestroyed)
 
 -- message when all waves are finished (won)
-zone:setMessageWon("%szone: c'est gagné (plus d'ennemi) !")
+zone:setMessageWon("%s: c'est gagné (plus d'ennemi) !")
 
 -- event when all waves are finished (won)
-zone:setOnWon(bluejaag.eventExporter.onWon)
+zone:setOnWon(eventExporter.onWon)
 
 -- message when all players are dead (lost)
-zone:setMessageLost("%szone: c'est perdu (joueur mort ou sorti) !")
+zone:setMessageLost("%s: c'est perdu (joueur mort ou sorti) !")
 
 -- event when all players are dead (lost)
-zone:setOnLost(bluejaag.eventExporter.onLost)
+zone:setOnLost(eventExporter.onLost)
 
 -- message when the zone is deactivated
 zone:setMessageStop("%s n'est plus active")
 
 -- event when the zone is deactivated
-zone:setOnStop(bluejaag.eventExporter.onStop)
+zone:setOnStop(eventExporter.onStop)
 ```
 
 ## Dernière étape
@@ -477,37 +497,37 @@ Voici un exemple de configuration fonctionnel et complet (toutes les fonctions d
     :setMessageStart("%s est maintenant fonctionnelle")
 
       -- event when the zone is activated
-    :setOnStart(bluejaag.eventExporter.onStart)
+    :setOnStart(eventExporter.onStart)
 
       -- message when a wave is triggered
     :setMessageDeploy("%s déploie la vague numéro %s")
 
       -- event when a wave is triggered
-    :setOnDeploy(bluejaag.eventExporter.onDeploy)
+    :setOnDeploy(eventExporter.onDeploy)
 
       -- message when a wave is destroyed
-    :setMessageDestroyed("%szone: la vague %s a été détruite")
+    :setMessageDestroyed("%s: la vague %s a été détruite")
 
       -- event when a wave is destroyed
-    :setOnDestroyed(bluejaag.eventExporter.onDestroyed)
+    :setOnDestroyed(eventExporter.onDestroyed)
 
       -- message when all waves are finished (won)
-    :setMessageWon("%szone: c'est gagné (plus d'ennemi) !")
+    :setMessageWon("%s: c'est gagné (plus d'ennemi) !")
 
       -- event when all waves are finished (won)
-    :setOnWon(bluejaag.eventExporter.onWon)
+    :setOnWon(eventExporter.onWon)
 
       -- message when all players are dead (lost)
-    :setMessageLost("%szone: c'est perdu (joueur mort ou sorti) !")
+    :setMessageLost("%s: c'est perdu (joueur mort ou sorti) !")
 
       -- event when all players are dead (lost)
-    :setOnLost(bluejaag.eventExporter.onLost)
+    :setOnLost(eventExporter.onLost)
 
       -- message when the zone is deactivated
     :setMessageStop("%s n'est plus active")
 
       -- event when the zone is deactivated
-    :setOnStop(bluejaag.eventExporter.onStop)
+    :setOnStop(eventExporter.onStop)
 
   -- start the zone
   zone01:start()
