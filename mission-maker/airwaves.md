@@ -4,7 +4,7 @@ description: Mettre en place une zone d'entrainement AirWaves
 
 -----------------------------
 
-Navigation: [page principale du site de documentation VEAF](../index.md)
+Navigation: [page "Mission Maker" du site de documentation VEAF](./index.md)
 
 -----------------------------
 

@@ -4,7 +4,7 @@ description: Mettre en place une QRA
 
 -----------------------------
 
-Navigation: [VEAF documentation site - main page](../index.md)
+Navigation: [page "Mission Maker" du site de documentation VEAF](./index.md)
 
 -----------------------------
 
@@ -30,7 +30,7 @@ Grâce à ce module, vous pourrez facilement définir une ou plusieurs zones, ci
 
 Le but de ce qui suit est de fournir toutes les informations nécessaires pour configurer une QRA (Quick Reaction Alert) dans une mission utilisant les scripts VEAF.
 
-(Veuillez lire [Mission Maker](**À REMPLACER**)).
+(Veuillez lire [Mission Maker](./index.md)).
 
 ## Principes
 
