@@ -297,6 +297,30 @@ AirWaveZone:new()
 
 Avec la même ligne ou presque, on définit trois vagues très différentes !
 
+#### Vagues simultanées
+
+La méthode `:addRandomSimultaneousWave()` permet d'ajouter une vague avec exactement la même syntaxe que la méthode `:addRandomWave()`, sauf que cette vague sera déployée simultanément avec la précédente.
+
+<u>Exemple: </u>
+
+```lua
+AirWaveZone:new()
+    :setName("Minevody")
+    :setTriggerZone("Minevody")
+    :setRespawnDefaultOffset(0, -45000) -- 45km north of the zone's center
+    :setRespawnRadius(10000)
+    :addRandomWave( { "[0, 0]-cap fox2.*x1, hdg 180, dist 20"  }, 1) -- a single fighter spawning near
+    :addRandomWave( { "[-80000, -20000]-cap fox2.*x1, hdg 180, dist 20"  }, 1) -- a single fighter spawning a bit further north and to the west
+    :addRandomSimultaneousWave( { "[80000, -20000]-cap fox2.*x1, hdg 180, dist 20"  }, 1) -- a single fighter spawning a bit further north and east AT THE SAME TIME
+    :addRandomWave( { "[-80000, -20000]-cap fox2.*x2, hdg 180, dist 20"  }, 1) -- a pair of fighters spawning a bit further north
+```
+
+La vague #1 est déployée normalement. 
+
+Le joueur la détruit, et le système déploie la vague #2, puis la vague #3 simultanément - la vague #4 n'est pas marquée "simultanée", donc on s'arrête à la vague #3.
+
+Le joueur détruit toutes les cibles des deux vagues #2 et #3, et le système déploie la vague #4 qui est la dernière.
+
 #### Choix systématique
 
 On peut aussi définir, pour une vague, un seul groupe (ou une seule commande VEAF), en utilisant la méthode `addWave`.
@@ -306,6 +330,8 @@ On peut aussi définir, pour une vague, un seul groupe (ou une seule commande VE
 ```lua
 :addWave("groupe 1")
 ```
+
+Nota: cette méthode ne permet pas de créer des vagues simultanées.
 
 #### Utilisation de commandes
 
