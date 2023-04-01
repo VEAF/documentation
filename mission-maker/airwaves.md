@@ -362,7 +362,7 @@ Pour chaque zone, il est possible de choisir les messages émis par le système 
 Les évènements sont:
 
 - START : démarrage de la zone, au début de la mission (`:setMessageStart()`, `:setOnStart()`)
-- DEPLOY : déploiement d'une vague (`:setMessageDeploy()`, `:setOnDeploy()`)
+- DEPLOY : déploiement d'une vague (`:setMessageDeploy()`, `setMessageDeployPlayers()`, `:setOnDeploy()`)
 - DESTROYED : une vague a été détruite (`:setMessageDestroyed()`, `:setOnDestroyed()`)
 - WON : la zone a été gagnée, plus de vagues IA (`:setMessageWon()`, `:setOnWon()`)
 - LOST : la zone a été perdue, plus de joueurs (`:setMessageLost()`, `:setOnLost()`)
@@ -379,6 +379,9 @@ zone:setOnStart(eventExporter.onStart)
 
 -- message when a wave is triggered
 zone:setMessageDeploy("%s déploie la vague numéro %s")
+
+-- message to players when a wave is triggered
+zone:setMessageDeployPlayers("Vague numéro %s déployée, %s") -- the second parameter is a BRA or "MERGED"
 
 -- event when a wave is triggered
 zone:setOnDeploy(eventExporter.onDeploy)
@@ -502,7 +505,10 @@ Voici un exemple de configuration fonctionnel et complet (toutes les fonctions d
       -- message when a wave is triggered
     :setMessageDeploy("%s déploie la vague numéro %s")
 
-      -- event when a wave is triggered
+    -- message to players when a wave is triggered
+    :setMessageDeployPlayers("Vague numéro %s déployée, %s") -- the second parameter is a BRA or "MERGED"
+
+    -- event when a wave is triggered
     :setOnDeploy(eventExporter.onDeploy)
 
       -- message when a wave is destroyed
