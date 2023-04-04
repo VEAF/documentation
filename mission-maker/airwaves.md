@@ -381,7 +381,9 @@ Entre crochets, on peut (optionnellement) spécifier un point d'apparition (rela
 :addWave("-shell#U37TGG2164791685")
 ```
 
-### Options de personnalisation (messages et callbacks)
+### Options de personnalisation
+
+#### Messages et callbacks
 
 Pour chaque zone, il est possible de choisir les messages émis par le système à chaque évènement, et même de spécifier une fonction qui sera appelée quand l'évènement surviendra.
 
@@ -436,6 +438,54 @@ zone:setMessageStop("%s n'est plus active")
 -- event when the zone is deactivated
 zone:setOnStop(eventExporter.onStop)
 ```
+
+#### Détermination de l'état des groupes et vagues
+
+Il est possible de paramétrer AirWaves pour que le module appelle vos propres fonctions au moment où il se demande si une vague ou un group est encore opérationnel.
+
+Pour cela, deux méthodes existent.
+
+```lua
+---the function that decides if a wave is dead or not (as a set of groups and units)
+zone:setIsEnemyWaveDeadCallback(callback)
+```
+
+La fonction que vous spécifierez en paramètre sera appelée pour déterminer si une vague est considérée comme détruite ou non. Elle prend trois paramètres:
+- la zone (l'objet)
+- le numéro de la vague courante
+- la liste des groupes qui ont été spawnés (leurs noms)
+
+Et elle doit renvoyer `true` si la vague doit être considérée comme hors de combat.
+
+```lua
+---the function that decides if a group is dead or not (individually)
+zone:setIsEnemyGroupDeadCallback(callback)
+```
+
+La fonction que vous spécifierez en paramètre sera appelée pour déterminer si un groupe est considéré comme hors de combat ou non. Elle prend trois paramètres:
+- la zone (l'objet)
+- le numéro de la vague courante
+- un groupe DCS qui a été spawné (une table DCS)
+
+Et elle doit renvoyer `true` si le groupe doit être considéré comme détruit.
+
+#### Gestion des unités considérées comme hors-de-combat
+
+La méthode par défaut (que vous pouvez remplacer avec `:setIsEnemyGroupDeadCallback()`) pour vérifier l'état d'un groupe dans une vague compare son niveau de vie avec un minimum vital qui est déclaré comme une constante (`veafAirWaves.MINIMUM_LIFE_FOR_AI_IN_PERCENT = 10`).
+
+Quand elle détermine qu'une unité doit être détruite, elle appelle une fonction qui se charge de retirer l'unité du groupe. Par défaut, cette fonction déspawn simplement l'unité.
+
+Vous pouvez la remplacer par une de vos fonctions qui fera ce que vous voulez avec cette unité (la faire exploser, c'est joli), en utilisant la fonction suivante:
+
+```lua
+--- the function that handles crippled enemy units
+zone:setHandleCrippledEnemyUnitCallback(callback)
+```
+
+Elle prend trois paramètres:
+- la zone (l'objet)
+- le numéro de la vague courante
+- une unité DCS qui a été spawné (une table DCS)
 
 ## Dernière étape
 
