@@ -195,13 +195,11 @@ On peut utiliser la commande `:resetWaves()` pour réinitialiser les vagues d'un
   :setDescription("Zone 03 - HARD VEAF CAP")
   :setZoneCenterFromCoordinates("U37TCH2163")
   :resetWaves()
-  :addRandomWave( { "[0, 0]-cap hard x1, hdg 180, dist 30"  }, 1) -- a single fighter spawning near
-  :addRandomWave( { "[0, -30000]-cap hard x2, hdg 180, dist 50"  }, 1) -- a pair of fighters spawning a bit further away
-  :addRandomWave( { "[0, -60000]-cap hard x2, size 2, hdg 180, dist 50"  }, 1) -- two flights of fighters spawning further again
+  :addWave( { groups = { "[0, 0]-cap hard x1, hdg 180, dist 30"  }, number = 1) -- a single fighter spawning near
+  :addWave( { groups = { "[0, -30000]-cap hard x2, hdg 180, dist 50"  }, number = 1) -- a pair of fighters spawning a bit further away
+  :addWave( { groups = { "[0, -60000]-cap hard x2, size 2, hdg 180, dist 50"  }, number = 1) -- two flights of fighters spawning further again
   :start()
 ```
-
-
 
 #### Paramètres
 
@@ -229,7 +227,7 @@ AirWaveZone:new()
     :setTriggerZone("Minevody")
     :setRespawnDefaultOffset(0, -45000) -- 45km north of the zone's center
     :setRespawnRadius(10000)
-    :addWave("[0, 30000]-cap mig29-fox1", "zone1_su27", "-sa15")
+    :addWave({ groups = {"[0, 30000]-cap mig29-fox1", "zone1_su27", "-sa15"} })
 ```
 
 Dans ce cas, le groupe `[0, 30000]-cap mig29-fox1` (une commande VEAF) a des coordonnées (décalage à partir du centre de la zone) spécifiées dans la définition de la commande VEAF (entre crochets).
@@ -246,30 +244,68 @@ Le dernier groupe `-sa15` (lui aussi une commande VEAF) n'a pas de coordonnées 
 
 Et bien sûr on appliquera le *respawn radius*: il apparaîtra à une position aléatoire dans un cercle de 10km autour de ce point.
 
-#### Choix aléatoire
+#### Vague simple
+
+La manière la plus simple de définir une vague composée d'un seul groupe ou d'une seule commande VEAF est d'utiliser la commande `:addWave` avec un seul paramètre:
+
+```lua
+:addWave("groupe 1")
+```
+
+Cela équivaut à :
+
+```lua
+:addWave({ groups = {"groupe 1" }})
+```
+
+#### Définition d'une vague
 
 La définition d'une vague, qu'elle soit composée de groupes DCS, de commandes VEAF ou des deux, se fait en choisissant aléatoirement un nombre déterminé de groupes/commandes dans une liste, en appliquant un biais optionnel.
 
 Tout d'abord, il faut définir une liste de groupes et/ou de commandes VEAF. En lua, les listes sont encadrées par des accolades {}, et les chaines de caractères par des guillemets "".
 
-On utilisera la méthode `:addRandomWave()` qui prend en premier paramètre cette liste, et en second le nombre de groupes/commandes à spawner pour cette vague. Le troisième paramètre (optionnel) est le biais (voir plus bas).
+On utilisera la méthode `:addWave()`.
+
+Cette méthode est très flexible, ce qui permet de l'utiliser très simplement (si on n'a qu'un groupe/une commande à mettre dans une vague, et pas de paramètre particulier, avec `:addWave("groupe1"`)), ou d'en exploiter toutes les fonctionnalités.
+
+On peut l'appeler avec une simple chaine de caractères, ou plusieurs; ce seront nos groupes ou nos commandes.
+
+```lua
+:addWave("group1", "group2")
+```
+
+Si on veut utiliser plus de paramètres, on peut l'appeler avec une table complexe qui peut contenir ces champs:
+- groups (obligatoire) : la  liste des groups et/ou commandes VEAF
+- number (par défaut 1) : le nombre de groupes/commandes à spawner pour cette vague ; ça peut être une valeur aléatoire : on donne la limite basse et la limite haute (comme ici `"2-4"` pour "entre 2 et 4") - attention à bien mettre les guillemets !
+- bias (par défaut 0) : le biais (voir plus bas) ; ça peut aussi être une valeur aléatoire 
+- delay (par défaut rien) : le délai entre cette vague et la suivante ; ça peut aussi être une valeur aléatoire ; la valeur par défaut est définie au niveau de la zone avec `::setDelayBetweenWaves()`
+
+`groups` peut être une simple chaine de caractères (s'il n'y a qu'un groupe/une commande) ou une table.
 
 <u>Exemple où on définit 4 groupes dont 2 commandes VEAF et 2 groupes DCS, et où on en spawn 2:</u>
 
 ```lua
-:addRandomWave({"groupe 1", "-sa15", "groupe 2", "[10000, 15000]-cap mig29, size 2, hdg 180"}, 2)
+:addWave({ groups = {"groupe 1", "-sa15", "groupe 2", "[10000, 15000]-cap mig29, size 2, hdg 180"}, number = 2 })
+```
+
+<u>Exemple avec un seul groupe qui sera spawné entre 1 et 3 fois, et un délai</u>
+
+```lua
+:addWave({ groups = "groupe 1", number = "1-3", delay = 60 })
 ```
 
 Attention, il est tout à fait possible que les groupes qu'on fait apparaître soient dupliqués (par exemple, 2 fois "groupe 1" dans notre exemple)
 
 Au moment du déploiement, on va aléatoirement choisir un nombre entre 1 (+ le biais) et la taille de la liste (+ le biais), et on va prendre l'élément correspondant dans la liste (ou le dernier si le choix est trop grand) pour le spawner; et ce autant de fois qu'il le faut (2, dans notre exemple).
 
+#### Le biais
+
 Le biais permet donc de décaler vers la droite de la liste le choix aléatoire.
 
 <u>Exemple sans biais:</u>
 
 ```lua
-:addRandomWave({"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, 1)
+:addWave({ groups = {"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, number = 1 })
 ```
 
 Ici, on choisit aléatoirement un groupe dans la liste
@@ -277,7 +313,7 @@ Ici, on choisit aléatoirement un groupe dans la liste
 <u>Exemple avec biais:</u>
 
 ```lua
-:addRandomWave({"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, 1, 1)
+:addWave({ groups = {"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, number = 1, bias = 1 })
 ```
 
 Ici, on décide délibéremment de ne jamais choisir "groupe 1" ; on choisit donc aléatoirement un groupe dans la liste "groupe 2", "groupe 3", "groupe 4".
@@ -290,16 +326,39 @@ AirWaveZone:new()
     :setTriggerZone("Minevody")
     :setRespawnDefaultOffset(0, -45000) -- 45km north of the zone's center
     :setRespawnRadius(10000)
-    :addWave("-cap mig29-fox1", "-cap su27-fox1", "-cap su33-fox3", 2, -1) -- choose between group 1 and group 2, never pick group 3
-    :addWave("-cap mig29-fox1", "-cap su27-fox1", "-cap su33-fox3", 2, 0)  -- choose between group 1, group 2 and group 3
-    :addWave("-cap mig29-fox1", "-cap su27-fox1", "-cap su33-fox3", 2, 1)  -- choose between group 2 and group 3, never pick group 1
+    :addWave({ groups = {"-cap mig29-fox1", "-cap su27-fox1", "-cap su33-fox3"}, number = 2, bias = -1 }) -- choose between group 1 and group 2, never pick group 3
+    :addWave({ groups = {"-cap mig29-fox1", "-cap su27-fox1", "-cap su33-fox3"}, number = 2, bias = 0  })  -- choose between group 1, group 2 and group 3
+    :addWave({ groups = {"-cap mig29-fox1", "-cap su27-fox1", "-cap su33-fox3"}, number = 2, bias = 1  })  -- choose between group 2 and group 3, never pick group 1
 ```
 
 Avec la même ligne ou presque, on définit trois vagues très différentes !
 
+#### Délai entre vagues
+
+Le délai permet de temporiser le déclenchement de la vague suivante (valeur positive), ou au contraire de la déclencher immédiatement (valeur négative).
+
+<u>Exemple avec délai:</u>
+
+```lua
+:addWave({ groups = {"groupe 1", "groupe 2"}, number = 1, delay = 120 })
+:addWave({ groups = {"groupe 3", "groupe 4"}, number = 1 })
+```
+
+La vague #1 se déclenche, le joueur la détruit, et un message le prévient qu'il a 120 secondes pour se préparer à la vague suivante.
+
+Deux minutes plus tard, la vague #2 se déclenche.
+
+Par défaut (si on ne précise pas le paramètre `delay`) c'est la valeur définie au niveau de la zone qui est utilisée. 
+
+On peut la changer comme ça :
+
+```lua
+:setDelayBetweenWaves(60)
+```
+
 #### Vagues simultanées
 
-La méthode `:addRandomSimultaneousWave()` permet d'ajouter une vague avec exactement la même syntaxe que la méthode `:addRandomWave()`, sauf que cette vague sera déployée simultanément avec la précédente.
+En précisant une valeur négative (ex: `-1`) pour le paramètre `delay`, on déclenche la vague suivante immédiatement, sans attendre que la vague qu'on vient de déclencher soit détruite.
 
 <u>Exemple: </u>
 
@@ -309,29 +368,18 @@ AirWaveZone:new()
     :setTriggerZone("Minevody")
     :setRespawnDefaultOffset(0, -45000) -- 45km north of the zone's center
     :setRespawnRadius(10000)
-    :addRandomWave( { "[0, 0]-cap fox2.*x1, hdg 180, dist 20"  }, 1) -- a single fighter spawning near
-    :addRandomWave( { "[-80000, -20000]-cap fox2.*x1, hdg 180, dist 20"  }, 1) -- a single fighter spawning a bit further north and to the west
-    :addRandomSimultaneousWave( { "[80000, -20000]-cap fox2.*x1, hdg 180, dist 20"  }, 1) -- a single fighter spawning a bit further north and east AT THE SAME TIME
-    :addRandomWave( { "[-80000, -20000]-cap fox2.*x2, hdg 180, dist 20"  }, 1) -- a pair of fighters spawning a bit further north
+    :setDelayBetweenWaves(60) -- 1 minute
+    :addWave({ groups = { "[0, 0]-cap fox2.*x1, hdg 180, dist 20"  }, number = 1 })                       -- a single fighter spawning near
+    :addWave({ groups = { "[-80000, -20000]-cap fox2.*x1, hdg 180, dist 20"  }, number = 1, delay = -1 }) -- a single fighter spawning a bit further north and to the west
+    :addWave({ groups = { "[80000, -20000]-cap fox2.*x1, hdg 180, dist 20"  }, number = 1 })              -- a single fighter spawning a bit further north and east AT THE SAME TIME
+    :addWave({ groups = { "[-80000, -20000]-cap fox2.*x2, hdg 180, dist 20"  }, number = 1 })             -- a pair of fighters spawning a bit further north
 ```
 
 La vague #1 est déployée normalement. 
 
-Le joueur la détruit, et le système déploie la vague #2, puis la vague #3 simultanément - la vague #4 n'est pas marquée "simultanée", donc on s'arrête à la vague #3.
+Le joueur la détruit, et le système déploie la vague #2 une minute plus tard, puis la vague #3 simultanément - la vague #4 n'est pas marquée "simultanée", donc on s'arrête à la vague #3.
 
-Le joueur détruit toutes les cibles des deux vagues #2 et #3, et le système déploie la vague #4 qui est la dernière.
-
-#### Choix systématique
-
-On peut aussi définir, pour une vague, un seul groupe (ou une seule commande VEAF), en utilisant la méthode `addWave`.
-
-<u>Exemple:</u>
-
-```lua
-:addWave("groupe 1")
-```
-
-Nota: cette méthode ne permet pas de créer des vagues simultanées.
+Le joueur détruit toutes les cibles des deux vagues #2 et #3, et le système déploie la vague #4 une minute plus tard; c'est la dernière.
 
 #### Utilisation de commandes
 
@@ -387,9 +435,13 @@ Entre crochets, on peut (optionnellement) spécifier un point d'apparition (rela
 
 Pour chaque zone, il est possible de choisir les messages émis par le système à chaque évènement, et même de spécifier une fonction qui sera appelée quand l'évènement surviendra.
 
+Dans la mesure du possible, les messages sont envoyés aux groupes de joueurs concernés.
+
 Les évènements sont:
 
 - START : démarrage de la zone, au début de la mission (`:setMessageStart()`, `:setOnStart()`)
+- WAIT_FOR_HUMANS : le premier joueur est dans la zone, on attend un certain temps les autres (`:setMessageWaitForHumans()`, `:setOnWaitForHumans()`)
+- WAIT_TO_DEPLOY : on attend un certain temps avant de déployer une vague (`:setMessageWaitToDeploy()`, `:setOnWaitToDeploy()`)
 - DEPLOY : déploiement d'une vague (`:setMessageDeploy()`, `setMessageDeployPlayers()`, `:setOnDeploy()`)
 - DESTROYED : une vague a été détruite (`:setMessageDestroyed()`, `:setOnDestroyed()`)
 - WON : la zone a été gagnée, plus de vagues IA (`:setMessageWon()`, `:setOnWon()`)
@@ -400,10 +452,22 @@ Les évènements sont:
 
 ```lua
 -- message when the zone is activated
-zone:setMessageStart("%s est maintenant fonctionnelle")
+zone:setMessageStart("%s est active")
 
 -- event when the zone is activated
 zone:setOnStart(eventExporter.onStart)
+
+-- message when the zone is waiting for more players
+zone:setMessageWaitForHumans("%s: attente d'autres joueurs pendant %s secondes")
+
+-- event when the zone is waiting for more players
+zone:setOnWaitForHumans(eventExporter.onWaitForHumans)
+
+-- message when a wave will be triggered
+zone:setMessageWaitToDeploy("%s: déploiement de la prochaine vague dans %s secondes")
+
+-- event when a wave will be triggered
+zone:setOnWaitToDeploy(eventExporter.onWaitToDeploy)
 
 -- message when a wave is triggered
 zone:setMessageDeploy("%s déploie la vague numéro %s")
@@ -469,6 +533,10 @@ La fonction que vous spécifierez en paramètre sera appelée pour déterminer s
 
 Et elle doit renvoyer `true` si le groupe doit être considéré comme détruit.
 
+Par défaut (si on n'a pas spécifié de callbacks particuliers), on vérifie tous les groupes d'une vague (ce comportement est surchargé par `:setIsEnemyWaveDeadCallback()`), et pour chaque groupe on regarde le pourcentage de points de vie de chacune de ses unités (ce comportement est surchargé par `:setIsEnemyGroupDeadCallback()`). 
+
+S'il est inférieur à une certaine valeur (qu'on peut régler avec `:setMinimumLifeForAiInPercent()`, par défaut 10%), on détruit l'unité en la despawnant (ce comportement est surchargé par `:setHandleCrippledEnemyUnitCallback()`).
+
 #### Gestion des unités considérées comme hors-de-combat
 
 La méthode par défaut (que vous pouvez remplacer avec `:setIsEnemyGroupDeadCallback()`) pour vérifier l'état d'un groupe dans une vague compare son niveau de vie avec un minimum vital qui est déclaré comme une constante (`veafAirWaves.MINIMUM_LIFE_FOR_AI_IN_PERCENT = 10`).
@@ -528,13 +596,15 @@ veafAirWaves.get("Minevody"):stop()
 Voici un exemple de configuration fonctionnel et complet (toutes les fonctions disponibles sont présentes)
 
 ```lua
-  -- example zone 01 (can easily be copy/pasted, nothing to set in the editor except player slots and if desired trigger zones)
-  local zone01 = AirWaveZone:new()
+    -- example zone 01 (can easily be copy/pasted, nothing to set in the editor except player slots and if desired trigger zones)
+    AirWaveZone:new()
+
     -- technical name (AirWave instance name)
     :setName("Zone 01")
 
     -- description for the messages
-    :setDescription("Zone 01 - FOX1 fighters")
+    :setDescription("Zone 01")
+
     -- coalitions of the players (only human units from these coalitions will be monitored)
     :addPlayerCoalition(coalition.side.BLUE)
 
@@ -542,8 +612,8 @@ Voici un exemple de configuration fonctionnel et complet (toutes les fonctions d
     --:setTriggerZone("airWave_HARD")
 
     -- center (point in the center of the circle, when not using a DCS trigger zone) - can be set with coordinates either in LL or MGRS
-    :setZoneCenterFromCoordinates("U37TCL5297") -- U=UTM (MGRS); 37T=grid number; CL=square; 52000=latitude; 97000=longitude
-    
+    :setZoneCenterFromCoordinates("U37TFH2882") -- U=UTM (MGRS); 37T=grid number; CL=square; 52000=latitude; 97000=longitude
+
     -- radius (size of the circle, when not using a zone) - in meters
     :setZoneRadius(90000) -- 50 nm
 
@@ -551,20 +621,38 @@ Voici un exemple de configuration fonctionnel et complet (toutes les fonctions d
     :setDrawZone(true)
 
     -- default position for respawns (im meters, lat/lon, relative to the zone center)
-    :setRespawnDefaultOffset(0, -45000) -- 45km north of the zone's center
+    :setRespawnDefaultOffset(0, 0)
 
     -- radius of the waves groups spawn
-    :setRespawnRadius(10000)
+    :setRespawnRadius(0)
 
-    ---add a wave of ennemy planes
-    --@param groups any a list of groups or VEAF commands; VEAF commands can be prefixed with [lat, lon], specifying the location of their spawn relative to the center of the zone; default value is set with "setRespawnDefaultOffset"
-    --@param number any how many of these groups will actually be spawned (can be multiple times the same group!)
-    --@param bias any shifts the random generator to the right of the list
-    :addRandomWave( { "[0, 0]-cap Mig25-Fox2-solo, hdg 180, dist 30"  }, 1) -- a single Mig25 with FOX2 missiles spawning near
-    :addRandomWave( { "[0, -30000]-cap Mig21-Fox1, size 2, hdg 180, dist 50", "[0, -30000]-cap Mig23S-Fox1, size 2, hdg 180, dist 50", "[0, -30000]-cap Mig25-Fox1, size 2, hdg 180, dist 50" }, 1) -- 1 group from FOX1 fighter pairs spawning at 30km to the north
-    :addRandomWave( { "[0, -60000]-cap Su27-Fox1, hdg 180, dist 50", "[0, -60000]-cap Su33-Fox1, hdg 180, dist 50", "[0, -60000]-cap Mig29A-Fox1, hdg 180, dist 50" }, 2) -- 2 groups from modern FOX1 fighter pairs spawning at 60km to the north
-    --:addRandomWave({ "airWave_EASY-1-1", "airWave_EASY-1-2"}, 1) -- one group
-    --:addRandomWave({ "airWave_EASY-2-1", "airWave_EASY-2-1"}, 2) -- two groups
+    -- delay in seconds between the first human in zone and the actual activation of the zone
+    :setDelayBeforeActivation(15)
+
+    -- default delay in seconds between waves of enemy planes
+    --:setDelayBetweenWaves(60)
+
+    ---adds a wave of enemy planes
+    ---parameters are very flexible: they can be:
+    --- a table containing the following fields:
+    ---     - groups a list of groups or VEAF commands; VEAF commands can be prefixed with [lat, lon], specifying the location of their spawn relative to the center of the zone; default value is set with "setRespawnDefaultOffset"
+    ---     - number how many of these groups will actually be spawned (can be multiple times the same group!); it can be a "randomizable number", e.g., "2-6" for "between 2 and 6"
+    ---     - bias shifts the random generator to the right of the list; it can be a "randomizable number" too
+    ---     - delay the delay between this wave and the next one - if negative, then the next wave is spawned instantaneously (no waiting for this wave to be completed); it can be a "randomizable number" too
+    --- or a list of strings (the groups or VEAF commands)
+    --- or almost anything in between; we'll take a string as if it were a table containing one string, anywhere
+    --- examples:
+    ---   :addWave("group1")
+    ---   :addWave("group1", "group2")
+    ---   :addWave({"group1", "group2"})
+    ---   :addWave({ groups={"group1", "group2"}, number = 2})
+    ---   :addWave({ groups="group1", number = 2})
+    :addWave({ groups = "-cap easy x1, hdg 180, dist 30", delay = -1 })                    -- an easy single fighter cap
+    :addWave({ groups = "-sa9, hdg 180, dist 30", number = "1-3", delay = "15-30" })       -- and simultaneously, between 1 and 3 SA9 groups 
+    :addWave({ groups = "-cap normal x1, hdg 180, dist 30" , number = "1-2", delay = -1 }) -- a normal single or two-ship fighter cap after 15-30 seconds
+    :addWave({ groups = "-sa8, hdg 180, dist 30", number = "1-3", delay = "15-30" })       -- and simultaneously, between 1 and 3 SA8 groups 
+    :addWave({ groups = "-cap hard x1, hdg 180, dist 30" , number = "2-3", delay = -1 })   -- a hard 2 to 3 fighters cap after 15-30 seconds
+    :addWave({ groups = "-sa15, hdg 180, dist 30", number = "1-3" })                       -- and simultaneously, between 1 and 3 SA15 groups 
 
     -- players in the zone will only be detected above this altitude (in feet)
     :setMaximumAltitudeInFeet(40000) -- hard ceiling
@@ -572,47 +660,66 @@ Voici un exemple de configuration fonctionnel et complet (toutes les fonctions d
     -- players in the zone will only be detected below this altitude (in feet)
     :setMinimumAltitudeInFeet(1500) -- hard floor
 
-      -- message when the zone is activated
+    -- message when the zone is activated
     :setMessageStart("%s est maintenant fonctionnelle")
 
-      -- event when the zone is activated
-    :setOnStart(eventExporter.onStart)
+    -- event when the zone is activated
+    --:setOnStart(callbackFunction)
 
-      -- message when a wave is triggered
+    -- message when the zone is waiting for more players
+    :setMessageWaitForHumans("%s: attente d'autres joueurs pendant %s secondes")
+
+    -- event when the zone is waiting for more players
+    --:setOnWaitForHumans(callbackFunction)
+
+    -- message when a wave will be triggered
+    :setMessageWaitToDeploy("%s: déploiement de la prochaine vague dans %s secondes")
+
+    -- event when a wave will be triggered
+    --:setOnWaitToDeploy(callbackFunction)
+
+    -- message when a wave is triggered
     :setMessageDeploy("%s déploie la vague numéro %s")
 
-    -- message to players when a wave is triggered
-    :setMessageDeployPlayers("Vague numéro %s déployée, %s") -- the second parameter is a BRA or "MERGED"
-
     -- event when a wave is triggered
-    :setOnDeploy(eventExporter.onDeploy)
+    :setOnDeploy(function ()
+        trigger.action.setUserFlag("monBeauDrapeau", 1)
+    end)
 
-      -- message when a wave is destroyed
+    -- message when a wave is destroyed
     :setMessageDestroyed("%s: la vague %s a été détruite")
 
-      -- event when a wave is destroyed
-    :setOnDestroyed(eventExporter.onDestroyed)
+    -- event when a wave is destroyed
+    --:setOnDestroy(callbackFunction)
 
-      -- message when all waves are finished (won)
+    -- message when all waves are finished (won)
     :setMessageWon("%s: c'est gagné (plus d'ennemi) !")
 
-      -- event when all waves are finished (won)
-    :setOnWon(eventExporter.onWon)
+    -- event when all waves are finished (won)
+    --:setOnWon(callbackFunction)
 
-      -- message when all players are dead (lost)
+    -- message when all players are dead (lost)
     :setMessageLost("%s: c'est perdu (joueur mort ou sorti) !")
 
-      -- event when all players are dead (lost)
-    :setOnLost(eventExporter.onLost)
+    -- event when all players are dead (lost)
+    --:setOnLost(callbackFunction)
 
-      -- message when the zone is deactivated
+    -- message when the zone is deactivated
     :setMessageStop("%s n'est plus active")
 
-      -- event when the zone is deactivated
-    :setOnStop(eventExporter.onStop)
+    -- event when the zone is deactivated
+    --:setOnStop(callbackFunction)
+ 
+    -- the function that handles crippled enemy units
+    :setHandleCrippledEnemyUnitCallback(handleCrippledEnemyUnit)
 
-  -- start the zone
-  zone01:start()
+    :setMinimumLifeForAiInPercent(50)
+
+    ---the function that decides if a group is dead or not (individually)
+    --:setIsEnemyGroupDeadCallback(isEnemyGroupDead)
+
+    -- start the zone
+    :start()
 ```
 
 Voici un autre exemple, qui recopie une zone existante (`mist.utils.deepCopy`) au lieu de l'initialiser avec `new()` et qui reconfigure les points de la copie qui seront différents (pratique pour faire plusieurs zones similaires):
@@ -629,7 +736,6 @@ Voici un autre exemple, qui recopie une zone existante (`mist.utils.deepCopy`) a
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-* contacter [Rex][Rex on Github] sur GitHub
 * contacter [Zip][Zip on Github] sur GitHub
 * aller consulter le [site de la VEAF][VEAF website]
 * poster sur le [forum de la VEAF][VEAF forum]
