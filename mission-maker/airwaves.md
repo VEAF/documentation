@@ -428,6 +428,31 @@ Entre crochets, on peut (optionnellement) spécifier un point d'apparition (rela
 ```lua
 :addWave("-shell#U37TGG2164791685")
 ```
+### Surveillance des unités
+
+Les unités concernées par une zone Airwaves sont en permanence surveillées. En pratique, toutes les quelques secondes, on lance une vérification de l'état de la zone et des unités.
+
+On vérifie l'état des unités IA spawnées dans le cadre de la zone : 
+- si elles sont toutes détruites (ou hors de combat, voir [ici](#détermination-de-létat-des-groupes-et-vagues)), on lance la vague suivante.
+- si elles sortent de la zone pendant trop longtemps, on les détruit (despawn).
+
+De même, pour les unités pilotées par des humains :
+- si elles sont toutes détruites, la zone est perdue (et on la réinitialise)
+- si elles sortent de la zone on les prévient; si ça dure trop longtemps, on commence à tirer un barrage de flak pour les endommager, et si ça dure vraiment trop longtemps (et qu'elles survivent), on les despawn.
+
+On peut changer les messages (voir [ici](#messages-et-callbacks)) et le délai avant destruction.
+
+<u>Exemple, on détruit les IA après 30 secondes en dehors de la zone</u>
+
+```lua
+:setMaxSecondsOutsideOfZoneIA(30)
+```
+
+<u>Exemple, on détruite les joueurs 60 secondes après leur sortie de la zone</u>
+
+```lua
+:setMaxSecondsOutsideOfZonePlayers(60)
+```
 
 ### Options de personnalisation
 
@@ -447,6 +472,7 @@ Les évènements sont:
 - WON : la zone a été gagnée, plus de vagues IA (`:setMessageWon()`, `:setOnWon()`)
 - LOST : la zone a été perdue, plus de joueurs (`:setMessageLost()`, `:setOnLost()`)
 - STOP : arrêt de la zone, si `:stop()` est appelée (`:setMessageStop()`, `:setOnStop()`)
+- OUTSIDE_OF_ZONE : un joueur est sorti de la zone, on le prévient avant de le détruire (`:setMessageOutsideOfZone()`, `:setOnOutsideOfZone()`)
 
 <u>Exemples:</u>
 
@@ -501,6 +527,12 @@ zone:setMessageStop("%s n'est plus active")
 
 -- event when the zone is deactivated
 zone:setOnStop(eventExporter.onStop)
+
+-- message when a player is outside of zone
+zone:setMessageOutsideOfZone("%s - vous êtes en dehors de la zone depuis %s secondes; retournez-y, ou vous serez détruit après %s secondes.")
+
+-- event when a player is outside of zone
+zone:setOnOutsideOfZone(eventExporter.onOutsideOfZone)
 ```
 
 #### Détermination de l'état des groupes et vagues
