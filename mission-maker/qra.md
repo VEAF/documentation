@@ -193,7 +193,7 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 ```
 
 ```lua
-:addGroup({ }"qra_Mig29") -- Vous pouvez utiliser ceci pour ajouter un ou plusieurs groupes d'avions à la QRA (syntaxe #1)
+:addGroup({ "qra_Mig29" }) -- Vous pouvez utiliser ceci pour ajouter un ou plusieurs groupes d'avions à la QRA (syntaxe #2)
 ```
 
 #### Options pour le comportement d'une QRA Multi-Groupe
@@ -201,24 +201,24 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 Concernant l'utilisation de multiples groupes dans une QRA : 
 
 ```lua
-    :addRandomGroup(*groups*, *number*, *bias*) --Ajoute aléatoirement *number* groupes pris parmis la liste des *groups* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) avec un biais vers l'élément numéro *bias*
+    :addRandomGroup(*groups*, *number*, *bias*) --Ajoute aléatoirement *number* groupes pris parmis la liste des *groups* (liste avec le format suivant : {"*NameOfQRA_1*",                                                 --"*NameOfQRA_2*", ...} ) avec un biais vers l'élément numéro *bias*
 
-    :setGroupsToDeployByEnemyQuantity(*enemyNb*, *groupsToDeploy*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que les groupes de la liste *groupsToDeploy* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés
+    :setGroupsToDeployByEnemyQuantity(*enemyNb*, *groupsToDeploy*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que les groupes de la liste                                                                    --*groupsToDeploy* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront                                                                          --déployés.
 
-    :setRandomGroupsToDeployByEnemyQuantity(*enemyNb*, *groups*, *number*, *bias*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que aléatoirement, *number* des groupes parmis la liste *groups* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés.
-                                                                                     Avec un biais vers l'élément numéro *bias* de la liste.
+    :setRandomGroupsToDeployByEnemyQuantity(*enemyNb*, *groups*, *number*, *bias*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que                                                                                            --aléatoirement, *number* des groupes parmis la liste *groups* (liste avec le format                                                                                        --suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés.
+                                                                                   --Avec un biais vers l'élément numéro *bias* de la liste.
 ```
 
 #### Options Logistique
 
-De plus, il est possibble de contrôler étroitement la logistique de la QRA. Vous pouvez :
+De plus, il est possible de contrôler étroitement la logistique de la QRA. Vous pouvez :
 
 
 - Spécifier combien de déclenchements la QRA peut effectuer au départ (1 déclenchement = tous les groupes d'avion qui apparaîssent au lancement d'une QRA, les avions ne sont pas comptés individuellement ici)
   (vous pouvez utiliser cela pour rendre la QRA progressivement plus difficile à épuiser en commençant avec peu de déclenchements)
 
 ```lua
-    :setQRAcount(\*QRAcount\*) --Supérieur ou égal à -1 : Nombre actuel d'ensembles d'avions disponibles pour le déploiement. Par défaut, cela est réglé sur -1, ce qui signifie qu'un nombre infini de groupes est disponible, aucune logistique ne prend place n'est effectué.
+    :setQRAcount(\*QRAcount\*) --Supérieur ou égal à -1 : Nombre actuel d'ensembles d'avions disponibles pour le déploiement. Par défaut, cela est réglé sur -1, ce qui                                    --signifie qu'un nombre infini de groupes est disponible, aucune logistique ne prend place n'est effectué.
 ```
 
 -> C'est votre "master arm" pour le reste de ces options.
@@ -227,7 +227,7 @@ De plus, il est possibble de contrôler étroitement la logistique de la QRA. Vo
 - Spécifier le nombre de "places de parking" disponibles pour une QRA, qui ne peuvent pas être dépassées et, vu qu'elles sont limitées, peuvent conduire à l'épuisement de la QRA avec le temps
 
 ```lua
-    :setQRAmaxCount(\*maxQRAcount\*) --Supérieur ou égal à -1 : Nombre maximal d'ensembles d'avions déployables à tout moment pour la QRA. Par défaut, cela est réglé sur -1, ce qui signifie qu'un nombre infini d'avions peut être accumulé pour le déploiement.
+    :setQRAmaxCount(\*maxQRAcount\*) --Supérieur ou égal à -1 : Nombre maximal d'ensembles d'avions déployables à tout moment pour la QRA. Par défaut, cela est réglé sur                                        -- -1, ce qui signifie qu'un nombre infini d'avions peut être accumulé pour le déploiement.
 ```
 
 -> Exemple : Une QRA a 2 places sur 6 de remplies et prêtes pour le déploiement, 6 correspond au maxQRAcount, 2 au QRAcount actuel.
@@ -349,7 +349,7 @@ Cette section concerne la modification des messages affichés aux joueurs des co
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-* contacter [Rex][Rex on Github] sur GitHub
+* contacter [Rex][RexAttaque on Github] sur GitHub
 * contacter [Zip][Zip on Github] sur GitHub
 * aller consulter le [site de la VEAF][VEAF website]
 * poster sur le [forum de la VEAF][VEAF forum]
