@@ -17,9 +17,11 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 
 # Table des matières
 
+- Introduction - [ici](#introduction)
+- Principes du module QRA - [ici](#principes)
 - Mise en place dans l'éditeur DCS - [ici](#mise-en-place-dans-léditeur-dcs)
-- Où déclarer une QRA - [ici](#mise-en-place-dans-le-fichier-missionconfig)
-- Comment déclarer une QRA - [ici](#structure-dune-déclaration-de-qra)
+- Où et comment configurer - [ici](#comment-configurer-une-qra)
+- Structure d'une déclaration de QRA - [ici](#structure-dune-déclaration-de-qra)
 - Options Avancées - [ici](#options-avancées)
 
 ## Introduction
@@ -53,9 +55,20 @@ Ceci est le schéma standard. En pratique, des dizaines d'options (décrites plu
 
 Les QRA peuvent également être liées à une base aérienne et subir des contraintes logistiques (nombre de respawn réduit, ou incapacitation en cas de destruction de la base, par exemple)
 
+## Mise en place dans l'éditeur DCS
+
+Tout d'abord, le groupe QRA doit exister au sein de la mission. Tout type d'aéronef (démarrage en vol ou au sol) peut être utilisé et leur charge utile/plan de vol existant sera conservé.
+
+Cette étape est similaire à toute autre mission, placez le groupe de votre choix, configurez-le, **enclenchez l'activation différée** et donnez-lui un nom facilement reconnaissable car il sera utilisé par la suite.
+
+
+De plus, vous devrez créer une zone de déclenchement. Avec un nom reconnaissable (qui peut être identique à celui du groupe d'aéronefs) que nous utiliserons aussi par la suite.
+
+Ceci est simplement pour avoir un point de référence pour la zone de déploiement du QRA, son rayon dans DCS n'a pas d'importance et sera défini ultérieurement.
+
 ## Comment configurer une QRA
 
-Tout commence dans le fichier de configuration de la mission `missionConfig.lua`, qui est situé dans le répertoire `src/scripts` de votre mission.
+Concernant la partie script, tout commence dans le fichier de configuration de la mission `missionConfig.lua`, qui est situé dans le répertoire `src/scripts` de votre mission.
 
 Ce dernier est un fragment de code source (LUA)[https://fr.wikipedia.org/wiki/Lua] qui permet de choisir la manière dont les scripts VEAF sont activés et configurés. Nous vous conseillons d'utiliser Notepad++ ou Visual Studio Code pour l'éditer.
 
@@ -193,24 +206,6 @@ Concernant l'utilisation de multiples groupes dans une QRA :
 
     :setRandomGroupsToDeployByEnemyQuantity(*enemyNb*, *groups*, *number*, *bias*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que aléatoirement, *number* des groupes parmis la liste *groups* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés.
                                                                                      Avec un biais vers l'élément numéro *bias* de la liste.
-
-## Mise en place dans l'éditeur DCS
-
-Tout d'abord, le groupe QRA doit exister au sein de la mission. Tout type d'aéronef (démarrage en vol ou au sol) peut être utilisé et leur charge utile/plan de vol existant sera conservé.
-
-Cette étape est similaire à toute autre mission, placez le groupe de votre choix, configurez-le, **enclenchez l'activation différée** et donnez-lui un nom facilement reconnaissable car il sera utilisé par la suite.
-
-
-De plus, vous devrez créer une zone de déclenchement. Avec un nom reconnaissable (qui peut être identique à celui du groupe d'aéronefs) que nous utiliserons aussi par la suite.
-
-Ceci est simplement pour avoir un point de référence pour la zone de déploiement du QRA, son rayon dans DCS n'a pas d'importance et sera défini ultérieurement.
-
-## Mise en place dans le fichier missionConfig
-
-Maintenant que le groupe existe dans la mission et a été configuré avec succès dans DCS, nous allons indiquer aux scripts qu'il s'agit d'un groupe QRA.
-
-Cette étape doit être effectuée (ou refaite) avant d'exécuter le script de "build".
-
 #### Options Logistique
 
 De plus, il est possibble de contrôler étroitement la logistique de la QRA. Vous pouvez :
