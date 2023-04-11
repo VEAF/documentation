@@ -349,7 +349,7 @@ Cette section concerne la modification des messages affichés aux joueurs des co
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-* contacter [Rex][RexAttaque on Github] sur GitHub
+* contacter [RexAttaque][RexAttaque on Github] sur GitHub
 * contacter [Zip][Zip on Github] sur GitHub
 * aller consulter le [site de la VEAF][VEAF website]
 * poster sur le [forum de la VEAF][VEAF forum]
