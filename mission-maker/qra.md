@@ -173,7 +173,8 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 ```
 
 ```lua
-:setResetWhenLeavingZone() --La QRA sera désactivée (et réarmée immédiatement) lorsque tous les joueurs quittent la zone. Sinon, la QRA patrouillera jusqu'à ce qu'elle retourne à la base après activation, moment où elle sera désactivée lors de l'atterrissage et réaarmée immédiatement.
+:setResetWhenLeavingZone() --La QRA sera désactivée (et réarmée immédiatement) lorsque tous les joueurs quittent la zone. Sinon, la QRA patrouillera jusqu'à ce qu'elle
+                           --retourne à la base après activation, moment où elle sera désactivée lors de l'atterrissage et réaarmée immédiatement.
 ```
 
 ```lua
@@ -201,11 +202,16 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 Concernant l'utilisation de multiples groupes dans une QRA : 
 
 ```lua
-    :addRandomGroup(*groups*, *number*, *bias*) --Ajoute aléatoirement *number* groupes pris parmis la liste des *groups* (liste avec le format suivant : {"*NameOfQRA_1*",                                                 --"*NameOfQRA_2*", ...} ) avec un biais vers l'élément numéro *bias*
+    :addRandomGroup(*groups*, *number*, *bias*) --Ajoute aléatoirement *number* groupes pris parmis la liste des *groups* (liste avec le format suivant : {"*NameOfQRA_1*",
+                                                --"*NameOfQRA_2*", ...} ) avec un biais vers l'élément numéro *bias*
 
-    :setGroupsToDeployByEnemyQuantity(*enemyNb*, *groupsToDeploy*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que les groupes de la liste                                                                    --*groupsToDeploy* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront                                                                          --déployés.
+    :setGroupsToDeployByEnemyQuantity(*enemyNb*, *groupsToDeploy*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que les groupes de la liste
+                                                                   --*groupsToDeploy* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront
+                                                                   --déployés.
 
-    :setRandomGroupsToDeployByEnemyQuantity(*enemyNb*, *groups*, *number*, *bias*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que                                                                                            --aléatoirement, *number* des groupes parmis la liste *groups* (liste avec le format                                                                                        --suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés.
+    :setRandomGroupsToDeployByEnemyQuantity(*enemyNb*, *groups*, *number*, *bias*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que
+                                                                                   --aléatoirement, *number* des groupes parmis la liste *groups* (liste avec le format
+                                                                                   --suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés.
                                                                                    --Avec un biais vers l'élément numéro *bias* de la liste.
 ```
 
@@ -227,7 +233,8 @@ De plus, il est possible de contrôler étroitement la logistique de la QRA. Vou
 - Spécifier le nombre de "places de parking" disponibles pour une QRA, qui ne peuvent pas être dépassées et, vu qu'elles sont limitées, peuvent conduire à l'épuisement de la QRA avec le temps
 
 ```lua
-    :setQRAmaxCount(LeNombreMaxSurTarmac) --Supérieur ou égal à -1 : Nombre maximal d'ensembles d'avions déployables à tout moment pour la QRA. Par défaut, cela est réglé                                             --sur -1, ce qui signifie qu'un nombre infini d'avions peut être accumulé pour le déploiement.
+    :setQRAmaxCount(LeNombreMaxSurTarmac) --Supérieur ou égal à -1 : Nombre maximal d'ensembles d'avions déployables à tout moment pour la QRA. Par défaut, cela est réglé
+                                          --sur -1, ce qui signifie qu'un nombre infini d'avions peut être accumulé pour le déploiement.
 ```
 
 -> Exemple : Une QRA a 2 places sur 6 de remplies et prêtes pour le déploiement, 6 correspond au maxQRAcount, 2 au QRAcount actuel.
@@ -254,7 +261,8 @@ De plus, il est possible de contrôler étroitement la logistique de la QRA. Vou
 - Spécifier combien d'avions sont expédiés avec chaque réapprovionnements :
 
 ```lua
-    :setResupplyAmount(LaQté) --Supérieur ou égal à 1 : Nombre de groupes d'avions qui seront fournis à la QRA lorsqu'un réapprovisionnement se produit. Par défaut, cela est égal à 1. 
+    :setResupplyAmount(LaQté) --Supérieur ou égal à 1 : Nombre de groupes d'avions qui seront fournis à la QRA lorsqu'un réapprovisionnement se produit. 
+                              --Par défaut, cela est égal à 1. 
 ```
     
 -> Prenons l'exemple précédent : nous venons de perdre nos deux znsembles, ce qui signifie que nous n'en avons plus, cela déclenchera un réapprovisionnement, qui apportera soit le nombre désiré d'ensembles soit le nombre d'avions que nous avons en stock si cette quantité est inférieure. Le réapprovisionnement sera également limité par le nombre maximum d'ensembles que nous pouvons avoir en même temps.
@@ -277,13 +285,17 @@ De plus, il est possible de contrôler étroitement la logistique de la QRA. Vou
 Enfin, il est possible de lier les mécanismes de déploiement et de logistique de la QRA à la possesion (ou non) d'une base aérienne, d'un FARP, d'un navire ou d'un bâtiment par la coalition de la dite QRA :
 
 ```lua
-    :setAirportLink("Le Nom de la base") --Nom de l'unité / de la base aérienne : la QRA sera liée à cette base et cessera de fonctionner si la base est perdue (il peut                                              --s'agir d'un FARP (utilisez le nom de l'unité du FARP), d'un navire (utilisez le nom de l'unité du navire), d'un aérodrome                                                  --(utilisez le nom sur la carte de DCS en anglais) ou d'un bâtiment (plateformes pétrolières, etc.))
+    :setAirportLink("Le Nom de la base") --Nom de l'unité / de la base aérienne : la QRA sera liée à cette base et cessera de fonctionner si la base est perdue (il peut
+                                         --s'agir d'un FARP (utilisez le nom de l'unité du FARP), d'un navire (utilisez le nom de l'unité du navire), d'un aérodrome 
+                                         --(utilisez le nom sur la carte de DCS en anglais) ou d'un bâtiment (plateformes pétrolières, etc.))
 ```
   
 **Non fonctionnel à ce jour :**
 
 ```lua
-    :setAirportMinLifePercent(LeSeuilDeVie) --Comprise entre 0 et 1 : pourcentage minimum de vie de l'aéroport lié pour que le QRA fonctionne. Les aéroports (pistes) et les                                             --navires ne devraient perdre de la vie que lorsqu'ils sont bombardés, cela nécessite des tests manuels pour savoir ce qui                                                   --fonctionne le mieux.
+    :setAirportMinLifePercent(LeSeuilDeVie) --Comprise entre 0 et 1 : pourcentage minimum de vie de l'aéroport lié pour que le QRA fonctionne. Les aéroports (pistes) et les
+                                            --navires ne devraient perdre de la vie que lorsqu'ils sont bombardés, cela nécessite des tests manuels pour savoir ce qui 
+                                            --fonctionne le mieux.
 ```
 
 **Plusieurs choses à noter ici :**
@@ -312,7 +324,8 @@ Ou si vous souhaitez la démarrer ultérieurement dans l'un de vos scripts :
 Vous pouvez également utiliser pour faire l'action inverse :
 
 ```lua
-    if QRA_LeNomDeMaQRA then QRA_LeNomDeMaQRA:stop() end --utilisez ceci si vous souhaitez arrêter la QRA à un moment donné (dans un déclencheur, etc.). Elle peut être redémarrée en utilisant la méthode précédemment mentionnée.
+    if QRA_LeNomDeMaQRA then QRA_LeNomDeMaQRA:stop() end --utilisez ceci si vous souhaitez arrêter la QRA à un moment donné (dans un déclencheur, etc.). Elle peut être
+                                                         --redémarrée en utilisant la méthode précédemment mentionnée.
 ```
 
 Cela rend inactif la QRA (stop toute vérification d'aéroport, toutes les opérations de logistique, etc.).
