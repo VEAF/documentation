@@ -200,12 +200,15 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 
 Concernant l'utilisation de multiples groupes dans une QRA : 
 
+```lua
     :addRandomGroup(*groups*, *number*, *bias*) --Ajoute aléatoirement *number* groupes pris parmis la liste des *groups* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) avec un biais vers l'élément numéro *bias*
 
     :setGroupsToDeployByEnemyQuantity(*enemyNb*, *groupsToDeploy*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que les groupes de la liste *groupsToDeploy* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés
 
     :setRandomGroupsToDeployByEnemyQuantity(*enemyNb*, *groups*, *number*, *bias*) --Lorsque *enemyNb* appareils sont détéctés dans la zone de la QRA, ceci fait que aléatoirement, *number* des groupes parmis la liste *groups* (liste avec le format suivant : {"*NameOfQRA_1*", "*NameOfQRA_2*", ...} ) seront déployés.
                                                                                      Avec un biais vers l'élément numéro *bias* de la liste.
+```
+
 #### Options Logistique
 
 De plus, il est possibble de contrôler étroitement la logistique de la QRA. Vous pouvez :
@@ -214,43 +217,54 @@ De plus, il est possibble de contrôler étroitement la logistique de la QRA. Vo
 - Spécifier combien de déclenchements la QRA peut effectuer au départ (1 déclenchement = tous les groupes d'avion qui apparaîssent au lancement d'une QRA, les avions ne sont pas comptés individuellement ici)
   (vous pouvez utiliser cela pour rendre la QRA progressivement plus difficile à épuiser en commençant avec peu de déclenchements)
 
+```lua
     :setQRAcount(\*QRAcount\*) --Supérieur ou égal à -1 : Nombre actuel d'ensembles d'avions disponibles pour le déploiement. Par défaut, cela est réglé sur -1, ce qui signifie qu'un nombre infini de groupes est disponible, aucune logistique ne prend place n'est effectué.
-    
+```
+
 -> C'est votre "master arm" pour le reste de ces options.
 
 
 - Spécifier le nombre de "places de parking" disponibles pour une QRA, qui ne peuvent pas être dépassées et, vu qu'elles sont limitées, peuvent conduire à l'épuisement de la QRA avec le temps
 
+```lua
     :setQRAmaxCount(\*maxQRAcount\*) --Supérieur ou égal à -1 : Nombre maximal d'ensembles d'avions déployables à tout moment pour la QRA. Par défaut, cela est réglé sur -1, ce qui signifie qu'un nombre infini d'avions peut être accumulé pour le déploiement.
-    
+```
+
 -> Exemple : Une QRA a 2 places sur 6 de remplies et prêtes pour le déploiement, 6 correspond au maxQRAcount, 2 au QRAcount actuel.
 
 
 - Spécifier le nombre d'avions en "stockage" qui peuvent être expédiés aux "places de parking" mentionnées précédemment
 
+```lua
     :setQRAmaxResupplyCount(\*maxResupplyCount\*) --Supérieur ou égal à -1 : Nombre total de groupes d'avions pouvant être provisionnés à la QRA. Par défaut, cela est réglé sur -1, ce qui signifie qu'une quantité infinie de stock est disponible. 0 signifie qu'aucun stock n'est disponible, aucun réapprovisionnement ne se produira, c'est votre "master arm" pour les réapprovisionnements. 
-    
+```
+
 -> Prenons l'exemple précédent : nous avons besoin de 4 groupes (4 "places de parking" vides) mais nous n'en avons que 3 en stock pour réapprovisionner la QRA, 3 correspond au QRAmaxResupplyCount.
     
 
 - Spécifier un seuil pour le nombre d'ensembles d'avions disponibles, en dessous duquel un réapprovisionnement est lancé :
 
+```lua
     :setQRAminCountforResupply(\*minCountforResupply\*) --Égal à -1 ou supérieur à 0 : Nombre d'ensembles d'avions que la QRA doit avoir à tous temps, sinon un réapprovisionnement sera lancé. Par défaut, cela est réglé sur -1, ce qui signifie qu'un réapprovisionnement sera lancé dès qu'un ensemble d'avions est perdu.
-    
+```
+
 -> Prenons l'exemple précédent : le nombre minimum d'ensembles d'avions déployables que nous souhaitons avoir en tout temps pour notre QRA est de 1, mais nous en avons 2, donc aucun réapprovisionnement ne se produira pour le moment. 1 correspond au minCountforResupply.
     
 
 - Spécifier combien d'avions sont expédiés avec chaque réapprovionnements :
 
+```lua
     :setResupplyAmount(\*resupplyAmount\*) --Supérieur ou égal à 1 : Nombre de groupes d'avions qui seront fournis à la QRA lorsqu'un réapprovisionnement se produit. Par défaut, cela est égal à 1. 
+```
     
 -> Prenons l'exemple précédent : nous venons de perdre nos deux znsembles, ce qui signifie que nous n'en avons plus, cela déclenchera un réapprovisionnement, qui apportera soit le nombre désiré d'ensembles soit le nombre d'avions que nous avons en stock si cette quantité est inférieure. Le réapprovisionnement sera également limité par le nombre maximum d'ensembles que nous pouvons avoir en même temps.
     
 
 - Spécifier combien de temps prend un réapprovisionnement :
 
+```lua
     :setQRAresupplyDelay(\*resupplyDelay\*) --Supérieur ou égal à 0 : Temps nécessaire pour effectuer un réapprovisionnement
-
+```
 
 **Plusieurs choses à noter ici :**
 
@@ -262,11 +276,15 @@ De plus, il est possibble de contrôler étroitement la logistique de la QRA. Vo
 
 Enfin, il est possible de lier les mécanismes de déploiement et de logistique de la QRA à la possesion (ou non) d'une base aérienne, d'un FARP, d'un navire ou d'un bâtiment par la coalition de la dite QRA :
 
+```lua
     :setAirportLink("*airbase_name*") --Nom de l'unité / de la base aérienne : la QRA sera liée à cette base et cessera de fonctionner si la base est perdue (il peut s'agir d'un FARP (utilisez le nom de l'unité du FARP), d'un navire (utilisez le nom de l'unité du navire), d'un aérodrome ou d'un bâtiment (plateformes pétrolières, etc.))
-    
+```
+  
 **Non fonctionnel à ce jour :**
 
+```lua
     :setAirportMinLifePercent(*value*) --Comprise entre 0 et 1 : pourcentage minimum de vie de l'aéroport lié pour que le QRA fonctionne. Les aéroports (pistes) et les navires ne devraient perdre de la vie que lorsqu'ils sont bombardés, cela nécessite des tests manuels pour savoir ce qui fonctionne le mieux.
+```
 
 **Plusieurs choses à noter ici :**
 
@@ -278,19 +296,24 @@ Enfin, il est possible de lier les mécanismes de déploiement et de logistique 
 
 Après avoir enchaîné ces options, vous pouvez ajouter cela :
 
+```lua
     :start()
+```
 
 Comme son nom l'indique, cela démarre la QRA. Sinon, elle restera inactive.
 
 
 Ou si vous souhaitez la démarrer ultérieurement dans l'un de vos scripts :
 
+```lua
     if QRA_*NameOfQRA* then QRA_*NameOfQRA*:start() end
-
+```
 
 Vous pouvez également utiliser pour faire l'action inverse :
 
+```lua
     if QRA_*NameOfQRA* then QRA_*NameOfQRA*:stop() end --utilisez ceci si vous souhaitez arrêter la QRA à un moment donné (dans un déclencheur, etc.). Elle peut être redémarrée en utilisant la méthode précédemment mentionnée.
+```
 
 Cela rend inactif la QRA (stop toute vérification d'aéroport, toutes les opérations de logistique, etc.).
 
@@ -302,6 +325,7 @@ En plus de ce qui a été dit précedemment, il est possible de modifier certain
 
 Cette section concerne la modification des messages affichés aux joueurs des coalitions qui deuvent déclencher la QRA selon ses états :
 
+```lua
     :setMessageStart("*value*") --Lorsque :start() est utilisé
 
     :setMessageDeploy("*value*") --Lorsque la QRA est déployée
@@ -319,6 +343,7 @@ Cette section concerne la modification des messages affichés aux joueurs des co
     :setMessageAirbaseUp("*value*") --Lorsque la QRA regagne sa base
 
     :setMessageStop("*value*") --Lorsque :stop() est utilisé
+```
 
 ## Contacts
 
