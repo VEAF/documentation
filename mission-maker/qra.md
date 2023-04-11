@@ -194,7 +194,7 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 ```
 
 ```lua
-:addGroup({ "qra_Mig29" }) -- Vous pouvez utiliser ceci pour ajouter un ou plusieurs groupes d'avions à la QRA (syntaxe #2)
+:addGroup({ "qra_Mig29", "qra_Mig30", "qra_Mig31", "qra_Mig32",... }) -- Vous pouvez utiliser ceci pour ajouter un ou plusieurs groupes d'avions à la QRA (syntaxe #2)
 ```
 
 #### Options pour le comportement d'une QRA Multi-Groupe
