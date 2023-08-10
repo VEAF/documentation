@@ -149,7 +149,11 @@ TBD
 
 ## Menus radio
 
-TBD
+Le module *Radio* permet de gérer les menus radio des scripts VEAF.
+
+Il permet également de créer facilement des menus pour déclencher des actions à la demande, liés ou non à des groupes d'appareils.
+
+Voir la documentation détaillée [ici](radio.md)
 
 ## Accès à distance
 
@@ -179,7 +183,7 @@ TBD
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-* contacter [Zip][Zip on Github] sur GitHub
+* contacter **Zip** sur [GitHub][Zip on Github] ou sur [Discord][Zip on Discord]
 * aller consulter le [site de la VEAF][VEAF website]
 * poster sur le [forum de la VEAF][VEAF forum]
 * rejoindre le [Discord de la VEAF][VEAF Discord]
@@ -189,6 +193,7 @@ Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouv
 [VEAF-logo]: ../images/logo.png?raw=true
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57
+[Zip on Discord]: https://discordapp.com/users/421317390807203850
 [VEAF website]: https://www.veaf.org
 [VEAF forum]: https://www.veaf.org/forum
 [VEAF Github]: https://github.com/veaf
