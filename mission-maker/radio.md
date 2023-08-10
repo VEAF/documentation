@@ -133,6 +133,46 @@ local function _changeQra(parameters)
 end
 ```
 
+Voici un autre exemple, cette fonction détruit le groupe dont le nom est passé en paramètre (utile pour contrebalancer l'inefficacité relative d'une CAP humaine, par exemple):
+
+```lua
+local function _destroyGroup(name)
+    local names = name
+    if type(name) == "string" then
+        names = {name}
+    end
+    for _, name in pairs(names) do
+        local _group = Group.getByName(name)
+        if _group then
+            _group:destroy()
+            trigger.action.outText(string.format("Group %s has been destroyed", name), 10)
+        end
+    end
+end
+```
+
+Et voici comment l'utiliser dans un menu radio:
+
+```lua
+local groupId = nil -- set this to a flight group id if you want the menu to be specific to a flight
+veafRadio.createUserMenu(
+  veafRadio.mainmenu(
+    veafRadio.menu("Mission menus", 
+      veafRadio.menu("Destruction d'unités", 
+        veafRadio.menu("CAP ennemie", 
+          veafRadio.command("CAP Maykop", _destroyGroup, "CAP-Maykop"),
+          veafRadio.command("CAP Minvody", _destroyGroup, "CAP-Minvody")
+        ),
+        veafRadio.menu("SAM ennemis", 
+          veafRadio.command("SA6 Maykop", _destroyGroup, "SA6-Maykop"),
+          veafRadio.command("SA10 Minvody", _destroyGroup, "SA10-Minvody")
+        ),
+      )
+    )
+  ), groupId
+)
+```
+
 Les possibilités sont infinies. N'hésitez pas à me contacter si vous avez des questions !
 
 # Contacts
