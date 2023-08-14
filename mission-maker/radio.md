@@ -173,6 +173,30 @@ veafRadio.createUserMenu(
 )
 ```
 
+Enfin, un exemple qui écrit des drapeaux (flag) pour déclencher des actions dans des triggers du mission editor:
+
+```lua
+local groupId = nil -- set this to a flight group id if you want the menu to be specific to a flight
+veafRadio.createUserMenu(
+  veafRadio.mainmenu(
+    veafRadio.menu("Mission menus", 
+      veafRadio.menu("Gestion de flags", 
+        veafRadio.menu("Gérer le drapeau ALPHA", 
+          veafRadio.command("ON", veafSpawn.missionMasterSetFlagFromTable, {"alpha", 1}),
+          veafRadio.command("OFF", veafSpawn.missionMasterSetFlagFromTable, {"alpha", 0}),
+        ),
+        veafRadio.menu("Gérer le drapeau 127", 
+          veafRadio.command("Incrémenter", veafSpawn.missionMasterIncrementFlagValue, 127),
+          veafRadio.command("Décrémenter", veafSpawn.missionMasterDecrementFlagValue, 127),
+        ),
+      )
+    )
+  ), groupId
+)
+```
+
+On peut aussi ajouter plusieurs menus, et optionnellement choisir quels menus sont affichés pour un groupe DCS en particulier; utile pour avoir un menu pour tout le monde, et un menu juste pour le mission maker !
+
 Les possibilités sont infinies. N'hésitez pas à me contacter si vous avez des questions !
 
 # Contacts
