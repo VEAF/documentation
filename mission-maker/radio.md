@@ -75,12 +75,12 @@ veafRadio.createUserMenu(
         {"menu", "QRA management", {
             {"menu", "QRA Maykop", {
                 {"command", "START", _changeQra, {"QRA-Maykop", "stop"}},
-                {"command", "STOP", _changeQra, {"QRA-Maykop", "start"}},
+                {"command", "STOP", _changeQra, {"QRA-Maykop", "start"}}
             }},
             {"menu", "QRA Minvody", {
                 {"command", "START", _changeQra, {"QRA-Minvody", "stop"}},
-                {"command", "STOP", _changeQra, {"QRA-Minvody", "start"}},
-            }},
+                {"command", "STOP", _changeQra, {"QRA-Minvody", "start"}}
+            }}
         }}
     }}
   }
@@ -102,7 +102,7 @@ veafRadio.createUserMenu(
         veafRadio.menu("QRA Minvody", 
           veafRadio.command("START", _changeQra, {"QRA-Minvody", "stop"}),
           veafRadio.command("STOP", _changeQra, {"QRA-Minvody", "start"})
-        ),
+        )
       )
     )
   ), groupId
@@ -166,7 +166,7 @@ veafRadio.createUserMenu(
         veafRadio.menu("SAM ennemis", 
           veafRadio.command("SA6 Maykop", _destroyGroup, "SA6-Maykop"),
           veafRadio.command("SA10 Minvody", _destroyGroup, "SA10-Minvody")
-        ),
+        )
       )
     )
   ), groupId
@@ -178,20 +178,20 @@ Enfin, un exemple qui écrit des drapeaux (flag) pour déclencher des actions da
 ```lua
 local groupId = nil -- set this to a flight group id if you want the menu to be specific to a flight
 veafRadio.createUserMenu(
-  veafRadio.mainmenu(
-    veafRadio.menu("Mission menus", 
-      veafRadio.menu("Gestion de flags", 
-        veafRadio.menu("Gérer le drapeau ALPHA", 
-          veafRadio.command("ON", veafSpawn.missionMasterSetFlagFromTable, {"alpha", 1}),
-          veafRadio.command("OFF", veafSpawn.missionMasterSetFlagFromTable, {"alpha", 0}),
-        ),
-        veafRadio.menu("Gérer le drapeau 127", 
-          veafRadio.command("Incrémenter", veafSpawn.missionMasterIncrementFlagValue, 127),
-          veafRadio.command("Décrémenter", veafSpawn.missionMasterDecrementFlagValue, 127),
-        ),
-      )
-    )
-  ), groupId
+    veafRadio.mainmenu(
+        veafRadio.menu("Mission menus",
+            veafRadio.menu("Gestion de flags",
+                veafRadio.menu("Gérer le drapeau ALPHA",
+                    veafRadio.command("ON", veafSpawn.missionMasterSetFlagFromTable, { "alpha", 1 }),
+                    veafRadio.command("OFF", veafSpawn.missionMasterSetFlagFromTable, { "alpha", 0 })
+                ),
+                veafRadio.menu("Gérer le drapeau 127",
+                    veafRadio.command("Incrémenter", veafSpawn.missionMasterIncrementFlagValue, 127),
+                    veafRadio.command("Décrémenter", veafSpawn.missionMasterDecrementFlagValue, 127)
+                )
+            )
+        )
+    ), groupId
 )
 ```
 
