@@ -30,18 +30,24 @@ Le module *SkynetIadsMonitor* offre des outils statiques et dynamiques pour surv
 
 [Synet-IADS](https://github.com/walder/Skynet-IADS) est un script qui pilote les systèmes radar antiaériens afin qu'ils optimisent leur survivabilité et leur léthalité en restant éteints le plus possible. Il simule ainsi un IADS (Integrated Air Defence System) dans lequel les EWR (Early Warning Radar) scannent le ciel pour repérer et surveiller des contacts, et communiquent ces informations aux sites SAM (Surface-to-Air Missile), permettant à ceux-ci de ne s'activer que lorsqu'ils sont en capacité d'engager un contact.
 
-*Skynet-IADS* change complétement la manière dont fonctionnent les défenses antiaéreinnes dans DCS. Il est ainsi quasi indispensable à toute mission qui comporte des radars au sol. Malheureusement, sa configuration nécéssite de mettre en place et de maintenir un script dans chaque mission, script dont la complexité augmente avec la taille de la mission. Les modules VEAF documentés ici automatisent la construction de ce script et offrent des outils pour consulter et vérifier les réseaux ainsi créés.
+*Skynet-IADS* change complétement la manière dont fonctionnent les défenses antiaériennes dans DCS. Il est ainsi quasi indispensable à toute mission qui comporte des radars au sol. Malheureusement, sa configuration nécéssite de mettre en place et de maintenir un script dans chaque mission, script dont la complexité augmente avec la taille de la mission. Les modules VEAF documentés ici automatisent la construction de ce script et offrent des outils pour consulter et vérifier les réseaux ainsi créés.
 
 # SkynetIadsHelper
 
-Le module *SkynetIadsHelper* construit automatiquement des réseaux IADS Skynet à partir des groupes présents dans la mission.
+Ce module construit automatiquement des réseaux IADS Skynet à partir des groupes présents dans la mission.  
+Pour cela il va parcourir la liste de tous les groupes de la mission, et ajouter ceux qui sont éligibles dans les réseaux IADS Skynet. Cette initialisation des réseaux se fait au démarrage de la mission (avec un délai paramétrable) sur la base des groupes qui existent à ce moment. Les groupes en activation retardée sont intégrés, mais pas les groupes qui seront générés plus tard par script.
 
+## Utilisation
+
+Le module est activé par défaut dans les templates de mission VEAF.  
+L'initialisation se fait sur le modèle suivant :
+
+```lua
 if (veafSkynet) then
     veafSkynet.PointDefenceMode = veafSkynet.PointDefenceModes.Skynet
     veafSkynet.GroupIntegrationMode = veafSkynet.Strict
-    veafSkynet.addCommandCenterOfCoalition(coalition.side.RED, "CommandCenterRed")
+    veafSkynet.DynamicSpawn = false
     veafSkynet.DelayForStartup = 5
-    veaf.loggers.get(veaf.Id):info("init - veafSkynet")
     veafSkynet.initialize(
         false, --includeRedInRadio=true
         false, --debugRed
@@ -49,23 +55,42 @@ if (veafSkynet) then
         false --debugBlue
     )
 end
+```
 
-Concept général, mode strict/lenient
+**PointDefenceMode**  
+Le module peut identifier les sites SAM capables d'intercepter des missiles antiradar, et essayer des les affecter en défense rapprochée d'autres élements du réseau à proximité.  
+La propriété générale `veafSkynet.PointDefenceMode` pilote cette mécanique. Elle est à positionner avant le `initialize`. Les valeurs possibles sont décrites dans l'énumeration `veafSkynet.PointDefenceModes` :
+- **`None = 0`** : le module n'essayera pas de créer des Point Defences (**valeur par défaut**)
+- `Skynet = 1` : le module configure les Point Defences avec les mécaniques du script Skynet
+- `Dcs = 2` : le module exclue les Point Defences du réseau IADS Skynet et les laisse aux bons soins de l'IA de DCS (toujours allumés)
 
-Point defences
+Si la création de défenses rapprochée est souhaitée, le mode `Skynet` devrait être l'option à retenir. Le mode `Dcs` donne la possibilité d'avoir des défenses potentiellement plus efficaces mais aussi plus vulnérables (car toujours allumées).
 
+**GroupIntegrationMode**  
+La propriété générale `veafSkynet.GroupIntegrationMode` permet de choisir les critères que le module utilise pour décider si un groupe DCS doit être intégré dans les réseaux Skynet. Elle est à positionner avant le `initialize`. Les valeurs possibles sont décrites dans l'énumeration `veafSkynet.GroupIntegrationModes` :
+- `Strict = 0` : seuls les groupes DCS composés uniquement d'unités connues de Skynet sont intégrés dans les réseaux IADS
+- **`Lenient = 1`** : seuls les groupes DCS composés de au moins une unité connue de Skynet sont intégrés dans les réseaux IADS (**valeur par défaut**)
+
+Cette propriété a un impact sur l'intégration des groupes "mixtes" dans les réseau. Typiquement, un convoi composé de tanks et transports, escorté par des SA-19, sera intégré en `Lenient` mais pas en `Strict`.
+
+*Un groupe connu de Skynet est en règle générale un radar, un lanceur, ou une unité antiaérienne autonome (AAA, SA-15...)*
+
+**DynamicSpawn**  
 Dynamic Spawn, interactions VeafSpawn
 
-Fin d'initialisation, récupéation des réseaux créés
+**DelayForStartup**
 
-Command Centers
+**Command Centers**  
+`veafSkynet.addCommandCenterOfCoalition(iCoalitionId, sCommandCenterName)`
+`veafSkynet.destroyCommandCentersOfCoalition(iCoalitionId, iExplosionStrength)`
 
-
-
+**Accéder aux réseaux IADS générés**
 
 # SkynetIadsMonitor
 
-Le module *SkynetIadsMonitor* offre des outils statiques et dynamiques pour surveiller l'état et la composition des réseaux IADS Skynet.
+Le module *SkynetIadsMonitor* offre des outils statiques et dynamiques pour surveiller l'état et la composition des réseaux IADS Skynet. Il permet principalement de construire des descriptifs textuels des réseaux Skynet, afin de vérifier leurs structures.
+
+*A compléter*
 
 # Contacts
 
