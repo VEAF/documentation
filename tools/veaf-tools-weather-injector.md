@@ -395,7 +395,7 @@ Made and maintained by the Virtual European Air Force, a French DCS pilot commun
 
 If you need help or you want to suggest something, you can
 
-* contact [Zip][Zip on Github] on GitHub
+* contact **Zip** on [GitHub][Zip on Github] or on [Discord][Zip on Discord]
 * go to the [VEAF website]
 * post on the [VEAF forum]
 * join the [VEAF Discord]
@@ -407,6 +407,7 @@ If you need help or you want to suggest something, you can
 
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57
+[Zip on Discord]: https://discordapp.com/users/421317390807203850
 [VEAF website]: https://www.veaf.org
 [VEAF forum]: https://www.veaf.org/forum
 

@@ -83,6 +83,7 @@ If you need help or you want to suggest something, you can
 
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57
+[Zip on Discord]: https://discordapp.com/users/421317390807203850
 [VEAF website]: https://www.veaf.org
 [VEAF forum]: https://www.veaf.org/forum
 

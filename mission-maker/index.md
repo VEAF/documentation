@@ -137,7 +137,99 @@ TBD
 
 ## CTLD
 
-TBD
+CTLD est [un module communautaire](https://github.com/ciribob/DCS-CTLD) qui permet de gérer du transport de troupe et de matériel avec DCS, principalement en hélicoptère, mais aussi en avion.
+
+Pour l'activer, éditez le fichier `missionConfig.lua` et assurez vous que le module est configuré ; à la base, le fichier de config par défaut injecté par le *mission-converter* contient
+
+```lua
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- configure CTLD
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+if ctld then
+    -- uncomment (and adapt) the following lines to enable CTLD, its commands and its radio menu
+    --[[
+    veaf.loggers.get(veaf.Id):info("init - ctld")
+    function configurationCallback()
+        veaf.loggers.get(veaf.Id):info("configuring CTLD for %s", veaf.config.MISSION_NAME)
+        -- do what you have to do in CTLD before it is initialized
+        -- ctld.hoverPickup = false
+        -- ctld.slingLoad = true
+      end
+    ctld.initialize(configurationCallback)
+    ]]
+end
+```
+
+Il faut retirer les commentaires pour activer le module, et si besoin faire ce qui sera spécifique à la mission (c'est un peu plus avancé, merci de nous contacter); par exemple:
+
+```lua
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- configure CTLD
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+if ctld then
+    veaf.loggers.get(veaf.Id):info("init - ctld")
+    function configurationCallback()
+        veaf.loggers.get(veaf.Id):info("configuring CTLD for %s", veaf.config.MISSION_NAME)
+      end
+    ctld.initialize(configurationCallback)
+end
+```
+
+## CSAR
+
+CSAR est [un module communautaire](https://github.com/ciribob/DCS-CSAR) qui permet d'effectuer des missions de Combat Search And Rescue (d'où son nom) en hélicoptère et en avion.
+
+Comme pour CTLD, pour l'activer il suffit d'éditer le fichier `missionConfig.lua` et de s'assurer que le module est configuré ; à la base, le fichier de config par défaut injecté par le *mission-converter* contient
+
+```lua
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- configure CSAR
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+if csar then
+    -- uncomment (and adapt) the following lines to enable CSAR, its commands and its radio menu
+    --[[
+    veaf.loggers.get(veaf.Id):info("init - csar")
+    function configurationCallback()
+        veaf.loggers.get(veaf.Id):info("configuring CSAR for %s", veaf.config.MISSION_NAME)
+        -- do what you have to do in csar before it is initialized
+        -- csar.enableAllslots = false
+        -- csar.aircraftType = {} -- Type and limit
+        -- csar.aircraftType["SA342Mistral"] = 2
+        -- csar.aircraftType["SA342Minigun"] = 2
+        -- csar.aircraftType["SA342L"] = 2
+        -- csar.aircraftType["SA342M"] = 2
+        -- csar.aircraftType["UH-1H"] = 8
+        -- csar.aircraftType["Mi-8MT"] = 16
+        -- csar.useprefix    = true
+        -- csar.csarPrefix = { "helicargo", "MEDEVAC"}
+    end
+    csar.initialize(configurationCallback)
+    ]]
+end
+```
+
+Il faut retirer les commentaires pour activer le module, et si besoin faire ce qui sera spécifique à la mission (c'est un peu plus avancé, merci de nous contacter); par exemple:
+
+```lua
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- configure CSAR
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+if csar then
+    veaf.loggers.get(veaf.Id):info("init - csar")
+    function configurationCallback()
+        veaf.loggers.get(veaf.Id):info("configuring CSAR for %s", veaf.config.MISSION_NAME)
+        csar.enableAllslots = false
+        csar.aircraftType = {} -- Type and limit
+        csar.aircraftType["SA342Mistral"] = 2
+        csar.aircraftType["SA342Minigun"] = 2
+        csar.aircraftType["SA342L"] = 2
+        csar.aircraftType["SA342M"] = 2
+        csar.aircraftType["UH-1H"] = 8
+        csar.aircraftType["Mi-8MT"] = 16
+    end
+    csar.initialize(configurationCallback)
+end
+```
 
 ## Hound Elint
 
@@ -149,7 +241,11 @@ TBD
 
 ## Menus radio
 
-TBD
+Le module *Radio* permet de gérer les menus radio des scripts VEAF.
+
+Il permet également de créer facilement des menus pour déclencher des actions à la demande, liés ou non à des groupes d'appareils.
+
+Voir la documentation détaillée [ici](radio.md)
 
 ## Accès à distance
 
@@ -179,7 +275,7 @@ TBD
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-* contacter [Zip][Zip on Github] sur GitHub
+* contacter **Zip** sur [GitHub][Zip on Github] ou sur [Discord][Zip on Discord]
 * aller consulter le [site de la VEAF][VEAF website]
 * poster sur le [forum de la VEAF][VEAF forum]
 * rejoindre le [Discord de la VEAF][VEAF Discord]
@@ -189,6 +285,7 @@ Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouv
 [VEAF-logo]: ../images/logo.png?raw=true
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57
+[Zip on Discord]: https://discordapp.com/users/421317390807203850
 [VEAF website]: https://www.veaf.org
 [VEAF forum]: https://www.veaf.org/forum
 [VEAF Github]: https://github.com/veaf
