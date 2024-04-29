@@ -79,7 +79,12 @@ TBD
 
 ## Injecteur de presets radio
 
-TBD
+L'outil [Injecteur de presets radio](./presets.md) permet de gérer de manière facile et centralisée les presets radio (canaux pré-réglés) des différents appareils de vos missions.
+
+Ainsi, vous avez un seul endroit où changer une fréquence pour un canal, et tous les appareils sont mis à jour automatiquement; pas de risque d'oublier de changer la fréquence pour un ou l'autre appareil parmi les 500 de votre mission.
+
+Grâce à cet outil, il devient très aisé de maintenir un plan de fréquence commun pour chaque coalition de votre mission, et de le copier d'une mission à l'autre : si vous commencez une nouvelle mission sur Caucase, il suffit de reprendre le fichier de configuration de votre précédente mission sur Caucase, et hop tous les avions ont les bons presets !
+
 
 ## Génération de versions (date / heure / météo)
 
