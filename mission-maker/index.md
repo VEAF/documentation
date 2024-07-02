@@ -75,7 +75,13 @@ TBD
 
 ## Injecteur de plans de vols
 
-TBD
+L'outil [Injecteur de plans de vols](waypoints.md) permet de gérer de manière facile et centralisée les plans de vol (waypoints) des différents appareils de
+ vos missions.
+
+Ainsi, vous pourrez facilement ajouter ou modifier un point partagé par tous les vols, ou ajouter un nouveau vol sans avoir besoin de lui assigner tous les points partagés. En particulier, c'est très utile pour le bullseye, et autres points de report centralisés.
+
+Grâce à cet outil, il devient très aisé de maintenir un ensemble de points de report commun pour chaque coalition de votre mission, et de le copier d'une mission à l'autre : si vous commencez une nouvelle mission sur Caucase, il suffit de reprendre le fichier de configuration de votre précédente mission sur Caucase, et hop tous les avions ont les bons waypoints !
+
 
 ## Injecteur de presets radio
 
