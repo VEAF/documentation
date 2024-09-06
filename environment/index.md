@@ -50,7 +50,7 @@ The required tools can easily be installed using *Chocolatey* (see [here](https:
 
 To install Chocolatey, use this command  in an elevated (admin) Powershell prompt:
 
-`Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))`
+`Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
 
 After *Chocolatey* is installed, use these simple commands in a command prompt to install the required tools :
 
