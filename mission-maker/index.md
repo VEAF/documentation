@@ -287,6 +287,19 @@ TBD
 
 TBD
 
+## Informations météo et gestion du brouillard
+
+Ce module a pour but de permettre la gestion de la météo; il offre:
+
+- la possibilité de gérer le brouillard: 
+  - statique
+  - animé (s'établit ou se dissipe sur une période donnée)
+  - dynamique (est géré par le système en fonction des conditions météo, de l'heure et de l'emplacement)
+- l'obtention d'informations météo via le menu radio
+- l'exploitation d'informations de type ATIS, concernant la base aérienne la plus proche (piste en service, etc.)
+
+Voir la documentation détaillée [ici](weather.md)
+
 # Contacts
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
