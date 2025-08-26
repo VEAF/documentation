@@ -23,16 +23,14 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 
 # Introduction
 
-Le module *Cobat Zone* permet de créer facilement des zones qu'on peut déclencher à la demande, et qui peuvent contenir des groupes DCS (unités sol, navires, hélicoptères) - avec leurs waypoints et leurs instructions, des commandes VEAF (comme celles qu'on peut déclencher dans un marqueur sur la carte F10).
+Le module *Combat Zone* permet de créer facilement des zones qu'on peut déclencher à la demande, et qui peuvent contenir des groupes DCS (unités sol, navires, hélicoptères) - avec leurs waypoints et leurs instructions, des commandes VEAF (comme celles qu'on peut déclencher dans un marqueur sur la carte F10).
 
 # Principes
 
-Une zone *Combat Zone* est constituée de :
+Une *Combat Zone* est constituée de :
 - une zone, définie par une trigger zone DCS placée dans l'éditeur de mission (circulaire ou quadpoint)
-- un ou des groupes DCS ou commandes VEAF
+- un ou des groupes DCS, statiques, ou unités dont le nom contient une commande VEAF (exemple: `-armor`, `-shell`, `_spawn zu-57`)
 - des paramètres (dans `missionConfig.lua`)
-
-TODO - exemples avec screenshots
 
 Une fois configurée, une entrée sera ajoutée dans le menu radio VEAF, comprenant ces commandes:
 - "Get info": obtenir des informations sur la zone et son état. En particulier:
@@ -48,7 +46,38 @@ Une fois configurée, une entrée sera ajoutée dans le menu radio VEAF, compren
 
 Le menu radio est sécurisé ; par défaut il faut être connecté (`/secu login`) pour pouvoir activer ou désactiver des zones (sauf celles qui sont en mode "entrainement").
 
-# Comment déclarer une *Combat Zone* dans le fichier de configuration
+Et enfin, il faut ajouter la zone nouvellement créée à la bibliothèque des combat zones, en utilisant la fonction `veafCombatZone.AddZone`.
+
+## Exemple de la zone "Psebay factory" dans l'OpenTraining Caucase
+
+*Le code dans `missionConfig.lua`:*
+
+```lua
+veafCombatZone.AddZone(
+  VeafCombatZone:new()
+    :setMissionEditorZoneName("combatZone_Psebay_Factory")
+    :setFriendlyName("Psebay chemical weapons factory")
+    :setRadioGroupName("Missions")
+    :setBriefing(
+[[This factory manufactures chemical weapons for a terrorist group
+You must destroy both factory buildings, and the bunker where the scientists work
+"The other enemy units are secondary targets]])
+)
+```
+
+*La trigger zone et les unités dans l'éditeur de mission:*
+
+![Trigger Zone dans l'éditeur](../images/CZ_editor_zone.png)
+
+*Le détail d'une unité qui déclenchera une commande VEAF (ici avec des options):*
+
+![Étiquettes de nom d'unité avec balises](../images/CZ_unit_name_tags.png)
+
+*Le menu radio de cette zone de combat:*
+
+![Menu radio COMBAT ZONES](../images/CZ_radio_menu.png)
+
+# Déclarer une *Combat Zone* dans le fichier de configuration
 
 Tout commence dans le fichier de configuration de la mission `missionConfig.lua`, qui est situé dans le répertoire `src/scripts` de votre mission.
 
@@ -58,7 +87,7 @@ Par défaut, si vous avez utilisé le [convertisseur de mission existante][VEAF-
 
 Le principe de configuration est simple.
 
-Tout d'abord on crée un "objet" de type *VeafCombatZone* en appelant `AirWaVeafCombatZoneveZone:new()`. Cet appel renvoie une instance de *VeafCombatZone*, qu'on peut stocker dans une variable (`local maZone = VeafCombatZone:new()`) ou utiliser tout de suite avec une [désignation chaînée](https://fr.wikipedia.org/wiki/D%C3%A9signation_cha%C3%AEn%C3%A9e) (en enchainant les appels aux méthodes de configuration qui renvoient toutes, tour à tour, la même instance de *VeafCombatZone*).
+Tout d'abord on crée un "objet" de type *VeafCombatZone* en appelant `VeafCombatZone:new()`. Cet appel renvoie une instance de *VeafCombatZone*, qu'on peut stocker dans une variable (`local maZone = VeafCombatZone:new()`) ou utiliser tout de suite avec une [désignation chaînée](https://fr.wikipedia.org/wiki/D%C3%A9signation_cha%C3%AEn%C3%A9e) (en enchainant les appels aux méthodes de configuration qui renvoient toutes, tour à tour, la même instance de *VeafCombatZone*).
 
 <u>Exemple de chainage:</u>
 
@@ -80,24 +109,12 @@ zoneCrossKobuleti:setFriendlyName("Cross Kobuleti")
 
 L'avantage de la seconde méthode est qu'on peut, plus loin dans le fichier `missionConfig.lua`, utiliser une référence à la variable qu'on a définie pour accéder à l'instance de *VeafCombatZone* (par exemple, dans la définition d'un alias, d'une commande "mission maker", ou dans un menu radio).
 
-## Structure d'une déclaration de zone *VeafCombatZone*
-
-### Création de la zone
-
-Création d'une nouvelle instance de *VeafCombatZone*: une instance définit une zone et son comportement; exemple: la zone d'entrainement de Kobuleti.
-
-Utiliser soit une variable locale, soit une désignation chaînée (voir (ce chapitre)[#comment-configurer-une-zone-AirWaves]) pour exploiter cette instance.
-
-```lua
-VeafCombatZone:new()
-```
-
-### Paramètres obligatoires
+# Paramètres obligatoires
 
 Définition du nom technique de la zone: ce nom sert à retrouver la Combat Zone avec la commande `veafCombatZone.GetZone()`; exemple: `veafCombatZone.GetZone("combatZone_CrossKobuleti")`
 
 ```lua
-:setMissionEditorZoneName("MinevcombatZone_CrossKobuletiody")
+:setMissionEditorZoneName("combatZone_CrossKobuleti")
 ```
 
 Description de la zone: c'est ce qui sera repris dans les différents messages et dans le menu radio
@@ -120,9 +137,9 @@ You must destroy the comm antenna
 The other ennemy units are secondary targets]])
 ```
 
-### Paramètres optionnels
+# Paramètres optionnels
 
-#### Mode "entrainement"
+## Mode "entrainement"
 
 En mode entrainement, la zone est accessible à tous (pas de sécurisation du menu radio), les informations détaillent le nombre et le type d'unités restantes, et les balises fumigènes sont centrées sur le barycentre des ennemis restants (sinon, au centre de la zone).
 
@@ -130,7 +147,7 @@ En mode entrainement, la zone est accessible à tous (pas de sécurisation du me
 :setTraining(true)
 ```
 
-#### Désactivation du menu radio
+## Désactivation du menu radio
 
 Si on le souhaite, on peut désactiver les menus radio d'une Combat Zone.
 
@@ -138,7 +155,7 @@ Si on le souhaite, on peut désactiver les menus radio d'une Combat Zone.
 :disableRadioMenu()
 ```
 
-#### Nettoyage des carcasses
+## Nettoyage des carcasses
 
 Par défaut, à la désactivation d'une zone, les carcasses de véhicules et les cadavres sont automatiquement nettoyés. Cela peut être désactivé:
 
@@ -146,7 +163,7 @@ Par défaut, à la désactivation d'une zone, les carcasses de véhicules et les
 :disableJunkCleanup()
 ```
 
-#### Activation de la zone
+## Activation de la zone
 
 On peut choisir de laisser les utilisateurs activer la zone, ou pas ; pour ça on utilise:
 
@@ -158,7 +175,7 @@ On peut choisir de laisser les utilisateurs activer la zone, ou pas ; pour ça o
 :disableUserActivation()
 ```
 
-#### Fumigènes et fusées d'éclairage
+## Fumigènes et fusées d'éclairage
 
 Par défaut, ces options sont activées sur toutes les zones. On peut changer ça en utilisant `setEnableSmokeAndFlare` ; par exemple:
 
@@ -166,7 +183,7 @@ Par défaut, ces options sont activées sur toutes les zones. On peut changer ç
 setEnableSmokeAndFlare(true)
 ```
 
-#### Options relatives au menu radio
+## Options relatives au menu radio
 
 **Préfixe du menu radio**
 
@@ -201,7 +218,7 @@ On peut grouper les combat zones dans le menu radio. Pour ce faire, il faut util
 
 Toutes les combat zones qui partagent le même groupe radio seront reprises dans un sous-menu nommé comme le groupe.
 
-#### Informations sur les unités
+## Informations sur les unités
 
 Si on souhaite que le message d'informations de la zone ne comprenne pas la liste des unités (ou juste le résumé, si la zone n'est pas en mode entrainement), on peut utiliser:
 
@@ -209,7 +226,7 @@ Si on souhaite que le message d'informations de la zone ne comprenne pas la list
 :setShowUnitsList(false)
 ```
 
-#### Informations sur la position et la météo de la zone
+## Informations sur la position et la météo de la zone
 
 Si on souhaite que le message d'informations de la zone ne comprenne pas la position de la zone ni la météo sur place, on peut utiliser:
 
@@ -217,7 +234,7 @@ Si on souhaite que le message d'informations de la zone ne comprenne pas la posi
 :setShowZonePositionInfo(false)
 ```
 
-#### Surveillance de la destruction des unités
+## Surveillance de la destruction des unités
 
 Les unités concernées par une Combat Zone sont en permanence surveillées. En pratique, toutes les quelques secondes, on lance une vérification de l'état de la zone et des unités.
 
@@ -229,7 +246,7 @@ Par défaut, si toutes les unités ennemies de la zone sont détruites, on affic
 :setCompletable(false)
 ```
 
-#### Enchainement des combat zones
+## Enchainement des combat zones
 
 Il est possible de paramétrer une chaine de combat zones qui vont s'activer automatiquement l'une après l'autre, la suivante s'activant dès que la précédente est terminée.
 
@@ -271,335 +288,79 @@ local zone3 = ...
   -- pas de "chained combat zone"
 ```
 
+# Options disponibles dans le nom de l'unité
 
+Il est possible de suffixer le nom de l'unité (ou de la première unité du groupe) par des options qui conditionneront la manière dont elle sera gérée quand la zone sera activée
 
+## Groupes de spawn et choix aléatoire
 
+Le cas d'usage est celui-ci: on souhaite placer quelques unités (par exemple des manpads) dans la zone, et on veut que leur emplacement soit aléatoire. Mais on souhaite que tous les emplacements possibles soient définis manuellement, pour avoir le contrôle sur le lieu où les unités vont spawner.
 
+Pour faire ça, il suffit de placer une unité sur chaque emplacement possible. Toutes les unités doivent avoir le préfixe "#spawngroup" dans leur nom, avec le même nom de groupe. Et ils doivent également avoir le préfixe "#spawnchance" pour quantifier la chance que chaque emplacement soit choisi (en principe, on met une chance identique à chaque emplacement - 100 divisé par le nombre d'emplacements - mais rien n'empêche d'en privilégier certains). Et enfin, "#spawncount" indique le nombre d'emplacements qui seront activés.
 
+Exemple avec un spawn de 2 manpads sur 4 emplacements possibles: 
+- un manpad `cz_Psebay_manpad_001 #spawngroup="psebay_manpads" #spawncount=2 #spawnchance=25`
+- un manpad `cz_Psebay_manpad_002 #spawngroup="psebay_manpads" #spawncount=2 #spawnchance=25`
+- un manpad `cz_Psebay_manpad_003 #spawngroup="psebay_manpads" #spawncount=2 #spawnchance=25`
+- un manpad `cz_Psebay_manpad_004 #spawngroup="psebay_manpads" #spawncount=2 #spawnchance=50`
 
+Le dernier emplacement de manpad a 2 fois plus de chances que les autres d'être sélectionné.
 
+## Rayon de spawn
 
+Par défaut, un groupe (ou une commande) spawn à l'endroit exact où l'unité a été placée dans l'éditeur de mission.
 
+Mais si on veut introduire un peu de suspense, on peut utiliser "#spawnradius" pour définir un rayon (en mètres) dans lequel le spawn aura lieu.
 
+Exemple: `cz_Psebay_manpad_001 #spawnradius=250` -> le manpad spawnera à un endroit aléatoire dans un rayon de 250m autour du point où l'unité a été posée.
 
+## Délai avant le spawn
 
+En principe, tous les groupes sont spawnés et toutes les commandes VEAF sont exécutées dès l'activation de la combat zone.
 
+Mais il est possible de retarder le spawn d'un groupe ou l'exécution d'une commande en utilisant l'option "#spawndelay" (en secondes).
 
+Exemple: `cz_Psebay_manpad_001 #spawndelay=60` -> le manpad ne spawnera qu'après 60 secondes
 
+Autre exemple: `cz_Psebay_artillery_mission_001 #command="-shell" #radius=500 #spawndelay=120` -> après 2 minutes, une frappe d'artillerie visera un point aléatoire dans un rayon de 500 mètres
 
+## Commandes VEAF
 
+Pour définir une commande VEAF, il faut utiliser dans le nom de l'unité l'option "#command" suivie de la commande à exécuter.
 
+Toutes les commandes qu'on peut mettre dans un marqueur sur la vue F10 sont valides.
 
+Cela inclut évidemment tous les spawns (comme `-armor`, `-transport`, `-afac`) mais aussi les spawns aériens (`-cap mig-29` par exemple), et toutes les commandes qui pourraient sembler incongrues dans ce contexte (`-secu login mot_de_passe` ou `-point nom_du_point`, ou encore `_move tanker, name Texaco`).
 
+Exemple: `cz_Psebay_armor_001 #command="-armor, size 10, defense 1-3, armor 3-5"`
 
-### Options de personnalisation
+# Personnalisation
 
-#### Messages et callbacks
+## Hooks
 
-Pour chaque zone, il est possible de choisir les messages émis par le système à chaque évènement, et même de spécifier une fonction qui sera appelée quand l'évènement surviendra.
+### Appel d'une fonction quand la combat zone est terminée
 
-Dans la mesure du possible, les messages sont envoyés aux groupes de joueurs concernés.
+Pour appeler une fonction quand la combat zone est terminée, il suffit d'utiliser `setOnCompletedHook`.
 
-Les évènements sont:
+La fonction en paramètre sera appelée dès que la zone est terminée (tous les ennemis sont détruits).
 
-- START : démarrage de la zone, au début de la mission (`:setMessageStart()`, `:setOnStart()`)
-- WAIT_FOR_HUMANS : le premier joueur est dans la zone, on attend un certain temps les autres (`:setMessageWaitForHumans()`, `:setOnWaitForHumans()`)
-- WAIT_TO_DEPLOY : on attend un certain temps avant de déployer une vague (`:setMessageWaitToDeploy()`, `:setOnWaitToDeploy()`)
-- DEPLOY : déploiement d'une vague (`:setMessageDeploy()`, `setMessageDeployPlayers()`, `:setOnDeploy()`)
-- DESTROYED : une vague a été détruite (`:setMessageDestroyed()`, `:setOnDestroyed()`)
-- WON : la zone a été gagnée, plus de vagues IA (`:setMessageWon()`, `:setOnWon()`)
-- LOST : la zone a été perdue, plus de joueurs (`:setMessageLost()`, `:setOnLost()`)
-- STOP : arrêt de la zone, si `:stop()` est appelée (`:setMessageStop()`, `:setOnStop()`)
-- OUTSIDE_OF_ZONE : un joueur est sorti de la zone, on le prévient avant de le détruire (`:setMessageOutsideOfZone()`, `:setOnOutsideOfZone()`)
+Cette fonction doit accepter un paramètre qui sera la combat zone elle-même.
 
-<u>Exemples:</u>
-
-```lua
--- message when the zone is activated
-zone:setMessageStart("%s est active")
-
--- event when the zone is activated
-zone:setOnStart(eventExporter.onStart)
-
--- message when the zone is waiting for more players
-zone:setMessageWaitForHumans("%s: attente d'autres joueurs pendant %s secondes")
-
--- event when the zone is waiting for more players
-zone:setOnWaitForHumans(eventExporter.onWaitForHumans)
-
--- message when a wave will be triggered
-zone:setMessageWaitToDeploy("%s: déploiement de la prochaine vague dans %s secondes")
-
--- event when a wave will be triggered
-zone:setOnWaitToDeploy(eventExporter.onWaitToDeploy)
-
--- message when a wave is triggered
-zone:setMessageDeploy("%s déploie la vague numéro %s")
-
--- message to players when a wave is triggered
-zone:setMessageDeployPlayers("Vague numéro %s déployée, %s") -- the second parameter is a BRA or "MERGED"
-
--- event when a wave is triggered
-zone:setOnDeploy(eventExporter.onDeploy)
-
--- message when a wave is destroyed
-zone:setMessageDestroyed("%s: la vague %s a été détruite")
-
--- event when a wave is destroyed
-zone:setOnDestroyed(eventExporter.onDestroyed)
-
--- message when all waves are finished (won)
-zone:setMessageWon("%s: c'est gagné (plus d'ennemi) !")
-
--- event when all waves are finished (won)
-zone:setOnWon(eventExporter.onWon)
-
--- message when all players are dead (lost)
-zone:setMessageLost("%s: c'est perdu (joueur mort ou sorti) !")
-
--- event when all players are dead (lost)
-zone:setOnLost(eventExporter.onLost)
-
--- message when the zone is deactivated
-zone:setMessageStop("%s n'est plus active")
-
--- event when the zone is deactivated
-zone:setOnStop(eventExporter.onStop)
-
--- message when a player is outside of zone
-zone:setMessageOutsideOfZone("%s - vous êtes en dehors de la zone depuis %s secondes; retournez-y, ou vous serez détruit après %s secondes.")
-
--- event when a player is outside of zone
-zone:setOnOutsideOfZone(eventExporter.onOutsideOfZone)
-```
-
-#### Détermination de l'état des groupes et vagues
-
-Il est possible de paramétrer AirWaves pour que le module appelle vos propres fonctions au moment où il se demande si une vague ou un group est encore opérationnel.
-
-Pour cela, deux méthodes existent.
+Voici un exemple:
 
 ```lua
----the function that decides if a wave is dead or not (as a set of groups and units)
-zone:setIsEnemyWaveDeadCallback(callback)
-```
+--- cette fonction sera appellée quand la zone "Gori" est terminée
+function onGoriEnd(zone)
+    trigger.action.outText(string.format("Hook on %s", zone:getFriendlyName()), 10)
+end
 
-La fonction que vous spécifierez en paramètre sera appelée pour déterminer si une vague est considérée comme détruite ou non. Elle prend trois paramètres:
-- la zone (l'objet)
-- le numéro de la vague courante
-- la liste des groupes qui ont été spawnés (leurs noms)
-
-Et elle doit renvoyer `true` si la vague doit être considérée comme hors de combat.
-
-```lua
----the function that decides if a group is dead or not (individually)
-zone:setIsEnemyGroupDeadCallback(callback)
-```
-
-La fonction que vous spécifierez en paramètre sera appelée pour déterminer si un groupe est considéré comme hors de combat ou non. Elle prend trois paramètres:
-- la zone (l'objet)
-- le numéro de la vague courante
-- un groupe DCS qui a été spawné (une table DCS)
-
-Et elle doit renvoyer `true` si le groupe doit être considéré comme détruit.
-
-Par défaut (si on n'a pas spécifié de callbacks particuliers), on vérifie tous les groupes d'une vague (ce comportement est surchargé par `:setIsEnemyWaveDeadCallback()`), et pour chaque groupe on regarde le pourcentage de points de vie de chacune de ses unités (ce comportement est surchargé par `:setIsEnemyGroupDeadCallback()`). 
-
-S'il est inférieur à une certaine valeur (qu'on peut régler avec `:setMinimumLifeForAiInPercent()`, par défaut 10%), on détruit l'unité en la despawnant (ce comportement est surchargé par `:setHandleCrippledEnemyUnitCallback()`).
-
-#### Gestion des unités considérées comme hors-de-combat
-
-La méthode par défaut (que vous pouvez remplacer avec `:setIsEnemyGroupDeadCallback()`) pour vérifier l'état d'un groupe dans une vague compare son niveau de vie avec un minimum vital qui est déclaré comme une constante (`veafAirWaves.MINIMUM_LIFE_FOR_AI_IN_PERCENT = 10`).
-
-Quand elle détermine qu'une unité doit être détruite, elle appelle une fonction qui se charge de retirer l'unité du groupe. Par défaut, cette fonction déspawn simplement l'unité.
-
-Vous pouvez la remplacer par une de vos fonctions qui fera ce que vous voulez avec cette unité (la faire exploser, c'est joli), en utilisant la fonction suivante:
-
-```lua
---- the function that handles crippled enemy units
-zone:setHandleCrippledEnemyUnitCallback(callback)
-```
-
-Elle prend trois paramètres:
-- la zone (l'objet)
-- le numéro de la vague courante
-- une unité DCS qui a été spawné (une table DCS)
-
-## Dernière étape
-
-Une fois configurée, la zone doit être lancée. 
-
-Selon le choix qu'on a fait (variable locale ou désignation chaînée), on appelle la méthode `:start()`.
-
-<u>Exemple, désignation chaînée:</u>
-
-```lua
-AirWaveZone:new()
-    :setName("Minevody")
-    :setTriggerZone("Minevody")
-    :start()
-```
-
-<u>Exemple, variable locale:</u>
-
-```lua
-local zone = AirWaveZone:new()
-zone:setName("Minevody")
-zone:setTriggerZone("Minevody")
-zone:start()
-```
-
-Si vous souhaitez démarrer la zone dans un trigger, vous pouvez utiliser la méthode `get()` du module pour retrouver l'instance correspondante.
-
-```lua
-veafAirWaves.get("Minevody"):start()
-```
-
-Bien sûr, il est aussi possible d'appeler d'autres méthodes, telles que `stop()`
-
-```lua
-veafAirWaves.get("Minevody"):stop()
-```
-
-# Exemples complets
-
-Voici un exemple de configuration fonctionnel et complet (toutes les fonctions disponibles sont présentes)
-
-```lua
-    -- example zone 01 (can easily be copy/pasted, nothing to set in the editor except player slots and if desired trigger zones)
-    AirWaveZone:new()
-
-    -- technical name (AirWave instance name)
-    :setName("Zone 01")
-
-    -- description for the messages
-    :setDescription("Zone 01")
-
-    -- coalitions of the players (only human units from these coalitions will be monitored)
-    :addPlayerCoalition(coalition.side.BLUE)
-
-    -- trigger zone name (if set, we'll use a DCS trigger zone)
-    --:setTriggerZone("airWave_HARD")
-
-    -- center (point in the center of the circle, when not using a DCS trigger zone) - can be set with coordinates either in LL or MGRS
-    :setZoneCenterFromCoordinates("U37TFH2882") -- U=UTM (MGRS); 37T=grid number; CL=square; 52000=latitude; 97000=longitude
-
-    -- radius (size of the circle, when not using a zone) - in meters
-    :setZoneRadius(90000) -- 50 nm
-
-    -- draw the zone on screen
-    :setDrawZone(true)
-
-    -- default position for respawns (im meters, lat/lon, relative to the zone center)
-    :setRespawnDefaultOffset(0, 0)
-
-    -- radius of the waves groups spawn
-    :setRespawnRadius(0)
-
-    -- delay in seconds between the first human in zone and the actual activation of the zone
-    :setDelayBeforeActivation(15)
-
-    -- default delay in seconds between waves of enemy planes
-    --:setDelayBetweenWaves(60)
-
-    ---adds a wave of enemy planes
-    ---parameters are very flexible: they can be:
-    --- a table containing the following fields:
-    ---     - groups a list of groups or VEAF commands; VEAF commands can be prefixed with [lat, lon], specifying the location of their spawn relative to the center of the zone; default value is set with "setRespawnDefaultOffset"
-    ---     - number how many of these groups will actually be spawned (can be multiple times the same group!); it can be a "randomizable number", e.g., "2-6" for "between 2 and 6"
-    ---     - bias shifts the random generator to the right of the list; it can be a "randomizable number" too
-    ---     - delay the delay between this wave and the next one - if negative, then the next wave is spawned instantaneously (no waiting for this wave to be completed); it can be a "randomizable number" too
-    --- or a list of strings (the groups or VEAF commands)
-    --- or almost anything in between; we'll take a string as if it were a table containing one string, anywhere
-    --- examples:
-    ---   :addWave("group1")
-    ---   :addWave("group1", "group2")
-    ---   :addWave({"group1", "group2"})
-    ---   :addWave({ groups={"group1", "group2"}, number = 2})
-    ---   :addWave({ groups="group1", number = 2})
-    :addWave({ groups = "-cap easy x1, hdg 180, dist 30", delay = -1 })                    -- an easy single fighter cap
-    :addWave({ groups = "-sa9, hdg 180, dist 30", number = "1-3", delay = "15-30" })       -- and simultaneously, between 1 and 3 SA9 groups 
-    :addWave({ groups = "-cap normal x1, hdg 180, dist 30" , number = "1-2", delay = -1 }) -- a normal single or two-ship fighter cap after 15-30 seconds
-    :addWave({ groups = "-sa8, hdg 180, dist 30", number = "1-3", delay = "15-30" })       -- and simultaneously, between 1 and 3 SA8 groups 
-    :addWave({ groups = "-cap hard x1, hdg 180, dist 30" , number = "2-3", delay = -1 })   -- a hard 2 to 3 fighters cap after 15-30 seconds
-    :addWave({ groups = "-sa15, hdg 180, dist 30", number = "1-3" })                       -- and simultaneously, between 1 and 3 SA15 groups 
-
-    -- players in the zone will only be detected above this altitude (in feet)
-    :setMaximumAltitudeInFeet(40000) -- hard ceiling
-
-    -- players in the zone will only be detected below this altitude (in feet)
-    :setMinimumAltitudeInFeet(1500) -- hard floor
-
-    -- message when the zone is activated
-    :setMessageStart("%s est maintenant fonctionnelle")
-
-    -- event when the zone is activated
-    --:setOnStart(callbackFunction)
-
-    -- message when the zone is waiting for more players
-    :setMessageWaitForHumans("%s: attente d'autres joueurs pendant %s secondes")
-
-    -- event when the zone is waiting for more players
-    --:setOnWaitForHumans(callbackFunction)
-
-    -- message when a wave will be triggered
-    :setMessageWaitToDeploy("%s: déploiement de la prochaine vague dans %s secondes")
-
-    -- event when a wave will be triggered
-    --:setOnWaitToDeploy(callbackFunction)
-
-    -- message when a wave is triggered
-    :setMessageDeploy("%s déploie la vague numéro %s")
-
-    -- event when a wave is triggered
-    :setOnDeploy(function ()
-        trigger.action.setUserFlag("monBeauDrapeau", 1)
-    end)
-
-    -- message when a wave is destroyed
-    :setMessageDestroyed("%s: la vague %s a été détruite")
-
-    -- event when a wave is destroyed
-    --:setOnDestroy(callbackFunction)
-
-    -- message when all waves are finished (won)
-    :setMessageWon("%s: c'est gagné (plus d'ennemi) !")
-
-    -- event when all waves are finished (won)
-    --:setOnWon(callbackFunction)
-
-    -- message when all players are dead (lost)
-    :setMessageLost("%s: c'est perdu (joueur mort ou sorti) !")
-
-    -- event when all players are dead (lost)
-    --:setOnLost(callbackFunction)
-
-    -- message when the zone is deactivated
-    :setMessageStop("%s n'est plus active")
-
-    -- event when the zone is deactivated
-    --:setOnStop(callbackFunction)
- 
-    -- the function that handles crippled enemy units
-    :setHandleCrippledEnemyUnitCallback(handleCrippledEnemyUnit)
-
-    :setMinimumLifeForAiInPercent(50)
-
-    ---the function that decides if a group is dead or not (individually)
-    --:setIsEnemyGroupDeadCallback(isEnemyGroupDead)
-
-    -- start the zone
-    :start()
-```
-
-Voici un autre exemple, qui recopie une zone existante (`mist.utils.deepCopy`) au lieu de l'initialiser avec `new()` et qui reconfigure les points de la copie qui seront différents (pratique pour faire plusieurs zones similaires):
-
-```lua
-  mist.utils.deepCopy(veafAirWaves.get("Zone 01"))
-  :setName("Zone 03")
-  :setDescription("Zone 03 - FOX1 fighters")
-  :setZoneCenterFromCoordinates("U37TCH2163")
-  :start()
+local gori = VeafCombatZone:new()
+    :setMissionEditorZoneName("subCombatZone_gori")
+    :setFriendlyName("Mission Gori")
+    :setBriefing("Destroy the armored group in the city of Gori")
+    :setOnCompletedHook(onGoriEnd) -- on paramètre le hook
+    :initialize()
+    :setTraining(false)
 ```
 
 # Contacts

@@ -148,7 +148,7 @@ Exemples:
   - je place un char (T90) sur la carte et je l'appelle `#veafInterpreter["-armor, armor 5, defense 3"] #001`
   - je place un char (T90) sur la carte et je l'appelle `#veafInterpreter["-armor, armor 5, defense 3"] #002`
   - je place un char (T90) sur la carte et je l'appelle `#veafInterpreter["-armor, armor 5, defense 3"] #003`
-- un site SA11: je place un lancer SA-11 sur la carte, et je l'appelle `#veafInterpreter["-sa11"]`
+- un site SA11: je place un lanceur SA-11 sur la carte, et je l'appelle `#veafInterpreter["-sa11"]`
 - un convoi qui fait des allers et retours vers un point arbitraire:
   - je place une balise (pneu, drapeau) sur la carte et je l'appelle `#veafInterpreter["-point bp_delta"]`
   - je place un camion sur la carte et je l'appelle `#veafInterpreter["-convoy, defense 2, size 10, armor 3, dest bp_delta, patrol"]`
