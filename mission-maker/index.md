@@ -132,7 +132,33 @@ TBD
 
 ## Interpréteur
 
-TBD
+L'interpréteur de commandes VEAF est un outil très pratique qui permet de placer une unité (quelconque) dans l'éditeur de mission, et de l'utiliser pour lancer des commandes VEAF (toutes les commandes disponibles dans un marker sur la carte F10) au lancement de la mission.
+
+C'est très simple: il suffit de nommer l'unité en suivant cette nomenclature:
+- le nom doit commencer par `#veafInterpreter["`
+- ensuite on met la commande à exécuter
+- puis on ferme les guillemets et les brackets `"]`
+- on peut ensuite mettre tout ce qu'on veut derrière (pour éviter d'avoir plusieurs unités qui ont le même nom, je conseille d'ajouter un suffixe numérique)
+
+Voilà, rien de compliqué.
+
+Exemples: 
+- un JTAC: je place une jeep (Humvee) sur la carte, et je l'appelle `#veafInterpreter["-jtac, code 1511"]`
+- trois groupes de combat blindés: 
+  - je place un char (T90) sur la carte et je l'appelle `#veafInterpreter["-armor, armor 5, defense 3"] #001`
+  - je place un char (T90) sur la carte et je l'appelle `#veafInterpreter["-armor, armor 5, defense 3"] #002`
+  - je place un char (T90) sur la carte et je l'appelle `#veafInterpreter["-armor, armor 5, defense 3"] #003`
+- un site SA11: je place un lanceur SA-11 sur la carte, et je l'appelle `#veafInterpreter["-sa11"]`
+- un convoi qui fait des allers et retours vers un point arbitraire:
+  - je place une balise (pneu, drapeau) sur la carte et je l'appelle `#veafInterpreter["-point bp_delta"]`
+  - je place un camion sur la carte et je l'appelle `#veafInterpreter["-convoy, defense 2, size 10, armor 3, dest bp_delta, patrol"]`
+- une frappe d'artillerie sur une zone: je place un truc quelconque (pneu, drapeau) sur la carte et je l'appelle `#veafInterpreter["-shell, multiplier 10"]` ; ça va péter de partout !
+
+**Attention - c'est le nom de l'unité qui doit contenir la commande VEAF !!!**
+
+Mes conseils:
+- utiliser une unité adaptée (comme un lanceur SA-11 pour la commande `-sa11`) pour permettre de s'y retrouver dans l'éditeur de mission (icone, range rings, etc.)
+- exploiter cette fonctionnalité pour facilement placer des défenses sur les bases (`-hawk` ou `-patriot` sur les bases alliées, `-sa2` ou autre pour les rouges) 
 
 ## Combat missions (air-air)
 
@@ -140,7 +166,14 @@ TBD
 
 ## Combat zones (air-sol)
 
-TBD
+Une Combat Zone est une zone matérialisée par une trigger zone dans l'éditeur de mission, dont on va enregistrer le contenu au démarrage de la mission, qu'on va intégralement vider (aucune unité de cette zone ne sera présente au lancement de la mission).
+
+Une fois en jeu, dans le menu radio "Combat Zone", on pourra trouver des entrées pour interagir avec la zone de combat, en particulier:
+- la déclencher: toutes les unités placées dans l'éditeur de mission sont spawnées
+- la terminer: toutes les unités spawnées au déclenchement, y compris les carcasses, sont déspawnées
+- obtenir des informations: les coordonnées de la zone, le nombre d'ennemis et d'alliés présents, la météo, etc.
+
+Voir la documentation détaillée [ici](combat_zone.md)
 
 ## FARPs et pistes en herbe
 
