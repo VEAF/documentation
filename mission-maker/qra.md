@@ -76,7 +76,17 @@ Par défaut, si vous avez utilisé le [convertisseur de mission existante][VEAF-
 
 Le principe de configuration est simple.
 
-Tout d'abord on crée un "objet" de type *VeafQRA* en appelant `VeafQRA:new()`. Cet appel renvoie une instance de *VeafQRA*, qu'on peut stocker dans une variable (`local maQra = VeafQRA:new()`) ou utiliser tout de suite avec une (désignation chaînée)[https://fr.wikipedia.org/wiki/D%C3%A9signation_cha%C3%AEn%C3%A9e] (en enchainant les appels aux méthodes de configuration qui renvoient toutes la même instance de *VeafQRA*).
+En premier lieu, il faut initialiser le gestionnaire de QRA, pour que les évènements liés à la prise de contrôle d'un slot dynamique lui soient envoyés (en particulier).
+
+Sans cette étape, les pilotes qui ont utilisé un slot dynamique seront invisibles des QRA !
+
+Pour ce faire, on écrira:
+
+```lua
+veafQraManager.initialize()
+```
+
+Ensuite, pour chaque QRA qu'on souhaite définir, on crée un "objet" de type *VeafQRA* en appelant `VeafQRA:new()`. Cet appel renvoie une instance de *VeafQRA*, qu'on peut stocker dans une variable (`local maQra = VeafQRA:new()`) ou utiliser tout de suite avec une (désignation chaînée)[https://fr.wikipedia.org/wiki/D%C3%A9signation_cha%C3%AEn%C3%A9e] (en enchainant les appels aux méthodes de configuration qui renvoient toutes la même instance de *VeafQRA*).
 
 Exemple de chainage:
 
