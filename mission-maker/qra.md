@@ -170,6 +170,8 @@ On accepte les mêmes valeurs que pour `setCoalition()`
 :setReactOnHelicopters() --Définit si la QRA réagit aux hélicoptères qui entrent dans la zone
 ```
 
+Par défaut, les QRA ne réagissent pas à la présence d'hélicoptères. Si on veut changer ça, il suffit d'utiliser la méthode *setReactOnHelicopters* comme ça: `maQra:setReactOnHelicopters()`.
+
 ```lua
 :setSilent() --Désactive les messages de cette QRA uniquement. VeafQRA.ToggleAllSilence doit être "false" pour que cela ait un effet.
 ```
