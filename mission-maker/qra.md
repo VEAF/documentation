@@ -110,10 +110,18 @@ qraMinevody:setZoneRadius(106680)
 
 L'avantage de la seconde méthode est qu'on peut, plus loin dans le fichier `missionConfig.lua`, utiliser une référence à la variable qu'on a définie pour accéder à l'instance de VeafQRA (par exemple, dans la définition d'un alias, d'une commande "mission maker", ou dans un menu radio).
 
-Vous pouvez utiliser l'option suivante pour activer (false) ou désactiver (true) l'envoi de messages par la QRA:
+## Messages
+
+Par défaut, les QRA envoient des messages pour signaler les actions déclenchées.
+
+Vous pouvez utiliser la fonction globale `VeafQRA.ToggleAllSilence` pour faire taire les QRA (true) ou les laisser parler (false). Exemples :
 
 ```lua
-VeafQRA.ToggleAllSilence(*false or true*) --Activera tous les messages QRA visibles par le joueur si l'argument est "true" et désactivera tous les messages QRA si l'argument est "false".
+VeafQRA.ToggleAllSilence(true) --désactive tous les messages QRA.
+```
+
+```lua
+VeafQRA.ToggleAllSilence(false) --réactive tous les messages QRA.
 ```
 
 ## Structure d'une déclaration de QRA
