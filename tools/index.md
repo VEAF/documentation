@@ -1,7 +1,3 @@
----
-description: Documentation des outils VEAF pour les créateurs de mission et les administrateurs de serveur
----
-
 # Documentation des outils VEAF pour les créateurs de mission et les administrateurs de serveur
 
 Navigation: [Site de documentation VEAF - page principale](../index.md)
