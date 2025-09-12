@@ -1,6 +1,8 @@
 ---
-description: L'application NodeJS *veaf-tools*
+description: Outil principal permettant d'interagir avec des missions DCS
 ---
+
+# L'application NodeJS *veaf-tools*
 
 Navigation: [Site de documentation VEAF - page principale](../index.md) > [Outils de Création de Mission](./index.md)
 

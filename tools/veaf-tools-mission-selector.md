@@ -1,6 +1,8 @@
 ---
-description: L'outil "Sélecteur de Mission"
+description: Permet de sélectionner une mission sur un serveur, en se basant sur un calendrier
 ---
+
+# L'outil "Sélecteur de Mission"
 
 Navigation: [Site de documentation VEAF - page principale](../index.md) > [Outils de Création de Mission](./index.md) > [Application *veaf-tools*](./veaf-tools.md)
 

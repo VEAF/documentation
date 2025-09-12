@@ -1,3 +1,7 @@
+---
+description: Des outils qui facilitent la création de mission DCS utilisant les scripts VEAF
+---
+
 # Documentation des outils VEAF
 
 Navigation: [Site de documentation VEAF - page principale](../index.md)

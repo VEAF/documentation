@@ -1,7 +1,8 @@
 ---
-title: Site de documentation des outils et scripts VEAF
-description: Documentation des outils et scripts VEAF pour les créateurs de mission, utilisateurs et programmeurs
+description: Outils et scripts VEAF (VEAF Mission Creation Tools ou VMCT) pour les créateurs de mission, utilisateurs et programmeurs
 ---
+
+# Site de documentation des outils et scripts VEAF
 
 Navigation: vous êtes sur la page principale
 
