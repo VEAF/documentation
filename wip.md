@@ -1,0 +1,30 @@
+---
+title: Site de documentation des outils et scripts VEAF - édition en cours
+description: Documentation des outils et scripts VEAF pour les créateurs de mission, utilisateurs et programmeurs - édition en cours
+---
+
+Navigation: [Site de documentation VEAF - page principale](../index.md)
+
+-----------------------------
+
+🚧 **TRAVAUX EN COURS** 🚧
+
+La documentation est en train d'être retravaillée, morceau par morceau.
+
+Malheureusement, la page que vous souhaitez consulter n'est pas encore disponible.
+
+Nous vous invitons à nous contacter pour nous demander de mettre un effort particulier sur cette page:
+
+- contacter **Zip** sur [Discord][Zip on Discord]
+- contacter **Zip** sur [GitHub][Zip on Github]
+- poster sur le [forum de la VEAF][VEAF forum]
+- rejoindre le [Discord de la VEAF][VEAF Discord]
+
+En attendant, vous pouvez consulter l'[ancienne documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
+
+-----------------------------
+
+[VEAF Discord]: https://www.veaf.org/discord
+[Zip on Github]: https://github.com/davidp57
+[Zip on Discord]: https://discordapp.com/users/421317390807203850
+[VEAF forum]: https://www.veaf.org/forum

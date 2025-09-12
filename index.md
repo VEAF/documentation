@@ -1,111 +1,125 @@
 ---
-title: VEAF tools and scripts documentation site
-description: VEAF tools and scripts documentation for mission makers, users and programmers
+title: Site de documentation des outils et scripts VEAF
+description: Documentation des outils et scripts VEAF pour les créateurs de mission, utilisateurs et programmeurs
 ---
 
-Navigation: you're on the main page
+Navigation: vous êtes sur la page principale
 
 -----------------------------
 
-🚧 **WORK IN PROGRESS** 🚧
+🚧 **TRAVAUX EN COURS** 🚧
 
-The documentation is being reworked, piece by piece. 
-In the meantime, you can browse the [old documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
-
------------------------------
-
-# Table of Contents
-
-- set up and use the VEAF tools (*for all*) - [here](./tools/index.md)
-- setup a VEAF mission-maker environment (*for mission makers*) - [here](./environment/index.md)
-- discover the VEAF mission-maker features (*for mission makers*) - [here](./mission-maker/index.md)
-- learn how to program the scripts in Lua (*for programmers*) - [here](./programmer/index.md)
-
-# Introduction
-
-The VEAF Mission Creation Tools provides tools and scripts designed to easily create, share and maintain dynamic missions.
-
-They regroup
-
-* tools to manipulate DCS mission files and servers
-* the VEAF mission scripts (organized in modules)
-* the VEAF server hooks
-* some of the community scripts, sometimes edited by VEAF (e.g., CTLD, MiST)
-* an easy mission creation, edition and publication workflow
-* tools to support this workflow, including a converter that build a dynamic mission from an existing static one
-* this documentation
-
-Our GitHub repositories:
-
-* the [main][VEAF-Mission-Creation-Tools-repository] repository contains all the sources and the documentation base
-* the [mission converter][VEAF-mission-converter-repository] can be forked or downloaded to inject the scripts and tools into an existing mission
-* the [demo mission][VEAF-demo-mission-repository] (again, fork or download) is a small, simple mission that uses some of the latest features of the tools
-* the VEAF [Caucasus training mission][VEAF-Open-Training-Mission-repository] (fork or download) is a good working example of the scripts in a complex mission
-* the VEAF [multiplayer mission repository][VEAF-Multiplayer-Missions-repository] contains mission that we played with the VEAF (some may be old and deprecated!)
-
-# What do I need to start?
-
-You'll need to set up an environment, on your PC, with specific (free) software.
-
-Read this [page](./environment/index.md) for more information.
-
-# What tools are there and how do I use them?
-
-The VEAF Mission Creation Tools provides a lot of tools and scripts.
-
-Most of them are meant to be used in the mission build pipeline (i.e., by a mission maker working on a mission, read the [mission maker documentation](./mission-maker/index.md)), but some can be used as standalone tools:
-- the [LUA dictionary normalizer](./tools/lua_dictionary_normalizer.md) which makes comparing LUA files easier
-- the [Weather Injector](./tools/veaf-tools-weather-injector.md) which can generate multiple mission files with different starting times and weather conditions from a template
-- the [Mission Selector](./tools/veaf-tools-mission-selector.md) which selects a starting mission for your dedicated server from a list of missions and a schedule.
-
-# How do I use the VEAF scripts in a mission I want to design?
-
-Please read the [mission maker documentation](./mission-maker/index.md).
-
-For those looking for a quick start, fork or download the [mission converter](https://github.com/VEAF/VEAF-mission-converter) and follow the instructions of the `readme.md` file. You'll learn how to can use the VEAF Mission Creation Tools in your own existing mission.
-
-You can also fork or download the [demo mission](https://github.com/VEAF/VEAF-Demo-Mission) to see what can be done (usually only the latest features are demonstrated here), and the [VEAF Caucasus training mission](https://github.com/VEAF/VEAF-Open-Training-Mission) which is a very complex, open and dynamic training mission that uses a lot of the features.
-
-# How do I contribute to this wonderful repository?
-
-First, thank you!
-
-We always welcome help and new ideas.
-
-Please always use branches and pull requests! Start with forking the VEAF-Mission-Creation-Tools [repository](https://github.com/VEAF/VEAF-Mission-Creation-Tools), create a branch, hack away and publish your work.
-
-# I want to help maintain the documentation!
-
-The easiest way of doing this is by editing the files directly on the Github website.
-
-But you can also fork the [main][VEAF-Mission-Creation-Tools-repository] repository.
-
-# I need to add new features or correct bugs in the scripts!
-
-Please read the [programmer documentation](./programmer/index.md).
-
-# Contacts
+La documentation est en train d'être retravaillée, morceau par morceau.
+En attendant, vous pouvez consulter l'[ancienne documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
 
 -----------------------------
 
-Made and maintained by the Virtual European Air Force, a French DCS pilot community.
+## Table des matières du site complet
 
-[![VEAF-logo]][VEAF website]
-[![Badge-Discord]][VEAF Discord]
+### Par rôle
 
------------------------------
+En fonction de votre rôle, vous pourrez trouver une page dédiée qui résume tous les éléments intéressants ici:
 
-If you need help or you want to suggest something, you can
+- créateur de mission - [ici](./mission-maker/index.md)
+- pilote - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
+- administrateur de serveur - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
+- développeur courageurs - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
 
-* contact **Zip** on [GitHub][Zip on Github] or on [Discord][Zip on Discord]
-* go to the [VEAF website]
-* post on the [VEAF forum]
-* join the [VEAF Discord]
+### Par sujet
 
+- installer et utiliser les outils VEAF (*pour tous*) - [ici](./tools/index.md)
+- configurer un environnement de créateur de mission VEAF (*pour créateurs de missions*) - [ici](./environment/index.md)
+- découvrir les fonctionnalités pour créateurs de mission (*pour créateurs de missions*) - [ici](./mission-maker/index.md)
+- apprendre à programmer les scripts en Lua (*pour programmeurs*) - [ici](./programmer/index.md)
+
+## Table des matières de cette page
+
+- [Introduction](#introduction)
+- [De quoi ai-je besoin pour commencer ?](#de-quoi-ai-je-besoin-pour-commencer-)
+- [Quels outils existent et comment les utiliser ?](#quels-outils-existent-et-comment-les-utiliser-)
+- [Comment utiliser les scripts VEAF dans une mission que je veux concevoir ?](#comment-utiliser-les-scripts-veaf-dans-une-mission-que-je-veux-concevoir-)
+- [Comment contribuer à ce merveilleux dépôt ?](#comment-contribuer-à-ce-merveilleux-dépôt-)
+- [Je veux aider à maintenir la documentation](#je-veux-aider-à-maintenir-la-documentation)
+- [Je dois ajouter de nouvelles fonctionnalités ou corriger des bugs dans les scripts](#je-dois-ajouter-de-nouvelles-fonctionnalités-ou-corriger-des-bugs-dans-les-scripts)
+- [Contacts](#contacts)
+
+## Introduction
+
+Les Outils VEAF pour la Création de Mission (VEAF Mission Creation Tools ou VMCT) ont été écrits et sont maintenus par la VEAF (Virtual European Air Force).
+
+Ils sont composés d'outils et de scripts conçus pour créer, partager et maintenir facilement des missions dynamiques:
+
+<!--- TODO ajouter des liens directs dans la liste ci-dessous quand tout sera traduit -->
+
+- des outils pour manipuler les fichiers de mission DCS et les serveurs
+- les scripts de mission VEAF (organisés en modules)
+- les hooks serveur VEAF
+- certains scripts communautaires, parfois édités par VEAF (ex. CTLD, MiST)
+- un flux de travail simple pour la création, l'édition et la publication de missions
+- des outils pour supporter ce flux, y compris un convertisseur qui génère une mission dynamique à partir d'une mission statique existante
+- cette documentation
+
+Nos dépôts GitHub :
+
+- le [dépôt principal][VEAF-Mission-Creation-Tools-repository] contient toutes les sources et la base de documentation
+- le [convertisseur de missions][VEAF-mission-converter-repository] peut être forké ou téléchargé pour injecter les scripts et outils dans une mission existante
+- la [mission démo][VEAF-demo-mission-repository] (fork ou téléchargement) est une petite mission simple qui utilise certaines des dernières fonctionnalités des outils
+- la mission d'entraînement VEAF [Caucasus training mission][VEAF-Open-Training-Mission-repository] (fork ou téléchargement) est un bon exemple de travail des scripts dans une mission complexe
+- le [dépôt de missions multijoueurs][VEAF-Multiplayer-Missions-repository] contient des missions avec lesquelles nous avons joué (certaines peuvent être anciennes et obsolètes)
+
+## De quoi ai-je besoin pour commencer ?
+
+Vous devrez configurer un environnement sur votre PC avec des logiciels spécifiques (gratuits).
+
+Lisez cette [page](./environment/index.md) pour plus d'informations.
+
+## Quels outils existent et comment les utiliser ?
+
+Les Outils de Création de Missions VEAF offrent de nombreux outils et scripts.
+
+La plupart sont destinés à être utilisés dans le pipeline de création de mission (c.-à-d. par un créateur de mission travaillant sur une mission, lire la [documentation pour créateurs de mission](./mission-maker/index.md)), mais certains peuvent être utilisés comme outils autonomes :
+
+- le normaliseur de dictionnaires LUA [En cours d'écriture](./wip.md) <!--- TODO écrire la page --> qui facilite la comparaison des fichiers LUA
+- l'[Injecteur Météo](./tools/veaf-tools-weather-injector.md) qui peut générer plusieurs fichiers de mission avec des heures de départ et conditions météorologiques différentes à partir d'un modèle
+- le [Sélecteur de Mission](./tools/veaf-tools-mission-selector.md) qui choisit une mission de départ pour votre serveur dédié à partir d'une liste de missions et d'un planning.
+
+## Comment utiliser les scripts VEAF dans une mission que je veux concevoir ?
+
+Veuillez lire la [documentation pour créateurs de mission](./mission-maker/index.md).
+
+Pour un démarrage rapide, forkez ou téléchargez le [convertisseur de missions](https://github.com/VEAF/VEAF-mission-converter) et suivez les instructions du fichier `readme.md`. Vous apprendrez comment utiliser les Outils de Création de Missions VEAF dans votre propre mission existante.
+
+Vous pouvez également "forker" ou télécharger la [mission démo](https://github.com/VEAF/VEAF-Demo-Mission) pour voir ce qui est possible (généralement seules les fonctionnalités récentes y sont démontrées), ainsi que la [mission d'entraînement VEAF Caucasus](https://github.com/VEAF/VEAF-Open-Training-Mission) qui est une mission d'entraînement très complète, ouverte et dynamique utilisant de nombreuses fonctionnalités.
+
+## Comment contribuer à ce merveilleux dépôt ?
+
+D'abord, merci !
+
+Nous accueillons toujours de l'aide et de nouvelles idées.
+
+Veuillez toujours utiliser des branches et des pull requests ! Commencez par forker le dépôt VEAF-Mission-Creation-Tools [principal](https://github.com/VEAF/VEAF-Mission-Creation-Tools), créez une branche, modifiez et publiez votre travail.
+
+## Je veux aider à maintenir la documentation
+
+La façon la plus simple est d'éditer les fichiers directement sur le site GitHub.
+
+Mais vous pouvez aussi forker le [dépôt principal][VEAF-Mission-Creation-Tools-repository].
+
+## Je dois ajouter de nouvelles fonctionnalités ou corriger des bugs dans les scripts
+
+Veuillez lire la [documentation pour programmeurs](./programmer/index.md).
+
+## Contacts
+
+Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
+
+- contacter **Zip** sur [GitHub][Zip on Github] ou sur [Discord][Zip on Discord]
+- aller consulter le [site de la VEAF][VEAF website]
+- poster sur le [forum de la VEAF][VEAF forum]
+- rejoindre le [Discord de la VEAF][VEAF Discord]
 
 [Badge-Discord]: https://img.shields.io/discord/471061487662792715?label=VEAF%20Discord&style=for-the-badge
-[VEAF-logo]: ./images/logo.png
-
+[VEAF-logo]: ../images/logo.png
 
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57
@@ -116,5 +130,5 @@ If you need help or you want to suggest something, you can
 [VEAF-Mission-Creation-Tools-repository]: https://github.com/VEAF/VEAF-Mission-Creation-Tools
 [VEAF-mission-converter-repository]:https://github.com/VEAF/VEAF-mission-converter
 [VEAF-demo-mission-repository]: https://github.com/VEAF/VEAF-Demo-Mission
-[VEAF-Open-Training-Mission-repository]:https://github.com/VEAF/VEAF-Open-Training-Mission
+[VEAF-Open-Training-Mission-repository]: https://github.com/VEAF/VEAF-Open-Training-Mission
 [VEAF-Multiplayer-Missions-repository]: https://github.com/VEAF/VEAF-Multiplayer-Missions

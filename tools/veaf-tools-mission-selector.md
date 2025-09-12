@@ -1,133 +1,121 @@
 ---
-description: The Mission Selector command
+description: L'outil "Sélecteur de Mission"
 ---
 
-Navigation: [VEAF documentation site - main page](../index.md) > [Mission Creation Tools](./index.md) > [*veaf-tools* application](./veaf-tools.md)
+Navigation: [Site de documentation VEAF - page principale](../index.md) > [Outils de Création de Mission](./index.md) > [Application *veaf-tools*](./veaf-tools.md)
 
 -----------------------------
 
-🚧 **WORK IN PROGRESS** 🚧
+🚧 **TRAVAUX EN COURS** 🚧
 
-The documentation is being reworked, piece by piece. 
-In the meantime, you can browse the [old documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
+La documentation est en cours de révision, partie par partie.
+En attendant, vous pouvez consulter l'[ancienne documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
 
 -----------------------------
 
-# Table of Contents
+# Table des matières
 
-- use the Mission Selector - [here](#using-the-mission-selector)
-- prepare the server settings file - [here](#default-server-settings)
-- setup the schedule definition file - [here](#schedule-definition-file)
-- use the Google Sheet helper - [here](#google-sheet-helper)
+- utiliser le Sélecteur de Mission - [voir ici](#utiliser-le-sélecteur-de-mission)
+- préparer le fichier de configuration du serveur - [voir ici](#configuration-serveur-par-défaut)
+- configurer le fichier de définition du planning - [voir ici](#fichier-de-définition-du-planning)
+- utiliser l'assistant Google Sheet - [voir ici](#assistant-google-sheet)
 
 # Introduction
 
-The Mission selector is part of the VEAF Tools application. Read the installation and description in the global [VEAF Tools application documentation](./veaf-tools.md).
+Le Sélecteur de Mission fait partie de l'application VEAF Tools. Consultez l'installation et la description dans la [documentation générale de l'application VEAF Tools](./veaf-tools.md).
 
-# Using the Mission Selector
+# Utiliser le Sélecteur de Mission
 
-The goal of the mission selector is to choose a mission based on a schedule that you'll provide, and set up your server to start with the selected mission.
+Le but du sélecteur de mission est de choisir une mission basée sur un planning que vous fournirez, et de configurer votre serveur pour démarrer avec la mission sélectionnée.
 
-Therefore, some prerequisites are needed:
-- you need to have a [dedicated DCS server](https://www.digitalcombatsimulator.com/en/downloads/world/server_beta/) configured on your machine
-- you need a list of missions that you want to use (a library of sorts); you can use the [Weather injector](./veaf-tools-weather-injector.md#using-the-weather-injector) to generate missions with different weather conditions based on a single template.
-- you need a schedule that defines which mission to run at which time; you should think about this in advance! Here's a [Google Sheet][veaf-mission-selector-helper-google-sheet] that will help you to define your schedule, generate the schedule definition file, and construct the DCS server mission list.
+Par conséquent, certains prérequis sont nécessaires :
 
-The way it works is quite simple: you set up a `serverSettings-default.lua` file. This file is the same as the classic `serverSettings.lua`; it contains the list of all your existing missions (it can easily become huge, with the all the weather and starting conditions!) 
+- vous devez avoir un [serveur DCS dédié](https://www.digitalcombatsimulator.com/en/downloads/world/server_beta/) configuré sur votre machine
+- vous avez besoin d'une liste de missions que vous voulez utiliser (une sorte de bibliothèque) ; vous pouvez utiliser l'[Injecteur Météo](./veaf-tools-weather-injector.md#using-the-weather-injector) pour générer des missions avec différentes conditions météorologiques basées sur un seul modèle
+- vous avez besoin d'un planning qui définit quelle mission exécuter à quel moment ; vous devriez y réfléchir à l'avance ! Voici un [Google Sheet][veaf-mission-selector-helper-google-sheet] qui vous aidera à définir votre planning, générer le fichier de définition du planning, et construire la liste des missions du serveur DCS.
 
-The Mission selector tool reads the schedule, decide which mission it will select, and searches for it in the `serverSettings-default.lua` file. If it finds it, it creates a `serverSettings.lua` file and sets the `current` and `listStartIndex` properties set to the correct index for the selected mission; the next time the server starts, it will automatically load this mission.
+Le fonctionnement est assez simple : vous configurez un fichier `serverSettings-default.lua`. Ce fichier est identique au classique `serverSettings.lua` ; il contient la liste de toutes vos missions existantes (il peut facilement devenir énorme, avec toutes les conditions météo et de départ !)
 
-## Command line options
+L'outil Sélecteur de Mission lit le planning, décide quelle mission il va sélectionner, et la recherche dans le fichier `serverSettings-default.lua`. S'il la trouve, il crée un fichier `serverSettings.lua` avec les propriétés `current` et `listStartIndex` définies sur l'index correct pour la mission sélectionnée ; la prochaine fois que le serveur démarre, il chargera automatiquement cette mission.
 
-The Mission selector tool is designed to be launched from the command line.
+## Options en ligne de commande
 
-It's actually a specific command of the *veaf-tools* application.
+L'outil Sélecteur de Mission est conçu pour être lancé depuis la ligne de commande.
+
+C'est en fait une commande spécifique de l'application *veaf-tools*.
 
 ```cmd
 veaf-tools select-mission <source> <target> <configuration>
 ```
 
-### Mandatory command-line options
+### Options obligatoires en ligne de commande
 
-The following command-line options are mandatory; don't use the option name, they're positional arguments (i.e., you must specify them in the order they're listed here):
+Les options suivantes sont obligatoires ; n'utilisez pas le nom de l'option, ce sont des arguments positionnels (c'est-à-dire que vous devez les spécifier dans l'ordre où ils sont listés ici) :
 
-- `--source`: the path to the default server settings file. This file will be copied to the target file, and the `current` and `listStartIndex` properties will be updated. See [Default server settings](#default-server-settings).
+- `--source` : le chemin vers le fichier de configuration serveur par défaut. Ce fichier sera copié vers le fichier cible, et les propriétés `current` et `listStartIndex` seront mises à jour. Voir [Configuration serveur par défaut](#configuration-serveur-par-défaut).
 
-- `--target`: the path to the actual server settings file that will be used by the server. This file will be created by the tool.
+- `--target` : le chemin vers le fichier de configuration serveur qui sera utilisé par le serveur. Ce fichier sera créé par l'outil.
 
-- `--configuration`: the path to the schedule configuration file. This file will be read by the tool to determine which mission to select. See [Schedule definition file](#schedule-definition-file).
+- `--configuration` : le chemin vers le fichier de configuration du planning. Ce fichier sera lu par l'outil pour déterminer quelle mission sélectionner. Voir [Fichier de définition du planning](#fichier-de-définition-du-planning).
 
-Example:
+Exemple :
 
 ```cmd
 veaf-tools select-mission serverSettings-default.lua serverSettings.lua schedule.json
 ```
 
-### Optional command-line options
+### Options facultatives en ligne de commande
 
-The following command-line options are optional, and are available for both the `inject` and `injectall` commands:
+Les options suivantes sont facultatives et sont disponibles pour les commandes `inject` et `injectall` :
 
-- `--verbose`: if set, the tool will output more information about what it's doing.
+- `--verbose` : si défini, l'outil affichera plus d'informations sur ce qu'il fait.
 
-- `--quiet`: if set, the tool will output less information about what it's doing. 
+- `--quiet` : si défini, l'outil affichera moins d'informations sur ce qu'il fait.
 
-## Default server settings
+## Configuration serveur par défaut
 
-As we said, this is a copy of the main `serverSettings.lua` file, with all the missions that you want to use. [Here][veaf-mission-selector-helper-example-serversettings] is an example of such a file.
+Comme nous l'avons dit, c'est une copie du fichier principal `serverSettings.lua`, avec toutes les missions que vous voulez utiliser. [Voir ici][veaf-mission-selector-helper-example-serversettings] pour un exemple d'un tel fichier.
 
-It's very important that all the available missions are listed, and that the indexes of the missions array is correct. You can use the [Google Sheet helper][veaf-mission-selector-helper-google-sheet] tab "Mission list helper" to help with renumbering the missions.
+Il est très important que toutes les missions disponibles soient listées, et que les index du tableau des missions soient corrects. Vous pouvez utiliser l'[assistant Google Sheet][veaf-mission-selector-helper-google-sheet] onglet "Mission list helper" pour aider à renuméroter les missions.
 
-## Schedule definition file
+## Fichier de définition du planning
 
-The schedule definition file is a JSON file that defines the schedule of your missions. [Here][veaf-mission-selector-helper-example-cron] is an example of such a file.
+Le fichier de définition du planning est un fichier JSON qui définit le planning de vos missions. [Voir ici][veaf-mission-selector-helper-example-cron] pour un exemple d'un tel fichier.
 
-It defines several items:
+Il définit plusieurs éléments :
 
-- the server name, in the `server` element; it's not used.
-- the default mission, in the `default` element; it's used to select a mission if no other mission corresponds to the current time in the schedule.
-- the `moments` collection; this is the heart of the system; we'll describe this below.
+- le nom du serveur, dans l'élément `server` ; il n'est pas utilisé.
+- la mission par défaut, dans l'élément `default` ; elle est utilisée pour sélectionner une mission si aucune autre mission ne correspond à l'heure actuelle dans le planning.
+- la collection `moments` ; c'est le cœur du système ; nous allons le décrire ci-dessous.
 
-Each moment in the `moments` collection defines a mission to run at a specific time. It has the following elements:
+Chaque moment dans la collection `moments` définit une mission à exécuter à un moment précis. Il a les éléments suivants :
 
-- `//comment`: optional; a comment to describe the moment
-- `month`: the month of the year, from 1 to 12; you can use `null` to indicate every month, or simply omit the element.
-- `dayOfMonth`: the day of the month, from 1 to 31; you can use `null` to indicate every day, or simply omit the element.
-- `dayOfWeek`: the day of the week, from 1 to 7, or as a string (English or French, either the complete day name or the first 3 letters); you can use `null` to indicate every day, or simply omit the element.
-- `hour`: the hour of the day, from 0 to 23, or as a string ("morning", "afternoon", "day", "night", "matin", "après-midi", "jour", "nuit"); you can use `null` to indicate all hours, or simply omit the element.
-- `missions`: an array of missions to choose from; the mission selector will randomly choose one of them
-- `mission`: a single mission; the mission selector will use this mission
+- `//comment` : facultatif ; un commentaire pour décrire le moment
+- `month` : le mois de l'année, de 1 à 12 ; vous pouvez utiliser `null` pour indiquer tous les mois, ou simplement omettre l'élément.
+- `dayOfMonth` : le jour du mois, de 1 à 31 ; vous pouvez utiliser `null` pour indiquer tous les jours, ou simplement omettre l'élément.
+- `dayOfWeek` : le jour de la semaine, de 1 à 7, ou en tant que chaîne (anglais ou français, soit le nom complet du jour soit les 3 premières lettres) ; vous pouvez utiliser `null` pour indiquer tous les jours, ou simplement omettre l'élément.
+- `hour` : l'heure du jour, de 0 à 23, ou en tant que chaîne ("morning", "afternoon", "day", "night", "matin", "après-midi", "jour", "nuit") ; vous pouvez utiliser `null` pour indiquer toutes les heures, ou simplement omettre l'élément.
+- `missions` : un tableau de missions parmi lesquelles choisir ; le sélecteur de mission en choisira une au hasard
+- `mission` : une seule mission ; le sélecteur de mission utilisera cette mission
 
-## Google sheet helper
+## Assistant Google Sheet
 
-We made this [handy Google Sheet][veaf-mission-selector-helper-google-sheet] to help you with the schedule definition file. It has 3 tabs:
-- `Calendar`: lets you define the schedule of your missions by adding a line for each schedule.
-- `Mission selector cron.json helper`: here the serverCron.json file will be generated from the data entered in the "Calendar" tab. You can copy/paste the content of the C-column in your schedule definition file (please remove the extra comma at the end of the last "moment" row)
-- `Mission list helper`: with this tool, you can easily renumber a modified list of missions in the `serverSettings-default.lua` file. Start by pasting your existing mission list lua code (even if it's not numbered correctly) in the A column; you can then copy/paste the content of the C-column in your `serverSettings-default.lua` file, it's renumbered correctly.`
+Nous avons créé cet [utile Google Sheet][veaf-mission-selector-helper-google-sheet] pour vous aider avec le fichier de définition du planning. Il a 3 onglets :
 
-Here's [an example][veaf-mission-selector-helper-example-cron-generated] of a generated schedule definition file.
+- `Calendar` : vous permet de définir le planning de vos missions en ajoutant une ligne pour chaque horaire.
+- `Mission selector cron.json helper` : ici le fichier serverCron.json sera généré à partir des données saisies dans l'onglet "Calendar". Vous pouvez copier/coller le contenu de la colonne C dans votre fichier de définition du planning (veuillez supprimer la virgule supplémentaire à la fin de la dernière ligne "moment")
+- `Mission list helper` : avec cet outil, vous pouvez facilement renuméroter une liste modifiée de missions dans le fichier `serverSettings-default.lua`. Commencez par coller votre code lua de liste de missions existante (même si elle n'est pas numérotée correctement) dans la colonne A ; vous pouvez ensuite copier/coller le contenu de la colonne C dans votre fichier `serverSettings-default.lua`, il est renuméroté correctement.
 
-# Contacts
+Voici [un exemple][veaf-mission-selector-helper-example-cron-generated] de fichier de définition du planning généré.
 
------------------------------
+## Contacts
 
-Made and maintained by the Virtual European Air Force, a French DCS pilot community.
+Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-[![VEAF-logo]][VEAF website]
-[![Badge-Discord]][VEAF Discord]
-
------------------------------
-
-If you need help or you want to suggest something, you can
-
-* contact **Zip** on [GitHub][Zip on Github] or on [Discord][Zip on Discord]
-* go to the [VEAF website]
-* post on the [VEAF forum]
-* join the [VEAF Discord]
-
-
-[Badge-Discord]: https://img.shields.io/discord/471061487662792715?label=VEAF%20Discord&style=for-the-badge
-[VEAF-logo]: ../images/logo.png
-
+- contacter **Zip** sur [GitHub][Zip on Github] ou sur [Discord][Zip on Discord]
+- aller consulter le [site de la VEAF][VEAF website]
+- poster sur le [forum de la VEAF][VEAF forum]
+- rejoindre le [Discord de la VEAF][VEAF Discord]
 
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57

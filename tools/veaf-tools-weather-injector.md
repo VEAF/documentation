@@ -1,132 +1,132 @@
 ---
-description: The Weather Injector command
+description: L'outil "Injecteur de Météo et de Moments"
 ---
 
-Navigation: [VEAF documentation site - main page](../index.md) > [Mission Creation Tools](./index.md) > [*veaf-tools* application](./veaf-tools.md)
+Navigation: [Site de documentation VEAF - page principale](../index.md) > [Outils de Création de Mission](./index.md) > [Application *veaf-tools*](./veaf-tools.md)
 
 -----------------------------
 
-🚧 **WORK IN PROGRESS** 🚧
+🚧 **TRAVAUX EN COURS** 🚧
 
-The documentation is being reworked, piece by piece. 
-In the meantime, you can browse the [old documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
+La documentation est en cours de révision, partie par partie.
+En attendant, vous pouvez consulter l'[ancienne documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
 
 -----------------------------
 
-# Table of Contents
+# Table des matières
 
-- use the Weather Injector - [here](#using-the-weather-injector)
-- create the versions file - [here](#versions-file)
-- setup the configuration file - [here](#configuration-file)
-- example of real-world weather - [here](#injecting-real-world-weather)
-- example of predefined weather - [here](#injecting-a-predefined-weather)
+- utiliser l'Injecteur Météo - [voir ici](#utiliser-linjecteur-météo)
+- créer le fichier de versions - [voir ici](#fichier-de-versions)
+- configurer le fichier de configuration - [voir ici](#fichier-de-configuration)
+- exemple de météo réelle - [voir ici](#injection-de-météo-réelle)
+- exemple de météo prédéfinie - [voir ici](#injection-dune-météo-prédéfinie)
 
 # Introduction
 
-The Weather injector is part of the VEAF Tools application. Read the installation and description in the global [VEAF Tools application documentation](./veaf-tools.md).
+L'Injecteur Météo fait partie de l'application VEAF Tools. Consultez l'installation et la description dans la [documentation générale de l'application VEAF Tools](./veaf-tools.md).
 
-# Using the Weather injector
+# Utiliser l'Injecteur Météo
 
-The Weather injector is actually two commands of the *veaf-tools* application.
+L'Injecteur Météo est en fait composé de deux commandes de l'application *veaf-tools*.
 
-The `inject` command will inject the weather in the mission file you specify, and create a new mission file with the weather and starting conditions you specified in the command-line options.
+La commande `inject` injectera la météo dans le fichier de mission que vous spécifiez, et créera un nouveau fichier de mission avec la météo et les conditions de départ que vous avez spécifiées dans les options de ligne de commande.
 
-Type `veaf-tools inject --help` to get help:
+Tapez `veaf-tools inject --help` pour obtenir de l'aide :
 
 [![veaftools-inject-options]][veaftools-inject-options]
 
-The `injectall` command will read a versions file containing several weather and starting conditions, and inject them in the source mission file, creating a collection of target mission files.
+La commande `injectall` lira un fichier de versions contenant plusieurs conditions météorologiques et de départ, et les injectera dans le fichier de mission source, créant une collection de fichiers de mission cibles.
 
-Type `veaf-tools injectall --help` to get help:
+Tapez `veaf-tools injectall --help` pour obtenir de l'aide :
 
 [![veaftools-injectall-options]][veaftools-injectall-options]
 
 ## Options
 
-### Mandatory command-line options
+### Options obligatoires en ligne de commande
 
-The following command-line options are mandatory for both the `inject` and `injectall` commands; don't use the option name, they're positional arguments (i.e., you must specify them in the order they're listed here):
+Les options suivantes sont obligatoires pour les commandes `inject` et `injectall` ; n'utilisez pas le nom de l'option, ce sont des arguments positionnels (c'est-à-dire que vous devez les spécifier dans l'ordre où ils sont listés ici) :
 
-- `--source`: the path to the mission file to inject the weather in.
+- `--source` : le chemin vers le fichier de mission dans lequel injecter la météo.
 
-- `--target`: the path to the mission file to create with the injected weather. With the `injectall` command, "${version}" will be replaced by the name of the version being generated.
+- `--target` : le chemin vers le fichier de mission à créer avec la météo injectée. Avec la commande `injectall`, "${version}" sera remplacé par le nom de la version en cours de génération.
 
-Additionally, the `injectall` command must have the `--configuration` option that points to the versions configuration file. Again, this is a positional argument, so don't use the option name.
+De plus, la commande `injectall` doit avoir l'option `--configuration` qui pointe vers le fichier de configuration des versions. Encore une fois, c'est un argument positionnel, donc n'utilisez pas le nom de l'option.
 
-Example:
+Exemple :
 
 ```cmd
 veaf-tools inject source.miz target.miz 
 ```
 
-or
+ou
 
 ```cmd
 veaf-tools injectall source.miz target-${version}.miz versions.json
 ```
 
-### Optional command-line options
+### Options facultatives en ligne de commande
 
-The following command-line options are optional, and are available for both the `inject` and `injectall` commands:
+Les options suivantes sont facultatives et sont disponibles pour les commandes `inject` et `injectall` :
 
-- `--verbose`: if set, the tool will output more information about what it's doing.
+- `--verbose` : si défini, l'outil affichera plus d'informations sur ce qu'il fait.
 
-- `--quiet`: if set, the tool will output less information about what it's doing. 
+- `--quiet` : si défini, l'outil affichera moins d'informations sur ce qu'il fait.
 
-- `--nocache`: if set, the tool will not use the cache for the weather files. This is useful if you want to force the tool to fetch the weather from the CheckWX API each time it runs.
+- `--nocache` : si défini, l'outil n'utilisera pas le cache pour les fichiers météo. C'est utile si vous voulez forcer l'outil à récupérer la météo depuis l'API CheckWX à chaque exécution.
 
-### Common options
+### Options communes
 
-The `injectall` command eventually calls the same code as the `inject` command to inject the weather into a target mission file, with the options defined in each target of the configuration file. 
+La commande `injectall` finit par appeler le même code que la commande `inject` pour injecter la météo dans un fichier de mission cible, avec les options définies dans chaque cible du fichier de configuration.
 
-Therefore, all the options that can be set in each target of the configuration file for the `injectall` command, can also be set as command-line options for the `inject` command.
+Par conséquent, toutes les options qui peuvent être définies dans chaque cible du fichier de configuration pour la commande `injectall` peuvent aussi être définies comme options en ligne de commande pour la commande `inject`.
 
-Here are the available options, with each time the command-line option followed by the corresponding target option:
+Voici les options disponibles, avec à chaque fois l'option en ligne de commande suivie de l'option cible correspondante :
 
-- `--real`, `realweather`: if set, the weather will be fetched from the real world using CheckWX (see ["Injecting real world weather"](#injecting-real-world-weather)).
+- `--real`, `realweather` : si défini, la météo sera récupérée du monde réel via CheckWX (voir ["Injection de météo réelle"](#injection-de-météo-réelle)).
 
-- `--clearsky`, `clearsky`: if set, and if real-world weather is fetched, the cloud cover will be limited to three octas. This allows for real weather, but clear enough for Close Air Support.
+- `--clearsky`, `clearsky` : si défini, et si la météo du monde réel est récupérée, la couverture nuageuse sera limitée à trois octas. Cela permet d'avoir une météo réelle, mais assez claire pour l'Appui Aérien Rapproché.
 
-- `--metar`, `metar`: if set to a valid [METAR](https://en.wikipedia.org/wiki/METAR), the weather will be generated from the parsed METAR (e.g., *UG27 221130Z 04515KT +SHRA BKN008 OVC024 Q1006 NOSIG*)
+- `--metar`, `metar` : si défini avec un [METAR](https://fr.wikipedia.org/wiki/METAR) valide, la météo sera générée à partir du METAR analysé (ex : *UG27 221130Z 04515KT +SHRA BKN008 OVC024 Q1006 NOSIG*)
 
-- `--start`, `time`: the starting time of the mission in seconds after midnight
+- `--start`, `time` : l'heure de départ de la mission en secondes après minuit
 
-- `--date`, `date`: the starting date of the mission, with an optional clock time (e.g. `20230126` or `202301260635` for 6:35am)
+- `--date`, `date` : la date de départ de la mission, avec une heure optionnelle (ex : `20230126` ou `202301260635` pour 6h35)
 
-- `--variable`, `variableForMetar`: the name of the variable that will be replaced by the METAR fetched from CheckWX; it's a useful feature to show the weather in the briefing.
+- `--variable`, `variableForMetar` : le nom de la variable qui sera remplacée par le METAR récupéré depuis CheckWX ; c'est une fonctionnalité utile pour afficher la météo dans le briefing.
 
-- `--weather`, `weatherFile`: the path to the DCS weather file to use as a static weather definition.
+- `--weather`, `weatherFile` : le chemin vers le fichier météo DCS à utiliser comme définition de météo statique.
 
-- `--dontSetToday`, `dontSetToday`: if set, the date of the mission will not be set to today's date.
+- `--dontSetToday`, `dontSetToday` : si défini, la date de la mission ne sera pas définie à la date d'aujourd'hui.
 
-- `--dontSetTodayYear`, `dontSetTodayYear`: if set to a valid year, and dontSetToday is set to `false`, the year of the mission will be set to the specified year while the rest of the date is set to today's date.
+- `--dontSetTodayYear`, `dontSetTodayYear` : si défini avec une année valide, et si dontSetToday est défini à `false`, l'année de la mission sera définie à l'année spécifiée tandis que le reste de la date sera défini à la date d'aujourd'hui.
 
-## Versions file
+## Fichier de versions
 
-The versions file is a JSON file that contains the weather and starting conditions you want to inject in the mission file when using the `injectall` command.
+Le fichier de versions est un fichier JSON qui contient les conditions météorologiques et de départ que vous souhaitez injecter dans le fichier de mission lors de l'utilisation de la commande `injectall`.
 
-It contains several sections:
+Il contient plusieurs sections :
 
-- `position`: the coordinates of the mission; used to compute the sunset and sunrise time.
+- `position` : les coordonnées de la mission ; utilisées pour calculer l'heure du coucher et du lever du soleil.
 
-- `moments`: an array of moments, each moment defining a specific time and date that can be used in the `targets` section. 
-They're defined with JavaScript expressions and time values; you can use the  *sunset* and *sunrise* variables (e.g., 3h after sunset: `sunset + 3*60`, or 15 past 9 p.m.: `21:15`). 
-By default, these moments are already defined:
+- `moments` : un tableau de moments, chaque moment définissant une heure et une date spécifiques qui peuvent être utilisées dans la section `targets`.
+Ils sont définis avec des expressions JavaScript et des valeurs temporelles ; vous pouvez utiliser les variables  *sunset* et *sunrise* (par exemple, 3h après le coucher du soleil : `sunset + 3*60`, ou 15 minutes après 21h : `21:15`).
+Par défaut, ces moments sont déjà définis :
 
   - night: 2 a.m.
-  - beforedawn: 1:30 a.m. to sunrise
-  - sunrise: sunrise
-  - dawn: 0:30 a.m. after sunrise
-  - morning: 1:30 a.m. after sunrise
+  - beforedawn: 1:30 a.m. au lever du soleil
+  - sunrise: lever du soleil
+  - dawn: 0:30 a.m. après le lever du soleil
+  - morning: 1:30 a.m. après le lever du soleil
   - day: 3 p.m.
-  - beforesunset: 1:30 a.m. to sunset
-  - sunset: sunset
+  - beforesunset: 1:30 a.m. au coucher du soleil
+  - sunset: coucher du soleil
 
-- `targets`: an array of targets, each target containing the weather and starting conditions that will be used to create a specific version of the mission file.
+- `targets` : un tableau de cibles, chaque cible contenant la météo et les conditions de départ qui seront utilisées pour créer une version spécifique du fichier de mission.
 
-Each target can contain the options listed [here](#common-options), and must define the name of the version that will be generated with `version` (used to create the name of the mission file; e.g., `my-mission-beforedawn-real-clear.miz` from `my-mission.miz`).
+Chaque cible peut contenir les options énumérées [voir ici](#options-communes), et doit définir le nom de la version qui sera générée avec `version` (utilisé pour créer le nom du fichier de mission ; ex : `ma-mission-beforedawn-real-clear.miz` à partir de `ma-mission.miz`).
 
-Example of a versions file:
+Exemple d'un fichier de versions :
 
 ```json
 {
@@ -169,21 +169,21 @@ Example of a versions file:
 }
 ```
 
-## Configuration file
+## Fichier de configuration
 
-The configuration file is located in the working directory of the tool, and is named `configuration.json`.
+Le fichier de configuration est situé dans le répertoire de travail de l'outil, et est nommé `configuration.json`.
 
-It will automatically be created the first time you run the tool, and contains the following sections:
+Il sera automatiquement créé la première fois que vous exécuterez l'outil, et contient les sections suivantes :
 
-- `theatres`: a list of theaters, with the coordinates where the weather will be looked up with CheckWX.
+- `theatres` : une liste de théâtres, avec les coordonnées où la météo sera recherchée avec CheckWX.
 
-- `cacheFolder`: the folder where the weather cache files will be stored.
+- `cacheFolder` : le dossier où les fichiers de cache météo seront stockés.
 
-- `maxAgeInHours`: the maximum age of the weather cache files, in hours.
+- `maxAgeInHours` : l'âge maximum des fichiers de cache météo, en heures.
 
-- `checkwx_apikey`: the API key to use to fetch the weather from CheckWX. Get one [here](https://www.checkwxapi.com/).
+- `checkwx_apikey` : la clé API à utiliser pour récupérer la météo depuis CheckWX. Obtenez-en une [voir ici](https://www.checkwxapi.com/).
 
-An example of a configuration file:
+Un exemple de fichier de configuration :
 
 ```json
 {
@@ -219,25 +219,25 @@ An example of a configuration file:
 }
 ```
 
-## Injecting real world weather
+## Injection de météo réelle
 
-This is the default if there is no METAR nor DCS weather file specified in the options.
+C'est le comportement par défaut s'il n'y a pas de METAR ni de fichier météo DCS spécifié dans les options.
 
-The weather will be fetched from the closest airport to the mission theater coordinates defined in the [`configuration.json`](#configuration-file) file.
+La météo sera récupérée depuis l'aéroport le plus proche des coordonnées du théâtre de la mission définies dans le fichier [`configuration.json`](#fichier-de-configuration).
 
-The tool uses the CheckWX API to fetch the weather; you need to register to CheckWX and get a free API key (see [here](https://www.checkwxapi.com/)), and store it in the [`configuration.json`](#configuration-file) file.
+L'outil utilise l'API CheckWX pour récupérer la météo ; vous devez vous inscrire sur CheckWX et obtenir une clé API gratuite (voir [voir ici](https://www.checkwxapi.com/)), et la stocker dans le fichier [`configuration.json`](#fichier-de-configuration).
 
-The fetched weather will be stored in a cache file, so that the tool doesn't have to fetch the weather each time it runs. This is to avoid overloading the CheckWX API.
+La météo récupérée sera stockée dans un fichier de cache, afin que l'outil n'ait pas à récupérer la météo à chaque exécution. Cela évite de surcharger l'API CheckWX.
 
-The cache location, as well as the cache expiration time, can be configured in the [`configuration.json`](#configuration-file) file.
+L'emplacement du cache, ainsi que le temps d'expiration du cache, peuvent être configurés dans le fichier [`configuration.json`](#fichier-de-configuration).
 
-An example of using `inject` to inject real world weather:
+Un exemple d'utilisation de `inject` pour injecter une météo réelle :
 
 ```cmd
 veaf-tools inject my-mission.miz my-mission-real.miz --real
 ```
 
-An example of using `injectall` to inject real world weather:
+Un exemple d'utilisation de `injectall` pour injecter une météo réelle :
 
 ```json
 {
@@ -268,17 +268,17 @@ An example of using `injectall` to inject real world weather:
 veaf-tools injectall my-mission.miz my-mission-${version}.miz versions.json
 ```
 
-## Injecting a predefined weather
+## Injection d'une météo prédéfinie
 
-Using either a METAR or a DCS weather file, you can inject a predefined weather in the mission file.
+En utilisant soit un METAR soit un fichier météo DCS, vous pouvez injecter une météo prédéfinie dans le fichier de mission.
 
-You can extract weather definition from a DCS mission by editing the `mission` file that is stored inside the ".miz" file (hint: it's a ZIP archive), and looking for the `["weather"]` section. Write this section in a LUA file, and use it as the `--weather` parameter or the `weatherFile` option.
+Vous pouvez extraire la définition de la météo d'une mission DCS en éditant le fichier `mission` qui est stocké à l'intérieur du fichier ".miz" (indice : c'est une archive ZIP), et en cherchant la section `["weather"]`. Écrivez cette section dans un fichier LUA, et utilisez-le comme paramètre `--weather` ou option `weatherFile`.
 
-Here's an example of a DCS weather definition:
+Voici un exemple de définition de météo DCS :
 
 ```lua
 ["weather"] = {
-	["atmosphere_type"] = 0,
+ ["atmosphere_type"] = 0,
     ["clouds"] = 
     {
         ["thickness"] = 200,
@@ -288,37 +288,37 @@ Here's an example of a DCS weather definition:
         ["iprecptns"] = 0,
     }, -- end of ["clouds"]
     ["cyclones"] = {
-	}, -- end of ["cyclones"]
-	["dust_density"] = 0,
-	["enable_dust"] = false,
-	["enable_fog"] = false,
-	["fog"] = {
-			["thickness"] = 0,
-			["visibility"] = 0,
-	}, -- end of ["fog"]
-	["groundTurbulence"] = 26.656422237728,
-	["qnh"] = 758.444,
-	["season"] = {
-			["temperature"] = 23.200000762939,
-	}, -- end of ["season"]
-	["type_weather"] = 2,
-	["visibility"] = {
-			["distance"] = 1593,
-	}, -- end of ["visibility"]
-	["wind"] = {
-			["at2000"] = {
-					["dir"] = 148,
-					["speed"] = 10.604474819794,
-			}, -- end of ["at2000"]
-			["at8000"] = {
-					["dir"] = 160,
-					["speed"] = 12.07985101455,
-			}, -- end of ["at8000"]
-			["atGround"] = {
-					["dir"] = 150,
-					["speed"] = 4.5,
-			}, -- end of ["atGround"]
-	}, -- end of ["wind"]
+ }, -- end of ["cyclones"]
+ ["dust_density"] = 0,
+ ["enable_dust"] = false,
+ ["enable_fog"] = false,
+ ["fog"] = {
+   ["thickness"] = 0,
+   ["visibility"] = 0,
+ }, -- end of ["fog"]
+ ["groundTurbulence"] = 26.656422237728,
+ ["qnh"] = 758.444,
+ ["season"] = {
+   ["temperature"] = 23.200000762939,
+ }, -- end of ["season"]
+ ["type_weather"] = 2,
+ ["visibility"] = {
+   ["distance"] = 1593,
+ }, -- end of ["visibility"]
+ ["wind"] = {
+   ["at2000"] = {
+     ["dir"] = 148,
+     ["speed"] = 10.604474819794,
+   }, -- end of ["at2000"]
+   ["at8000"] = {
+     ["dir"] = 160,
+     ["speed"] = 12.07985101455,
+   }, -- end of ["at8000"]
+   ["atGround"] = {
+     ["dir"] = 150,
+     ["speed"] = 4.5,
+   }, -- end of ["atGround"]
+ }, -- end of ["wind"]
 }, -- end of ["weather"]
 ```
 
@@ -326,7 +326,7 @@ Here's an example of a DCS weather definition:
 veaf-tools inject my-mission.miz my-mission-real.miz --weather scattered-rain.lua
 ```
 
-Or, if using `injectall`:
+Ou, si vous utilisez `injectall` :
 
 ```json
 {
@@ -351,13 +351,13 @@ Or, if using `injectall`:
 veaf-tools injectall my-mission.miz my-mission-${version}.miz versions.json
 ```
 
-Using a METAR is easier, as you can get it from the internet. Here's an example:
+Utiliser un METAR est plus simple, car vous pouvez l'obtenir sur internet. Voici un exemple :
 
 ```cmd
 veaf-tools inject my-mission.miz my-mission-real.miz --metar "UG27 221130Z 04515KT CAVOK Q1020 NOSIG"
 ```
 
-Or, if using `injectall`:
+Ou, si vous utilisez `injectall` :
 
 ```json
 {
@@ -384,26 +384,12 @@ veaf-tools injectall my-mission.miz my-mission-${version}.miz versions.json
 
 # Contacts
 
------------------------------
+Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-Made and maintained by the Virtual European Air Force, a French DCS pilot community.
-
-[![VEAF-logo]][VEAF website]
-[![Badge-Discord]][VEAF Discord]
-
------------------------------
-
-If you need help or you want to suggest something, you can
-
-* contact **Zip** on [GitHub][Zip on Github] or on [Discord][Zip on Discord]
-* go to the [VEAF website]
-* post on the [VEAF forum]
-* join the [VEAF Discord]
-
-
-[Badge-Discord]: https://img.shields.io/discord/471061487662792715?label=VEAF%20Discord&style=for-the-badge
-[VEAF-logo]: ../images/logo.png
-
+- contacter **Zip** sur [GitHub][Zip on Github] ou sur [Discord][Zip on Discord]
+- aller consulter le [site de la VEAF][VEAF website]
+- poster sur le [forum de la VEAF][VEAF forum]
+- rejoindre le [Discord de la VEAF][VEAF Discord]
 
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57
