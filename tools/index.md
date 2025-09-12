@@ -1,4 +1,4 @@
-# Documentation des outils VEAF pour les créateurs de mission et les administrateurs de serveur
+# Documentation des outils VEAF
 
 Navigation: [Site de documentation VEAF - page principale](../index.md)
 
@@ -16,7 +16,7 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 - configurer et utiliser l'application *veaf-tools* - [voir ici](veaf-tools.md)
 - configurer et utiliser l'Injecteur Météo - [voir ici](veaf-tools-weather-injector.md)
 - configurer et utiliser le Sélecteur de Mission - [voir ici](veaf-tools-mission-selector.md)
-- configurer et utiliser le normalisateur de dictionnaire LUA - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
+- configurer et utiliser le normalisateur de dictionnaire LUA - [voir ici](./tools/veaf-lua-dictionary-normalizer.md) <!--- TODO écrire la page -->
 
 ## Introduction
 
@@ -55,7 +55,7 @@ Consultez la [page de documentation de l'application VEAF Tools](veaf-tools.md) 
 
 <!--- TODO écrire un résumé -->
 
-La documentation complète est disponible - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
+La documentation complète est disponible - [sur cette page](./tools/veaf-lua-dictionary-normalizer.md) <!--- TODO écrire la page -->
 
 ## Contacts
 

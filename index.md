@@ -20,10 +20,10 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 
 En fonction de votre rôle, vous pourrez trouver une page dédiée qui résume tous les éléments intéressants ici:
 
-- créateur de mission - [ici](./mission-maker/index.md)
-- pilote - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
-- administrateur de serveur - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
-- développeur courageurs - [En cours d'écriture](./wip.md) <!--- TODO écrire la page -->
+- créateur de mission - [voir ici](./mission-maker/index.md)
+- pilote - [voir ici](./pilot(index).md) <!--- TODO écrire la page -->
+- administrateur de serveur - [voir ici](./server-admin/index.md) <!--- TODO écrire la page -->
+- développeur courageurs - [voir ici](./developer/index.md) <!--- TODO écrire la page -->
 
 ### Par sujet
 
@@ -79,7 +79,7 @@ Les Outils de Création de Missions VEAF offrent de nombreux outils et scripts.
 
 La plupart sont destinés à être utilisés dans le pipeline de création de mission (c.-à-d. par un créateur de mission travaillant sur une mission, lire la [documentation pour créateurs de mission](./mission-maker/index.md)), mais certains peuvent être utilisés comme outils autonomes :
 
-- le normaliseur de dictionnaires LUA [En cours d'écriture](./wip.md) <!--- TODO écrire la page --> qui facilite la comparaison des fichiers LUA
+- le normaliseur de dictionnaires LUA [voir ici](./tools/veaf-lua-dictionary-normalizer.md) <!--- TODO écrire la page --> qui facilite la comparaison des fichiers LUA
 - l'[Injecteur Météo](./tools/veaf-tools-weather-injector.md) qui peut générer plusieurs fichiers de mission avec des heures de départ et conditions météorologiques différentes à partir d'un modèle
 - le [Sélecteur de Mission](./tools/veaf-tools-mission-selector.md) qui choisit une mission de départ pour votre serveur dédié à partir d'une liste de missions et d'un planning.
 
