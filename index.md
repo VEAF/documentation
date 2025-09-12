@@ -1,5 +1,5 @@
 ---
-description: Outils et scripts VEAF (VEAF Mission Creation Tools ou VMCT) pour les créateurs de mission, utilisateurs et programmeurs
+description: Gestion de missions DCS dynamiques pour les créateurs de mission, utilisateurs, administrateurs de serveurs et programmeurs
 ---
 
 # Site de documentation des outils et scripts VEAF
@@ -119,8 +119,10 @@ Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouv
 - poster sur le [forum de la VEAF][VEAF forum]
 - rejoindre le [Discord de la VEAF][VEAF Discord]
 
+<!--
 [Badge-Discord]: https://img.shields.io/discord/471061487662792715?label=VEAF%20Discord&style=for-the-badge
 [VEAF-logo]: ../images/logo.png
+-->
 
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57

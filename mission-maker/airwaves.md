@@ -1,27 +1,28 @@
 ---
-description: Mettre en place une zone d'entrainement AirWaves
+description: Mise en place d'une zone d'entrainement AirWaves
 ---
 
------------------------------
+# Module AirWaves
 
-Navigation: [page "Mission Maker" du site de documentation VEAF](./index.md)
+Navigation: [Page dédiée aux créateurs de mission du site de documentation VEAF](./index.md)
 
 -----------------------------
 
 🚧 **TRAVAUX EN COURS** 🚧
 
-La documentation est en train d'être retravaillée, morceau par morceau. 
+La documentation est en train d'être retravaillée, morceau par morceau.
 En attendant, vous pouvez consulter l'[ancienne documentation](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md).
 
 -----------------------------
 
-# Table des matières
+## Table des matières
 
-- Principes - [ici](#principes)
-- Configuration - [ici](#comment-configurer-une-zone-airwaves)
-- Exemples - [ici](#exemples-complets)
+- Introduction - [voir ici](#introduction)
+- Principes - [voir ici](#principes)
+- Configuration - [voir ici](#comment-configurer-une-zone-airwaves)
+- Exemples - [voir ici](#exemples-complets)
 
-# Introduction
+## Introduction
 
 Le module *AirWaves* permet de créer facilement des zones d'entrainement, sur le modèle de la [QRA](qra.md) (en tout cas pour ce qui est des paramètres), dans lesquelles les joueurs font face à des vagues d'ennemis IA successives qu'ils doivent vaincre les unes après les autres.
 
@@ -29,31 +30,33 @@ A la base, les zones *AirWaves* font apparaître des groupes aériens, mais il e
 
 En cas d'échec (perte du combat contre les IA), la zone est remise à zéro et les groupes IA restants sont détruits. De cette manière, tout est prêt pour le joueur suivant.
 
-# Principes
+## Principes
 
 Une zone *AirWaves* est constituée de :
-- une zone, qui peut être définie par : 
-    - une trigger zone DCS placée dans l'éditeur de mission (circulaire ou quadpoint)
-    - une zone circulaire avec un centre (défini par des coordonnées en longitude/latitude ou MGRS) et un rayon (en mètres)
+
+- une zone, qui peut être définie par :
+  - une trigger zone DCS placée dans l'éditeur de mission (circulaire ou quadpoint)
+  - une zone circulaire avec un centre (défini par des coordonnées en longitude/latitude ou MGRS) et un rayon (en mètres)
 - une ou des vagues d'IA composées de :
-    - un ou des groupes d'IA :
-        - placés dans l'éditeur de DCS, en activation retardée
-        - définis par des commandes VEAF, qui se déclenchent au moment du déploiement de la vague
+  - un ou des groupes d'IA :
+    - placés dans l'éditeur de DCS, en activation retardée
+    - définis par des commandes VEAF, qui se déclenchent au moment du déploiement de la vague
 - des paramètres
 
-<u>Exemple 1 - zone définie par une trigger zone circulaire, avec des groupes DCS</u>
+### Exemple 1 - zone définie par une trigger zone circulaire, avec des groupes DCS
 
 ![airwave_zone_example_01]
 
-<u>Exemple 2 - zone définie par une trigger zone de type quadrilatère, avec des groupes DCS</u>
+### Exemple 2 - zone définie par une trigger zone de type quadrilatère, avec des groupes DCS
 
 ![airwave_zone_example_02]
 
-<u>Exemple 3 - zone définie dans le code (coordonnées, rayon, commandes VEAF)</u>
+### Exemple 3 - zone définie dans le code (coordonnées, rayon, commandes VEAF)
 
 ![airwave_zone_example_03]
 
 La zone a un état qui correspond à son activité :
+
 - tout d'abord elle est prête, et attend qu'on y pénètre ou qu'on y prenne un slot
 - plus elle déploie la première vague, et devient active pendant toute la durée de leur vol
 - ensuite, si cette vague est détruite ou déroutée, la zone déploie la vague suivante
@@ -62,7 +65,7 @@ La zone a un état qui correspond à son activité :
 
 Ceci est le schéma standard. En pratique, des dizaines d'options (décrites plus loin) vous permettent d'adapter le comportement des zones *AirWaves* comme vous le souhaitez.
 
-# Comment configurer une zone *AirWaves*
+## Comment configurer une zone *AirWaves*
 
 Tout commence dans le fichier de configuration de la mission `missionConfig.lua`, qui est situé dans le répertoire `src/scripts` de votre mission.
 
@@ -74,7 +77,7 @@ Le principe de configuration est simple.
 
 Tout d'abord on crée un "objet" de type *AirWaveZone* en appelant `AirWaveZone:new()`. Cet appel renvoie une instance de *AirWaveZone*, qu'on peut stocker dans une variable (`local maZone = AirWaveZone:new()`) ou utiliser tout de suite avec une [désignation chaînée](https://fr.wikipedia.org/wiki/D%C3%A9signation_cha%C3%AEn%C3%A9e) (en enchainant les appels aux méthodes de configuration qui renvoient toutes, tour à tour, la même instance de *AirWaveZone*).
 
-<u>Exemple de chainage:</u>
+### Exemple de chainage
 
 ```lua
 AirWaveZone:new()
@@ -82,15 +85,15 @@ AirWaveZone:new()
     :setTriggerZone("Minevody")
 ```
 
-L'avantage de cette méthode est sa simplicité.
-
-<u>Exemple d'utilisation d'une variable:</u>
+### Exemple d'utilisation d'une variable
 
 ```lua
 local zoneMinevody = AirWaveZone:new()
 zoneMinevody:setName("Minevody")
 zoneMinevody:setTriggerZone("Minevody")
 ```
+
+L'avantage de cette méthode est sa simplicité.
 
 L'avantage de la seconde méthode est qu'on peut, plus loin dans le fichier `missionConfig.lua`, utiliser une référence à la variable qu'on a définie pour accéder à l'instance de *AirWaveZone* (par exemple, dans la définition d'un alias, d'une commande "mission maker", ou dans un menu radio).
 
@@ -100,7 +103,7 @@ L'avantage de la seconde méthode est qu'on peut, plus loin dans le fichier `mis
 
 Création d'une nouvelle instance de *AirWaveZone*: une instance définit une zone et son comportement; exemple: la zone de Minevody.
 
-Utiliser soit une variable locale, soit une désignation chaînée (voir (ce chapitre)[#comment-configurer-une-zone-AirWaves]) pour exploiter cette instance.
+Utiliser soit une variable locale, soit une désignation chaînée (voir [ce chapitre](#comment-configurer-une-zone-airwaves)) pour exploiter cette instance.
 
 ```lua
 AirWaveZone.new()
@@ -140,11 +143,12 @@ On peut choisir de définir la zone avec un centre et un rayon, ou à partir d'u
 Définition de la coalition qui gère la QRA (en général, ce sont les ennemis des joueurs, souvent les rouges).
 
 Valeurs acceptées:
- - "red"
- - "blue"
- - coalition.side.RED
- - coalition.side.BLUE
- - coalition.side.NEUTRAL
+
+- "red"
+- "blue"
+- coalition.side.RED
+- coalition.side.BLUE
+- coalition.side.NEUTRAL
 
 ```lua
 :setCoalition("red") -- Définit la coalition à laquelle la QRA appartiendra
@@ -187,7 +191,7 @@ Le fait qu'on puisse utiliser des commandes VEAF fait qu'on peut opposer aux jou
 
 On peut utiliser la commande `:resetWaves()` pour réinitialiser les vagues d'une zone (les supprimer toutes). C'est utile dans le cas où on copie une zone à partir d'une autre existante, et qu'on veut changer complètement les vagues (et non pas juste en ajouter).
 
-<u>Exemple de copie:</u>
+##### Exemple de copie
 
 ```lua
   mist.utils.deepCopy(veafAirWaves.get("Zone 01 - EASY CAP"))
@@ -213,13 +217,13 @@ Cette position est utilisée quand on ne peut pas déterminer la position de dé
 
 Choix du rayon de spawn; on peut préciser un cercle (en mètres) autour du point de spawn, dans lequel on choisira aléatoirement le point de spawn de chaque groupe (ou commande).
 
-Ce paramètre est appliqué __en plus__ de la position de spawn déterminée par le groupe (dans l'éditeur DCS), par le décalage par défaut (*setRespawnDefaultOffset*), ou par les coordonnées dans la commande.
+Ce paramètre est appliqué **en plus** de la position de spawn déterminée par le groupe (dans l'éditeur DCS), par le décalage par défaut (*setRespawnDefaultOffset*), ou par les coordonnées dans la commande.
 
 ```lua
 :setRespawnRadius(10000)
 ```
 
-<u>Exemple:</u>
+#### Exemple
 
 ```lua
 AirWaveZone:new()
@@ -275,20 +279,21 @@ On peut l'appeler avec une simple chaine de caractères, ou plusieurs; ce seront
 ```
 
 Si on veut utiliser plus de paramètres, on peut l'appeler avec une table complexe qui peut contenir ces champs:
+
 - groups (obligatoire) : la  liste des groups et/ou commandes VEAF
 - number (par défaut 1) : le nombre de groupes/commandes à spawner pour cette vague ; ça peut être une valeur aléatoire : on donne la limite basse et la limite haute (comme ici `"2-4"` pour "entre 2 et 4") - attention à bien mettre les guillemets !
-- bias (par défaut 0) : le biais (voir plus bas) ; ça peut aussi être une valeur aléatoire 
+- bias (par défaut 0) : le biais (voir plus bas) ; ça peut aussi être une valeur aléatoire
 - delay (par défaut rien) : le délai entre cette vague et la suivante ; ça peut aussi être une valeur aléatoire ; la valeur par défaut est définie au niveau de la zone avec `::setDelayBetweenWaves()`
 
 `groups` peut être une simple chaine de caractères (s'il n'y a qu'un groupe/une commande) ou une table.
 
-<u>Exemple où on définit 4 groupes dont 2 commandes VEAF et 2 groupes DCS, et où on en spawn 2:</u>
+##### Exemple où on définit 4 groupes dont 2 commandes VEAF et 2 groupes DCS, et où on en spawn 2
 
 ```lua
 :addWave({ groups = {"groupe 1", "-sa15", "groupe 2", "[10000, 15000]-cap mig29, size 2, hdg 180"}, number = 2 })
 ```
 
-<u>Exemple avec un seul groupe qui sera spawné entre 1 et 3 fois, et un délai</u>
+##### Exemple avec un seul groupe qui sera spawné entre 1 et 3 fois, et un délai
 
 ```lua
 :addWave({ groups = "groupe 1", number = "1-3", delay = 60 })
@@ -302,23 +307,19 @@ Au moment du déploiement, on va aléatoirement choisir un nombre entre 1 (+ le 
 
 Le biais permet donc de décaler vers la droite de la liste le choix aléatoire.
 
-<u>Exemple sans biais:</u>
+#### Exemple sans biais
 
 ```lua
 :addWave({ groups = {"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, number = 1 })
 ```
 
-Ici, on choisit aléatoirement un groupe dans la liste
-
-<u>Exemple avec biais:</u>
+#### Exemple avec biais
 
 ```lua
 :addWave({ groups = {"groupe 1", "groupe 2", "groupe 3", "groupe 4"}, number = 1, bias = 1 })
 ```
 
-Ici, on décide délibéremment de ne jamais choisir "groupe 1" ; on choisit donc aléatoirement un groupe dans la liste "groupe 2", "groupe 3", "groupe 4".
-
-<u>Exemple complet:</u>
+#### Exemple complet
 
 ```lua
 AirWaveZone:new()
@@ -337,30 +338,14 @@ Avec la même ligne ou presque, on définit trois vagues très différentes !
 
 Le délai permet de temporiser le déclenchement de la vague suivante (valeur positive), ou au contraire de la déclencher immédiatement (valeur négative).
 
-<u>Exemple avec délai:</u>
+#### Exemple avec délai
 
 ```lua
 :addWave({ groups = {"groupe 1", "groupe 2"}, number = 1, delay = 120 })
 :addWave({ groups = {"groupe 3", "groupe 4"}, number = 1 })
 ```
 
-La vague #1 se déclenche, le joueur la détruit, et un message le prévient qu'il a 120 secondes pour se préparer à la vague suivante.
-
-Deux minutes plus tard, la vague #2 se déclenche.
-
-Par défaut (si on ne précise pas le paramètre `delay`) c'est la valeur définie au niveau de la zone qui est utilisée. 
-
-On peut la changer comme ça :
-
-```lua
-:setDelayBetweenWaves(60)
-```
-
-#### Vagues simultanées
-
-En précisant une valeur négative (ex: `-1`) pour le paramètre `delay`, on déclenche la vague suivante immédiatement, sans attendre que la vague qu'on vient de déclencher soit détruite.
-
-<u>Exemple: </u>
+#### Autre Exemple
 
 ```lua
 AirWaveZone:new()
@@ -375,7 +360,7 @@ AirWaveZone:new()
     :addWave({ groups = { "[-80000, -20000]-cap fox2.*x2, hdg 180, dist 20"  }, number = 1 })             -- a pair of fighters spawning a bit further north
 ```
 
-La vague #1 est déployée normalement. 
+La vague #1 est déployée normalement.
 
 Le joueur la détruit, et le système déploie la vague #2 une minute plus tard, puis la vague #3 simultanément - la vague #4 n'est pas marquée "simultanée", donc on s'arrête à la vague #3.
 
@@ -391,64 +376,65 @@ Pour faire simple, tout ce que les scripts VEAF reconnaissent dans un marqueur s
 
 Le point d'apparition calculé (voir le paragraphe plus haut qui explique ce concept) sera en fait le point d'ancrage de la commande (ce sera comme si on avait mis un marqueur ici sur la vue F10). Si la commande n'est pas localisée (ex: déclenchement d'une *combat zone*) ou si elle contient des coordonnées absolues (ex `U37TCL5297`), ce point d'ancrage n'aura aucun effet.
 
-Entre crochets, on peut (optionnellement) spécifier un point d'apparition (relatif au centre de la zone), qui modifiera le point d'ancrage.
-
-<u>Exemple, déclenchement d'une cap:</u>
+##### Exemple, déclenchement d'une cap
 
 ```lua
 :addWave("-cap mig29")
 ```
 
-<u>Exemple, déclenchement d'une cap avec offset par rapport au centre de la zone:</u>
+##### Exemple, déclenchement d'une cap avec offset par rapport au centre de la zone
 
 ```lua
 :addWave("[-15000, 30000]-cap mig29, hdg 135, dist 40")
 ```
 
-<u>Exemple, création d'un SA15 au centre de la zone:</u>
+##### Exemple, création d'un SA15 au centre de la zone
 
 ```lua
 :addWave("[0, 0]-sa15")
 ```
 
-<u>Exemple, création d'un convoi blindé qui se déplace du centre de la zone vers Kobuleti:</u>
+##### Exemple, création d'un convoi blindé qui se déplace du centre de la zone vers Kobuleti
 
 ```lua
 :addWave("[0, 0]-convoy, armor 4, defense 2, dest kobuleti")
 ```
 
-<u>Exemple, appel d'une frappe d'artillerie antiaérienne:</u>
+##### Exemple, appel d'une frappe d'artillerie antiaérienne
 
 ```lua
 :addWave("-flak")
 ```
 
-<u>Exemple, appel d'une frappe d'artillerie sur coordonnées:</u>
+##### Exemple, appel d'une frappe d'artillerie sur coordonnées
 
 ```lua
 :addWave("-shell#U37TGG2164791685")
 ```
+
 ### Surveillance des unités
 
 Les unités concernées par une zone Airwaves sont en permanence surveillées. En pratique, toutes les quelques secondes, on lance une vérification de l'état de la zone et des unités.
 
-On vérifie l'état des unités IA spawnées dans le cadre de la zone : 
-- si elles sont toutes détruites (ou hors de combat, voir [ici](#détermination-de-létat-des-groupes-et-vagues)), on lance la vague suivante.
+On vérifie l'état des unités IA spawnées dans le cadre de la zone :
+
+- si elles sont toutes détruites (ou hors de combat, voir [voir ici](#détermination-de-létat-des-groupes-et-vagues)), on lance la vague suivante.
 - si elles sortent de la zone pendant trop longtemps, on les détruit (despawn).
 
 De même, pour les unités pilotées par des humains :
+
 - si elles sont toutes détruites, la zone est perdue (et on la réinitialise)
 - si elles sortent de la zone on les prévient; si ça dure trop longtemps, on commence à tirer un barrage de flak pour les endommager, et si ça dure vraiment trop longtemps (et qu'elles survivent), on les despawn.
 
-On peut changer les messages (voir [ici](#messages-et-callbacks)) et le délai avant destruction.
+On peut changer les messages (voir [voir ici](#messages-et-callbacks)) et le délai avant destruction.
 
-<u>Exemple, on détruit les IA après 30 secondes en dehors de la zone</u>
+#### Exemple, on détruit les IA après 30 secondes en dehors de la zone
 
 ```lua
 :setMaxSecondsOutsideOfZoneIA(30)
 ```
 
-<u>Exemple, on détruite les joueurs 60 secondes après leur sortie de la zone</u>
+#### Exemple, on détruite les joueurs 60 secondes après leur sortie de la zone
 
 ```lua
 :setMaxSecondsOutsideOfZonePlayers(60)
@@ -474,7 +460,7 @@ Les évènements sont:
 - STOP : arrêt de la zone, si `:stop()` est appelée (`:setMessageStop()`, `:setOnStop()`)
 - OUTSIDE_OF_ZONE : un joueur est sorti de la zone, on le prévient avant de le détruire (`:setMessageOutsideOfZone()`, `:setOnOutsideOfZone()`)
 
-<u>Exemples:</u>
+##### Exemples
 
 ```lua
 -- message when the zone is activated
@@ -547,6 +533,7 @@ zone:setIsEnemyWaveDeadCallback(callback)
 ```
 
 La fonction que vous spécifierez en paramètre sera appelée pour déterminer si une vague est considérée comme détruite ou non. Elle prend trois paramètres:
+
 - la zone (l'objet)
 - le numéro de la vague courante
 - la liste des groupes qui ont été spawnés (leurs noms)
@@ -559,13 +546,14 @@ zone:setIsEnemyGroupDeadCallback(callback)
 ```
 
 La fonction que vous spécifierez en paramètre sera appelée pour déterminer si un groupe est considéré comme hors de combat ou non. Elle prend trois paramètres:
+
 - la zone (l'objet)
 - le numéro de la vague courante
 - un groupe DCS qui a été spawné (une table DCS)
 
 Et elle doit renvoyer `true` si le groupe doit être considéré comme détruit.
 
-Par défaut (si on n'a pas spécifié de callbacks particuliers), on vérifie tous les groupes d'une vague (ce comportement est surchargé par `:setIsEnemyWaveDeadCallback()`), et pour chaque groupe on regarde le pourcentage de points de vie de chacune de ses unités (ce comportement est surchargé par `:setIsEnemyGroupDeadCallback()`). 
+Par défaut (si on n'a pas spécifié de callbacks particuliers), on vérifie tous les groupes d'une vague (ce comportement est surchargé par `:setIsEnemyWaveDeadCallback()`), et pour chaque groupe on regarde le pourcentage de points de vie de chacune de ses unités (ce comportement est surchargé par `:setIsEnemyGroupDeadCallback()`).
 
 S'il est inférieur à une certaine valeur (qu'on peut régler avec `:setMinimumLifeForAiInPercent()`, par défaut 10%), on détruit l'unité en la despawnant (ce comportement est surchargé par `:setHandleCrippledEnemyUnitCallback()`).
 
@@ -583,17 +571,18 @@ zone:setHandleCrippledEnemyUnitCallback(callback)
 ```
 
 Elle prend trois paramètres:
+
 - la zone (l'objet)
 - le numéro de la vague courante
 - une unité DCS qui a été spawné (une table DCS)
 
-## Dernière étape
+### Dernière étape
 
-Une fois configurée, la zone doit être lancée. 
+Une fois configurée, la zone doit être lancée.
 
 Selon le choix qu'on a fait (variable locale ou désignation chaînée), on appelle la méthode `:start()`.
 
-<u>Exemple, désignation chaînée:</u>
+#### Exemple, désignation chaînée
 
 ```lua
 AirWaveZone:new()
@@ -602,7 +591,7 @@ AirWaveZone:new()
     :start()
 ```
 
-<u>Exemple, variable locale:</u>
+#### Exemple, variable locale
 
 ```lua
 local zone = AirWaveZone:new()
@@ -623,7 +612,7 @@ Bien sûr, il est aussi possible d'appeler d'autres méthodes, telles que `stop(
 veafAirWaves.get("Minevody"):stop()
 ```
 
-# Exemples complets
+## Exemples complets
 
 Voici un exemple de configuration fonctionnel et complet (toutes les fonctions disponibles sont présentes)
 
@@ -764,29 +753,22 @@ Voici un autre exemple, qui recopie une zone existante (`mist.utils.deepCopy`) a
   :start()
 ```
 
-# Contacts
+## Contacts
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 
-* contacter **Zip** sur [GitHub][Zip on Github] ou sur [Discord][Zip on Discord]
-* aller consulter le [site de la VEAF][VEAF website]
-* poster sur le [forum de la VEAF][VEAF forum]
-* rejoindre le [Discord de la VEAF][VEAF Discord]
+- contacter **Zip** sur [GitHub][Zip on Github] ou sur [Discord][Zip on Discord]
+- aller consulter le [site de la VEAF][VEAF website]
+- poster sur le [forum de la VEAF][VEAF forum]
+- rejoindre le [Discord de la VEAF][VEAF Discord]
 
-
-[Badge-Discord]: https://img.shields.io/discord/471061487662792715?label=VEAF%20Discord&style=for-the-badge
-[VEAF-logo]: ../images/logo.png?raw=true
 [VEAF Discord]: https://www.veaf.org/discord
 [Zip on Github]: https://github.com/davidp57
 [Zip on Discord]: https://discordapp.com/users/421317390807203850
 [VEAF website]: https://www.veaf.org
 [VEAF forum]: https://www.veaf.org/forum
 
-[VEAF-Mission-Creation-Tools-repository]: https://github.com/VEAF/VEAF-Mission-Creation-Tools
 [VEAF-mission-converter-repository]:https://github.com/VEAF/VEAF-mission-converter
-[VEAF-demo-mission-repository]: https://github.com/VEAF/VEAF-Demo-Mission
-[VEAF-Open-Training-Mission-repository]: https://github.com/VEAF/VEAF-Open-Training-Mission
-[VEAF-Multiplayer-Missions-repository]: https://github.com/VEAF/VEAF-Multiplayer-Missions
 [VEAF-Open-Training-Mission-documentation]: https://www.veaf.org/opentraining
 
 [airwave_zone_example_01]: ../images/airwave_zone_example_01.png

@@ -2,7 +2,7 @@
 description: Permet de générer des versions d'une mission à différents moments de la journée et avec différentes météos
 ---
 
-# L'outil "Injecteur de Météo et de Moments"
+# Injecteur de Météo et de Moments
 
 Navigation: [Site de documentation VEAF - page principale](../index.md) > [Outils de Création de Mission](./index.md) > [Application *veaf-tools*](./veaf-tools.md)
 
@@ -15,7 +15,7 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 
 -----------------------------
 
-# Table des matières
+## Table des matières
 
 - utiliser l'Injecteur Météo - [voir ici](#utiliser-linjecteur-météo)
 - créer le fichier de versions - [voir ici](#fichier-de-versions)
@@ -23,11 +23,11 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 - exemple de météo réelle - [voir ici](#injection-de-météo-réelle)
 - exemple de météo prédéfinie - [voir ici](#injection-dune-météo-prédéfinie)
 
-# Introduction
+## Introduction
 
 L'Injecteur Météo fait partie de l'application VEAF Tools. Consultez l'installation et la description dans la [documentation générale de l'application VEAF Tools](./veaf-tools.md).
 
-# Utiliser l'Injecteur Météo
+## Utiliser l'Injecteur Météo
 
 L'Injecteur Météo est en fait composé de deux commandes de l'application *veaf-tools*.
 
@@ -43,9 +43,9 @@ Tapez `veaf-tools injectall --help` pour obtenir de l'aide :
 
 [![veaftools-injectall-options]][veaftools-injectall-options]
 
-## Options
+### Options
 
-### Options obligatoires en ligne de commande
+#### Options obligatoires en ligne de commande
 
 Les options suivantes sont obligatoires pour les commandes `inject` et `injectall` ; n'utilisez pas le nom de l'option, ce sont des arguments positionnels (c'est-à-dire que vous devez les spécifier dans l'ordre où ils sont listés ici) :
 
@@ -67,7 +67,7 @@ ou
 veaf-tools injectall source.miz target-${version}.miz versions.json
 ```
 
-### Options facultatives en ligne de commande
+#### Options facultatives en ligne de commande
 
 Les options suivantes sont facultatives et sont disponibles pour les commandes `inject` et `injectall` :
 
@@ -77,7 +77,7 @@ Les options suivantes sont facultatives et sont disponibles pour les commandes `
 
 - `--nocache` : si défini, l'outil n'utilisera pas le cache pour les fichiers météo. C'est utile si vous voulez forcer l'outil à récupérer la météo depuis l'API CheckWX à chaque exécution.
 
-### Options communes
+#### Options communes
 
 La commande `injectall` finit par appeler le même code que la commande `inject` pour injecter la météo dans un fichier de mission cible, avec les options définies dans chaque cible du fichier de configuration.
 
@@ -384,7 +384,7 @@ Ou, si vous utilisez `injectall` :
 veaf-tools injectall my-mission.miz my-mission-${version}.miz versions.json
 ```
 
-# Contacts
+## Contacts
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 

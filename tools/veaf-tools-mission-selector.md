@@ -2,7 +2,7 @@
 description: Permet de sélectionner une mission sur un serveur, en se basant sur un calendrier
 ---
 
-# L'outil "Sélecteur de Mission"
+# Sélecteur de Mission
 
 Navigation: [Site de documentation VEAF - page principale](../index.md) > [Outils de Création de Mission](./index.md) > [Application *veaf-tools*](./veaf-tools.md)
 
@@ -15,18 +15,18 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 
 -----------------------------
 
-# Table des matières
+## Table des matières
 
 - utiliser le Sélecteur de Mission - [voir ici](#utiliser-le-sélecteur-de-mission)
 - préparer le fichier de configuration du serveur - [voir ici](#configuration-serveur-par-défaut)
 - configurer le fichier de définition du planning - [voir ici](#fichier-de-définition-du-planning)
 - utiliser l'assistant Google Sheet - [voir ici](#assistant-google-sheet)
 
-# Introduction
+## Introduction
 
 Le Sélecteur de Mission fait partie de l'application VEAF Tools. Consultez l'installation et la description dans la [documentation générale de l'application VEAF Tools](./veaf-tools.md).
 
-# Utiliser le Sélecteur de Mission
+## Utiliser le Sélecteur de Mission
 
 Le but du sélecteur de mission est de choisir une mission basée sur un planning que vous fournirez, et de configurer votre serveur pour démarrer avec la mission sélectionnée.
 
@@ -40,7 +40,7 @@ Le fonctionnement est assez simple : vous configurez un fichier `serverSettings-
 
 L'outil Sélecteur de Mission lit le planning, décide quelle mission il va sélectionner, et la recherche dans le fichier `serverSettings-default.lua`. S'il la trouve, il crée un fichier `serverSettings.lua` avec les propriétés `current` et `listStartIndex` définies sur l'index correct pour la mission sélectionnée ; la prochaine fois que le serveur démarre, il chargera automatiquement cette mission.
 
-## Options en ligne de commande
+### Options en ligne de commande
 
 L'outil Sélecteur de Mission est conçu pour être lancé depuis la ligne de commande.
 
@@ -50,7 +50,7 @@ C'est en fait une commande spécifique de l'application *veaf-tools*.
 veaf-tools select-mission <source> <target> <configuration>
 ```
 
-### Options obligatoires en ligne de commande
+#### Options obligatoires en ligne de commande
 
 Les options suivantes sont obligatoires ; n'utilisez pas le nom de l'option, ce sont des arguments positionnels (c'est-à-dire que vous devez les spécifier dans l'ordre où ils sont listés ici) :
 
@@ -66,7 +66,7 @@ Exemple :
 veaf-tools select-mission serverSettings-default.lua serverSettings.lua schedule.json
 ```
 
-### Options facultatives en ligne de commande
+#### Options facultatives en ligne de commande
 
 Les options suivantes sont facultatives et sont disponibles pour les commandes `inject` et `injectall` :
 
@@ -129,4 +129,4 @@ Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouv
 
 [veaf-mission-selector-helper-example-serversettings]: ../examples/serverSettings-default.lua
 [veaf-mission-selector-helper-example-cron]: ../examples/serverCron-example.json
-[veaf-mission-selector-helper-example-cron-generated]: ../examples/serverCron-example_generated.json
+[veaf-mission-selector-helper-example-cron-generated]: ../examples/serverCron-example_generated.jso

@@ -15,14 +15,14 @@ En attendant, vous pouvez consulter l'[ancienne documentation](https://github.co
 
 -----------------------------
 
-# Table des matières
+## Table des matières
 
 - cas d'utilisation complet (serveurs publics VEAF) - [voir ici](#cas-dutilisation)
 - installer et utiliser l'application *veaf-tools* - [voir ici](#installation)
 - configurer et utiliser l'Injecteur Météo - [voir ici](veaf-tools-weather-injector.md)
 - configurer et utiliser le Sélecteur de Mission - [voir ici](veaf-tools-mission-selector.md)
 
-# Introduction
+## Introduction
 
 Cette application NodeJS est une collection d'outils qui peuvent être utilisés pour manipuler les missions.
 
@@ -31,7 +31,7 @@ Actuellement, elle contient les outils suivants :
 - Injecteur météo
 - Sélecteur de mission
 
-# Cas d'utilisation
+## Cas d'utilisation
 
 La VEAF utilise ces outils avec des scripts lua de hook serveur et des watchdogs Powershell (tous disponibles sur [ce dépôt GitHub][VEAF-Servers-Public-repository]) pour avoir nos serveurs fonctionnant 24/7, et redémarrant automatiquement en cas de crash.
 
@@ -45,7 +45,7 @@ Ensuite, il appelle l'outil de sélection de mission, qui sélectionnera la miss
 
 Cela garantit que nos serveurs sont toujours opérationnels et configurés avec la mission que nous avons collectivement décidé de charger pour ce moment.
 
-## Injecteur météo
+### Injecteur météo
 
 L'Injecteur météo est un outil qui transforme un fichier de mission unique en une collection de missions, avec le même contenu mais des conditions météorologiques et de départ différentes.
 
@@ -57,11 +57,11 @@ C'est un outil très utile à utiliser avec un serveur qui fonctionne 24/7 et qu
 
 [Vidéo de démonstration][veaftools-injectall-demo]
 
-## Sélecteur de mission
+### Sélecteur de mission
 
 Le sélecteur de mission est utilisé pour démarrer un serveur dédié avec une mission spécifique, selon un planning défini dans un fichier de configuration.
 
-# Installation
+## Installation
 
 C'est un outil autonome, il ne nécessite pas d'environnement VEAF Mission Creation Tools spécifique (comme décrit [ici](..\environment\index.md)).
 
@@ -74,7 +74,7 @@ Vous devrez installer ces outils sur votre ordinateur :
 - *NodeJS* : vous avez besoin de NodeJS pour exécuter les programmes JavaScript dans les outils de création de mission VEAF ; voir [ici](https://nodejs.org/fr/)
 - *yarn* : vous avez besoin du gestionnaire de paquets Yarn pour récupérer et mettre à jour les outils de création de mission VEAF ; voir [ici](https://yarnpkg.com/fr/)
 
-## Installer les outils avec Chocolatey
+### Installer les outils avec Chocolatey
 
 Les outils requis peuvent facilement être installés en utilisant *Chocolatey* (voir [ici](https://chocolatey.org/)).
 
@@ -92,7 +92,7 @@ choco install -y nodejs
 
 Puis fermez et rouvrez l'invite de commande.
 
-## Installer l'application veaf-tools
+### Installer l'application veaf-tools
 
 Dans une invite de commande, tapez :
 
@@ -102,13 +102,13 @@ npm install -g veaf-mission-creation-tools
 
 Puis fermez et rouvrez l'invite de commande.
 
-# Utilisation générale de l'application
+## Utilisation générale de l'application
 
 Pour exécuter les outils VEAF, tapez simplement `veaf-tools` dans une invite de commande.
 
 [![veaftools-options]][veaftools-options]
 
-# Mise à jour de l'application
+## Mise à jour de l'application
 
 Pour mettre à jour les outils VEAF, faites simplement la même chose que pour l'installation.
 
@@ -120,15 +120,15 @@ npm install -g veaf-mission-creation-tools
 
 NPM récupérera et installera automatiquement la dernière version.
 
-# Utiliser l'Injecteur Météo
+## Utiliser l'Injecteur Météo
 
 Veuillez consulter la [documentation de l'Injecteur Météo](./veaf-tools-weather-injector.md) pour plus d'informations.
 
-# Utiliser le Sélecteur de Mission
+## Utiliser le Sélecteur de Mission
 
 Veuillez consulter la [documentation du Sélecteur de Mission](./veaf-tools-mission-selector.md) pour plus d'informations.
 
-# Contacts
+## Contacts
 
 Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :
 

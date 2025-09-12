@@ -2,7 +2,7 @@
 description: Des outils qui facilitent la création de mission DCS utilisant les scripts VEAF
 ---
 
-# Documentation des outils VEAF
+# Outils de gestion d'une mission DCS
 
 Navigation: [Site de documentation VEAF - page principale](../index.md)
 
