@@ -64,6 +64,35 @@ C'est ainsi qu'on peut travailler en circuit fermé sur une mission VEAF.
 
 ![workflow-fr]
 
+### Remplacement du script VEAF de production par une version avec du logging
+
+Parfois, les créateurs de mission ont besoin de voir ce qui se passe dans les scripts VEAF lorsqu'ils essaient de corriger leurs missions.
+
+Depuis cette version, le script `veaf-script.lua` est complété par deux nouvelles versions :
+
+- `veaf-script-debug.lua` : force les logs de tous les modules VEAF en DEBUG
+- `veaf-script-trace.lua` : force les logs de tous les modules VEAF en TRACE
+
+Pour remplacer le fichier `veaf-script.lua` de production par l'une des versions de journalisation dans la mission, il suffit de le sélectionner dans le trigger de chargement. 
+
+Tous les scripts sont disponibles dans le dossier `.\node_modules\veaf-mission-creation-tools\published\`.
+
+*Étape 1* : ouvrez les triggers dans la mission.
+
+![switch-logging-01]
+
+*Étape 2* : changez le script dans le trigger `mission start - static`.
+
+![switch-logging-02]
+
+*Étape 3* : sélectionnez le script souhaité dans le dossier `.\node_modules\veaf-mission-creation-tools\published\`.
+
+![switch-logging-03]
+
+*Étape 4* : enregistrez votre mission, puis ouvrez le fichier `dcs.log` dans le sous-dossier `logs` de votre dossier DCS Saved Games. Je recommande d'utiliser un programme "tail" tel que [Klogg](https://klogg.filimonov.dev/). 
+
+J'ai joint [une configuration de surlignage pour Klogg](../files/veaf-klogg-higlighter.conf) que vous pouvez importer dans Klogg si vous le souhaitez.
+
 ### Commandes avancées
 
 TBD
@@ -352,5 +381,8 @@ Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouv
 [VEAF Github]: https://github.com/veaf
 
 [workflow-fr]: ../images/editor_workflow.fr.png
+[switch-logging-01]: ../images/switch-logging-01.png
+[switch-logging-02]: ../images/switch-logging-02.png
+[switch-logging-03]: ../images/switch-logging-03.png
 
 [VEAF-mission-converter-repository]:https://github.com/VEAF/VEAF-mission-converter
