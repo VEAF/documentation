@@ -1,0 +1,1545 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Outil principal permettant d'interagir avec des missions DCS">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/v5/tools/veaf-tools/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../veaf-tools-mission-selector/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>veaf-tools - VEAF Mission Creation Tools — v5 (archive)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lapplication-nodejs-veaf-tools" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="VEAF Mission Creation Tools — v5 (archive)" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools — v5 (archive)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools — v5 (archive)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              veaf-tools
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../pilot/index.fr/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Pilote
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mission-maker/" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Outils
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../environment/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Environnement
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../programmer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Programmeur
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="VEAF Mission Creation Tools — v5 (archive)" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools — v5 (archive)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools — v5 (archive)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/index.fr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pilote
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/airwaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/combat_zone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Combat Zone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/groundBattle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ground Battle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/presets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/qra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRA Manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/radio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/skynetIads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skynet IADS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/waypoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Waypoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/weather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Outils
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Outils
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veaf-tools
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veaf-tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cas-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cas d'utilisation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cas d&#39;utilisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#injecteur-meteo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injecteur météo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selecteur-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sélecteur de mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installer-les-outils-avec-chocolatey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer les outils avec Chocolatey
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installer-lapplication-veaf-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer l'application veaf-tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilisation-generale-de-lapplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation générale de l'application
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mise-a-jour-de-lapplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mise à jour de l'application
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utiliser-linjecteur-meteo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utiliser l'Injecteur Météo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utiliser-le-selecteur-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utiliser le Sélecteur de Mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veaf-tools-mission-selector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission Selector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veaf-tools-weather-injector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather Injector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environnement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programmer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programmeur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cas-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cas d'utilisation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cas d&#39;utilisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#injecteur-meteo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injecteur météo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selecteur-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sélecteur de mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installer-les-outils-avec-chocolatey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer les outils avec Chocolatey
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installer-lapplication-veaf-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer l'application veaf-tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilisation-generale-de-lapplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation générale de l'application
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mise-a-jour-de-lapplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mise à jour de l'application
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utiliser-linjecteur-meteo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utiliser l'Injecteur Météo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utiliser-le-selecteur-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utiliser le Sélecteur de Mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lapplication-nodejs-veaf-tools">L'application NodeJS <em>veaf-tools</em><a class="headerlink" href="#lapplication-nodejs-veaf-tools" title="Permanent link">&para;</a></h1>
+<p>Navigation: <a href="../../">Site de documentation VEAF - page principale</a> &gt; <a href="../">Outils de Création de Mission</a></p>
+<hr />
+<p>🚧 <strong>TRAVAUX EN COURS</strong> 🚧</p>
+<p>La documentation est en cours de révision, partie par partie.
+En attendant, vous pouvez consulter l'<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md">ancienne documentation</a>.</p>
+<hr />
+<h2 id="table-des-matieres">Table des matières<a class="headerlink" href="#table-des-matieres" title="Permanent link">&para;</a></h2>
+<ul>
+<li>cas d'utilisation complet (serveurs publics VEAF) - <a href="#cas-dutilisation">voir ici</a></li>
+<li>installer et utiliser l'application <em>veaf-tools</em> - <a href="#installation">voir ici</a></li>
+<li>configurer et utiliser l'Injecteur Météo - <a href="../veaf-tools-weather-injector/">voir ici</a></li>
+<li>configurer et utiliser le Sélecteur de Mission - <a href="../veaf-tools-mission-selector/">voir ici</a></li>
+</ul>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>Cette application NodeJS est une collection d'outils qui peuvent être utilisés pour manipuler les missions.</p>
+<p>Actuellement, elle contient les outils suivants :</p>
+<ul>
+<li>Injecteur météo</li>
+<li>Sélecteur de mission</li>
+</ul>
+<h2 id="cas-dutilisation">Cas d'utilisation<a class="headerlink" href="#cas-dutilisation" title="Permanent link">&para;</a></h2>
+<p>La VEAF utilise ces outils avec des scripts lua de hook serveur et des watchdogs Powershell (tous disponibles sur <a href="https://github.com/VEAF/VEAF-Servers-Public">ce dépôt GitHub</a>) pour avoir nos serveurs fonctionnant 24/7, et redémarrant automatiquement en cas de crash.</p>
+<p>Toutes les deux heures, si personne n'est connecté (ou quand le dernier joueur se déconnecte), le serveur redémarre.</p>
+<p>Le script de démarrage appelle l'outil d'injection météo, qui générera un ensemble de missions pour ce serveur, avec différentes conditions météorologiques (y compris la météo réelle du moment).</p>
+<p>Ensuite, il appelle l'outil de sélection de mission, qui sélectionnera la mission à démarrer selon l'heure de la journée et le planning :</p>
+<p><a href="../../images/veaf-servers-schedule.png"><img alt="veaf-servers-schedule" src="../../images/veaf-servers-schedule.png" /></a></p>
+<p>Cela garantit que nos serveurs sont toujours opérationnels et configurés avec la mission que nous avons collectivement décidé de charger pour ce moment.</p>
+<h3 id="injecteur-meteo">Injecteur météo<a class="headerlink" href="#injecteur-meteo" title="Permanent link">&para;</a></h3>
+<p>L'Injecteur météo est un outil qui transforme un fichier de mission unique en une collection de missions, avec le même contenu mais des conditions météorologiques et de départ différentes.</p>
+<p>Il peut être utilisé pour injecter une définition météo DCS prédéfinie, lire un METAR et générer une mission avec la météo correspondante, ou même utiliser la météo du monde réel.</p>
+<p>Il peut également créer différentes heures et dates de départ pour la mission, soit avec des valeurs absolues (par exemple, le 26/01/2023 à 14h20), soit avec des "moments" prédéfinis (par exemple, deux heures après le coucher du soleil).</p>
+<p>C'est un outil très utile à utiliser avec un serveur qui fonctionne 24/7 et qui doit avoir des conditions météorologiques différentes à chaque fois qu'il démarre la même mission.</p>
+<p><a href="../../images/veaftools-injectall-demo.mp4">Vidéo de démonstration</a></p>
+<h3 id="selecteur-de-mission">Sélecteur de mission<a class="headerlink" href="#selecteur-de-mission" title="Permanent link">&para;</a></h3>
+<p>Le sélecteur de mission est utilisé pour démarrer un serveur dédié avec une mission spécifique, selon un planning défini dans un fichier de configuration.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>C'est un outil autonome, il ne nécessite pas d'environnement VEAF Mission Creation Tools spécifique (comme décrit <a href="..\environment\index.md">ici</a>).</p>
+<p>Il est donc très facile à installer sur un serveur ou sur votre propre ordinateur.</p>
+<p><strong><em>Nota bene : ce chapitre est également disponible en <a href="../../images/install-chocolatey-nodejs-veaftools.mp4">tutoriel vidéo</a></em></strong></p>
+<p>Vous devrez installer ces outils sur votre ordinateur :</p>
+<ul>
+<li><em>NodeJS</em> : vous avez besoin de NodeJS pour exécuter les programmes JavaScript dans les outils de création de mission VEAF ; voir <a href="https://nodejs.org/fr/">ici</a></li>
+<li><em>yarn</em> : vous avez besoin du gestionnaire de paquets Yarn pour récupérer et mettre à jour les outils de création de mission VEAF ; voir <a href="https://yarnpkg.com/fr/">ici</a></li>
+</ul>
+<h3 id="installer-les-outils-avec-chocolatey">Installer les outils avec Chocolatey<a class="headerlink" href="#installer-les-outils-avec-chocolatey" title="Permanent link">&para;</a></h3>
+<p>Les outils requis peuvent facilement être installés en utilisant <em>Chocolatey</em> (voir <a href="https://chocolatey.org/">ici</a>).</p>
+<p>Pour installer Chocolatey, utilisez cette commande dans une invite Powershell en mode administrateur :</p>
+<pre><code class="language-powershell">Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+</code></pre>
+<p>Une fois <em>Chocolatey</em> installé, installez NodeJS en tapant cette simple commande dans une invite de commande :</p>
+<pre><code class="language-cmd">choco install -y nodejs
+</code></pre>
+<p>Puis fermez et rouvrez l'invite de commande.</p>
+<h3 id="installer-lapplication-veaf-tools">Installer l'application veaf-tools<a class="headerlink" href="#installer-lapplication-veaf-tools" title="Permanent link">&para;</a></h3>
+<p>Dans une invite de commande, tapez :</p>
+<pre><code class="language-cmd">npm install -g veaf-mission-creation-tools
+</code></pre>
+<p>Puis fermez et rouvrez l'invite de commande.</p>
+<h2 id="utilisation-generale-de-lapplication">Utilisation générale de l'application<a class="headerlink" href="#utilisation-generale-de-lapplication" title="Permanent link">&para;</a></h2>
+<p>Pour exécuter les outils VEAF, tapez simplement <code>veaf-tools</code> dans une invite de commande.</p>
+<p><a href="../../images/veaftools-options.png"><img alt="veaftools-options" src="../../images/veaftools-options.png" /></a></p>
+<h2 id="mise-a-jour-de-lapplication">Mise à jour de l'application<a class="headerlink" href="#mise-a-jour-de-lapplication" title="Permanent link">&para;</a></h2>
+<p>Pour mettre à jour les outils VEAF, faites simplement la même chose que pour l'installation.</p>
+<p>Dans une invite de commande, tapez :</p>
+<pre><code class="language-cmd">npm install -g veaf-mission-creation-tools
+</code></pre>
+<p>NPM récupérera et installera automatiquement la dernière version.</p>
+<h2 id="utiliser-linjecteur-meteo">Utiliser l'Injecteur Météo<a class="headerlink" href="#utiliser-linjecteur-meteo" title="Permanent link">&para;</a></h2>
+<p>Veuillez consulter la <a href="../veaf-tools-weather-injector/">documentation de l'Injecteur Météo</a> pour plus d'informations.</p>
+<h2 id="utiliser-le-selecteur-de-mission">Utiliser le Sélecteur de Mission<a class="headerlink" href="#utiliser-le-selecteur-de-mission" title="Permanent link">&para;</a></h2>
+<p>Veuillez consulter la <a href="../veaf-tools-mission-selector/">documentation du Sélecteur de Mission</a> pour plus d'informations.</p>
+<h2 id="contacts">Contacts<a class="headerlink" href="#contacts" title="Permanent link">&para;</a></h2>
+<p>Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :</p>
+<ul>
+<li>contacter <strong>Zip</strong> sur <a href="https://github.com/davidp57">GitHub</a> ou sur <a href="https://discordapp.com/users/421317390807203850">Discord</a></li>
+<li>aller consulter le <a href="https://www.veaf.org">site de la VEAF</a></li>
+<li>poster sur le <a href="https://www.veaf.org/forum">forum de la VEAF</a></li>
+<li>rejoindre le <a href="https://www.veaf.org/discord">Discord de la VEAF</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

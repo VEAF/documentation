@@ -1,0 +1,1787 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Permet de générer des versions d'une mission à différents moments de la journée et avec différentes météos">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/v5/tools/veaf-tools-weather-injector/">
+      
+      
+        <link rel="prev" href="../veaf-tools-mission-selector/">
+      
+      
+        <link rel="next" href="../../environment/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Weather Injector - VEAF Mission Creation Tools — v5 (archive)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#injecteur-de-meteo-et-de-moments" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="VEAF Mission Creation Tools — v5 (archive)" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools — v5 (archive)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools — v5 (archive)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Weather Injector
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../pilot/index.fr/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Pilote
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mission-maker/" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Outils
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../environment/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Environnement
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../programmer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Programmeur
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="VEAF Mission Creation Tools — v5 (archive)" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools — v5 (archive)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools — v5 (archive)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/index.fr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pilote
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/airwaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/combat_zone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Combat Zone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/groundBattle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ground Battle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/presets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/qra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRA Manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/radio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/skynetIads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skynet IADS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/waypoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Waypoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/weather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Outils
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Outils
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veaf-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veaf-tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veaf-tools-mission-selector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission Selector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather Injector
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather Injector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utiliser-linjecteur-meteo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utiliser l'Injecteur Météo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utiliser l&#39;Injecteur Météo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#options-obligatoires-en-ligne-de-commande" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options obligatoires en ligne de commande
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-facultatives-en-ligne-de-commande" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options facultatives en ligne de commande
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-communes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options communes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fichier-de-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fichier de versions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fichier-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fichier de configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-de-meteo-reelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injection de météo réelle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-dune-meteo-predefinie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injection d'une météo prédéfinie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environnement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programmer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programmeur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utiliser-linjecteur-meteo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utiliser l'Injecteur Météo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utiliser l&#39;Injecteur Météo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#options-obligatoires-en-ligne-de-commande" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options obligatoires en ligne de commande
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-facultatives-en-ligne-de-commande" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options facultatives en ligne de commande
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-communes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options communes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fichier-de-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fichier de versions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fichier-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fichier de configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-de-meteo-reelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injection de météo réelle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-dune-meteo-predefinie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injection d'une météo prédéfinie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="injecteur-de-meteo-et-de-moments">Injecteur de Météo et de Moments<a class="headerlink" href="#injecteur-de-meteo-et-de-moments" title="Permanent link">&para;</a></h1>
+<p>Navigation: <a href="../../">Site de documentation VEAF - page principale</a> &gt; <a href="../">Outils de Création de Mission</a> &gt; <a href="../veaf-tools/">Application <em>veaf-tools</em></a></p>
+<hr />
+<p>🚧 <strong>TRAVAUX EN COURS</strong> 🚧</p>
+<p>La documentation est en cours de révision, partie par partie.
+En attendant, vous pouvez consulter l'<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/master/old_documentation/_index.md">ancienne documentation</a>.</p>
+<hr />
+<h2 id="table-des-matieres">Table des matières<a class="headerlink" href="#table-des-matieres" title="Permanent link">&para;</a></h2>
+<ul>
+<li>utiliser l'Injecteur Météo - <a href="#utiliser-linjecteur-météo">voir ici</a></li>
+<li>créer le fichier de versions - <a href="#fichier-de-versions">voir ici</a></li>
+<li>configurer le fichier de configuration - <a href="#fichier-de-configuration">voir ici</a></li>
+<li>exemple de météo réelle - <a href="#injection-de-météo-réelle">voir ici</a></li>
+<li>exemple de météo prédéfinie - <a href="#injection-dune-météo-prédéfinie">voir ici</a></li>
+</ul>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>L'Injecteur Météo fait partie de l'application VEAF Tools. Consultez l'installation et la description dans la <a href="../veaf-tools/">documentation générale de l'application VEAF Tools</a>.</p>
+<h2 id="utiliser-linjecteur-meteo">Utiliser l'Injecteur Météo<a class="headerlink" href="#utiliser-linjecteur-meteo" title="Permanent link">&para;</a></h2>
+<p>L'Injecteur Météo est en fait composé de deux commandes de l'application <em>veaf-tools</em>.</p>
+<p>La commande <code>inject</code> injectera la météo dans le fichier de mission que vous spécifiez, et créera un nouveau fichier de mission avec la météo et les conditions de départ que vous avez spécifiées dans les options de ligne de commande.</p>
+<p>Tapez <code>veaf-tools inject --help</code> pour obtenir de l'aide :</p>
+<p><a href="../../images/veaftools-inject-options.png"><img alt="veaftools-inject-options" src="../../images/veaftools-inject-options.png" /></a></p>
+<p>La commande <code>injectall</code> lira un fichier de versions contenant plusieurs conditions météorologiques et de départ, et les injectera dans le fichier de mission source, créant une collection de fichiers de mission cibles.</p>
+<p>Tapez <code>veaf-tools injectall --help</code> pour obtenir de l'aide :</p>
+<p><a href="../../images/veaftools-injectall-options.png"><img alt="veaftools-injectall-options" src="../../images/veaftools-injectall-options.png" /></a></p>
+<h3 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h3>
+<h4 id="options-obligatoires-en-ligne-de-commande">Options obligatoires en ligne de commande<a class="headerlink" href="#options-obligatoires-en-ligne-de-commande" title="Permanent link">&para;</a></h4>
+<p>Les options suivantes sont obligatoires pour les commandes <code>inject</code> et <code>injectall</code> ; n'utilisez pas le nom de l'option, ce sont des arguments positionnels (c'est-à-dire que vous devez les spécifier dans l'ordre où ils sont listés ici) :</p>
+<ul>
+<li>
+<p><code>--source</code> : le chemin vers le fichier de mission dans lequel injecter la météo.</p>
+</li>
+<li>
+<p><code>--target</code> : le chemin vers le fichier de mission à créer avec la météo injectée. Avec la commande <code>injectall</code>, "${version}" sera remplacé par le nom de la version en cours de génération.</p>
+</li>
+</ul>
+<p>De plus, la commande <code>injectall</code> doit avoir l'option <code>--configuration</code> qui pointe vers le fichier de configuration des versions. Encore une fois, c'est un argument positionnel, donc n'utilisez pas le nom de l'option.</p>
+<p>Exemple :</p>
+<pre><code class="language-cmd">veaf-tools inject source.miz target.miz 
+</code></pre>
+<p>ou</p>
+<pre><code class="language-cmd">veaf-tools injectall source.miz target-${version}.miz versions.json
+</code></pre>
+<h4 id="options-facultatives-en-ligne-de-commande">Options facultatives en ligne de commande<a class="headerlink" href="#options-facultatives-en-ligne-de-commande" title="Permanent link">&para;</a></h4>
+<p>Les options suivantes sont facultatives et sont disponibles pour les commandes <code>inject</code> et <code>injectall</code> :</p>
+<ul>
+<li>
+<p><code>--verbose</code> : si défini, l'outil affichera plus d'informations sur ce qu'il fait.</p>
+</li>
+<li>
+<p><code>--quiet</code> : si défini, l'outil affichera moins d'informations sur ce qu'il fait.</p>
+</li>
+<li>
+<p><code>--nocache</code> : si défini, l'outil n'utilisera pas le cache pour les fichiers météo. C'est utile si vous voulez forcer l'outil à récupérer la météo depuis l'API CheckWX à chaque exécution.</p>
+</li>
+</ul>
+<h4 id="options-communes">Options communes<a class="headerlink" href="#options-communes" title="Permanent link">&para;</a></h4>
+<p>La commande <code>injectall</code> finit par appeler le même code que la commande <code>inject</code> pour injecter la météo dans un fichier de mission cible, avec les options définies dans chaque cible du fichier de configuration.</p>
+<p>Par conséquent, toutes les options qui peuvent être définies dans chaque cible du fichier de configuration pour la commande <code>injectall</code> peuvent aussi être définies comme options en ligne de commande pour la commande <code>inject</code>.</p>
+<p>Voici les options disponibles, avec à chaque fois l'option en ligne de commande suivie de l'option cible correspondante :</p>
+<ul>
+<li>
+<p><code>--real</code>, <code>realweather</code> : si défini, la météo sera récupérée du monde réel via CheckWX (voir <a href="#injection-de-météo-réelle">"Injection de météo réelle"</a>).</p>
+</li>
+<li>
+<p><code>--clearsky</code>, <code>clearsky</code> : si défini, et si la météo du monde réel est récupérée, la couverture nuageuse sera limitée à trois octas. Cela permet d'avoir une météo réelle, mais assez claire pour l'Appui Aérien Rapproché.</p>
+</li>
+<li>
+<p><code>--metar</code>, <code>metar</code> : si défini avec un <a href="https://fr.wikipedia.org/wiki/METAR">METAR</a> valide, la météo sera générée à partir du METAR analysé (ex : <em>UG27 221130Z 04515KT +SHRA BKN008 OVC024 Q1006 NOSIG</em>)</p>
+</li>
+<li>
+<p><code>--start</code>, <code>time</code> : l'heure de départ de la mission en secondes après minuit</p>
+</li>
+<li>
+<p><code>--date</code>, <code>date</code> : la date de départ de la mission, avec une heure optionnelle (ex : <code>20230126</code> ou <code>202301260635</code> pour 6h35)</p>
+</li>
+<li>
+<p><code>--variable</code>, <code>variableForMetar</code> : le nom de la variable qui sera remplacée par le METAR récupéré depuis CheckWX ; c'est une fonctionnalité utile pour afficher la météo dans le briefing.</p>
+</li>
+<li>
+<p><code>--weather</code>, <code>weatherFile</code> : le chemin vers le fichier météo DCS à utiliser comme définition de météo statique.</p>
+</li>
+<li>
+<p><code>--dontSetToday</code>, <code>dontSetToday</code> : si défini, la date de la mission ne sera pas définie à la date d'aujourd'hui.</p>
+</li>
+<li>
+<p><code>--dontSetTodayYear</code>, <code>dontSetTodayYear</code> : si défini avec une année valide, et si dontSetToday est défini à <code>false</code>, l'année de la mission sera définie à l'année spécifiée tandis que le reste de la date sera défini à la date d'aujourd'hui.</p>
+</li>
+</ul>
+<h2 id="fichier-de-versions">Fichier de versions<a class="headerlink" href="#fichier-de-versions" title="Permanent link">&para;</a></h2>
+<p>Le fichier de versions est un fichier JSON qui contient les conditions météorologiques et de départ que vous souhaitez injecter dans le fichier de mission lors de l'utilisation de la commande <code>injectall</code>.</p>
+<p>Il contient plusieurs sections :</p>
+<ul>
+<li>
+<p><code>position</code> : les coordonnées de la mission ; utilisées pour calculer l'heure du coucher et du lever du soleil.</p>
+</li>
+<li>
+<p><code>moments</code> : un tableau de moments, chaque moment définissant une heure et une date spécifiques qui peuvent être utilisées dans la section <code>targets</code>.
+Ils sont définis avec des expressions JavaScript et des valeurs temporelles ; vous pouvez utiliser les variables  <em>sunset</em> et <em>sunrise</em> (par exemple, 3h après le coucher du soleil : <code>sunset + 3*60</code>, ou 15 minutes après 21h : <code>21:15</code>).
+Par défaut, ces moments sont déjà définis :</p>
+</li>
+<li>
+<p>night: 2 a.m.</p>
+</li>
+<li>beforedawn: 1:30 a.m. au lever du soleil</li>
+<li>sunrise: lever du soleil</li>
+<li>dawn: 0:30 a.m. après le lever du soleil</li>
+<li>morning: 1:30 a.m. après le lever du soleil</li>
+<li>day: 3 p.m.</li>
+<li>beforesunset: 1:30 a.m. au coucher du soleil</li>
+<li>
+<p>sunset: coucher du soleil</p>
+</li>
+<li>
+<p><code>targets</code> : un tableau de cibles, chaque cible contenant la météo et les conditions de départ qui seront utilisées pour créer une version spécifique du fichier de mission.</p>
+</li>
+</ul>
+<p>Chaque cible peut contenir les options énumérées <a href="#options-communes">voir ici</a>, et doit définir le nom de la version qui sera générée avec <code>version</code> (utilisé pour créer le nom du fichier de mission ; ex : <code>ma-mission-beforedawn-real-clear.miz</code> à partir de <code>ma-mission.miz</code>).</p>
+<p>Exemple d'un fichier de versions :</p>
+<pre><code class="language-json">{
+  &quot;variableForMetar&quot;: &quot;METAR&quot;,
+  &quot;moments&quot;: 
+    {
+      &quot;onehour_tosunrise&quot; : &quot;sunrise-60*60&quot;,
+      &quot;late_morning&quot; : &quot;sunrise+120*60&quot;
+    },
+  &quot;position&quot;: 
+    {
+      &quot;lat&quot;: 42.355691,
+      &quot;lon&quot;: 43.323853,
+      &quot;tz&quot;: &quot;Asia/Tbilisi&quot;
+    },
+  &quot;targets&quot;: [
+    {
+      &quot;version&quot;: &quot;beforedawn-real-clear&quot;,
+      &quot;realweather&quot;: true,
+      &quot;clearsky&quot;: true,
+      &quot;moment&quot;: &quot;beforedawn&quot;
+    },
+    {
+      &quot;version&quot;: &quot;beforesunrise-real&quot;,
+      &quot;realweather&quot;: true,
+      &quot;moment&quot;: &quot;onehour_tosunrise&quot;,
+      &quot;date&quot;: &quot;20230126&quot;
+    },
+    {
+      &quot;version&quot;: &quot;dawn-broken&quot;,
+      &quot;weatherfile&quot;: &quot;broken-1.lua&quot;,
+      &quot;date&quot;: &quot;202301260617&quot;
+    },
+    {
+      &quot;version&quot;: &quot;dawn-crosswind-vaziani&quot;,
+      &quot;weather&quot;: &quot;UG27 221130Z 04515KT CAVOK Q1020 NOSIG&quot;,
+      &quot;time&quot;: &quot;20680&quot;
+    }
+  ]
+}
+</code></pre>
+<h2 id="fichier-de-configuration">Fichier de configuration<a class="headerlink" href="#fichier-de-configuration" title="Permanent link">&para;</a></h2>
+<p>Le fichier de configuration est situé dans le répertoire de travail de l'outil, et est nommé <code>configuration.json</code>.</p>
+<p>Il sera automatiquement créé la première fois que vous exécuterez l'outil, et contient les sections suivantes :</p>
+<ul>
+<li>
+<p><code>theatres</code> : une liste de théâtres, avec les coordonnées où la météo sera recherchée avec CheckWX.</p>
+</li>
+<li>
+<p><code>cacheFolder</code> : le dossier où les fichiers de cache météo seront stockés.</p>
+</li>
+<li>
+<p><code>maxAgeInHours</code> : l'âge maximum des fichiers de cache météo, en heures.</p>
+</li>
+<li>
+<p><code>checkwx_apikey</code> : la clé API à utiliser pour récupérer la météo depuis CheckWX. Obtenez-en une <a href="https://www.checkwxapi.com/">voir ici</a>.</p>
+</li>
+</ul>
+<p>Un exemple de fichier de configuration :</p>
+<pre><code class="language-json">{
+  &quot;theatres&quot;: {
+    &quot;caucasus&quot;: {
+      &quot;lat&quot;: 42.355691,
+      &quot;lon&quot;: 43.323853
+    },
+    &quot;persiangulf&quot;: {
+      &quot;lat&quot;: 26.304151,
+      &quot;lon&quot;: 56.378506
+    },
+    &quot;nevada&quot;: {
+      &quot;lat&quot;: 36.145615,
+      &quot;lon&quot;: -115.187618
+    },
+    &quot;normandy&quot;: {
+      &quot;lat&quot;: 49.183336,
+      &quot;lon&quot;: -0.365908
+    },
+    &quot;syria&quot;: {
+      &quot;lat&quot;: 32.666667,
+      &quot;lon&quot;: 35.183333
+    },
+    &quot;marianaislands&quot;: {
+      &quot;lat&quot;: 14.079866,
+      &quot;lon&quot;: 145.15311411102653
+    }
+  },
+  &quot;checkwx_apikey&quot;: &quot;53506465454660465040465&quot;,
+  &quot;cacheFolder&quot;: &quot;./cache&quot;,
+  &quot;maxAgeInHours&quot;: 1
+}
+</code></pre>
+<h2 id="injection-de-meteo-reelle">Injection de météo réelle<a class="headerlink" href="#injection-de-meteo-reelle" title="Permanent link">&para;</a></h2>
+<p>C'est le comportement par défaut s'il n'y a pas de METAR ni de fichier météo DCS spécifié dans les options.</p>
+<p>La météo sera récupérée depuis l'aéroport le plus proche des coordonnées du théâtre de la mission définies dans le fichier <a href="#fichier-de-configuration"><code>configuration.json</code></a>.</p>
+<p>L'outil utilise l'API CheckWX pour récupérer la météo ; vous devez vous inscrire sur CheckWX et obtenir une clé API gratuite (voir <a href="https://www.checkwxapi.com/">voir ici</a>), et la stocker dans le fichier <a href="#fichier-de-configuration"><code>configuration.json</code></a>.</p>
+<p>La météo récupérée sera stockée dans un fichier de cache, afin que l'outil n'ait pas à récupérer la météo à chaque exécution. Cela évite de surcharger l'API CheckWX.</p>
+<p>L'emplacement du cache, ainsi que le temps d'expiration du cache, peuvent être configurés dans le fichier <a href="#fichier-de-configuration"><code>configuration.json</code></a>.</p>
+<p>Un exemple d'utilisation de <code>inject</code> pour injecter une météo réelle :</p>
+<pre><code class="language-cmd">veaf-tools inject my-mission.miz my-mission-real.miz --real
+</code></pre>
+<p>Un exemple d'utilisation de <code>injectall</code> pour injecter une météo réelle :</p>
+<pre><code class="language-json">{
+  &quot;variableForMetar&quot;: &quot;METAR&quot;,
+  &quot;position&quot;: 
+    {
+      &quot;lat&quot;: 42.355691,
+      &quot;lon&quot;: 43.323853,
+      &quot;tz&quot;: &quot;Asia/Tbilisi&quot;
+    },
+  &quot;targets&quot;: [
+    {
+      &quot;version&quot;: &quot;beforedawn-real-clear&quot;,
+      &quot;realweather&quot;: true,
+      &quot;clearsky&quot;: true,
+      &quot;moment&quot;: &quot;beforedawn&quot;
+    },
+    {
+      &quot;version&quot;: &quot;dawn-real&quot;,
+      &quot;realweather&quot;: true,
+      &quot;moment&quot;: &quot;dawn&quot;
+    }
+  ]
+}
+</code></pre>
+<pre><code class="language-cmd">veaf-tools injectall my-mission.miz my-mission-${version}.miz versions.json
+</code></pre>
+<h2 id="injection-dune-meteo-predefinie">Injection d'une météo prédéfinie<a class="headerlink" href="#injection-dune-meteo-predefinie" title="Permanent link">&para;</a></h2>
+<p>En utilisant soit un METAR soit un fichier météo DCS, vous pouvez injecter une météo prédéfinie dans le fichier de mission.</p>
+<p>Vous pouvez extraire la définition de la météo d'une mission DCS en éditant le fichier <code>mission</code> qui est stocké à l'intérieur du fichier ".miz" (indice : c'est une archive ZIP), et en cherchant la section <code>["weather"]</code>. Écrivez cette section dans un fichier LUA, et utilisez-le comme paramètre <code>--weather</code> ou option <code>weatherFile</code>.</p>
+<p>Voici un exemple de définition de météo DCS :</p>
+<pre><code class="language-lua">[&quot;weather&quot;] = {
+ [&quot;atmosphere_type&quot;] = 0,
+    [&quot;clouds&quot;] = 
+    {
+        [&quot;thickness&quot;] = 200,
+        [&quot;density&quot;] = 0,
+        [&quot;preset&quot;] = &quot;Preset13&quot;,
+        [&quot;base&quot;] = 3400,
+        [&quot;iprecptns&quot;] = 0,
+    }, -- end of [&quot;clouds&quot;]
+    [&quot;cyclones&quot;] = {
+ }, -- end of [&quot;cyclones&quot;]
+ [&quot;dust_density&quot;] = 0,
+ [&quot;enable_dust&quot;] = false,
+ [&quot;enable_fog&quot;] = false,
+ [&quot;fog&quot;] = {
+   [&quot;thickness&quot;] = 0,
+   [&quot;visibility&quot;] = 0,
+ }, -- end of [&quot;fog&quot;]
+ [&quot;groundTurbulence&quot;] = 26.656422237728,
+ [&quot;qnh&quot;] = 758.444,
+ [&quot;season&quot;] = {
+   [&quot;temperature&quot;] = 23.200000762939,
+ }, -- end of [&quot;season&quot;]
+ [&quot;type_weather&quot;] = 2,
+ [&quot;visibility&quot;] = {
+   [&quot;distance&quot;] = 1593,
+ }, -- end of [&quot;visibility&quot;]
+ [&quot;wind&quot;] = {
+   [&quot;at2000&quot;] = {
+     [&quot;dir&quot;] = 148,
+     [&quot;speed&quot;] = 10.604474819794,
+   }, -- end of [&quot;at2000&quot;]
+   [&quot;at8000&quot;] = {
+     [&quot;dir&quot;] = 160,
+     [&quot;speed&quot;] = 12.07985101455,
+   }, -- end of [&quot;at8000&quot;]
+   [&quot;atGround&quot;] = {
+     [&quot;dir&quot;] = 150,
+     [&quot;speed&quot;] = 4.5,
+   }, -- end of [&quot;atGround&quot;]
+ }, -- end of [&quot;wind&quot;]
+}, -- end of [&quot;weather&quot;]
+</code></pre>
+<pre><code class="language-cmd">veaf-tools inject my-mission.miz my-mission-real.miz --weather scattered-rain.lua
+</code></pre>
+<p>Ou, si vous utilisez <code>injectall</code> :</p>
+<pre><code class="language-json">{
+  &quot;variableForMetar&quot;: &quot;METAR&quot;,
+  &quot;position&quot;: 
+    {
+      &quot;lat&quot;: 42.355691,
+      &quot;lon&quot;: 43.323853,
+      &quot;tz&quot;: &quot;Asia/Tbilisi&quot;
+    },
+  &quot;targets&quot;: [
+    {
+      &quot;version&quot;: &quot;dawn-broken&quot;,
+      &quot;weatherfile&quot;: &quot;broken-1.lua&quot;,
+      &quot;moment&quot;: &quot;dawn&quot;
+    }
+  ]
+}
+</code></pre>
+<pre><code class="language-cmd">veaf-tools injectall my-mission.miz my-mission-${version}.miz versions.json
+</code></pre>
+<p>Utiliser un METAR est plus simple, car vous pouvez l'obtenir sur internet. Voici un exemple :</p>
+<pre><code class="language-cmd">veaf-tools inject my-mission.miz my-mission-real.miz --metar &quot;UG27 221130Z 04515KT CAVOK Q1020 NOSIG&quot;
+</code></pre>
+<p>Ou, si vous utilisez <code>injectall</code> :</p>
+<pre><code class="language-json">{
+  &quot;variableForMetar&quot;: &quot;METAR&quot;,
+  &quot;position&quot;: 
+    {
+      &quot;lat&quot;: 42.355691,
+      &quot;lon&quot;: 43.323853,
+      &quot;tz&quot;: &quot;Asia/Tbilisi&quot;
+    },
+  &quot;targets&quot;: [
+    {
+      &quot;version&quot;: &quot;dawn-crosswind-vaziani&quot;,
+      &quot;weather&quot;: &quot;UG27 221130Z 04515KT CAVOK Q1020 NOSIG&quot;,
+      &quot;moment&quot;: &quot;dawn&quot;
+    }
+  ]
+}
+</code></pre>
+<pre><code class="language-cmd">veaf-tools injectall my-mission.miz my-mission-${version}.miz versions.json
+</code></pre>
+<h2 id="contacts">Contacts<a class="headerlink" href="#contacts" title="Permanent link">&para;</a></h2>
+<p>Si vous avez besoin d'aide, ou si vous voulez suggérer quelque chose, vous pouvez :</p>
+<ul>
+<li>contacter <strong>Zip</strong> sur <a href="https://github.com/davidp57">GitHub</a> ou sur <a href="https://discordapp.com/users/421317390807203850">Discord</a></li>
+<li>aller consulter le <a href="https://www.veaf.org">site de la VEAF</a></li>
+<li>poster sur le <a href="https://www.veaf.org/forum">forum de la VEAF</a></li>
+<li>rejoindre le <a href="https://www.veaf.org/discord">Discord de la VEAF</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
