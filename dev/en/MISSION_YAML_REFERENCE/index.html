@@ -1852,6 +1852,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#custom_scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom_scripts:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2331,6 +2342,17 @@
     <span class="md-ellipsis">
       
         qra:, cap_missions:, combat_missions:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom_scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom_scripts:
       
     </span>
   </a>
@@ -3038,6 +3060,55 @@ The modules <code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVE
 - <a href="../mission-maker/scripts/veafQraManager/#configuration-missionyaml"><code>qra:</code></a> — Quick Reaction Alert definitions
 - <a href="../mission-maker/scripts/veafCasMission/#configuration-missionyaml"><code>cap_missions:</code> and <code>combat_missions:</code></a> — CAP and combat mission definitions</p>
 <hr />
+<h3 id="custom_scripts"><code>custom_scripts:</code><a class="headerlink" href="#custom_scripts" title="Permanent link">&para;</a></h3>
+<p>Declares custom Lua scripts present in <code>src/scripts/</code> that are not part of the standard VEAF v6 set.<br />
+A declared script is included in the <code>.miz</code> <strong>without</strong> triggering a warning. By default a DCS load trigger is generated for it automatically; setting <code>generate_load_trigger: false</code> disables that trigger (useful when the script is loaded manually from <code>mission-script.lua</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>generate_load_trigger</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Global default: generate a DCS trigger for all scripts in the list</td>
+</tr>
+<tr>
+<td><code>scripts[].path</code></td>
+<td><code>string</code></td>
+<td><em>(required)</em></td>
+<td>Path to the file, relative to the mission folder (e.g. <code>src/scripts/FgMission.lua</code>)</td>
+</tr>
+<tr>
+<td><code>scripts[].generate_load_trigger</code></td>
+<td><code>bool</code></td>
+<td><em>(global default)</em></td>
+<td>Per-script override; if absent, the global default applies</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Loading behaviour</strong></p>
+<ul>
+<li><code>generate_load_trigger: true</code> (default) → the script is injected into the <code>.miz</code> <strong>and</strong> a DCS <code>a_do_script_file</code> trigger is generated — it loads at mission start like other mission scripts.</li>
+<li><code>generate_load_trigger: false</code> → the script is injected into the <code>.miz</code> but <strong>no</strong> trigger is generated; <code>mission-script.lua</code> (or another script) must load it via <code>dofile</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">generate_load_trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># global default for all scripts below</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgTools.lua</span>
+<span class="w">      </span><span class="nt">generate_load_trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># loaded manually from mission-script.lua</span>
+</code></pre></div>
+<blockquote>
+<p>Any <code>.lua</code> file present in <code>src/scripts/</code> but <strong>absent</strong> from this section (and not one of the standard files) triggers a build warning with a reminder to declare it here.</p>
+</blockquote>
+<hr />
 <h3 id="pipeline"><code>pipeline:</code><a class="headerlink" href="#pipeline" title="Permanent link">&para;</a></h3>
 <p>Controls the optional build pipeline steps. See the <a href="../PIPELINE_REFERENCE/">Pipeline Reference</a> for the full schema of each step's config file.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
@@ -3298,6 +3369,10 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <tr>
 <td><code>pipeline.weather</code></td>
 <td><a href="../PIPELINE_REFERENCE/#step-4--weather--time-versions-versionsyaml">versions.yaml schema</a></td>
+</tr>
+<tr>
+<td><a href="#custom_scripts"><code>custom_scripts:</code></a></td>
+<td>Custom Lua scripts to include in the mission</td>
 </tr>
 <tr>
 <td><a href="#build"><code>build:</code></a></td>
