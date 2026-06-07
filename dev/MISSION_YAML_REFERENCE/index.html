@@ -2824,7 +2824,15 @@
 <hr />
 <h3 id="lua_modules"><code>lua_modules:</code><a class="headerlink" href="#lua_modules" title="Permanent link">&para;</a></h3>
 <p>Activer, désactiver ou configurer les modules Lua VEAF individuels. Les modules non listés sont activés avec leurs paramètres par défaut.</p>
+<blockquote>
+<p><strong>Les modules d'infrastructure sont toujours actifs.</strong>
+Les modules <code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVENTS</code>, <code>MARKERS</code> et <code>COMMANDS</code> sont obligatoires et toujours chargés, quelle que soit la configuration. La clé <code>enable</code> ne doit <strong>pas</strong> être utilisée sur ces modules — c'est une erreur de build. Ils peuvent toutefois apparaître dans <code>lua_modules:</code> pour configurer d'autres champs comme <code>logLevel</code>.</p>
+</blockquote>
 <div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Modules d&#39;infrastructure : toujours actifs — configurer uniquement, ne pas utiliser &#39;enable&#39;</span>
+<span class="w">  </span><span class="nt">UNITS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+<span class="w">  </span><span class="c1"># Modules optionnels : peuvent être activés ou désactivés</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">            </span><span class="c1"># surcharge optionnelle du niveau de log par module</span>
@@ -2834,7 +2842,7 @@
 <span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
 </code></pre></div>
-<p>Les champs <code>enable</code> et <code>logLevel</code> sont disponibles pour chaque module. Les champs supplémentaires <code>init:</code> ou de données sont spécifiques à chaque module — voir la page de documentation de chaque module.</p>
+<p>Le champ <code>logLevel</code> est disponible pour chaque module. Le champ <code>enable</code> s'applique <strong>uniquement aux modules optionnels</strong> — son utilisation sur les modules d'infrastructure est une erreur de build. Les champs supplémentaires <code>init:</code> ou de données sont spécifiques à chaque module — voir la page de documentation de chaque module.</p>
 <p><strong>Champs communs (tous les modules) :</strong></p>
 <table>
 <thead>
@@ -2850,7 +2858,7 @@
 <td><code>enable</code></td>
 <td>booléen</td>
 <td><code>true</code></td>
-<td>Activer ou désactiver ce module</td>
+<td>Activer ou désactiver ce module <em>(modules optionnels uniquement — interdit sur les modules d'infrastructure)</em></td>
 </tr>
 <tr>
 <td><code>logLevel</code></td>

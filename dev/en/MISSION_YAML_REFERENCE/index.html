@@ -2890,7 +2890,15 @@
 <hr />
 <h3 id="lua_modules"><code>lua_modules:</code><a class="headerlink" href="#lua_modules" title="Permanent link">&para;</a></h3>
 <p>Enable, disable, or configure individual VEAF Lua modules. Modules not listed are enabled with their default settings.</p>
+<blockquote>
+<p><strong>Infrastructure modules are always active.</strong>
+The modules <code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVENTS</code>, <code>MARKERS</code>, and <code>COMMANDS</code> are mandatory and are always loaded regardless of configuration. The <code>enable</code> key must <strong>not</strong> be set for these modules — doing so is a build error. They can still appear under <code>lua_modules:</code> to configure other fields such as <code>logLevel</code>.</p>
+</blockquote>
 <div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Infrastructure modules: always active — configure only, do not use &#39;enable&#39;</span>
+<span class="w">  </span><span class="nt">UNITS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+<span class="w">  </span><span class="c1"># Optional modules: can be enabled or disabled</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">            </span><span class="c1"># optional per-module log level override</span>
@@ -2900,7 +2908,7 @@
 <span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
 </code></pre></div>
-<p>The <code>enable</code> and <code>logLevel</code> fields are available for every module. Additional <code>init:</code> or data fields are module-specific — see each module's documentation page.</p>
+<p>The <code>logLevel</code> field is available for every module. The <code>enable</code> field applies <strong>only to optional modules</strong> — it is a build error on Infrastructure modules. Additional <code>init:</code> or data fields are module-specific — see each module's documentation page.</p>
 <p><strong>Common fields (all modules):</strong></p>
 <table>
 <thead>
@@ -2916,7 +2924,7 @@
 <td><code>enable</code></td>
 <td>boolean</td>
 <td><code>true</code></td>
-<td>Enable or disable this module</td>
+<td>Enable or disable this module <em>(optional modules only — not allowed on Infrastructure modules)</em></td>
 </tr>
 <tr>
 <td><code>logLevel</code></td>
