@@ -1774,6 +1774,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#validation-des-fréquences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation des fréquences
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2210,6 +2221,17 @@
     <span class="md-ellipsis">
       
         Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-des-fréquences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation des fréquences
       
     </span>
   </a>
@@ -2657,6 +2679,17 @@
 <span class="w">    </span><span class="nt">helicopter</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue_default</span>
 </code></pre></div>
+<h3 id="validation-des-fréquences">Validation des fréquences<a class="headerlink" href="#validation-des-fréquences" title="Permanent link">&para;</a></h3>
+<p>Lors de l'injection, chaque fréquence assignée à un aéronef est vérifiée par rapport aux spécifications matérielles de ses radios. Si une fréquence est hors de toutes les plages valides, un avertissement est émis :</p>
+<div class="highlight"><pre><span></span><code>WARNING: Group &#39;Bassel MiG-19 #1&#39; (MiG-19P): frequency 284.0 MHz is outside all valid radio
+ranges for this aircraft — DCS will reject it at mission load.
+</code></pre></div>
+<p>La vérification est <strong>non bloquante</strong> : la mission est quand même écrite, mais la fréquence invalide provoquera une erreur DCS au chargement (typiquement <code>Invalid frequency X MHz</code>).</p>
+<p>Les specs couvrent 85 aéronefs pilotables et sont issues de <a href="https://github.com/Quaggles/dcs-lua-datamine">dcs-lua-datamine</a>. Si un aéronef n'est pas dans la base, la vérification est silencieusement ignorée.</p>
+<blockquote>
+<p><strong>Voir aussi</strong> : <a href="dcs-radio-specs.md"><code>doc/mission-maker/dcs-radio-specs.md</code></a> — table de référence complète des plages de fréquences valides par aéronef.<br />
+Pour régénérer après une mise à jour DCS : <code>poetry run update-radio-specs</code></p>
+</blockquote>
 <hr />
 <h2 id="étape-2--points-de-cheminement-waypointsyaml">Étape 2 — Points de cheminement (<code>waypoints.yaml</code>)<a class="headerlink" href="#étape-2--points-de-cheminement-waypointsyaml" title="Permanent link">&para;</a></h2>
 <p>Injecte des modèles de points de cheminement dans les groupes d'aéronefs pilotés par des humains. Seuls les groupes avec au moins une unité Client/Player sont modifiés.</p>

@@ -1774,6 +1774,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#frequency-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frequency validation
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2210,6 +2221,17 @@
     <span class="md-ellipsis">
       
         Minimal example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frequency-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frequency validation
       
     </span>
   </a>
@@ -2659,6 +2681,17 @@
 <span class="w">    </span><span class="nt">helicopter</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue_default</span>
 </code></pre></div>
+<h3 id="frequency-validation">Frequency validation<a class="headerlink" href="#frequency-validation" title="Permanent link">&para;</a></h3>
+<p>At injection time, every frequency assigned to an aircraft is checked against the hardware specs of that aircraft's radios. If a frequency falls outside all valid ranges, a warning is emitted:</p>
+<div class="highlight"><pre><span></span><code>WARNING: Group &#39;Bassel MiG-19 #1&#39; (MiG-19P): frequency 284.0 MHz is outside all valid radio
+ranges for this aircraft — DCS will reject it at mission load.
+</code></pre></div>
+<p>The check is <strong>non-blocking</strong>: the mission is still written, but the invalid frequency will cause a DCS error when the mission loads (typically <code>Invalid frequency X MHz</code>).</p>
+<p>Specs cover 85 player-flyable aircraft and are sourced from <a href="https://github.com/Quaggles/dcs-lua-datamine">dcs-lua-datamine</a>. If an aircraft is not in the database the check is silently skipped.</p>
+<blockquote>
+<p><strong>See also</strong>: <a href="dcs-radio-specs.md"><code>doc/mission-maker/dcs-radio-specs.md</code></a> — full reference table of valid frequency ranges per aircraft.<br />
+To regenerate after a DCS update: <code>poetry run update-radio-specs</code></p>
+</blockquote>
 <hr />
 <h2 id="step-2--waypoints-waypointsyaml">Step 2 — Waypoints (<code>waypoints.yaml</code>)<a class="headerlink" href="#step-2--waypoints-waypointsyaml" title="Permanent link">&para;</a></h2>
 <p>Injects waypoint templates into human-piloted aircraft groups. Only groups with at least one Client/Player unit are modified.</p>
