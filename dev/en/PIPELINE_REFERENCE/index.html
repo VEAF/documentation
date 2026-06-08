@@ -2710,14 +2710,27 @@
 <span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue_default</span>
 </code></pre></div>
 <h3 id="frequency-validation">Frequency validation<a class="headerlink" href="#frequency-validation" title="Permanent link">&para;</a></h3>
-<p>At injection time, every frequency assigned to an aircraft is checked against the hardware specs of that aircraft's radios. If a frequency falls outside all valid ranges, a warning is emitted:</p>
-<div class="highlight"><pre><span></span><code>WARNING: Group &#39;Bassel MiG-19 #1&#39; (MiG-19P): frequency 284.0 MHz is outside all valid radio
-ranges for this aircraft — DCS will reject it at mission load.
+<p>At injection time, every frequency assigned to an aircraft is checked against the hardware specs of that aircraft's radios.</p>
+<p><strong>Default behaviour (normal build):</strong></p>
+<ul>
+<li><strong>Critical aircraft</strong> (<code>dcs_rejects_on_load: true</code> in the specs): if a frequency is out of range, a <code>WARNING</code> is emitted in the log. These are the aircraft for which DCS raises an error when the mission loads.</li>
+<li><strong>Other aircraft</strong>: validation is silent — DCS stores the frequencies but ignores them for out-of-range radios without crashing.</li>
+</ul>
+<p><strong>Automatic report:</strong></p>
+<p>After each preset injection, a file <code>presets-validation-report.md</code> is automatically created in the mission folder if at least one aircraft (critical or not) has out-of-range frequencies. The file lists all issues with the invalid values and a YAML snippet to disable them temporarily. If no issues are found, the file is deleted.</p>
+<div class="highlight"><pre><span></span><code>&lt;mission-folder&gt;/presets-validation-report.md
 </code></pre></div>
-<p>The check is <strong>non-blocking</strong>: the mission is still written, but the invalid frequency will cause a DCS error when the mission loads (typically <code>Invalid frequency X MHz</code>).</p>
+<p><strong>Temporarily disabling injection for an aircraft:</strong></p>
+<p>While fixing the presets, you can disable injection for a specific aircraft type by assigning it the value <code>none</code> in <code>presets_assignments</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">presets_assignments</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blue</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">plane</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">MiG-19P</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w">   </span><span class="c1"># DCS rejects standard frequencies — fix pending</span>
+</code></pre></div>
+<p>Once the presets are corrected, remove the <code>none</code> line to re-enable injection.</p>
 <p>Specs cover 85 player-flyable aircraft and are sourced from <a href="https://github.com/Quaggles/dcs-lua-datamine">dcs-lua-datamine</a>. If an aircraft is not in the database the check is silently skipped.</p>
 <blockquote>
-<p><strong>See also</strong>: <a href="../mission-maker/dcs-radio-specs/"><code>doc/mission-maker/dcs-radio-specs.md</code></a> — full reference table of valid frequency ranges per aircraft.<br />
+<p><strong>See also</strong>: <a href="../mission-maker/dcs-radio-specs/"><code>doc/mission-maker/dcs-radio-specs.md</code></a> — full reference table of valid frequency ranges and list of critical aircraft.<br />
 To regenerate after a DCS update: <code>poetry run update-radio-specs</code></p>
 </blockquote>
 <hr />

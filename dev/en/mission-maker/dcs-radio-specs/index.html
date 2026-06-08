@@ -1719,6 +1719,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#critical-aircraft-dcs_rejects_on_load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical aircraft (dcs_rejects_on_load)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#fixed-wing-aircraft" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1867,6 +1878,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#critical-aircraft-dcs_rejects_on_load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical aircraft (dcs_rejects_on_load)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#fixed-wing-aircraft" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1916,6 +1938,38 @@ compatible with the target aircraft's radio hardware.</p>
 <p><strong>Source</strong>: <a href="https://github.com/Quaggles/dcs-lua-datamine">dcs-lua-datamine</a><br />
 Re-generate with <code>poetry run update-radio-specs</code> after a DCS patch.</p>
 </blockquote>
+<hr />
+<h2 id="critical-aircraft-dcs_rejects_on_load">Critical aircraft (<code>dcs_rejects_on_load</code>)<a class="headerlink" href="#critical-aircraft-dcs_rejects_on_load" title="Permanent link">&para;</a></h2>
+<p>Some aircraft raise a hard DCS error when the mission loads if any preset frequency is outside
+their valid radio range. These are flagged <code>dcs_rejects_on_load: true</code> in <code>dcs-radio-specs.yaml</code>
+and always emit a <code>WARNING</code> during <code>veaf-tools build</code>.</p>
+<p>Currently known critical aircraft:</p>
+<table>
+<thead>
+<tr>
+<th>Aircraft</th>
+<th>DCS ID</th>
+<th>Valid range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MiG-19P</td>
+<td><code>MiG-19P</code></td>
+<td>100–150 MHz</td>
+</tr>
+<tr>
+<td>Gazelle SA342M</td>
+<td><code>SA342M</code></td>
+<td>30–87.975 MHz (FM only)</td>
+</tr>
+</tbody>
+</table>
+<p>For other aircraft, DCS stores the frequencies silently without crashing. Issues are still
+reported in the automatic <code>presets-validation-report.md</code> generated after each build.</p>
+<p>If you discover another aircraft that causes DCS to reject the mission, add
+<code>dcs_rejects_on_load: true</code> to its entry in <code>src/python/veaf-tools/presets_injector/data/dcs-radio-specs.yaml</code>
+and open a pull request.</p>
 <hr />
 <h2 id="fixed-wing-aircraft">Fixed-wing aircraft<a class="headerlink" href="#fixed-wing-aircraft" title="Permanent link">&para;</a></h2>
 <table>
