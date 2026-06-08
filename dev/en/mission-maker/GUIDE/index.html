@@ -1100,6 +1100,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dcs-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCS Bridge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DCS Bridge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabling-dcs-bridgelua-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling dcs-bridge.lua injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-local-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using a local file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load order
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#debug-logging" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2624,6 +2674,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dcs-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCS Bridge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DCS Bridge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabling-dcs-bridgelua-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling dcs-bridge.lua injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-local-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using a local file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load order
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#debug-logging" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3189,6 +3289,24 @@ DO SCRIPT FILE → mission-script.lua (your custom code)
 </code></pre></div>
 <h3 id="veaf-automatic-defaults">VEAF automatic defaults<a class="headerlink" href="#veaf-automatic-defaults" title="Permanent link">&para;</a></h3>
 <p>When VEAF wraps the initialisers it applies its own defaults: logging and a standard radio menu entry. You do not need to configure any of this manually.</p>
+<hr />
+<h2 id="dcs-bridge">DCS Bridge<a class="headerlink" href="#dcs-bridge" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/VEAF/VEAF-dcs-bridge">VEAF-dcs-bridge</a> is an optional Lua module that opens a TCP socket between DCS World and an external server, enabling external control of the mission (Discord bots, dashboards, automation tools).</p>
+<h3 id="enabling-dcs-bridgelua-injection">Enabling dcs-bridge.lua injection<a class="headerlink" href="#enabling-dcs-bridgelua-injection" title="Permanent link">&para;</a></h3>
+<p>Add the following section to your <code>mission.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">dcs_bridge</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>At build time, <code>veaf-tools</code> automatically downloads <code>dcs-bridge.lua</code> from GitHub and injects it as the very first DO SCRIPT FILE trigger in the mission (before all VEAF scripts).</p>
+<h3 id="using-a-local-file">Using a local file<a class="headerlink" href="#using-a-local-file" title="Permanent link">&para;</a></h3>
+<p>If you have a local clone of <code>VEAF-dcs-bridge</code>, point directly to the file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">dcs_bridge</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">lua_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/VEAF-dcs-bridge/src/lua/dcs-bridge.lua</span>
+</code></pre></div>
+<p>The path can be absolute or relative to the mission folder.</p>
+<h3 id="load-order">Load order<a class="headerlink" href="#load-order" title="Permanent link">&para;</a></h3>
+<p>When <code>dcs_bridge</code> is enabled, the trigger is inserted at <strong>position 1</strong>, before all other VEAF triggers. dcs-bridge is therefore available at the earliest possible point in mission startup, before <code>veaf-scripts.lua</code> is loaded.</p>
 <hr />
 <h2 id="debug-logging">Debug Logging<a class="headerlink" href="#debug-logging" title="Permanent link">&para;</a></h2>
 <p>All VEAF scripts write to the DCS log file (<code>Saved Games\DCS\Logs\dcs.log</code>). Three log levels are available, each with its own loader script:</p>
