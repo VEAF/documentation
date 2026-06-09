@@ -1028,7 +1028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../veafInterpreter.md" class="md-nav__link">
+      <a href="../veafInterpreter/" class="md-nav__link">
         
   
   
@@ -1336,6 +1336,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="API bas niveau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#menus-paginés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus paginés
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1377,6 +1394,17 @@
     <span class="md-ellipsis">
       
         Gérer des drapeaux DCS (pour déclencher des triggers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commande-par-groupe-forgroup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commande par groupe (ForGroup)
       
     </span>
   </a>
@@ -2128,6 +2156,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="API bas niveau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#menus-paginés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus paginés
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2169,6 +2214,17 @@
     <span class="md-ellipsis">
       
         Gérer des drapeaux DCS (pour déclencher des triggers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commande-par-groupe-forgroup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commande par groupe (ForGroup)
       
     </span>
   </a>
@@ -2232,9 +2288,9 @@
 <p>Cela reconstruit l'intégralité de l'arbre F10. L'appel est idempotent — il gère en interne un délai anti-rebond de 1 seconde.</p>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># défaut : true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># défaut : true</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">        </span><span class="c1"># surcharge optionnelle du niveau de log</span>
 <span class="w">    </span><span class="nt">init</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">help_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># afficher les entrées &quot;Aide&quot; intégrées dans les menus radio (défaut : true)</span>
@@ -2274,9 +2330,9 @@
 </tbody>
 </table>
 <h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <hr />
 <h2 id="créer-un-menu-personnalisé">Créer un menu personnalisé<a class="headerlink" href="#créer-un-menu-personnalisé" title="Permanent link">&para;</a></h2>
@@ -2392,6 +2448,18 @@
 <span class="c1">-- Déclencher une reconstruction</span>
 <span class="nv">veafRadio</span><span class="p">.</span><span class="nf">refreshRadioMenu</span><span class="p">()</span>
 </code></pre></div>
+<h3 id="menus-paginés">Menus paginés<a class="headerlink" href="#menus-paginés" title="Permanent link">&para;</a></h3>
+<p>Quand un sous-menu compte plus d'environ 9 entrées (limite DCS), utilisez les helpers paginés :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addPaginatedRadioMenu</span><span class="p">(</span>
+<span class="w">  </span><span class="s2">&quot;All Zones&quot;</span><span class="p">,</span><span class="w">          </span><span class="c1">-- titre du menu</span>
+<span class="w">  </span><span class="nv">parentMenu</span><span class="p">,</span><span class="w">           </span><span class="c1">-- nœud du menu parent</span>
+<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">addCommandToSubmenu</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">myZonesList</span><span class="p">,</span><span class="w">          </span><span class="c1">-- table d&#39;éléments</span>
+<span class="w">  </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w">               </span><span class="c1">-- attribut utilisé comme titre d&#39;entrée</span>
+<span class="w">  </span><span class="s2">&quot;sortKey&quot;</span><span class="w">             </span><span class="c1">-- attribut utilisé pour le tri (optionnel)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Des pages de 10 sont créées automatiquement avec un sous-menu « Page suivante ».</p>
 <hr />
 <h2 id="exemples-pratiques-de-fonctions-de-callback">Exemples pratiques de fonctions de callback<a class="headerlink" href="#exemples-pratiques-de-fonctions-de-callback" title="Permanent link">&para;</a></h2>
 <p>Les commandes d'un menu utilisateur appellent une fonction Lua. Voici des exemples courants :</p>
@@ -2450,6 +2518,16 @@
 <span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Décrémenter 127&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">veafSpawn</span><span class="p">.</span><span class="py">missionMasterDecrementFlagValue</span><span class="p">,</span><span class="w">   </span><span class="mi">127</span><span class="p">)</span>
 <span class="w">        </span><span class="p">)</span>
 <span class="w">    </span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="commande-par-groupe-forgroup">Commande par groupe (ForGroup)<a class="headerlink" href="#commande-par-groupe-forgroup" title="Permanent link">&para;</a></h3>
+<p>Une entrée « Demander un appui aérien » qui apparaît une fois par patrouille connectée, en passant automatiquement le nom d'unité de ce groupe :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span>
+<span class="w">  </span><span class="s2">&quot;Request CAS&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">supportMenu</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">myCasDispatch</span><span class="p">,</span><span class="w">      </span><span class="c1">-- reçoit { originalParams, unitName } à l&#39;exécution</span>
+<span class="w">  </span><span class="p">{},</span>
+<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForGroup</span>
 <span class="p">)</span>
 </code></pre></div>
 <hr />

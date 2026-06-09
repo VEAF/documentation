@@ -2640,6 +2640,12 @@
 <li><strong><a href="#integrating-veaf-mct-into-a-vanilla-dcs-mission">From a vanilla DCS mission</a></strong> — your mission has no VEAF MCT scripts at all</li>
 </ol>
 <p>In both cases the end result is a <strong>VEAF MCT v6 mission folder</strong> that you manage with <code>veaf-tools.exe</code>.</p>
+<pre class="mermaid"><code>flowchart TD
+    V5[VEAF MCT v5 mission] --&gt;|veaf-tools convert-v5| FOLDER[v6 mission folder]
+    VAN[Vanilla DCS .miz] --&gt;|veaf-tools extract| FOLDER
+    FOLDER --&gt; CFG[Edit mission.yaml]
+    CFG --&gt; BUILD[veaf-tools build]
+    BUILD --&gt; MIZ[v6 .miz ready to fly]</code></pre>
 <hr />
 <h2 id="before-you-start">Before You Start<a class="headerlink" href="#before-you-start" title="Permanent link">&para;</a></h2>
 <h3 id="terminology">Terminology<a class="headerlink" href="#terminology" title="Permanent link">&para;</a></h3>
@@ -2732,7 +2738,7 @@
 <tr>
 <td><strong>Module enable/disable</strong></td>
 <td>Edit <code>missionConfig.lua</code> (or simply omit the <code>initialize()</code> call)</td>
-<td><code>mission.yaml</code> → <code>lua_modules:</code> section; generates <code>veaf-config.lua</code> automatically</td>
+<td><code>mission.yaml</code> → <code>modules:</code> block; generates <code>veaf-config.lua</code> automatically</td>
 </tr>
 <tr>
 <td><strong>Module configuration</strong></td>
@@ -2757,7 +2763,7 @@
 <tr>
 <td><strong>Module log levels</strong></td>
 <td>Set per-module by assigning <code>veafXxx.LogLevel</code> before init</td>
-<td><code>mission.yaml</code> → <code>lua_modules: → MODULE_ID: logLevel:</code> or <code>--log-modules</code> CLI flag</td>
+<td><code>mission.yaml</code> → <code>modules: → MODULE_ID: logLevel:</code> or <code>--log-modules</code> CLI flag</td>
 </tr>
 </tbody>
 </table>
@@ -2785,7 +2791,7 @@
 <ul>
 <li><strong><code>missionConfig.lua</code> migration</strong> — comments out <code>doFile()</code> calls that load VEAF scripts (the builder injects them automatically), wraps bare <code>veafXxx.initialize()</code> calls in <code>if veafXxx then … end</code> guards.</li>
 <li><strong>Pipeline config conversion</strong> — converts v5 config files (radio presets, waypoints, weather, aircraft groups) from Lua to v6 YAML format.</li>
-<li><strong><code>mission.yaml</code> generation</strong> — creates <code>mission.yaml</code> with the correct <code>lua_modules:</code> and <code>pipeline:</code> sections.</li>
+<li><strong><code>mission.yaml</code> generation</strong> — creates <code>mission.yaml</code> with the correct <code>modules:</code> and <code>pipeline:</code> sections.</li>
 <li><strong>Conversion report</strong> — saves <code>convert-v5-report.md</code> with all actions taken and any items requiring manual review.</li>
 </ul>
 <p>If your pipeline contains <code>realweather</code> weather versions, the tool will ask for the ICAO airport code to embed in the generated config. You can supply it upfront to avoid the interactive prompt:</p>
@@ -2872,17 +2878,17 @@
 <p>Edit <code>mission.yaml</code> to enable the modules you want. By default, only the essential modules (markers, spawn, radio) are active:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Vanilla Mission</span>
 
-<span class="nt">lua_modules</span><span class="p">:</span>
+<span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="c1"># Uncomment to enable CAS missions:</span>
 <span class="w">  </span><span class="c1"># CASMISSION:</span>
-<span class="w">  </span><span class="c1">#   enable: true</span>
+<span class="w">  </span><span class="c1">#   enabled: true</span>
 <span class="w">  </span><span class="c1"># Uncomment to enable carrier ops:</span>
 <span class="w">  </span><span class="c1"># CARRIER:</span>
-<span class="w">  </span><span class="c1">#   enable: true</span>
+<span class="w">  </span><span class="c1">#   enabled: true</span>
 </code></pre></div>
 <p>For custom Lua (advanced module calls, custom aliases, etc.), edit <code>src/scripts/mission-script.lua</code>.</p>
 <p>See the <a href="../../MISSION_YAML_REFERENCE.md">YAML reference</a> and the individual script guides in <a href="../scripts/">scripts/</a> for all options.</p>
@@ -2940,7 +2946,7 @@ __pycache__/
 <span class="w">    </span><span class="p">:</span><span class="nf">setVeafCommand</span><span class="p">(</span><span class="s2">&quot;_spawn group, name my-template&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>Module enable/disable is configured in <code>mission.yaml</code> → <code>lua_modules:</code> — not in this file. See the <a href="../../MISSION_YAML_REFERENCE.md">YAML reference</a> for the full <code>mission.yaml</code> syntax.</p>
+<p>Module enable/disable is configured in <code>mission.yaml</code> → <code>modules:</code> — not in this file. See the <a href="../../MISSION_YAML_REFERENCE.md">YAML reference</a> for the full <code>mission.yaml</code> syntax.</p>
 <hr />
 <h2 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h2>
 <h3 id="veaf-scripts-loader-trigger-appears-twice">"VEAF scripts loader" trigger appears twice<a class="headerlink" href="#veaf-scripts-loader-trigger-appears-twice" title="Permanent link">&para;</a></h3>
@@ -2948,16 +2954,16 @@ __pycache__/
 <p>Alternatively, use <code>--migrate-from-v5</code> on the build to have the old triggers removed automatically (this is the default).</p>
 <h3 id="radio-menus-dont-appear">Radio menus don't appear<a class="headerlink" href="#radio-menus-dont-appear" title="Permanent link">&para;</a></h3>
 <p>Confirm <code>RADIO</code> is enabled in <code>mission.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>Rebuild with <code>veaf-tools.exe build</code> after any <code>mission.yaml</code> change.</p>
 <h3 id="marker-commands-dont-work">Marker commands don't work<a class="headerlink" href="#marker-commands-dont-work" title="Permanent link">&para;</a></h3>
 <p>Confirm <code>SPAWN</code> is enabled in <code>mission.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>Then check the DCS log (<code>Saved Games\DCS\Logs\dcs.log</code>) for VEAF errors — filter on <code>VEAF</code> or <code>ERROR</code>.</p>
 <h3 id="reading-the-logs">Reading the logs<a class="headerlink" href="#reading-the-logs" title="Permanent link">&para;</a></h3>

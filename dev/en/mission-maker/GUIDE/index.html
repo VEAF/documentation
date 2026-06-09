@@ -2991,6 +2991,27 @@
 <li>Injects fresh <code>DO SCRIPT FILE</code> triggers for all VEAF scripts + your custom scripts</li>
 <li>Writes the final <code>.miz</code></li>
 </ol>
+<p>The full build then runs any optional pipeline steps whose configuration files are present (presets, waypoints, aircraft groups, weather):</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph Inputs
+        YAML[mission.yaml]
+        SRC[src/mission + src/scripts]
+        LUA[VEAF Lua scripts]
+    end
+    YAML --&gt; BUILD[veaf-tools build]
+    SRC --&gt; BUILD
+    LUA --&gt; BUILD
+    BUILD --&gt; GEN[Generate veaf-config.lua from mission.yaml]
+    GEN --&gt; TRIG[Inject DO SCRIPT FILE triggers]
+    TRIG --&gt; PIPE{Optional pipeline steps}
+    PIPE --&gt;|presets.yaml| P1[inject-presets]
+    PIPE --&gt;|waypoints.yaml| P2[inject-waypoints]
+    PIPE --&gt;|aircraft-templates.yaml| P3[inject-aircraft-groups]
+    PIPE --&gt;|versions.yaml| P4[inject-weather]
+    P1 --&gt; OUT[Final .miz ready to fly]
+    P2 --&gt; OUT
+    P3 --&gt; OUT
+    P4 --&gt; OUT</code></pre>
 <hr />
 <h2 id="configuring-modules">Configuring Modules<a class="headerlink" href="#configuring-modules" title="Permanent link">&para;</a></h2>
 <p>VEAF MCT has two configuration layers:</p>
@@ -3003,19 +3024,21 @@
 <div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My-Mission&quot;</span>
 
-<span class="nt">lua_modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">SECURITY</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SECURITY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">        </span><span class="c1"># shorthand: just enable the module</span>
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">     </span><span class="c1"># a module with extra config uses a block</span>
 <span class="w">  </span><span class="nt">ASSETS</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">assets</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;T1-Arco-1&quot;</span>
 <span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Arco-1</span><span class="nv"> </span><span class="s">(KC-135)&quot;</span>
 <span class="w">        </span><span class="nt">information</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Tacan</span><span class="nv"> </span><span class="s">64Y\nU290.50</span><span class="nv"> </span><span class="s">(20)&quot;</span>
 </code></pre></div>
+<blockquote>
+<p>The unified <code>modules:</code> block replaces the older <code>lua_modules:</code> + <code>community_scripts:</code> keys, and <code>enabled:</code> replaces <code>enable:</code>. The legacy keys still work but emit a deprecation warning. See the <a href="../../MISSION_YAML_REFERENCE/">mission.yaml Reference</a> for the full syntax.</p>
+</blockquote>
 <h3 id="mission-scriptlua-example">mission-script.lua Example<a class="headerlink" href="#mission-scriptlua-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1">-- mission-script.lua — custom mission-level code</span>
 <span class="c1">-- Module initialization is handled automatically by veaf-config.lua (generated from mission.yaml).</span>
@@ -3104,10 +3127,6 @@
 <tr>
 <td><code>extract-waypoints</code></td>
 <td>Extracts waypoints from a mission</td>
-</tr>
-<tr>
-<td><code>convert</code></td>
-<td>Converts a vanilla mission to VEAF MCT format</td>
 </tr>
 <tr>
 <td><code>convert-v5</code></td>
@@ -3337,38 +3356,14 @@ DO SCRIPT FILE → mission-script.lua (your custom code)
 <p>When <code>dcs_bridge</code> is enabled, the trigger is inserted at <strong>position 1</strong>, before all other VEAF triggers. dcs-bridge is therefore available at the earliest possible point in mission startup, before <code>veaf-scripts.lua</code> is loaded.</p>
 <hr />
 <h2 id="debug-logging">Debug Logging<a class="headerlink" href="#debug-logging" title="Permanent link">&para;</a></h2>
-<p>All VEAF scripts write to the DCS log file (<code>Saved Games\DCS\Logs\dcs.log</code>). Three log levels are available, each with its own loader script:</p>
-<table>
-<thead>
-<tr>
-<th>Script</th>
-<th>Level</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>veaf-scripts.lua</code></td>
-<td>Normal (info + warnings)</td>
-<td>Production missions</td>
-</tr>
-<tr>
-<td><code>veaf-scripts-trace.lua</code></td>
-<td>Trace (all messages)</td>
-<td>Deep debugging</td>
-</tr>
-<tr>
-<td><code>veaf-scripts-trace-with-events.lua</code></td>
-<td>Trace + DCS events</td>
-<td>Event handler debugging</td>
-</tr>
-</tbody>
-</table>
+<p>All VEAF scripts write to the DCS log file (<code>Saved Games\DCS\Logs\dcs.log</code>). The build now produces a <strong>single</strong> <code>veaf-scripts.lua</code> loader; verbosity is controlled by log levels in <code>mission.yaml</code>, not by loading a different script file.</p>
 <h3 id="switching-log-levels">Switching log levels<a class="headerlink" href="#switching-log-levels" title="Permanent link">&para;</a></h3>
-<p>Set <code>logLevel</code> per module in <code>mission.yaml</code>, then rebuild:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
+<p>Set a global default with <code>global_log_level</code>, or override it per module with <code>logLevel</code>, then rebuild:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">global_log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">   </span><span class="c1"># trace | debug | info | warning | error</span>
+
+<span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">   </span><span class="c1"># trace | debug | info | warning | error</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">   </span><span class="c1"># overrides the global default for this module only</span>
 </code></pre></div>
 <p><code>veaf-tools.exe build</code> regenerates <code>veaf-config.lua</code> from <code>mission.yaml</code>. For a quick change without rebuilding, edit <code>veaf-config.lua</code> directly — it is a generated file so your changes will be overwritten on the next build.</p>
 <h3 id="reading-the-log">Reading the log<a class="headerlink" href="#reading-the-log" title="Permanent link">&para;</a></h3>

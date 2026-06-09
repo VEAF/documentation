@@ -1813,6 +1813,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#external_modulescsar-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        external_modules.csar fields
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1830,10 +1841,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#lua_modules" class="md-nav__link">
+  <a href="#modules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        lua_modules:
+        modules:
       
     </span>
   </a>
@@ -1852,10 +1863,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#community_scripts" class="md-nav__link">
+  <a href="#community_scripts-legacy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        community_scripts:
+        community_scripts: (legacy)
       
     </span>
   </a>
@@ -2349,6 +2360,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#external_modulescsar-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        external_modules.csar fields
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2366,10 +2388,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#lua_modules" class="md-nav__link">
+  <a href="#modules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        lua_modules:
+        modules:
       
     </span>
   </a>
@@ -2388,10 +2410,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#community_scripts" class="md-nav__link">
+  <a href="#community_scripts-legacy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        community_scripts:
+        community_scripts: (legacy)
       
     </span>
   </a>
@@ -2614,7 +2636,7 @@
 <p>These files are <strong>not</strong> loaded at DCS runtime — they are consumed by <code>veaf-tools build</code> and then compiled into the <code>.miz</code>.</p>
 <h3 id="category-b--runtime-module-configuration-this-file">Category B — Runtime module configuration (this file)<a class="headerlink" href="#category-b--runtime-module-configuration-this-file" title="Permanent link">&para;</a></h3>
 <p><code>mission.yaml</code> itself configures <strong>how VEAF Lua modules behave at DCS runtime</strong>. It is translated at build time into <code>veaf-config.lua</code>, which is injected into the mission and executed when DCS loads the mission.</p>
-<p>Sections such as <code>lua_modules:</code>, <code>qra:</code>, <code>assets:</code>, and <code>shortcuts:</code> all describe runtime module behaviour.</p>
+<p>Sections such as <code>modules:</code>, <code>qra:</code>, <code>assets:</code>, and <code>shortcuts:</code> all describe runtime module behaviour.</p>
 <div class="highlight"><pre><span></span><code>mission folder/
 ├── mission.yaml          ← runtime module config (THIS FILE)
 │   └── pipeline:
@@ -2639,11 +2661,11 @@
 <span class="nt">security</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
-<span class="nt">lua_modules</span><span class="p">:</span>
+<span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">ASSETS</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">assets</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Texaco&quot;</span>
@@ -2914,9 +2936,32 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>CSAR configuration is not yet available via <code>mission.yaml</code> — configure it in <code>mission-script.lua</code> directly.</p>
-</blockquote>
+<h4 id="external_modulescsar-fields"><code>external_modules.csar</code> fields<a class="headerlink" href="#external_modulescsar-fields" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Enable CSAR integration</td>
+</tr>
+<tr>
+<td><em>(any csar property)</em></td>
+<td>any</td>
+<td>—</td>
+<td>Any <code>csar.xxx</code> property (e.g. <code>enableAllslots: true</code>, <code>csarPrefix: "MEDEVAC"</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>VEAF generates the <code>csar.xxx = value</code> assignments and the <code>csar.initialize()</code> call in <code>veaf-config.lua</code>. For complex settings such as <code>aircraftType</code> (a per-aircraft table), continue using the Lua callback pattern in <code>mission-script.lua</code>. See <a href="../mission-maker/GUIDE/#ctld-and-csar-integration">CTLD and CSAR Integration</a>.</p>
 <hr />
 <h3 id="veaf_tools"><code>veaf_tools:</code><a class="headerlink" href="#veaf_tools" title="Permanent link">&para;</a></h3>
 <p>Version compatibility constraint for <code>veaf-tools-updater.exe</code>. The updater skips releases that don't match.</p>
@@ -2960,27 +3005,31 @@
 </tbody>
 </table>
 <hr />
-<h3 id="lua_modules"><code>lua_modules:</code><a class="headerlink" href="#lua_modules" title="Permanent link">&para;</a></h3>
-<p>Enable, disable, or configure individual VEAF Lua modules. Modules not listed are enabled with their default settings.</p>
+<h3 id="modules"><code>modules:</code><a class="headerlink" href="#modules" title="Permanent link">&para;</a></h3>
+<p>The unified <code>modules:</code> block enables, disables, or configures every VEAF Lua module <strong>and</strong> every community script in a single place. Modules not listed are enabled with their default settings.</p>
 <blockquote>
-<p><strong>Infrastructure modules are always active.</strong>
-The modules <code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVENTS</code>, <code>MARKERS</code>, and <code>COMMANDS</code> are mandatory and are always loaded regardless of configuration. The <code>enable</code> key must <strong>not</strong> be set for these modules — doing so is a build error. They can still appear under <code>lua_modules:</code> to configure other fields such as <code>logLevel</code>.</p>
+<p><strong>Migration note.</strong> <code>modules:</code> replaces the older <code>lua_modules:</code> + <code>community_scripts:</code> keys. The legacy keys still work but emit a deprecation warning at build time. <code>enabled:</code> replaces the old <code>enable:</code> key.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="nt">lua_modules</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># Infrastructure modules: always active — configure only, do not use &#39;enable&#39;</span>
-<span class="w">  </span><span class="nt">UNITS</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
-<span class="w">  </span><span class="c1"># Optional modules: can be enabled or disabled</span>
-<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">            </span><span class="c1"># optional per-module log level override</span>
+<p>Each entry can take <strong>three forms</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># 1. Shorthand — just enable an optional module with default settings:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="c1"># 2. Block — enable and configure:</span>
+<span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">           </span><span class="c1"># optional per-module log level override</span>
 <span class="w">    </span><span class="nt">init</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">help_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="c1"># 3. Bare null — mandatory infrastructure module, configure only:</span>
+<span class="w">  </span><span class="nt">UNITS</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
 </code></pre></div>
-<p>The <code>logLevel</code> field is available for every module. The <code>enable</code> field applies <strong>only to optional modules</strong> — it is a build error on Infrastructure modules. Additional <code>init:</code> or data fields are module-specific — see each module's documentation page.</p>
+<blockquote>
+<p><strong>Infrastructure modules are always active.</strong>
+<code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVENTS</code>, <code>MARKERS</code>, and <code>COMMANDS</code> are mandatory and always loaded. Do <strong>not</strong> set <code>enabled:</code> on them — it is a build error. They may still appear in <code>modules:</code> to configure other fields such as <code>logLevel</code>.</p>
+</blockquote>
 <p><strong>Common fields (all modules):</strong></p>
 <table>
 <thead>
@@ -2993,7 +3042,7 @@ The modules <code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVE
 </thead>
 <tbody>
 <tr>
-<td><code>enable</code></td>
+<td><code>enabled</code></td>
 <td>boolean</td>
 <td><code>true</code></td>
 <td>Enable or disable this module <em>(optional modules only — not allowed on Infrastructure modules)</em></td>
@@ -3006,7 +3055,63 @@ The modules <code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVE
 </tr>
 </tbody>
 </table>
-<p><strong>Module IDs:</strong></p>
+<p>Additional <code>init:</code> or data fields are module-specific — see each module's documentation page.</p>
+<p><strong>Community scripts</strong> are listed in the same block, using their uppercase IDs. When a script is absent from <code>modules:</code>, it keeps its default state (included). Set it to <code>false</code> to exclude it:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">               </span><span class="c1"># excluded from this mission</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Community ID</th>
+<th>Script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MIST</code></td>
+<td>MIST (Mission Scripting Tools)</td>
+</tr>
+<tr>
+<td><code>STTS</code></td>
+<td>DCS-SimpleTextToSpeech</td>
+</tr>
+<tr>
+<td><code>WEATHERMARK</code></td>
+<td>WeatherMark</td>
+</tr>
+<tr>
+<td><code>CTLD</code></td>
+<td>CTLD (Combat Transport &amp; Logistics Dispatcher)</td>
+</tr>
+<tr>
+<td><code>AIEN</code></td>
+<td>AIEN (AI Enhancement)</td>
+</tr>
+<tr>
+<td><code>CSAR</code></td>
+<td>CSAR (Combat Search and Rescue)</td>
+</tr>
+<tr>
+<td><code>HERCULES</code></td>
+<td>Hercules Cargo</td>
+</tr>
+<tr>
+<td><code>SKYNET</code></td>
+<td>Skynet IADS</td>
+</tr>
+<tr>
+<td><code>TUM</code></td>
+<td>The Universal Mission (TUM)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>An unknown identifier triggers a build warning and is ignored.</p>
+</blockquote>
+<p><strong>VEAF module IDs:</strong></p>
 <table>
 <thead>
 <tr>
@@ -3105,85 +3210,14 @@ The modules <code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVE
 </table>
 <hr />
 <h3 id="qra-cap_missions-combat_missions"><code>qra:</code>, <code>cap_missions:</code>, <code>combat_missions:</code><a class="headerlink" href="#qra-cap_missions-combat_missions" title="Permanent link">&para;</a></h3>
-<p>Top-level sections for QRA, CAP mission, and combat mission definitions. These require the corresponding modules enabled under <code>lua_modules:</code>.</p>
+<p>Top-level sections for QRA, CAP mission, and combat mission definitions. These require the corresponding modules enabled under <code>modules:</code>.</p>
 <p>See the respective module pages for full schema:
 - <a href="../mission-maker/scripts/veafQraManager/#configuration-missionyaml"><code>qra:</code></a> — Quick Reaction Alert definitions
 - <a href="../mission-maker/scripts/veafCasMission/#configuration-missionyaml"><code>cap_missions:</code> and <code>combat_missions:</code></a> — CAP and combat mission definitions</p>
 <hr />
-<h3 id="community_scripts"><code>community_scripts:</code><a class="headerlink" href="#community_scripts" title="Permanent link">&para;</a></h3>
-<p>Allows enabling or disabling individual community Lua scripts (MIST, CTLD, CSAR, etc.) injected into the mission. When this section is absent, <strong>all</strong> community scripts are included.</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>&lt;id&gt;.enabled</code></td>
-<td><code>bool</code></td>
-<td><code>true</code></td>
-<td>Enables (<code>true</code>) or disables (<code>false</code>) the script identified by <code>&lt;id&gt;</code></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Available identifiers</strong></p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Script</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>mist</code></td>
-<td>MIST (Mission Scripting Tools)</td>
-</tr>
-<tr>
-<td><code>stts</code></td>
-<td>DCS-SimpleTextToSpeech</td>
-</tr>
-<tr>
-<td><code>weathermark</code></td>
-<td>WeatherMark</td>
-</tr>
-<tr>
-<td><code>ctld</code></td>
-<td>CTLD (Combat Transport &amp; Logistics Dispatcher)</td>
-</tr>
-<tr>
-<td><code>aien</code></td>
-<td>AIEN (AI Enhancement)</td>
-</tr>
-<tr>
-<td><code>csar</code></td>
-<td>CSAR (Combat Search and Rescue)</td>
-</tr>
-<tr>
-<td><code>hercules</code></td>
-<td>Hercules Cargo</td>
-</tr>
-<tr>
-<td><code>skynet</code></td>
-<td>Skynet IADS</td>
-</tr>
-<tr>
-<td><code>tum</code></td>
-<td>The Universal Mission (TUM)</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span><code><span class="nt">community_scripts</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">ctld</span><span class="p">:</span><span class="w">   </span><span class="p p-Indicator">{</span><span class="nt"> enabled</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">  </span><span class="nt">csar</span><span class="p">:</span><span class="w">   </span><span class="p p-Indicator">{</span><span class="nt"> enabled</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">  </span><span class="nt">skynet</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> enabled</span><span class="p">:</span><span class="w"> </span><span class="nv">false</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># disabled for this mission</span>
-</code></pre></div>
+<h3 id="community_scripts-legacy"><code>community_scripts:</code> <em>(legacy)</em><a class="headerlink" href="#community_scripts-legacy" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>An unknown identifier in this section triggers a build warning and is ignored.</p>
+<p><strong>Deprecated.</strong> Community scripts are now configured in the unified <a href="#modules"><code>modules:</code></a> block using their uppercase IDs (e.g. <code>CTLD: true</code>). The separate <code>community_scripts:</code> section still works but emits a deprecation warning. See <a href="#modules"><code>modules:</code></a> for the current syntax and the list of community IDs.</p>
 </blockquote>
 <hr />
 <h3 id="custom_scripts"><code>custom_scripts:</code><a class="headerlink" href="#custom_scripts" title="Permanent link">&para;</a></h3>
@@ -3369,7 +3403,7 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <td>Enable/disable security, password hashes</td>
 </tr>
 <tr>
-<td><code>lua_modules.SECURITY</code></td>
+<td><code>modules.SECURITY</code></td>
 <td><a href="../mission-maker/scripts/veafSecurity/">veafSecurity</a></td>
 </tr>
 </tbody>
@@ -3396,15 +3430,15 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <td>Combat mission definitions</td>
 </tr>
 <tr>
-<td><code>lua_modules.COMBATZONE</code></td>
+<td><code>modules.COMBATZONE</code></td>
 <td><a href="../mission-maker/scripts/veafCombatZone/">veafCombatZone</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.AIRWAVES</code></td>
+<td><code>modules.AIRWAVES</code></td>
 <td><a href="../mission-maker/scripts/veafAirWaves/">veafAirWaves</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.CASMISSION</code></td>
+<td><code>modules.CASMISSION</code></td>
 <td><a href="../mission-maker/scripts/veafCasMission/">veafCasMission</a></td>
 </tr>
 </tbody>
@@ -3423,15 +3457,15 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <td>Skynet IADS integration</td>
 </tr>
 <tr>
-<td><code>lua_modules.SANCTUARY</code></td>
+<td><code>modules.SANCTUARY</code></td>
 <td><a href="../mission-maker/scripts/veafSanctuary/">veafSanctuary</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.MISSILEGUARDIAN</code></td>
+<td><code>modules.MISSILEGUARDIAN</code></td>
 <td><a href="../mission-maker/scripts/veafMissileGuardian/">veafMissileGuardian</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.QRA</code></td>
+<td><code>modules.QRA</code></td>
 <td><a href="../mission-maker/scripts/veafQraManager/">veafQraManager</a></td>
 </tr>
 </tbody>
@@ -3446,23 +3480,23 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 </thead>
 <tbody>
 <tr>
-<td><code>lua_modules.ASSETS</code></td>
+<td><code>modules.ASSETS</code></td>
 <td><a href="../mission-maker/scripts/veafAssets/">veafAssets</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.CARRIER</code></td>
+<td><code>modules.CARRIER</code></td>
 <td><a href="../mission-maker/scripts/veafCarrierOperations/">veafCarrierOperations</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.NAMEDPOINTS</code></td>
+<td><code>modules.NAMEDPOINTS</code></td>
 <td><a href="../mission-maker/scripts/veafNamedPoints/">veafNamedPoints</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.RADIO</code></td>
+<td><code>modules.RADIO</code></td>
 <td><a href="../mission-maker/scripts/veafRadio/">veafRadio</a></td>
 </tr>
 <tr>
-<td><code>lua_modules.SHORTCUTS</code></td>
+<td><code>modules.SHORTCUTS</code></td>
 <td><a href="../mission-maker/scripts/veafShortcuts/">veafShortcuts</a></td>
 </tr>
 </tbody>
@@ -3531,47 +3565,47 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <tbody>
 <tr>
 <td>veafRadio</td>
-<td><code>lua_modules.RADIO</code></td>
+<td><code>modules.RADIO</code></td>
 <td><a href="../mission-maker/scripts/veafRadio/#configuration-missionyaml">veafRadio</a></td>
 </tr>
 <tr>
 <td>veafShortcuts</td>
-<td><code>lua_modules.SHORTCUTS</code></td>
+<td><code>modules.SHORTCUTS</code></td>
 <td><a href="../mission-maker/scripts/veafShortcuts/#configuration-missionyaml">veafShortcuts</a></td>
 </tr>
 <tr>
 <td>veafNamedPoints</td>
-<td><code>lua_modules.NAMEDPOINTS</code></td>
+<td><code>modules.NAMEDPOINTS</code></td>
 <td><a href="../mission-maker/scripts/veafNamedPoints/#configuration-missionyaml">veafNamedPoints</a></td>
 </tr>
 <tr>
 <td>veafCarrierOperations</td>
-<td><code>lua_modules.CARRIER</code></td>
+<td><code>modules.CARRIER</code></td>
 <td><a href="../mission-maker/scripts/veafCarrierOperations/#configuration-missionyaml">veafCarrierOperations</a></td>
 </tr>
 <tr>
 <td>veafAssets</td>
-<td><code>lua_modules.ASSETS</code></td>
+<td><code>modules.ASSETS</code></td>
 <td><a href="../mission-maker/scripts/veafAssets/#configuration-missionyaml">veafAssets</a></td>
 </tr>
 <tr>
 <td>veafSanctuary</td>
-<td><code>lua_modules.SANCTUARY</code></td>
+<td><code>modules.SANCTUARY</code></td>
 <td><a href="../mission-maker/scripts/veafSanctuary/#configuration-missionyaml">veafSanctuary</a></td>
 </tr>
 <tr>
 <td>veafCombatZone</td>
-<td><code>lua_modules.COMBATZONE</code></td>
+<td><code>modules.COMBATZONE</code></td>
 <td><a href="../mission-maker/scripts/veafCombatZone/#configuration-missionyaml">veafCombatZone</a></td>
 </tr>
 <tr>
 <td>veafAirWaves</td>
-<td><code>lua_modules.AIRWAVES</code></td>
+<td><code>modules.AIRWAVES</code></td>
 <td><a href="../mission-maker/scripts/veafAirWaves/#configuration-missionyaml">veafAirWaves</a></td>
 </tr>
 <tr>
 <td>veafQraManager</td>
-<td><code>lua_modules.QRA</code> + <code>qra:</code></td>
+<td><code>modules.QRA</code> + <code>qra:</code></td>
 <td><a href="../mission-maker/scripts/veafQraManager/#configuration-missionyaml">veafQraManager</a></td>
 </tr>
 <tr>
