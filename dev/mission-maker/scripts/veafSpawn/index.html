@@ -1552,10 +1552,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#groupes-spawnables-spawnablesyaml" class="md-nav__link">
+  <a href="#groupes-davions-spawnables-srcspawnablesyaml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Groupes spawnables (spawnables.yaml)
+        Groupes d'avions spawnables (src/spawnables.yaml)
       
     </span>
   </a>
@@ -2236,10 +2236,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#groupes-spawnables-spawnablesyaml" class="md-nav__link">
+  <a href="#groupes-davions-spawnables-srcspawnablesyaml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Groupes spawnables (spawnables.yaml)
+        Groupes d'avions spawnables (src/spawnables.yaml)
       
     </span>
   </a>
@@ -2433,28 +2433,15 @@ _destroy, name Tank-1
 <div class="highlight"><pre><span></span><code>_teleport, name &quot;Viper Flight&quot;
 </code></pre></div>
 <hr />
-<h2 id="groupes-spawnables-spawnablesyaml">Groupes spawnables (spawnables.yaml)<a class="headerlink" href="#groupes-spawnables-spawnablesyaml" title="Permanent link">&para;</a></h2>
-<p>Définir des modèles de groupes réutilisables que les joueurs peuvent faire apparaître avec <code>_spawn group</code> :</p>
-<div class="highlight"><pre><span></span><code><span class="nt">groups</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RED-CAP&quot;</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CAP</span><span class="nv"> </span><span class="s">rouge</span><span class="nv"> </span><span class="s">(2</span><span class="nv"> </span><span class="s">×</span><span class="nv"> </span><span class="s">MiG-29S)&quot;</span>
-<span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span>
-<span class="w">    </span><span class="nt">country</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Russia</span>
-<span class="w">    </span><span class="nt">units</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MiG-29S</span>
-<span class="w">        </span><span class="nt">skill</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">High</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MiG-29S</span>
-<span class="w">        </span><span class="nt">skill</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">High</span>
-
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ARMOR-PLATOON&quot;</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Peloton</span><span class="nv"> </span><span class="s">blindé</span><span class="nv"> </span><span class="s">(4</span><span class="nv"> </span><span class="s">×</span><span class="nv"> </span><span class="s">T-80)&quot;</span>
-<span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span>
-<span class="w">    </span><span class="nt">country</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Russia</span>
-<span class="w">    </span><span class="nt">units</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">T-80</span>
-<span class="w">        </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
-<span class="w">        </span><span class="nt">skill</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Average</span>
+<h2 id="groupes-davions-spawnables-srcspawnablesyaml">Groupes d'avions spawnables (<code>src/spawnables.yaml</code>)<a class="headerlink" href="#groupes-davions-spawnables-srcspawnablesyaml" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>⚠️ À ne pas confondre avec la commande <code>_spawn group</code> (groupes <strong>sol/hélico</strong> de la base <code>veafUnits</code>). Ici il s'agit de <strong>groupes d'avions</strong> réels, cachés et en <em>late activation</em>, que <code>veafSpawn</code> <strong>clone</strong> à la demande en jeu.</p>
+</blockquote>
+<p>Un <strong>groupe d'avion spawnable</strong> est identifié par le <strong>préfixe de nom <code>veafSpawn-</code></strong> (contrat runtime de <code>veafSpawn</code>). À la construction, l'étape de pipeline <code>spawnable_aircrafts</code> injecte <code>src/spawnables.yaml</code> dans le <code>.miz</code>.</p>
+<p>Le fichier utilise le <strong>schéma DCS complet</strong> des groupes d'aéronefs (<code>airplanes</code>/<code>helicopters</code> → <code>coalitions</code> → pays → groupe), identique à celui décrit dans la <a href="../../../PIPELINE_REFERENCE/#étape-3--groupes-daéronefs--spawnables-b-et-modèles-de-slot-dynamique-c">Référence Pipeline — Étape 3</a>. On l'obtient en général par extraction depuis une mission :</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>extract-aircraft-groups<span class="w"> </span>--kind<span class="w"> </span>spawnable
 </code></pre></div>
+<p>Les <strong>modèles de slot dynamique</strong> (<code>dynSpawnTemplate = true</code>, slots Dynamic Slots DCS) sont une famille distincte, dans <code>src/dynamic-slot-templates.yaml</code> (étape <code>dynamic_slot_templates</code>) — voir l'<a href="../../adr/0002-aircraft-group-injection-sort-criteria.md">ADR 0002</a>.</p>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>

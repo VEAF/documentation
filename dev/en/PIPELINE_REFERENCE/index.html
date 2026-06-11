@@ -1876,22 +1876,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3--aircraft-groups-aircraft-templatesyaml" class="md-nav__link">
+  <a href="#step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3 — Aircraft Groups (aircraft-templates.yaml)
+        Step 3 — Aircraft Groups: spawnables (B) and dynamic-slot templates (C)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Step 3 — Aircraft Groups (aircraft-templates.yaml)">
+    <nav class="md-nav" aria-label="Step 3 — Aircraft Groups: spawnables (B) and dynamic-slot templates (C)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#default-file-location_2" class="md-nav__link">
+  <a href="#default-file-locations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Default file location
+        Default file locations
       
     </span>
   </a>
@@ -1949,7 +1949,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#default-file-location_3" class="md-nav__link">
+  <a href="#default-file-location_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Default file location
@@ -2379,22 +2379,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3--aircraft-groups-aircraft-templatesyaml" class="md-nav__link">
+  <a href="#step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3 — Aircraft Groups (aircraft-templates.yaml)
+        Step 3 — Aircraft Groups: spawnables (B) and dynamic-slot templates (C)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Step 3 — Aircraft Groups (aircraft-templates.yaml)">
+    <nav class="md-nav" aria-label="Step 3 — Aircraft Groups: spawnables (B) and dynamic-slot templates (C)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#default-file-location_2" class="md-nav__link">
+  <a href="#default-file-locations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Default file location
+        Default file locations
       
     </span>
   </a>
@@ -2452,7 +2452,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#default-file-location_3" class="md-nav__link">
+  <a href="#default-file-location_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Default file location
@@ -2589,9 +2589,14 @@
 <td>Injects waypoint templates into human-piloted aircraft groups</td>
 </tr>
 <tr>
-<td><code>aircraft_groups</code></td>
-<td><code>src/aircraft-templates.yaml</code>, <code>src/templates.yaml</code>, or <code>aircraft-templates.yaml</code></td>
-<td>Injects aircraft group definitions (slots/spawnable groups)</td>
+<td><code>spawnable_aircrafts</code></td>
+<td><code>src/spawnables.yaml</code></td>
+<td>Injects <strong>spawnable</strong> aircraft groups (<code>veafSpawn-</code> prefix, cloned by <code>veafSpawn</code>)</td>
+</tr>
+<tr>
+<td><code>dynamic_slot_templates</code></td>
+<td><code>src/dynamic-slot-templates.yaml</code></td>
+<td>Injects <strong>dynamic-slot templates</strong> (<code>dynSpawnTemplate = true</code>, consumed by DCS)</td>
 </tr>
 <tr>
 <td><code>weather</code></td>
@@ -2606,9 +2611,10 @@
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">presets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                        </span><span class="c1"># skip even if src/presets.yaml exists</span>
 <span class="w">  </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                       </span><span class="c1"># auto-detect: runs only if the config file exists</span>
-<span class="w">  </span><span class="nt">aircraft_groups</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-aircraft.yaml</span><span class="w">          </span><span class="c1"># non-default file path</span>
+<span class="w">  </span><span class="nt">spawnable_aircrafts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-spawnables.yaml</span><span class="w">        </span><span class="c1"># non-default file path</span>
 <span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace</span><span class="w">                       </span><span class="c1"># add (default) | replace</span>
+<span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># skip dynamic-slot-template injection</span>
 <span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                        </span><span class="c1"># skip weather variants</span>
 </code></pre></div>
 <h3 id="pipeline-fields"><code>pipeline:</code> fields<a class="headerlink" href="#pipeline-fields" title="Permanent link">&para;</a></h3>
@@ -2638,7 +2644,14 @@
 <td><code>true</code>/unset = auto-detect (run if file exists), <code>false</code> = always skip, object = custom options</td>
 </tr>
 <tr>
-<td><code>aircraft_groups</code></td>
+<td><code>spawnable_aircrafts</code></td>
+<td>bool | object</td>
+<td>auto</td>
+<td>No</td>
+<td><code>true</code>/unset = auto-detect (run if file exists), <code>false</code> = always skip, object = custom options</td>
+</tr>
+<tr>
+<td><code>dynamic_slot_templates</code></td>
 <td>bool | object</td>
 <td>auto</td>
 <td>No</td>
@@ -2674,7 +2687,7 @@
 <td><code>mode</code></td>
 <td><code>add</code> | <code>replace</code></td>
 <td><code>add</code></td>
-<td><em>(aircraft_groups only)</em> <code>add</code> keeps existing groups; <code>replace</code> updates same-named groups</td>
+<td><em>(group-injection steps only)</em> <code>add</code> keeps existing groups; <code>replace</code> updates same-named groups</td>
 </tr>
 </tbody>
 </table>
@@ -2850,14 +2863,20 @@ Also accepted: waypoints.yaml  (mission root)
 <span class="w">      </span><span class="nt">BULLSEYE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BULLSEYE&quot;</span>
 </code></pre></div>
 <hr />
-<h2 id="step-3--aircraft-groups-aircraft-templatesyaml">Step 3 — Aircraft Groups (<code>aircraft-templates.yaml</code>)<a class="headerlink" href="#step-3--aircraft-groups-aircraft-templatesyaml" title="Permanent link">&para;</a></h2>
-<p>Injects aircraft group definitions into the mission. Used for spawnable groups and player slot templates.</p>
-<h3 id="default-file-location_2">Default file location<a class="headerlink" href="#default-file-location_2" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>&lt;mission-folder&gt;/src/aircraft-templates.yaml
-
-Also accepted: src/templates.yaml
-                aircraft-templates.yaml  (mission root)
+<h2 id="step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c">Step 3 — Aircraft Groups: spawnables (B) and dynamic-slot templates (C)<a class="headerlink" href="#step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c" title="Permanent link">&para;</a></h2>
+<p>Two <strong>distinct uses</strong> of injected aircraft groups, handled by two independent steps (see <a href="adr/0002-aircraft-group-injection-sort-criteria.md">ADR 0002</a>):</p>
+<ul>
+<li><strong>(B) spawnable groups</strong> (<code>src/spawnables.yaml</code>, step <code>spawnable_aircrafts</code>): real hidden groups cloned on demand in-game by <code>veafSpawn</code>. Marker: the <code>veafSpawn-</code> name prefix.</li>
+<li><strong>(C) dynamic-slot templates</strong> (<code>src/dynamic-slot-templates.yaml</code>, step <code>dynamic_slot_templates</code>): groups used as a <strong>model</strong> for DCS Dynamic Slots, consumed natively by the engine. Marker: the DCS flag <code>dynSpawnTemplate = true</code>.</li>
+</ul>
+<p>At extraction (<code>extract-aircraft-groups</code>), each group is routed to one of the two families by this criterion (the flag wins over the prefix); other groups are ignored. By default extraction writes <strong>both</strong> files; <code>--kind spawnable|dynamic-template</code> restricts it to one. The old <code>.*[tT]emplate.*</code> name sort is abandoned (it misrouted a spawnable named "… Template …").</p>
+<h3 id="default-file-locations">Default file locations<a class="headerlink" href="#default-file-locations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>&lt;mission-folder&gt;/src/spawnables.yaml              # (B) spawnable_aircrafts
+&lt;mission-folder&gt;/src/dynamic-slot-templates.yaml  # (C) dynamic_slot_templates
 </code></pre></div>
+<blockquote>
+<p><strong>v6 hard break</strong>: the old <code>src/aircraft-templates.yaml</code> / <code>src/templates.yaml</code> names and the <code>aircraft_groups</code> step are gone. <code>convert-v5</code> produces the two new files directly.</p>
+</blockquote>
 <h3 id="injection-modes">Injection modes<a class="headerlink" href="#injection-modes" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2919,7 +2938,7 @@ Also accepted: src/templates.yaml
 <hr />
 <h2 id="step-4--weather--time-versions-versionsyaml">Step 4 — Weather &amp; Time Versions (<code>versions.yaml</code>)<a class="headerlink" href="#step-4--weather--time-versions-versionsyaml" title="Permanent link">&para;</a></h2>
 <p>Creates multiple <code>.miz</code> variants from a single base mission, each with a different time and/or weather configuration.</p>
-<h3 id="default-file-location_3">Default file location<a class="headerlink" href="#default-file-location_3" title="Permanent link">&para;</a></h3>
+<h3 id="default-file-location_2">Default file location<a class="headerlink" href="#default-file-location_2" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>&lt;mission-folder&gt;/src/versions.yaml
 
 Also accepted: versions.yaml  (mission root)

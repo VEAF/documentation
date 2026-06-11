@@ -2602,9 +2602,14 @@
 <td>Configures radio presets for each aircraft group</td>
 </tr>
 <tr>
-<td><code>aircraft-templates.yaml</code></td>
-<td><code>aircraft_groups</code></td>
-<td>Defines aircraft group templates</td>
+<td><code>spawnables.yaml</code></td>
+<td><code>spawnable_aircrafts</code></td>
+<td>Spawnable aircraft groups (<code>veafSpawn-</code> prefix)</td>
+</tr>
+<tr>
+<td><code>dynamic-slot-templates.yaml</code></td>
+<td><code>dynamic_slot_templates</code></td>
+<td>Dynamic-slot templates (<code>dynSpawnTemplate=true</code>)</td>
 </tr>
 <tr>
 <td><code>versions.yaml</code></td>
@@ -2622,12 +2627,14 @@
 │   └── pipeline:
 │       ├── waypoints: true  ──► src/waypoints.yaml     (build-time injection)
 │       ├── presets:  true   ──► src/presets.yaml        (build-time injection)
-│       ├── aircraft_groups: true  ──► src/aircraft-templates.yaml
+│       ├── spawnable_aircrafts: true     ──► src/spawnables.yaml
+│       ├── dynamic_slot_templates: true  ──► src/dynamic-slot-templates.yaml
 │       └── weather:  true   ──► src/versions.yaml
 └── src/
     ├── waypoints.yaml
     ├── presets.yaml
-    ├── aircraft-templates.yaml
+    ├── spawnables.yaml
+    ├── dynamic-slot-templates.yaml
     └── versions.yaml
 </code></pre></div>
 <hr />
@@ -3236,9 +3243,10 @@ A declared script is included in the <code>.miz</code> <strong>without</strong> 
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">presets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">aircraft_groups</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-aircraft.yaml</span>
+<span class="w">  </span><span class="nt">spawnable_aircrafts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-spawnables.yaml</span>
 <span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace</span>
+<span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <hr />
@@ -3485,8 +3493,8 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <td><a href="../PIPELINE_REFERENCE/#step-2--waypoints-waypointsyaml">waypoints.yaml schema</a></td>
 </tr>
 <tr>
-<td><code>pipeline.aircraft_groups</code></td>
-<td><a href="../PIPELINE_REFERENCE/#step-3--aircraft-groups-aircraft-templatesyaml">aircraft-templates.yaml schema</a></td>
+<td><code>pipeline.spawnable_aircrafts</code> / <code>pipeline.dynamic_slot_templates</code></td>
+<td><a href="../PIPELINE_REFERENCE/#step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c">aircraft groups schema</a></td>
 </tr>
 <tr>
 <td><code>pipeline.weather</code></td>

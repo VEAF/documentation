@@ -2536,9 +2536,14 @@
 <td>Configure les presets radio de chaque groupe d'avions</td>
 </tr>
 <tr>
-<td><code>aircraft-templates.yaml</code></td>
-<td><code>aircraft_groups</code></td>
-<td>Définit les templates de groupes d'avions</td>
+<td><code>spawnables.yaml</code></td>
+<td><code>spawnable_aircrafts</code></td>
+<td>Groupes d'avions spawnables (préfixe <code>veafSpawn-</code>)</td>
+</tr>
+<tr>
+<td><code>dynamic-slot-templates.yaml</code></td>
+<td><code>dynamic_slot_templates</code></td>
+<td>Modèles de slot dynamique (<code>dynSpawnTemplate=true</code>)</td>
 </tr>
 <tr>
 <td><code>versions.yaml</code></td>
@@ -2556,12 +2561,14 @@
 │   └── pipeline:
 │       ├── waypoints: true  ──► src/waypoints.yaml       (injection build-time)
 │       ├── presets:  true   ──► src/presets.yaml          (injection build-time)
-│       ├── aircraft_groups: true  ──► src/aircraft-templates.yaml
+│       ├── spawnable_aircrafts: true     ──► src/spawnables.yaml
+│       ├── dynamic_slot_templates: true  ──► src/dynamic-slot-templates.yaml
 │       └── weather:  true   ──► src/versions.yaml
 └── src/
     ├── waypoints.yaml
     ├── presets.yaml
-    ├── aircraft-templates.yaml
+    ├── spawnables.yaml
+    ├── dynamic-slot-templates.yaml
     └── versions.yaml
 </code></pre></div>
 <hr />
@@ -3170,9 +3177,10 @@ Un script déclaré ici est inclus dans le <code>.miz</code> <strong>sans</stron
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">presets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">aircraft_groups</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-aircraft.yaml</span>
+<span class="w">  </span><span class="nt">spawnable_aircrafts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-spawnables.yaml</span>
 <span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace</span>
+<span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <hr />
@@ -3362,8 +3370,8 @@ Ces paramètres sont normalement définis via la CLI (<code>--dev-mode</code>, <
 <td>Contrainte de version</td>
 </tr>
 <tr>
-<td><code>pipeline.aircraft_groups</code></td>
-<td><a href="../PIPELINE_REFERENCE/#étape-3--groupes-daéronefs-aircraft-templatesyaml">schéma aircraft-templates.yaml</a></td>
+<td><code>pipeline.spawnable_aircrafts</code> / <code>pipeline.dynamic_slot_templates</code></td>
+<td><a href="../PIPELINE_REFERENCE/#étape-3--groupes-daéronefs--spawnables-b-et-modèles-de-slot-dynamique-c">schéma groupes d'aéronefs</a></td>
 </tr>
 <tr>
 <td><code>pipeline.weather</code></td>
