@@ -2973,15 +2973,26 @@
 ├── src/
 │   ├── mission/                  # Extracted DCS mission data (from extract)
 │   ├── scripts/
-│   │   └── mission-script.lua    # Your custom Lua code (optional)
-│   ├── presets.yaml             # Radio frequency presets
-│   ├── spawnables.yaml          # Predefined spawnable groups
-│   └── waypoints.yaml           # Bullseye / navigation points
+│   │   ├── mission-script.lua    # Your custom Lua code (optional)
+│   │   └── veafDynamicConfig.lua # Dynamic script-loading config (dev/test)
+│   ├── options                  # DCS options table injected into the .miz
+│   ├── presets.yaml             # Radio frequency presets (presets step)
+│   ├── spawnables.yaml          # Predefined spawnable groups (SPAWN)
+│   ├── templates.yaml           # Aircraft-group templates (SPAWN)
+│   ├── versions.yaml            # Weather/time variants (weather step)
+│   └── waypoints.yaml           # Bullseye / navigation points (waypoints step)
 ├── published/                    # VEAF scripts &amp; tools (auto-installed)
 ├── mission.yaml                  # Build-time configuration
+├── .gitignore                    # Excludes generated/downloaded files
 ├── veaf-tools.exe                # CLI tool (auto-installed)
 └── veaf-tools-updater.exe
 </code></pre></div>
+<blockquote>
+<p>Every file listed under <code>src/</code> (except the <code>mission/</code> extract output) ships from
+the tool's <code>defaults/mission-folder/</code> scaffold and is consumed at the first
+build — the <code>*.yaml</code> files by their pipeline/module step, <code>options</code> by <code>.miz</code>
+injection, and the <code>scripts/*.lua</code> files by script loading.</p>
+</blockquote>
 <hr />
 <h2 id="how-scripts-are-loaded">How Scripts Are Loaded<a class="headerlink" href="#how-scripts-are-loaded" title="Permanent link">&para;</a></h2>
 <p>The <code>build</code> command <strong>automatically injects</strong> a <code>DO SCRIPT FILE</code> trigger at mission start that loads all VEAF scripts. You do <strong>not</strong> need to manually add any trigger in the DCS Mission Editor.</p>

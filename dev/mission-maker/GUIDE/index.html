@@ -2973,15 +2973,26 @@
 ├── src/
 │   ├── mission/                  # Données DCS extraites (via extract)
 │   ├── scripts/
-│   │   └── mission-script.lua    # Votre code Lua personnalisé (optionnel)
-│   ├── presets.yaml             # Préréglages de fréquences radio
-│   ├── spawnables.yaml          # Groupes spawnable prédéfinis
-│   └── waypoints.yaml           # Bullseye / points de navigation
+│   │   ├── mission-script.lua    # Votre code Lua personnalisé (optionnel)
+│   │   └── veafDynamicConfig.lua # Config de chargement dynamique des scripts (dev/test)
+│   ├── options                  # Table d&#39;options DCS injectée dans le .miz
+│   ├── presets.yaml             # Préréglages de fréquences radio (étape presets)
+│   ├── spawnables.yaml          # Groupes spawnable prédéfinis (SPAWN)
+│   ├── templates.yaml           # Modèles de groupes d&#39;aéronefs (SPAWN)
+│   ├── versions.yaml            # Variantes météo/horaires (étape weather)
+│   └── waypoints.yaml           # Bullseye / points de navigation (étape waypoints)
 ├── published/                    # Scripts &amp; outils VEAF (auto-installés)
 ├── mission.yaml                  # Configuration de build
+├── .gitignore                    # Exclut les fichiers générés/téléchargés
 ├── veaf-tools.exe                # Outil CLI (auto-installé)
 └── veaf-tools-updater.exe
 </code></pre></div>
+<blockquote>
+<p>Chaque fichier listé sous <code>src/</code> (hormis la sortie d'extraction <code>mission/</code>)
+provient du gabarit <code>defaults/mission-folder/</code> de l'outil et est consommé dès
+le premier build — les <code>*.yaml</code> par leur étape de pipeline/module, <code>options</code>
+par injection dans le <code>.miz</code>, et les <code>scripts/*.lua</code> par le chargement de scripts.</p>
+</blockquote>
 <hr />
 <h2 id="comment-les-scripts-sont-chargés">Comment les scripts sont chargés<a class="headerlink" href="#comment-les-scripts-sont-chargés" title="Permanent link">&para;</a></h2>
 <p>La commande <code>build</code> <strong>injecte automatiquement</strong> un trigger <code>DO SCRIPT FILE</code> au démarrage de la mission qui charge tous les scripts VEAF. Vous n'avez <strong>pas</strong> besoin d'ajouter manuellement un trigger dans l'éditeur de missions DCS.</p>
