@@ -3288,6 +3288,12 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 2. <code>mission.yaml build.scripts_path</code>
 3. <code>~/veafmct.yaml scripts_path</code></p>
 <p><code>dynamic_loading</code> resolves as: <code>--dynamic-mode</code>/<code>--no-dynamic-mode</code> (CLI) &gt; <code>build.dynamic_loading</code> (profile-overridable) &gt; <code>false</code>.</p>
+<p><strong>Dynamic loading — DEV vs PROD.</strong> When <code>dynamic_loading: true</code>, scripts load from disk at runtime (so they are not exposed inside the <code>.miz</code>/<code>.trk</code>):</p>
+<ul>
+<li><strong>DEV</strong> (<code>dev_mode: true</code>) — <code>scripts_path</code> must point at a VEAF-Mission-Creation-Tools checkout; the framework loads the <strong>individual</strong> <code>veaf/*.lua</code> via <code>VeafDynamicLoader.lua</code> (edit and re-test without rebuilding).</li>
+<li><strong>PROD</strong> (<code>dev_mode: false</code>) — the framework loads the concatenated <strong>bundle</strong> <code>veaf/veaf-scripts.lua</code> from <code>scripts_path</code> (default <code>&lt;mission&gt;/published</code>, installed by the updater).</li>
+</ul>
+<p>In <strong>both</strong> modes the mission scripts — including your <code>custom_scripts:</code> — are loaded from disk via a <strong>generated</strong> <code>src/scripts/veafDynamicConfig.lua</code> (do not edit it by hand; declare scripts in <code>custom_scripts:</code>). The build errors out if the framework loader is missing under <code>scripts_path</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">build</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">dev_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">scripts_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">C:/dev/VEAF-Mission-Creation-Tools</span>
