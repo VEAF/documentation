@@ -3275,15 +3275,28 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <td><em>(user config)</em></td>
 <td>Path to a local VEAF-Mission-Creation-Tools clone; required when <code>dev_mode: true</code></td>
 </tr>
+<tr>
+<td><code>dynamic_loading</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>When <code>true</code>, VEAF <strong>and</strong> mission scripts are loaded from disk at runtime (dynamic mode, dev/test) instead of being embedded in the <code>.miz</code>. Profile-overridable. CLI: <code>--dynamic-mode</code> / <code>--no-dynamic-mode</code> (takes precedence)</td>
+</tr>
 </tbody>
 </table>
 <p><code>scripts_path</code> resolution order (first match wins):
 1. <code>--scripts-path &lt;path&gt;</code> CLI option
 2. <code>mission.yaml build.scripts_path</code>
 3. <code>~/veafmct.yaml scripts_path</code></p>
+<p><code>dynamic_loading</code> resolves as: <code>--dynamic-mode</code>/<code>--no-dynamic-mode</code> (CLI) &gt; <code>build.dynamic_loading</code> (profile-overridable) &gt; <code>false</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">build</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">dev_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">scripts_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">C:/dev/VEAF-Mission-Creation-Tools</span>
+<span class="w">  </span><span class="nt">dynamic_loading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">dynamic_loading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># dynamic loading for the test profile</span>
 </code></pre></div>
 <blockquote>
 <p>See the <a href="../developer/GUIDE/#developer-mode">Developer Mode</a> section of the Developer Guide for the full workflow.</p>

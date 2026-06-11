@@ -3209,15 +3209,28 @@ Ces paramètres sont normalement définis via la CLI (<code>--dev-mode</code>, <
 <td><em>(config utilisateur)</em></td>
 <td>Chemin vers un clone local de VEAF-Mission-Creation-Tools ; requis quand <code>dev_mode: true</code></td>
 </tr>
+<tr>
+<td><code>dynamic_loading</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Si <code>true</code>, les scripts VEAF <strong>et</strong> de mission sont chargés depuis le disque au runtime (mode dynamique, dev/test) au lieu d'être embarqués dans le <code>.miz</code>. Surchargeable par profil. CLI : <code>--dynamic-mode</code> / <code>--no-dynamic-mode</code> (prioritaire)</td>
+</tr>
 </tbody>
 </table>
 <p>Ordre de résolution de <code>scripts_path</code> (premier trouvé appliqué) :
 1. Option CLI <code>--scripts-path &lt;chemin&gt;</code>
 2. <code>mission.yaml build.scripts_path</code>
 3. <code>~/veafmct.yaml scripts_path</code></p>
+<p><code>dynamic_loading</code> se résout : <code>--dynamic-mode</code>/<code>--no-dynamic-mode</code> (CLI) &gt; <code>build.dynamic_loading</code> (surchargé par profil) &gt; <code>false</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">build</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">dev_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">scripts_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">C:/dev/VEAF-Mission-Creation-Tools</span>
+<span class="w">  </span><span class="nt">dynamic_loading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">dynamic_loading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># chargement dynamique pour le profil de test</span>
 </code></pre></div>
 <blockquote>
 <p>Voir la section <a href="../developer/GUIDE/#mode-développeur">Mode développeur</a> du Guide du développeur pour le workflow complet.</p>
