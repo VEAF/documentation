@@ -2059,6 +2059,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#étape-5--warehouses-dynamic-slot-warehousesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 5 — Warehouses Dynamic-Slot (warehouses.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 5 — Warehouses Dynamic-Slot (warehouses.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#voir-aussi" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2547,6 +2597,56 @@
         
           <li class="md-nav__item">
   <a href="#exemple-minimal_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#étape-5--warehouses-dynamic-slot-warehousesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 5 — Warehouses Dynamic-Slot (warehouses.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 5 — Warehouses Dynamic-Slot (warehouses.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Exemple minimal
@@ -3172,6 +3272,42 @@ Aussi accepté : versions.yaml  (racine du dossier mission)
 <span class="w">      </span><span class="nt">wind_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180.0</span>
 <span class="w">      </span><span class="nt">cloud_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;few&quot;</span>
 <span class="w">      </span><span class="nt">cloud_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2500</span>
+</code></pre></div>
+<hr />
+<h2 id="étape-5--warehouses-dynamic-slot-warehousesyaml">Étape 5 — Warehouses Dynamic-Slot (<code>warehouses.yaml</code>)<a class="headerlink" href="#étape-5--warehouses-dynamic-slot-warehousesyaml" title="Permanent link">&para;</a></h2>
+<p>Configure les <strong>Dynamic Slots</strong> DCS par coalition. S'exécute <strong>après</strong> l'injection
+des aéronefs (pour que les groupes <code>dynSpawnTemplate</code> existent déjà) et modifie les
+<code>warehouses</code> de la mission : active <code>dynamicSpawn</code> sur les aérodromes choisis, fixe
+carburant / munitions et le stock d'aéronefs, et lie chaque type d'aéronef proposé
+à son groupe-modèle via <code>linkDynTempl</code>.</p>
+<h3 id="emplacement-par-défaut_3">Emplacement par défaut<a class="headerlink" href="#emplacement-par-défaut_3" title="Permanent link">&para;</a></h3>
+<p><code>src/warehouses.yaml</code> (auto-activé si présent ; désactiver avec <code>pipeline: { warehouses: false }</code>).</p>
+<h3 id="schéma_4">Schéma<a class="headerlink" href="#schéma_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                 </span><span class="c1"># blue | red | neutral. Une coalition non déclarée est laissée intacte.</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span><span class="w">                  </span><span class="c1"># appliqué à chaque aérodrome sélectionné</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span><span class="w">          </span><span class="c1"># optionnel -&gt; unlimitedFuel</span>
+<span class="w">    </span><span class="nt">weapons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span><span class="w">       </span><span class="c1"># optionnel -&gt; unlimitedMunitions</span>
+<span class="w">    </span><span class="nt">aircrafts</span><span class="p">:</span><span class="w">               </span><span class="c1"># types d&#39;aéronefs proposés en slot dynamique</span>
+<span class="w">      </span><span class="nt">&lt;type DCS&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">unlimited | &lt;entier&gt;</span><span class="p p-Indicator">,</span><span class="nt"> template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;nom</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">groupe&gt;&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">airports</span><span class="p">:</span><span class="w">                  </span><span class="c1"># optionnel. Absent -&gt; TOUS les aérodromes de la coalition reçoivent `defaults`.</span>
+<span class="w">    </span><span class="nt">&lt;nom ou id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">                        </span><span class="c1"># defaults seuls</span>
+<span class="w">    </span><span class="nt">&lt;nom ou id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> aircrafts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">     </span><span class="c1"># defaults + override par aérodrome</span>
+</code></pre></div>
+<ul>
+<li><code>template</code> référence un groupe-modèle par <strong>nom</strong> ; omettez-le pour l'auto-matcher
+  à un groupe-modèle du même <strong>type d'aéronef</strong> (même coalition).</li>
+<li>Les aérodromes ne peuvent être nommés que sur les théâtres installés présents dans
+  la table committée (<code>veaf-build update-dcs-data --airdromes</code>) ; sinon utilisez l'id
+  numérique (visible dans les <code>warehouses</code> de la mission : <code>airports[&lt;id&gt;]</code>).</li>
+</ul>
+<h3 id="exemple-minimal_4">Exemple minimal<a class="headerlink" href="#exemple-minimal_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">blue</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span>
+<span class="w">    </span><span class="nt">aircrafts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">UH-1H</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">unlimited</span><span class="p p-Indicator">,</span><span class="nt"> template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DST</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">UH-1H&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">airports</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Senaki-Kolkhi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </code></pre></div>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
