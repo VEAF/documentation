@@ -1675,6 +1675,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#la-table-des-aérodromes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La table des aérodromes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2074,6 +2085,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#la-table-des-aérodromes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La table des aérodromes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2122,7 +2144,13 @@ que le build n'ait jamais besoin d'une installation DCS.</p>
 <td><strong>Export in-DCS</strong></td>
 <td>exécuter <code>src/scripts/veaf/dcsDataExport.lua</code> depuis l'éditeur, committer le dump</td>
 <td>oui</td>
-<td>aérodromes, armements</td>
+<td>airbases, armements</td>
+</tr>
+<tr>
+<td><strong>Fichiers d'install DCS</strong></td>
+<td>lire les fichiers terrain d'une install locale (<code>--dcs-path</code>)</td>
+<td>install seule (pas lancé)</td>
+<td>table nom→id des aérodromes</td>
 </tr>
 </tbody>
 </table>
@@ -2136,7 +2164,10 @@ une rare étape manuelle.</p>
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--countries
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--units<span class="w">    </span><span class="c1"># régénère dcsUnits.yaml ET dcsUnits.lua</span>
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--radio
+veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
 </code></pre></div>
+<p><code>--radio</code> et <code>--airdromes</code> sont exclus du run sans flag / <code>--all</code> : radio a des
+overlays manuels, et airdromes nécessite le chemin d'une install DCS locale.</p>
 <p>Le datamine est cloné à un ref <strong>pinné</strong>
 (<code>veaf_build.dcs_data.datamine.DATAMINE_REF</code>), donc la génération est
 reproductible : relancer sur le même ref produit un artefact identique au
@@ -2264,6 +2295,22 @@ output déterministe du générateur.</p>
 </ul>
 <p>Quand DCS livre une unité absente du datamine, ou un nouveau statique offshore,
 ajoutez-le à la constante correspondante.</p>
+<h2 id="la-table-des-aérodromes">La table des aérodromes<a class="headerlink" href="#la-table-des-aérodromes" title="Permanent link">&para;</a></h2>
+<p><code>src/python/veaf-tools/veaf_libs/data/airdromes.yaml</code> associe, <strong>par théâtre</strong>, un
+nom d'aérodrome à son <strong>id numérique</strong> — le même id que <code>airports[&lt;id&gt;]</code> dans les
+<code>warehouses</code> d'une mission. Elle permet aux outils de build (le câblage warehouse
+des Dynamic Slots) d'accepter des <strong>noms</strong> d'aérodrome au lieu d'ids bruts.</p>
+<p>Elle est <strong>dépendante de l'install</strong>, pas du datamine : la donnée n'existe que dans
+le <code>Mods/terrains/&lt;Théâtre&gt;/Beacons.lua</code> de chaque carte (les beacons d'aérodrome
+portent un <code>display_name</code> et un <code>beaconId = 'airfield&lt;ID&gt;_&lt;n&gt;'</code>). Elle est donc
+générée depuis une install DCS locale et <strong>non gardée par la CI</strong> (un runner CI
+n'a pas d'install DCS) :</p>
+<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
+</code></pre></div>
+<p><code>veaf_libs.dcs_airdromes.airdrome_id_for_name(theatre, name)</code> la lit. Limites : la
+table ne couvre que les théâtres <strong>installés</strong>, et les cartes sans beacons (ex.
+Normandy, WW2) ne donnent aucune entrée — l'appelant retombe alors sur les ids. La
+résolution est insensible à la casse.</p>
 
 
 
