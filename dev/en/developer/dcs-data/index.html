@@ -1625,6 +1625,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#the-units-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The units database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The units database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#derived-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Derived kind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-and-lua-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML and Lua schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carried-over-units-and-naval-statics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Carried-over units and naval statics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1974,6 +2024,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#the-units-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The units database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The units database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#derived-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Derived kind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-and-lua-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML and Lua schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carried-over-units-and-naval-statics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Carried-over units and naval statics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2016,22 +2116,24 @@ interchangeable:</p>
 <td><strong>Community datamine</strong></td>
 <td>clone <code>Quaggles/dcs-lua-datamine</code> at a pinned ref</td>
 <td>no</td>
-<td>country table, radio specs</td>
+<td>country table, <strong>units database</strong>, radio specs</td>
 </tr>
 <tr>
 <td><strong>In-DCS export</strong></td>
 <td>run <code>src/scripts/veaf/dcsDataExport.lua</code> from the Mission Editor, commit the dump</td>
 <td>yes</td>
-<td><code>dcsUnits.lua</code> (unit database)</td>
+<td>airbases, weapons</td>
 </tr>
 </tbody>
 </table>
-<p>The datamine path is reproducible and CI-checkable; the in-DCS export is a
-manual step performed when DCS adds units.</p>
+<p>The datamine path is reproducible and CI-checkable; it is the default for all the
+data VEAF needs at build/runtime. The in-DCS export now only covers data the
+datamine does not expose (airbases, weapons) and is a rare manual step.</p>
 <h2 id="the-update-dcs-data-command">The <code>update-dcs-data</code> command<a class="headerlink" href="#the-update-dcs-data-command" title="Permanent link">&para;</a></h2>
 <p>Datamine-sourced artifacts are regenerated with:</p>
-<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w">            </span><span class="c1"># everything safe to regenerate (countries)</span>
+<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w">            </span><span class="c1"># every pure artifact (countries + units)</span>
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--countries
+veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--units<span class="w">    </span><span class="c1"># regenerates dcsUnits.yaml AND dcsUnits.lua</span>
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--radio
 </code></pre></div>
 <p>The datamine is cloned at a <strong>pinned</strong> ref
@@ -2043,6 +2145,9 @@ bump <code>DATAMINE_REF</code>, re-run the command, and commit the diff.</p>
 <ul>
 <li><strong><code>dcs-countries.yaml</code></strong> is a <strong>pure</strong> artifact — 100 % generator output. Never
   edit it by hand; CI fails if it drifts from the generator.</li>
+<li><strong><code>dcsUnits.yaml</code></strong> and the rendered <strong><code>dcsUnits.lua</code></strong> are <strong>pure</strong> artifacts
+  too (see <a href="#the-units-database">The units database</a>). Both are CI-guarded; edit
+  the generator, not the files.</li>
 <li><strong><code>dcs-radio-specs.yaml</code> / <code>dcs-radio-specs.md</code></strong> are <strong>hybrid</strong>: a generated
   base plus <strong>manual overlays</strong> the generator does not reproduce — the
   <code>dcs_rejects_on_load</code> flags (aircraft that crash DCS on load with an
@@ -2060,6 +2165,103 @@ to its numeric id, matched by canonical name, Mission Editor display name
 injector, which must stamp a valid <code>country.id</code> on any country it synthesizes,
 otherwise the DCS Mission Editor crashes on load
 (<code>me_mission.lua</code> → <code>fixCountriesNames</code> → nil-index).</p>
+<h2 id="the-units-database">The units database<a class="headerlink" href="#the-units-database" title="Permanent link">&para;</a></h2>
+<p>The DCS unit database is generated from the datamine in <strong>two stages</strong>:</p>
+<div class="highlight"><pre><span></span><code>_G/db/Units/**          (datamine, pinned ref)
+   │  veaf_build.dcs_data.units   →  parse + derive
+   ▼
+dcsUnits.yaml           (committed canonical source, veaf_libs/data/)
+   │  veaf_build.dcs_data.units_lua  →  render
+   ▼
+dcsUnits.lua            (committed runtime table, src/scripts/veaf/)
+   │  loaded in DCS
+   ▼
+veafUnits / veafSkynetIadsHelper   (runtime consumers)
+</code></pre></div>
+<p><code>veaf-build update-dcs-data --units</code> runs both stages.</p>
+<h3 id="derived-kind">Derived <code>kind</code><a class="headerlink" href="#derived-kind" title="Permanent link">&para;</a></h3>
+<p>Each unit gets a single <strong><code>kind</code></strong> — <code>air</code> / <code>naval</code> / <code>infantry</code> / <code>vehicle</code> /
+<code>static</code> — derived from the DCS <code>attribute</code> flags, in priority order:</p>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Signal (attribute)</th>
+<th>kind</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>Air</code></td>
+<td><code>air</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>Naval</code> or <code>Ships</code></td>
+<td><code>naval</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>Infantry</code></td>
+<td><code>infantry</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>Ground vehicles</code> / <code>Vehicles</code> / <code>GroundUnits</code> / <code>RailwayUnits</code></td>
+<td><code>vehicle</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><em>(none of the above)</em></td>
+<td><code>static</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>kind</code> replaces the four mutually-exclusive booleans the old in-DCS export wrote
+(<code>naval</code>/<code>air</code>/<code>infantry</code>/<code>vehicle</code>). <code>RailwayUnits</code>/<code>GroundUnits</code> catch rail
+stock (locomotives, wagons), which the old export classified as vehicles.</p>
+<h3 id="yaml-and-lua-schema">YAML and Lua schema<a class="headerlink" href="#yaml-and-lua-schema" title="Permanent link">&para;</a></h3>
+<p><code>dcsUnits.yaml</code> is the source of truth:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">units</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1L13</span><span class="nv"> </span><span class="s">EWR&quot;</span><span class="w">          </span><span class="c1"># DCS type id (database key)</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EWR 1L13</span><span class="w">            </span><span class="c1"># display name</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vehicle</span>
+<span class="w">  </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Air Defence</span><span class="w">     </span><span class="c1"># DCS display category (planes/ships/helicopters derived from the folder)</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EWR 1L13</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">EWR</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Air</span><span class="nv"> </span><span class="s">Defence</span><span class="nv"> </span><span class="s">vehicles&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">]</span>
+<span class="nt">naval_statics</span><span class="p">:</span><span class="w">              </span><span class="c1"># offshore statics DCS places on water (curated list)</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">offshore WindTurbine</span>
+</code></pre></div>
+<p><code>dcsUnits.lua</code> renders that into the lean runtime table — keyed by <code>type</code>, with a
+single <code>kind</code> and an <code>attribute</code> map (Skynet keys on <code>SAM SR</code> / <code>EWR</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="nv">dcsUnits</span><span class="p">.</span><span class="py">NavalStatics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;offshore WindTurbine&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="nv">dcsUnits</span><span class="p">.</span><span class="py">DcsUnitsDatabase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">[</span><span class="s2">&quot;1L13 EWR&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1L13 EWR&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;EWR 1L13&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vehicle&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Air Defence&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;EWR 1L13&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">attribute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;EWR&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The runtime reads <code>type</code>, <code>name</code>, <code>description</code>, <code>category</code>, <code>kind</code> and
+<code>attribute</code>; <code>veafUnits.processUnit</code> turns <code>kind</code> back into the
+<code>naval</code>/<code>air</code>/<code>infantry</code>/<code>vehicle</code>/<code>static</code> flags the rest of the code expects.
+The Lua file is <strong>excluded from <code>stylua</code></strong> (<code>.styluaignore</code>) because its
+formatting is deterministic generator output.</p>
+<h3 id="carried-over-units-and-naval-statics">Carried-over units and naval statics<a class="headerlink" href="#carried-over-units-and-naval-statics" title="Permanent link">&para;</a></h3>
+<p>Two things the datamine does not provide are handled explicitly in
+<code>veaf_build/dcs_data/units.py</code>:</p>
+<ul>
+<li><strong><code>CARRIED_UNITS</code></strong> — units present in the old export but absent from the
+  datamine (currently <code>Container_20ft</code> / <code>Container_40ft</code>). Carried verbatim so
+  the migration never loses a unit.</li>
+<li><strong><code>NAVAL_STATICS</code></strong> — the short offshore-static list (<code>Oil platform</code>, …). The
+  datamine has no reliable flag for these (<code>isPutToWater</code> is false even for the
+  offshore wind turbine), so the list is curated here.</li>
+</ul>
+<p>When DCS ships a unit the datamine lacks, or a new offshore static, add it to the
+relevant constant.</p>
 
 
 
