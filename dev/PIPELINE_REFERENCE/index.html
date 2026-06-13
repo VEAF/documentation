@@ -2109,6 +2109,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#étape-6--données-de-spawn-spawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 6 — Données de spawn (spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 6 — Données de spawn (spawn-groups.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#toujours-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Toujours active
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#étendre-la-base-srcspawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étendre la base (src/spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#voir-aussi" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2662,6 +2712,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#étape-6--données-de-spawn-spawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 6 — Données de spawn (spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 6 — Données de spawn (spawn-groups.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#toujours-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Toujours active
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#étendre-la-base-srcspawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étendre la base (src/spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#voir-aussi" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2696,7 +2796,7 @@
 <p>Cette page documente les étapes optionnelles du <strong>pipeline de build</strong> que <code>veaf-tools build</code> peut exécuter après la génération de <code>veaf-config.lua</code>. Chaque étape injecte des données dans le fichier <code>.miz</code> à partir d'un fichier de configuration YAML séparé.</p>
 <hr />
 <h2 id="vue-densemble">Vue d'ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
-<p>Le pipeline exécute quatre étapes optionnelles, dans cet ordre :</p>
+<p>Le pipeline exécute les étapes optionnelles suivantes, dans cet ordre :</p>
 <table>
 <thead>
 <tr>
@@ -2727,13 +2827,23 @@
 <td>Injecte les <strong>modèles de slot dynamique</strong> (<code>dynSpawnTemplate = true</code>, consommés par DCS)</td>
 </tr>
 <tr>
+<td><code>warehouses</code></td>
+<td><code>src/warehouses.yaml</code></td>
+<td>Configure les warehouses pour les slots dynamiques (Dynamic Slots)</td>
+</tr>
+<tr>
+<td><code>spawn_data</code></td>
+<td><code>src/spawn-groups.yaml</code> <em>(optionnel)</em></td>
+<td>Injecte la base de données de spawn (<code>_spawn unit</code>/<code>_spawn group</code>) ; <strong>toujours active</strong> (les données du framework sont embarquées)</td>
+</tr>
+<tr>
 <td><code>weather</code></td>
 <td><code>src/versions.yaml</code> ou <code>versions.yaml</code></td>
 <td>Crée plusieurs variantes de mission avec différentes météos et heures</td>
 </tr>
 </tbody>
 </table>
-<p>Chaque étape est <strong>auto-détectée</strong> : elle s'exécute si son fichier de config par défaut existe. Vous pouvez modifier ce comportement dans <code>mission.yaml</code>.</p>
+<p>Chaque étape est <strong>auto-détectée</strong> : elle s'exécute si son fichier de config par défaut existe. Vous pouvez modifier ce comportement dans <code>mission.yaml</code>. <strong>Exception</strong> : <code>spawn_data</code> s'exécute toujours (même sans fichier mission) afin d'embarquer la base de spawn du framework ; le fichier <code>src/spawn-groups.yaml</code> ne sert qu'à l'étendre.</p>
 <hr />
 <h2 id="contrôle-du-pipeline-missionyaml">Contrôle du pipeline (<code>mission.yaml</code>)<a class="headerlink" href="#contrôle-du-pipeline-missionyaml" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
@@ -2743,6 +2853,7 @@
 <span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-spawnables.yaml</span><span class="w">        </span><span class="c1"># chemin de fichier non-standard</span>
 <span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace</span><span class="w">                       </span><span class="c1"># add (défaut) | replace</span>
 <span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># ignorer l&#39;injection des modèles de slot dynamique</span>
+<span class="w">  </span><span class="nt">spawn_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># désactiver l&#39;injection de la base de spawn (framework inclus)</span>
 <span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                        </span><span class="c1"># ignorer les variantes météo</span>
 </code></pre></div>
 <h3 id="champs-de-pipeline">Champs de <code>pipeline:</code><a class="headerlink" href="#champs-de-pipeline" title="Permanent link">&para;</a></h3>
@@ -2784,6 +2895,13 @@
 <td>auto</td>
 <td>Non</td>
 <td><code>true</code>/non défini = auto-détection (exécuté si fichier trouvé), <code>false</code> = toujours ignorer, objet = options personnalisées</td>
+</tr>
+<tr>
+<td><code>spawn_data</code></td>
+<td>bool | objet</td>
+<td>toujours</td>
+<td>Non</td>
+<td><code>true</code>/non défini = <strong>toujours exécuté</strong> (données framework embarquées), <code>false</code> = désactiver complètement, objet <code>{file: …}</code> = fichier mission non-standard</td>
 </tr>
 <tr>
 <td><code>weather</code></td>
@@ -3309,6 +3427,37 @@ carburant / munitions et le stock d'aéronefs, et lie chaque type d'aéronef pro
 <span class="w">  </span><span class="nt">airports</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">Senaki-Kolkhi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </code></pre></div>
+<hr />
+<h2 id="étape-6--données-de-spawn-spawn-groupsyaml">Étape 6 — Données de spawn (<code>spawn-groups.yaml</code>)<a class="headerlink" href="#étape-6--données-de-spawn-spawn-groupsyaml" title="Permanent link">&para;</a></h2>
+<p>Les commandes marqueurs <code>_spawn unit &lt;alias&gt;</code> et <code>_spawn group &lt;alias&gt;</code> s'appuient sur deux tables Lua (<code>veafUnits.UnitsDatabase</code> et <code>veafUnits.GroupsDatabase</code>). Depuis la v6, ces tables ne sont plus codées en dur dans <code>veafUnits.lua</code> : elles proviennent d'un YAML, sont rendues en Lua et <strong>injectées dans le <code>.miz</code> au build de la mission</strong> (DCS ne sait pas lire du YAML à l'exécution). Voir <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0005-spawn-data-externalization.md">ADR 0005</a>.</p>
+<h3 id="toujours-active">Toujours active<a class="headerlink" href="#toujours-active" title="Permanent link">&para;</a></h3>
+<p>Contrairement aux autres étapes, <code>spawn_data</code> s'exécute <strong>toujours</strong> (même sans fichier mission) car la base de spawn du framework doit être embarquée pour que <code>_spawn</code> fonctionne. Pour la désactiver entièrement :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">spawn_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<h3 id="étendre-la-base-srcspawn-groupsyaml">Étendre la base (<code>src/spawn-groups.yaml</code>)<a class="headerlink" href="#étendre-la-base-srcspawn-groupsyaml" title="Permanent link">&para;</a></h3>
+<p>Un fichier <code>src/spawn-groups.yaml</code> (optionnel) permet d'ajouter ou de redéfinir des unités/groupes pour une mission donnée. Il est <strong>fusionné par-dessus</strong> les données du framework :</p>
+<ul>
+<li>un alias inédit est <strong>ajouté</strong> ;</li>
+<li>un alias déjà présent dans le framework <strong>remplace</strong> l'entrée correspondante (override).</li>
+</ul>
+<h3 id="schéma_5">Schéma<a class="headerlink" href="#schéma_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">units</span><span class="p">:</span><span class="w">                              </span><span class="c1"># -&gt; _spawn unit &lt;alias&gt;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aliases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">myaaa</span><span class="p p-Indicator">]</span><span class="w">                </span><span class="c1"># un ou plusieurs alias (insensibles à la casse)</span>
+<span class="w">    </span><span class="nt">unitType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZSU-23-4 Shilka</span><span class="w">       </span><span class="c1"># un type d&#39;unité DCS</span>
+
+<span class="nt">groups</span><span class="p">:</span><span class="w">                             </span><span class="c1"># -&gt; _spawn group &lt;alias&gt;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aliases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">mysam</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">disposition</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">h</span><span class="p">:</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="nt"> w</span><span class="p">:</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">}</span><span class="w">       </span><span class="c1"># grille de placement en cellules (10m x 10m)</span>
+<span class="w">    </span><span class="nt">units</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">ZSU-23-4 Shilka</span><span class="p p-Indicator">,</span><span class="nt"> cell</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">Ural-375</span><span class="p p-Indicator">,</span><span class="nt"> random</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span><span class="w">                       </span><span class="c1"># placé aléatoirement dans sa cellule</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">Soldier M4</span><span class="p p-Indicator">,</span><span class="nt"> number</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">},</span><span class="nt"> random</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mon site SAM</span>
+<span class="w">    </span><span class="nt">groupName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MySAM</span>
+</code></pre></div>
+<p>Champs d'une unité de groupe : <code>type</code> (requis), <code>cell</code> (cellule préférée), <code>number</code> (quantité, ou <code>{min, max}</code> aléatoire), <code>hdg</code> (cap), <code>size</code> (taille de cellule fixe en m), <code>random</code> (placement aléatoire dans la cellule), <code>fitToUnit</code> (cellule ajustée à l'emprise exacte de l'unité).</p>
+<p>La base du framework est définie dans <code>veaf_libs/data/veaf-units.yaml</code> (embarqué dans l'outil).</p>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>

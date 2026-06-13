@@ -2109,6 +2109,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#step-6--spawn-data-spawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Spawn Data (spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6 — Spawn Data (spawn-groups.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#always-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Always on
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extending-the-database-srcspawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending the database (src/spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2662,6 +2712,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#step-6--spawn-data-spawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Spawn Data (spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6 — Spawn Data (spawn-groups.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#always-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Always on
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extending-the-database-srcspawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending the database (src/spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2696,7 +2796,7 @@
 <p>This page documents the optional <strong>build pipeline</strong> steps that <code>veaf-tools build</code> can run after generating <code>veaf-config.lua</code>. Each step injects data into the <code>.miz</code> file from a separate YAML configuration file.</p>
 <hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The pipeline runs four optional steps, in this order:</p>
+<p>The pipeline runs the following optional steps, in this order:</p>
 <table>
 <thead>
 <tr>
@@ -2727,13 +2827,23 @@
 <td>Injects <strong>dynamic-slot templates</strong> (<code>dynSpawnTemplate = true</code>, consumed by DCS)</td>
 </tr>
 <tr>
+<td><code>warehouses</code></td>
+<td><code>src/warehouses.yaml</code></td>
+<td>Wires the warehouses for Dynamic Slots</td>
+</tr>
+<tr>
+<td><code>spawn_data</code></td>
+<td><code>src/spawn-groups.yaml</code> <em>(optional)</em></td>
+<td>Injects the spawn database (<code>_spawn unit</code>/<code>_spawn group</code>); <strong>always on</strong> (framework data is embedded)</td>
+</tr>
+<tr>
 <td><code>weather</code></td>
 <td><code>src/versions.yaml</code> or <code>versions.yaml</code></td>
 <td>Creates multiple mission variants with different weather and time</td>
 </tr>
 </tbody>
 </table>
-<p>Each step is <strong>auto-detected</strong>: it runs if its default config file exists. You can override this behaviour in <code>mission.yaml</code>.</p>
+<p>Each step is <strong>auto-detected</strong>: it runs if its default config file exists. You can override this behaviour in <code>mission.yaml</code>. <strong>Exception</strong>: <code>spawn_data</code> always runs (even with no mission file) to embed the framework spawn database; <code>src/spawn-groups.yaml</code> only extends it.</p>
 <hr />
 <h2 id="controlling-the-pipeline-missionyaml">Controlling the Pipeline (<code>mission.yaml</code>)<a class="headerlink" href="#controlling-the-pipeline-missionyaml" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
@@ -2743,6 +2853,7 @@
 <span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-spawnables.yaml</span><span class="w">        </span><span class="c1"># non-default file path</span>
 <span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace</span><span class="w">                       </span><span class="c1"># add (default) | replace</span>
 <span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># skip dynamic-slot-template injection</span>
+<span class="w">  </span><span class="nt">spawn_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># disable spawn-database injection (framework included)</span>
 <span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                        </span><span class="c1"># skip weather variants</span>
 </code></pre></div>
 <h3 id="pipeline-fields"><code>pipeline:</code> fields<a class="headerlink" href="#pipeline-fields" title="Permanent link">&para;</a></h3>
@@ -2784,6 +2895,13 @@
 <td>auto</td>
 <td>No</td>
 <td><code>true</code>/unset = auto-detect (run if file exists), <code>false</code> = always skip, object = custom options</td>
+</tr>
+<tr>
+<td><code>spawn_data</code></td>
+<td>bool | object</td>
+<td>always</td>
+<td>No</td>
+<td><code>true</code>/unset = <strong>always runs</strong> (framework data embedded), <code>false</code> = disable entirely, object <code>{file: …}</code> = non-default mission file</td>
 </tr>
 <tr>
 <td><code>weather</code></td>
@@ -3319,6 +3437,37 @@ template group via <code>linkDynTempl</code>.</p>
 <span class="w">  </span><span class="nt">airports</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">Senaki-Kolkhi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </code></pre></div>
+<hr />
+<h2 id="step-6--spawn-data-spawn-groupsyaml">Step 6 — Spawn Data (<code>spawn-groups.yaml</code>)<a class="headerlink" href="#step-6--spawn-data-spawn-groupsyaml" title="Permanent link">&para;</a></h2>
+<p>The <code>_spawn unit &lt;alias&gt;</code> and <code>_spawn group &lt;alias&gt;</code> marker commands rely on two Lua tables (<code>veafUnits.UnitsDatabase</code> and <code>veafUnits.GroupsDatabase</code>). Since v6 these are no longer hard-coded in <code>veafUnits.lua</code>: they come from YAML, are rendered to Lua, and <strong>injected into the <code>.miz</code> at mission build</strong> (DCS cannot parse YAML at runtime). See <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0005-spawn-data-externalization.md">ADR 0005</a>.</p>
+<h3 id="always-on">Always on<a class="headerlink" href="#always-on" title="Permanent link">&para;</a></h3>
+<p>Unlike the other steps, <code>spawn_data</code> <strong>always</strong> runs (even with no mission file) because the framework spawn database must be embedded for <code>_spawn</code> to work. To disable it entirely:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">spawn_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<h3 id="extending-the-database-srcspawn-groupsyaml">Extending the database (<code>src/spawn-groups.yaml</code>)<a class="headerlink" href="#extending-the-database-srcspawn-groupsyaml" title="Permanent link">&para;</a></h3>
+<p>An optional <code>src/spawn-groups.yaml</code> lets a mission add or override units/groups. It is <strong>merged over</strong> the framework data:</p>
+<ul>
+<li>a brand-new alias is <strong>appended</strong>;</li>
+<li>an alias already present in the framework <strong>replaces</strong> that entry (override).</li>
+</ul>
+<h3 id="schema_5">Schema<a class="headerlink" href="#schema_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">units</span><span class="p">:</span><span class="w">                              </span><span class="c1"># -&gt; _spawn unit &lt;alias&gt;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aliases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">myaaa</span><span class="p p-Indicator">]</span><span class="w">                </span><span class="c1"># one or more case-insensitive aliases</span>
+<span class="w">    </span><span class="nt">unitType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZSU-23-4 Shilka</span><span class="w">       </span><span class="c1"># a DCS unit type id</span>
+
+<span class="nt">groups</span><span class="p">:</span><span class="w">                             </span><span class="c1"># -&gt; _spawn group &lt;alias&gt;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aliases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">mysam</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">disposition</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">h</span><span class="p">:</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="nt"> w</span><span class="p">:</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">}</span><span class="w">       </span><span class="c1"># placement grid in cells (10m x 10m)</span>
+<span class="w">    </span><span class="nt">units</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">ZSU-23-4 Shilka</span><span class="p p-Indicator">,</span><span class="nt"> cell</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">Ural-375</span><span class="p p-Indicator">,</span><span class="nt"> random</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span><span class="w">                       </span><span class="c1"># randomized within its cell</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">Soldier M4</span><span class="p p-Indicator">,</span><span class="nt"> number</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">},</span><span class="nt"> random</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My custom SAM site</span>
+<span class="w">    </span><span class="nt">groupName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MySAM</span>
+</code></pre></div>
+<p>Group-unit fields: <code>type</code> (required), <code>cell</code> (preferred cell), <code>number</code> (count, or <code>{min, max}</code> random), <code>hdg</code> (heading), <code>size</code> (fixed cell size in m), <code>random</code> (randomize within the cell), <code>fitToUnit</code> (cell shrunk to the unit's exact footprint).</p>
+<p>The framework database lives in <code>veaf_libs/data/veaf-units.yaml</code> (bundled with the tool).</p>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
