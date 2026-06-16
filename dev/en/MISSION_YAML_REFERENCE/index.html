@@ -3261,9 +3261,10 @@ A declared script is included in the <code>.miz</code> <strong>without</strong> 
 </table>
 <p><strong>Loading behaviour</strong></p>
 <ul>
-<li><code>generate_load_trigger: true</code> (default) → the script is injected into the <code>.miz</code> <strong>and</strong> a DCS <code>a_do_script_file</code> trigger is generated — it loads at mission start like other mission scripts.</li>
-<li><code>generate_load_trigger: false</code> → the script is injected into the <code>.miz</code> but <strong>no</strong> trigger is generated; <code>mission-script.lua</code> (or another script) must load it via <code>dofile</code>.</li>
+<li><code>generate_load_trigger: true</code> (default) → the script is loaded at mission start, in <strong>both</strong> loading modes: in <strong>static</strong> builds it is embedded in the <code>.miz</code> and loaded by the VEAF mission-loading trigger; in <strong>dynamic</strong> builds it is loaded from disk by the generated <code>veafDynamicConfig.lua</code>. The same flag governs both modes — there is no per-mode flag.</li>
+<li><code>generate_load_trigger: false</code> → the script is still injected into the <code>.miz</code> but <strong>no</strong> load is generated in either mode; <code>mission-script.lua</code> (or another script) must load it via <code>dofile</code>.</li>
 </ul>
+<p><strong>Load order</strong>: mission scripts always load as <code>veaf-config.lua</code> → <code>mission-script.lua</code> → your <code>custom_scripts</code> (in declaration order). So a custom script can rely on the VEAF config and on <code>mission-script.lua</code> already being loaded.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">generate_load_trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># global default for all scripts below</span>
 <span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
@@ -3273,6 +3274,23 @@ A declared script is included in the <code>.miz</code> <strong>without</strong> 
 </code></pre></div>
 <blockquote>
 <p>Any <code>.lua</code> file present in <code>src/scripts/</code> but <strong>absent</strong> from this section (and not one of the standard files) triggers a build warning with a reminder to declare it here.</p>
+</blockquote>
+<p><strong>A script only in one variant (e.g. a dynamic-only debug script)</strong></p>
+<p><code>generate_load_trigger</code> is a single flag — it does not distinguish static from dynamic. To load a script in only one variant (a debug helper you want <strong>only</strong> in your local dynamic dev build, never in the static distribution), use a <a href="#profiles">build profile</a> instead of a per-script flag:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">   </span><span class="c1"># always loaded (both variants)</span>
+
+<span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DEV</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">    </span><span class="c1"># ⚠️ must repeat the base scripts</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgDebug.lua</span><span class="w">      </span><span class="c1"># extra, dev-only</span>
+</code></pre></div>
+<p>Build the dev variant with <code>veaf-tools build --profile DEV</code> (it loads <code>FgMission.lua</code> + <code>FgDebug.lua</code>); the default build loads only <code>FgMission.lua</code>.</p>
+<blockquote>
+<p>⚠️ <strong>Pitfall</strong>: profile deep-merge <strong>replaces lists, it does not concatenate them</strong> (see <a href="#profiles"><code>profiles:</code></a>). The profile's <code>custom_scripts.scripts</code> must therefore <strong>repeat</strong> the base scripts and add the variant-specific one — otherwise the base scripts are lost in that profile.</p>
 </blockquote>
 <hr />
 <h3 id="pipeline"><code>pipeline:</code><a class="headerlink" href="#pipeline" title="Permanent link">&para;</a></h3>

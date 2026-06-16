@@ -3195,9 +3195,10 @@ Un script déclaré ici est inclus dans le <code>.miz</code> <strong>sans</stron
 </table>
 <p><strong>Comportement de chargement</strong></p>
 <ul>
-<li><code>generate_load_trigger: true</code> (défaut) → le script est injecté dans le <code>.miz</code> <strong>et</strong> un trigger DCS <code>a_do_script_file</code> est généré, il se charge au démarrage de la mission comme les autres scripts de mission.</li>
-<li><code>generate_load_trigger: false</code> → le script est injecté dans le <code>.miz</code> mais <strong>aucun</strong> trigger n'est généré ; c'est <code>mission-script.lua</code> (ou un autre script) qui doit le charger via <code>dofile</code>.</li>
+<li><code>generate_load_trigger: true</code> (défaut) → le script est chargé au démarrage de la mission, dans les <strong>deux</strong> modes de chargement : en build <strong>statique</strong> il est embarqué dans le <code>.miz</code> et chargé par le trigger VEAF de chargement des scripts de mission ; en build <strong>dynamique</strong> il est chargé depuis le disque par le <code>veafDynamicConfig.lua</code> généré. Le même flag pilote les deux modes — il n'y a pas de flag par-mode.</li>
+<li><code>generate_load_trigger: false</code> → le script est tout de même injecté dans le <code>.miz</code> mais <strong>aucun</strong> chargement n'est généré dans l'un ou l'autre mode ; c'est <code>mission-script.lua</code> (ou un autre script) qui doit le charger via <code>dofile</code>.</li>
 </ul>
+<p><strong>Ordre de chargement</strong> : les scripts de mission se chargent toujours dans l'ordre <code>veaf-config.lua</code> → <code>mission-script.lua</code> → vos <code>custom_scripts</code> (dans l'ordre de déclaration). Un script custom peut donc compter sur la config VEAF et sur <code>mission-script.lua</code> déjà chargés.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">generate_load_trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># défaut global pour tous les scripts ci-dessous</span>
 <span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
@@ -3207,6 +3208,23 @@ Un script déclaré ici est inclus dans le <code>.miz</code> <strong>sans</stron
 </code></pre></div>
 <blockquote>
 <p>Tout fichier <code>.lua</code> présent dans <code>src/scripts/</code> mais <strong>absent</strong> de cette section (et ne faisant pas partie des fichiers standards) déclenche un warning au build avec un rappel pour le déclarer ici.</p>
+</blockquote>
+<p><strong>Un script dans une seule variante (ex. un script de debug dynamique-seul)</strong></p>
+<p><code>generate_load_trigger</code> est un flag unique — il ne distingue pas statique et dynamique. Pour charger un script dans une seule variante (un utilitaire de debug que vous voulez <strong>uniquement</strong> dans votre build dynamique local de dev, jamais dans la distribution statique), utilisez un <a href="#profiles">profil de build</a> plutôt qu'un flag par script :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">   </span><span class="c1"># toujours chargé (les deux variantes)</span>
+
+<span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DEV</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">    </span><span class="c1"># ⚠️ doit répéter les scripts de base</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgDebug.lua</span><span class="w">      </span><span class="c1"># en plus, dev seulement</span>
+</code></pre></div>
+<p>Buildez la variante dev avec <code>veaf-tools build --profile DEV</code> (elle charge <code>FgMission.lua</code> + <code>FgDebug.lua</code>) ; le build par défaut ne charge que <code>FgMission.lua</code>.</p>
+<blockquote>
+<p>⚠️ <strong>Piège</strong> : le deep-merge des profils <strong>remplace les listes, il ne les concatène pas</strong> (voir <a href="#profiles"><code>profiles:</code></a>). Le <code>custom_scripts.scripts</code> du profil doit donc <strong>répéter</strong> les scripts de base et ajouter celui spécifique à la variante — sinon les scripts de base sont perdus dans ce profil.</p>
 </blockquote>
 <hr />
 <h3 id="pipeline"><code>pipeline:</code><a class="headerlink" href="#pipeline" title="Permanent link">&para;</a></h3>
