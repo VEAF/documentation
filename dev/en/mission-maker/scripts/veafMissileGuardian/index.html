@@ -1151,10 +1151,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#builder-methods" class="md-nav__link">
+  <a href="#builder-methods-veafmg_guardian" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Builder Methods
+        Builder Methods (VeafMG_Guardian)
       
     </span>
   </a>
@@ -1977,10 +1977,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#builder-methods" class="md-nav__link">
+  <a href="#builder-methods-veafmg_guardian" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Builder Methods
+        Builder Methods (VeafMG_Guardian)
       
     </span>
   </a>
@@ -2030,29 +2030,32 @@
 
 
 <h1 id="veafmissileguardian--missile-interception">veafMissileGuardian — Missile Interception<a class="headerlink" href="#veafmissileguardian--missile-interception" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> — | <strong>File:</strong> <code>veafMissileGuardian.lua</code></p>
+<p><strong>Module ID:</strong> <code>MISSILEGUARDIAN</code> | <strong>File:</strong> <code>veafMissileGuardian.lua</code></p>
+<hr />
+<blockquote>
+<p><strong>Experimental / incomplete module.</strong> This module is a skeleton (version <code>0.0.2</code>). The classes described below exist, but the protection logic is not yet implemented (<code>veafMissileGuardian.getLargeScaleProtector()</code> and the protector watchdog are stubs). Use for exploratory purposes only.</p>
+</blockquote>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
-<p>Intercepts and destroys specific incoming missiles to protect designated assets or zones. Useful for protecting carriers, FARPs, or other high-value targets from ballistic threats in scenarios where realistic missile defense is desired.</p>
+<p>Aims to intercept and destroy incoming missiles to protect designated assets. A <code>VeafMG_Guardian</code> observes units and reacts when a shot targets one of them inside a protected zone, warning the target.</p>
 <hr />
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>veafEventHandler</code> — for missile-fired event monitoring</li>
-</ul>
 <hr />
 <h2 id="enable">Enable<a class="headerlink" href="#enable" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafMissileGuardian</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
-<p>Then define protection zones:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">VeafMissileGuardian</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Carrier Defense&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;CVN-73&quot;</span><span class="p">)</span><span class="w">           </span><span class="c1">-- protect this group</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setRadius</span><span class="p">(</span><span class="mi">30000</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- interception radius in metres</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMissileTypes</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;P-700&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Kh-41&quot;</span><span class="w"> </span><span class="p">})</span><span class="w">  </span><span class="c1">-- intercept these missile types</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<p><code>initialize()</code> builds the "GUARDIAN" radio menu. Then define a guardian:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">guardian</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafMG_Guardian</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;carrier-defense&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Carrier Defense&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addProtectedUnit</span><span class="p">(</span><span class="s2">&quot;CVN-73&quot;</span><span class="p">)</span><span class="w">        </span><span class="c1">-- DCS unit name to protect (call repeatedly for several units)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setProtectedZone</span><span class="p">(</span><span class="nv">polygon</span><span class="p">)</span><span class="w">         </span><span class="c1">-- polygon (list of points) where protection applies</span>
+<span class="nv">guardian</span><span class="p">:</span><span class="nf">start</span><span class="p">()</span><span class="w">                     </span><span class="c1">-- register the event handler</span>
 </code></pre></div>
+<p><code>guardian:stop()</code> deregisters the event handler.</p>
 <hr />
-<h2 id="builder-methods">Builder Methods<a class="headerlink" href="#builder-methods" title="Permanent link">&para;</a></h2>
+<h2 id="builder-methods-veafmg_guardian">Builder Methods (<code>VeafMG_Guardian</code>)<a class="headerlink" href="#builder-methods-veafmg_guardian" title="Permanent link">&para;</a></h2>
+<p>The guardian is built with <code>VeafMG_Guardian:new()</code>. Each setter returns the guardian, allowing chaining.</p>
 <table>
 <thead>
 <tr>
@@ -2062,45 +2065,37 @@
 </thead>
 <tbody>
 <tr>
-<td><code>:setName(name)</code></td>
+<td><code>:setName(value)</code></td>
 <td>Internal identifier</td>
 </tr>
 <tr>
-<td><code>:setGroupName(name)</code></td>
-<td>DCS group to protect</td>
+<td><code>:setFriendlyName(value)</code></td>
+<td>Human-friendly name shown to players</td>
 </tr>
 <tr>
-<td><code>:setZoneName(zone)</code></td>
-<td>Alternatively, protect a zone</td>
+<td><code>:addProtectedUnit(value)</code></td>
+<td>Add a DCS unit to protect (name or unit object)</td>
 </tr>
 <tr>
-<td><code>:setRadius(m)</code></td>
-<td>Interception radius around the protected target</td>
+<td><code>:setProtectedZone(value)</code></td>
+<td>Polygon (list of points) bounding the protection zone</td>
 </tr>
 <tr>
-<td><code>:setMissileTypes(list)</code></td>
-<td>List of DCS weapon type names to intercept</td>
+<td><code>:start()</code></td>
+<td>Register the event handler</td>
 </tr>
 <tr>
-<td><code>:setAllMissiles(bool)</code></td>
-<td>If true, intercept all missiles</td>
-</tr>
-<tr>
-<td><code>:setSilent(bool)</code></td>
-<td>Suppress interception messages</td>
-</tr>
-<tr>
-<td><code>:initialize()</code></td>
-<td>Activate the guardian</td>
+<td><code>:stop()</code></td>
+<td>Deregister the event handler</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Missiles are destroyed when they enter the protection radius</li>
-<li>Use specific missile type lists to avoid intercepting friendly ordnance</li>
-<li>Works for both anti-ship and surface-to-air missiles</li>
+<li>The module is experimental: actual missile destruction is not yet implemented</li>
+<li>A guardian only warns targets inside its protected zone when a shot is detected</li>
+<li>Internal classes: <code>VeafMG_Weapon</code> (weapon in flight), <code>VeafMG_Guardian</code> (observer), <code>VeafMG_Protector</code> (protector, stub)</li>
 </ul>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

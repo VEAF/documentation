@@ -1061,21 +1061,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#menu-radio-f10-par-porte-avions" class="md-nav__link">
+  <a href="#menu-radio-f10" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Menu radio F10 (par porte-avions)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exemple-de-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exemple de configuration
+        Menu radio F10
       
     </span>
   </a>
@@ -2077,21 +2066,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#menu-radio-f10-par-porte-avions" class="md-nav__link">
+  <a href="#menu-radio-f10" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Menu radio F10 (par porte-avions)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exemple-de-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exemple de configuration
+        Menu radio F10
       
     </span>
   </a>
@@ -2138,23 +2116,16 @@
 <h2 id="dépendances">Dépendances<a class="headerlink" href="#dépendances" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>veafRadio</code> — menu F10</li>
-<li><code>veafAssets</code> — enregistre les ressources porte-avions (intégration optionnelle)</li>
+<li><code>veafRemote</code> — expose une commande distante <code>carrier</code></li>
 </ul>
 <hr />
 <h2 id="activation">Activation<a class="headerlink" href="#activation" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
-<p>Puis enregistrer chaque porte-avions :</p>
-<div class="highlight"><pre><span></span><code><span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">addCarrier</span><span class="p">({</span>
-<span class="w">  </span><span class="nv">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Mother&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73 Theodore Roosevelt&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">groupName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73&quot;</span><span class="p">,</span>
-<span class="p">})</span>
-</code></pre></div>
-<p>Ou laisser <code>veafAssets</code> gérer l'enregistrement automatiquement quand une ressource porte-avions a <code>carrier = true</code>.</p>
+<p>Il n'existe pas d'API d'enregistrement par porte-avions. À l'<code>initialize()</code>, le module parcourt tous les groupes de la mission et enregistre automatiquement tout groupe contenant un type d'unité porte-avions connu (voir <a href="#types-de-porte-avions-supportés">Types de porte-avions supportés</a>). Sa route initiale, son camp et ses données ATC (TACAN/ICLS/LINK4/ACLS/tour, lues dans les tâches programmées du porte-avions) sont capturés à ce moment-là. Il suffit de placer un groupe porte-avions dans l'éditeur de mission — aucun appel de script n'est nécessaire.</p>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
-<p>Les opérations de porte-avions sont activées via l'ID de module <code>CARRIER</code>. Les définitions de porte-avions sont généralement déclarées via le module <code>ASSETS</code> (voir <a href="../veafAssets/#configuration-missionyaml">veafAssets — Configuration</a>).</p>
+<p>Les opérations de porte-avions sont activées via l'ID de module <code>CARRIER</code>. Les porte-avions eux-mêmes ne sont pas déclarés dans <code>mission.yaml</code> : ils sont détectés automatiquement à partir des groupes porte-avions présents dans la mission (voir <a href="#activation">Activation</a>).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CARRIER</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># défaut : true</span>
@@ -2269,33 +2240,23 @@
 </tbody>
 </table>
 <hr />
-<h2 id="menu-radio-f10-par-porte-avions">Menu radio F10 (par porte-avions)<a class="headerlink" href="#menu-radio-f10-par-porte-avions" title="Permanent link">&para;</a></h2>
+<h2 id="menu-radio-f10">Menu radio F10<a class="headerlink" href="#menu-radio-f10" title="Permanent link">&para;</a></h2>
+<p>Le menu de premier niveau <strong>CARRIER OPS</strong> contient un sous-menu <strong>CARRIER OPS - BLUE</strong> et un sous-menu <strong>CARRIER OPS - RED</strong>, chacun avec un sous-menu par porte-avions (nommé d'après le groupe porte-avions). Lorsque les opérations sont arrêtées, chaque sous-menu de porte-avions propose :</p>
 <ul>
-<li><strong>Infos</strong> — BRC, vent relatif, canal TACAN, canal ICLS, fréquence ATC</li>
-<li><strong>Commencer récupération</strong> — virage face au vent et ouverture d'une fenêtre de 45 minutes</li>
-<li><strong>Arrêter récupération</strong> — fin de récupération, reprise de la route d'origine</li>
+<li><strong>Start carrier air operations for 45 minutes</strong> — virage face au vent et ouverture d'une fenêtre de récupération de 45 minutes</li>
+<li><strong>Start carrier air operations for 90 minutes</strong> — idem, pour 90 minutes (<code>MAX_OPERATIONS_DURATION</code> × 2)</li>
+<li><strong>ATC - Request informations</strong> — TACAN, ICLS, LINK 4 / ACLS, tour, BRC et temps restant, plus la navigation courante et la météo</li>
 </ul>
-<hr />
-<h2 id="exemple-de-configuration">Exemple de configuration<a class="headerlink" href="#exemple-de-configuration" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Dans mission-script.lua</span>
-<span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
-
-<span class="c1">-- Les porte-avions sont enregistrés via veafAssets :</span>
-<span class="nv">veafAssets</span><span class="p">.</span><span class="py">Assets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nv">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Mother&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73 Theodore Roosevelt&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">groupName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">information</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">carrier</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="p">}</span>
-<span class="nv">veafAssets</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
-</code></pre></div>
+<p>Pendant les opérations, les deux items <em>Start</em> sont remplacés par :</p>
+<ul>
+<li><strong>End air operations</strong> — arrête la récupération et renvoie le porte-avions sur sa route initiale</li>
+</ul>
+<blockquote>
+<p>Par défaut les items <em>Start</em>/<em>End</em> sont sécurisés (mot de passe requis). Positionnez <code>veafCarrierOperations.DisableSecurity = true</code> pour les rendre accessibles à tous.</p>
+</blockquote>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../veafAssets/">veafAssets</a> — gestion des ressources et intégration menu radio</li>
 <li><a href="../../../LUA_API_REFERENCE/">Référence API Lua</a> — API complète de <code>veafCarrierOperations</code></li>
 </ul>
 

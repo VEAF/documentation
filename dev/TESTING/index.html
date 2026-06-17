@@ -1881,6 +1881,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#exécuter-luacheck-localement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exécuter Luacheck localement
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2435,6 +2446,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#exécuter-luacheck-localement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exécuter Luacheck localement
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2474,7 +2496,7 @@
 </ul>
 <hr />
 <h2 id="vue-densemble">Vue d'ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
-<p>Le projet compte 31 suites de tests Lua couvrant tous les modules runtime, totalisant ~915 tests. Les tests s'exécutent en <strong>Lua 5.1</strong> standard avec le framework <a href="https://github.com/bluebird75/luaunit">luaunit</a>. Aucune installation de DCS n'est requise — l'API DCS est simulée par <code>dcs_mocks.lua</code>.</p>
+<p>Le projet compte 34 suites de tests Lua couvrant tous les modules runtime, totalisant ~1000 tests. Les tests s'exécutent en <strong>Lua 5.1</strong> standard avec le framework <a href="https://github.com/bluebird75/luaunit">luaunit</a>. Aucune installation de DCS n'est requise — l'API DCS est simulée par <code>dcs_mocks.lua</code>.</p>
 <hr />
 <h2 id="exécuter-les-tests">Exécuter les tests<a class="headerlink" href="#exécuter-les-tests" title="Permanent link">&para;</a></h2>
 <h3 id="tous-les-tests">Tous les tests<a class="headerlink" href="#tous-les-tests" title="Permanent link">&para;</a></h3>
@@ -2520,7 +2542,7 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 ├── luaunit.lua         # Framework de test (embarqué)
 ├── dcs_mocks.lua       # Stubs de l&#39;API DCS
 ├── veaf_loader.lua     # Chargeur de modules pour src/scripts/veaf/
-└── test_*.lua          # Un fichier par module (31 fichiers)
+└── test_*.lua          # Un fichier par module (34 fichiers)
 </code></pre></div>
 <h3 id="dcs_mockslua">dcs_mocks.lua<a class="headerlink" href="#dcs_mockslua" title="Permanent link">&para;</a></h3>
 <p>Fournit des stubs minimaux pour l'API globale DCS afin que les modules puissent être chargés via <code>require</code> sans instance DCS active. Espaces de noms simulés :</p>
@@ -2712,6 +2734,21 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 <td>55</td>
 <td>Commandes spawn, analyse de texte marqueur, conversion fréquence laser</td>
 </tr>
+<tr>
+<td><code>test_veafSpawnParser.lua</code></td>
+<td>45</td>
+<td>Parsing déterministe du texte marqueur de spawn (<code>markTextAnalysis</code>)</td>
+</tr>
+<tr>
+<td><code>test_veafCommands.lua</code></td>
+<td>8</td>
+<td>Registre de commandes : ordonnancement par priorité et dispatch</td>
+</tr>
+<tr>
+<td><code>test_veafI18n.lua</code></td>
+<td>32</td>
+<td>Couche i18n runtime Lua (<code>veaf.t</code>, catalogue <code>veafI18n</code>)</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Modules non couverts</strong> (design-time ou externes uniquement) :</p>
@@ -2810,17 +2847,30 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 2. Installation de <code>lua5.1</code> via apt
 3. Exécution de tous les fichiers <code>test/lua/test_*.lua</code>
 4. Échec du job si une suite retourne un code non-zéro</p>
+<p><strong><code>luacheck</code></strong> — Ubuntu latest
+1. Checkout du dépôt
+2. Installation de <code>lua5.1</code> + <code>luacheck</code> via LuaRocks
+3. Analyse statique de <code>src/scripts/veaf/</code> avec <code>luacheck --config .luacheckrc</code> (globaux non définis, variables inutilisées, shadowing)
+4. Échec si une violation est détectée</p>
 <p><strong><code>stylua-check</code></strong> — Ubuntu latest
 1. Checkout du dépôt
 2. Exécution de <code>JohnnyMorganz/stylua-action@v4</code> avec la version <code>2.4.0</code>
 3. Vérification de <code>src/scripts/veaf/</code> contre <code>.stylua.toml</code>
 4. Échec si un fichier n'est pas formaté</p>
+<p><strong><code>lua-coverage</code></strong> — Ubuntu latest
+1. Checkout du dépôt
+2. Installation de <code>lua5.1</code> + <code>luacov</code> via LuaRocks, puis de Poetry et des dépendances
+3. Exécution de <code>poetry run test-lua --cov-fail-under 67</code> (couverture ligne via luacov)
+4. Échec si la couverture passe sous le plancher de cliquet (le nombre ne fait que monter)</p>
 <h3 id="exécuter-stylua-localement">Exécuter StyLua localement<a class="headerlink" href="#exécuter-stylua-localement" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c"># Vérification seule (pas d&#39;écriture)</span>
 <span class="n">stylua</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
 
 <span class="c"># Auto-formatage</span>
 <span class="n">stylua</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
+</code></pre></div>
+<h3 id="exécuter-luacheck-localement">Exécuter Luacheck localement<a class="headerlink" href="#exécuter-luacheck-localement" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">luacheck</span> <span class="p">-</span><span class="n">-config</span> <span class="p">.</span><span class="n">luacheckrc</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
 </code></pre></div>
 <p>Configuration StyLua (<code>.stylua.toml</code>) :</p>
 <div class="highlight"><pre><span></span><code><span class="n">column_width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">140</span>

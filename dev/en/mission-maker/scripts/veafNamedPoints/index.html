@@ -2170,7 +2170,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>enable</code></td>
+<td><code>enabled</code></td>
 <td>boolean</td>
 <td><code>true</code></td>
 <td>No</td>
@@ -2250,20 +2250,21 @@
 </table>
 <hr />
 <h2 id="pre-defining-points-in-mission-scriptlua">Pre-defining Points in mission-script.lua<a class="headerlink" href="#pre-defining-points-in-mission-scriptlua" title="Permanent link">&para;</a></h2>
-<p>Named points can be pre-defined programmatically:</p>
+<p>Named points can be pre-defined programmatically. <code>addPoint(name, point)</code> takes a vec3 (<code>{x=…, y=0, z=…}</code>; <code>y</code> defaults to <code>0</code>). ATC/TACAN/ILS/tower data is attached via <code>addDataToPoint(point, data)</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 
 <span class="c1">-- Add a static named point</span>
-<span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">addNamedPoint</span><span class="p">({</span>
-<span class="w">  </span><span class="nv">name</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;FARP Alpha&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">position</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">654321</span><span class="w"> </span><span class="p">},</span><span class="w">  </span><span class="c1">-- DCS vec3</span>
-<span class="w">  </span><span class="nv">atcFreq</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">127500000</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Hz</span>
-<span class="w">  </span><span class="nv">atcMod</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nv">radio</span><span class="p">.</span><span class="py">modulation</span><span class="p">.</span><span class="py">AM</span><span class="p">,</span>
-<span class="p">})</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">addPoint</span><span class="p">(</span><span class="s2">&quot;FARP Alpha&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">654321</span><span class="w"> </span><span class="p">})</span>
 
-<span class="c1">-- Add a point at a known DCS airbase</span>
-<span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">addNamedPointFromAirbase</span><span class="p">(</span><span class="s2">&quot;Senaki-Kolkhi&quot;</span><span class="p">)</span>
+<span class="c1">-- Attach ATC/TACAN/tower/ILS data to the point</span>
+<span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">addDataToPoint</span><span class="p">(</span><span class="nv">point</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">atc</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">tower</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;V131, U260&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">tacan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;16X BTM&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">ils</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;110.30&quot;</span><span class="p">,</span>
+<span class="p">})</span>
 </code></pre></div>
+<p><code>addAirbases()</code> bulk-adds every airbase on the map (called automatically by <code>initialize()</code>); there is no per-airbase add function. <code>addCities()</code> likewise adds the theatre's cities.</p>
 <hr />
 <h2 id="player-marker-command">Player Marker Command<a class="headerlink" href="#player-marker-command" title="Permanent link">&para;</a></h2>
 <p>Players can create named points via map markers (if allowed by security):</p>

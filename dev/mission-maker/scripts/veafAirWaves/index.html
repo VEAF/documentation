@@ -993,6 +993,34 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#méthodes-du-builder-airwavezone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder AirWaveZone
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#définition-dune-vague" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définition d'une vague
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Définition d&#39;une vague">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#number--contrôler-combien-de-groupes-apparaissent" class="md-nav__link">
     <span class="md-ellipsis">
@@ -2198,6 +2226,34 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#méthodes-du-builder-airwavezone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder AirWaveZone
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#définition-dune-vague" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définition d'une vague
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Définition d&#39;une vague">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#number--contrôler-combien-de-groupes-apparaissent" class="md-nav__link">
     <span class="md-ellipsis">
@@ -2352,13 +2408,15 @@
 </ul>
 <hr />
 <h2 id="activation">Activation<a class="headerlink" href="#activation" title="Permanent link">&para;</a></h2>
-<p>Pas d'<code>initialize()</code> global. Chaque zone est créée individuellement :</p>
+<p>Pas d'<code>initialize()</code> global. Chaque zone est créée individuellement, puis démarrée avec <code>:start()</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">defenseZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">AirWaveZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AW-East&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-AIRWAVES-EAST&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-AIRWAVES-EAST&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Zone d&#39;interception est&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addPlayerCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">BLUE</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;MiG-23 Wave 1a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;MiG-23 Wave 1b&quot;</span><span class="w"> </span><span class="p">})</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;MiG-29 Wave 2&quot;</span><span class="w"> </span><span class="p">})</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
@@ -2583,58 +2641,177 @@
 <span class="w">            </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
 </code></pre></div>
 <hr />
-<p>:setMinimumPlayersForWave(1)
-  :initialize()
-<div class="highlight"><pre><span></span><code>---
+<h2 id="méthodes-du-builder-airwavezone">Méthodes du builder AirWaveZone<a class="headerlink" href="#méthodes-du-builder-airwavezone" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setName(name)</code></td>
+<td>Identifiant interne</td>
+</tr>
+<tr>
+<td><code>:setTriggerZone(zoneName)</code></td>
+<td>Zone de trigger DCS définissant la zone d'interception</td>
+</tr>
+<tr>
+<td><code>:setZoneCenter(vec3)</code></td>
+<td>Centre de la zone (point), alternative à la zone de trigger</td>
+</tr>
+<tr>
+<td><code>:setZoneCenterFromCoordinates(coords)</code></td>
+<td>Centre de la zone depuis une chaîne de coordonnées</td>
+</tr>
+<tr>
+<td><code>:setZoneRadius(m)</code></td>
+<td>Rayon de la zone en mètres (avec un centre)</td>
+</tr>
+<tr>
+<td><code>:setDescription(text)</code></td>
+<td>Libellé pour les messages et les logs</td>
+</tr>
+<tr>
+<td><code>:addWave(...)</code></td>
+<td>Ajouter une vague — voir <a href="#définition-dune-vague">Définition d'une vague</a></td>
+</tr>
+<tr>
+<td><code>:resetWaves()</code></td>
+<td>Vider toutes les vagues ajoutées (utile après <code>mist.utils.deepCopy</code>)</td>
+</tr>
+<tr>
+<td><code>:addPlayerCoalition(side)</code></td>
+<td>Ajouter une coalition dont les joueurs comptent (ex : <code>coalition.side.BLUE</code>)</td>
+</tr>
+<tr>
+<td><code>:setRespawnRadius(m)</code></td>
+<td>Rayon de dispersion des spawns (défaut : 250 m)</td>
+</tr>
+<tr>
+<td><code>:setRespawnDefaultOffset(lat, lon)</code></td>
+<td>Décalage par rapport au centre de zone pour les spawns</td>
+</tr>
+<tr>
+<td><code>:setMaxSecondsOutsideOfZoneIA(n)</code></td>
+<td>Secondes avant qu'un groupe IA hors zone soit considéré comme perdu</td>
+</tr>
+<tr>
+<td><code>:setMaxSecondsOutsideOfZonePlayers(n)</code></td>
+<td>Secondes avant que la zone se réinitialise si tous les joueurs sortent</td>
+</tr>
+<tr>
+<td><code>:setDelayBetweenWaves(n)</code></td>
+<td>Délai par défaut en secondes entre les vagues</td>
+</tr>
+<tr>
+<td><code>:setDelayBeforeActivation(n)</code></td>
+<td>Secondes après l'entrée des joueurs avant la première vague</td>
+</tr>
+<tr>
+<td><code>:setMinimumAltitudeInFeet(n)</code></td>
+<td>Plancher de détection des joueurs (en pieds)</td>
+</tr>
+<tr>
+<td><code>:setMaximumAltitudeInFeet(n)</code></td>
+<td>Plafond de détection des joueurs (en pieds)</td>
+</tr>
+<tr>
+<td><code>:setResetWhenDying(bool)</code></td>
+<td>Réinitialiser la zone quand un joueur meurt</td>
+</tr>
+<tr>
+<td><code>:setSilent(bool)</code></td>
+<td>Supprimer tous les messages</td>
+</tr>
+<tr>
+<td><code>:setDrawZone(bool)</code></td>
+<td>Dessiner le contour de la zone sur la carte</td>
+</tr>
+<tr>
+<td><code>:setOnStart(fn)</code></td>
+<td>Callback <code>(zoneName, playerUnits)</code> quand la zone s'active</td>
+</tr>
+<tr>
+<td><code>:setOnDeploy(fn)</code></td>
+<td>Callback <code>(zoneName, waveIndex, playerUnits)</code> quand une vague est lancée</td>
+</tr>
+<tr>
+<td><code>:setOnDestroyed(fn)</code></td>
+<td>Callback <code>(zoneName, waveIndex, playerUnits)</code> quand une vague est détruite</td>
+</tr>
+<tr>
+<td><code>:setOnWon(fn)</code></td>
+<td>Callback <code>(zoneName, playerUnits)</code> quand toutes les vagues sont terminées</td>
+</tr>
+<tr>
+<td><code>:setOnLost(fn)</code></td>
+<td>Callback <code>(zoneName, playerUnits)</code> quand la zone est perdue</td>
+</tr>
+<tr>
+<td><code>:setOnStop(fn)</code></td>
+<td>Callback <code>(zoneName, playerUnits)</code> quand la zone est arrêtée</td>
+</tr>
+<tr>
+<td><code>:setMessageStart(text)</code></td>
+<td>Message personnalisé de démarrage de zone</td>
+</tr>
+<tr>
+<td><code>:setMessageDeploy(text)</code></td>
+<td>Message personnalisé de vague lancée</td>
+</tr>
+<tr>
+<td><code>:setMessageDeployPlayers(text)</code></td>
+<td>Message BRAA personnalisé envoyé aux joueurs en zone</td>
+</tr>
+<tr>
+<td><code>:setMessageDestroyed(text)</code></td>
+<td>Message personnalisé de vague détruite</td>
+</tr>
+<tr>
+<td><code>:setMessageWon(text)</code></td>
+<td>Message personnalisé de toutes vagues terminées</td>
+</tr>
+<tr>
+<td><code>:setMessageLost(text)</code></td>
+<td>Message personnalisé de zone perdue</td>
+</tr>
+<tr>
+<td><code>:setMessageStop(text)</code></td>
+<td>Message personnalisé d'arrêt de zone</td>
+</tr>
+<tr>
+<td><code>:start()</code></td>
+<td>Démarrer la zone</td>
+</tr>
+<tr>
+<td><code>:stop()</code></td>
+<td>Arrêter la zone</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="définition-dune-vague">Définition d'une vague<a class="headerlink" href="#définition-dune-vague" title="Permanent link">&para;</a></h2>
+<p><code>addWave(...)</code> accepte plusieurs formes — de la plus simple à la plus puissante :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Un seul nom de groupe</span>
+<span class="p">:</span><span class="nf">addWave</span><span class="p">(</span><span class="s2">&quot;Bandits Alpha&quot;</span><span class="p">)</span>
 
-## Méthodes du builder AirWaveZone
+<span class="c1">-- Plusieurs noms de groupes d&#39;un coup</span>
+<span class="p">:</span><span class="nf">addWave</span><span class="p">(</span><span class="s2">&quot;Bandits Alpha&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Bandits Bravo&quot;</span><span class="p">)</span>
 
-| Méthode | Description |
-|---------|-------------|
-| `:setName(name)` | Identifiant interne |
-| `:setZoneName(zoneName)` | Zone de trigger DCS définissant la zone d&#39;interception |
-| `:setDescription(text)` | Libellé pour les messages et les logs |
-| `:addWave(groupNames)` | Ajouter une vague (table de noms de groupes DCS) |
-| `:setMinimumPlayersForWave(n)` | Nombre minimum de joueurs humains pour déclencher une vague |
-| `:setPlayerCoalitions(sides)` | Quelles coalitions comptent comme joueurs |
-| `:setPlayerUnitsNames(names)` | Noms spécifiques d&#39;unités joueur à suivre |
-| `:setRespawnRadius(m)` | Rayon de dispersion des spawns (défaut : 250 m) |
-| `:setRespawnDefaultOffset(lat, lon)` | Décalage par rapport au centre de zone pour les spawns |
-| `:setSilent(bool)` | Supprimer tous les messages |
-| `:setDrawZone(bool)` | Dessiner le contour de la zone sur la carte |
-| `:setOnStart(fn)` | Callback quand la zone s&#39;active |
-| `:setOnWaveDestroyed(fn)` | Callback quand une vague est détruite |
-| `:setOnCompleted(fn)` | Callback quand toutes les vagues sont terminées |
-| `:setMessageStart(text)` | Message personnalisé de démarrage de zone |
-| `:setMessageWaitToDeploy(text)` | Message personnalisé d&#39;arrivée de vague |
-| `:setMessageWaveDeployed(text)` | Message personnalisé de vague lancée |
-| `:setMessageWaveDestroyed(text)` | Message personnalisé de vague détruite |
-| `:setMessageCompleted(text)` | Message personnalisé de toutes vagues terminées |
+<span class="c1">-- Une table de noms de groupes</span>
+<span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Bandits Alpha&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Bandits Bravo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Bandits Charlie&quot;</span><span class="w"> </span><span class="p">})</span>
 
----
-
-## Définition d&#39;une vague
-
-`addWave(...)` accepte plusieurs formes — de la plus simple à la plus puissante :
-
-```lua
--- Un seul nom de groupe
-:addWave(&quot;Bandits Alpha&quot;)
-
--- Plusieurs noms de groupes d&#39;un coup
-:addWave(&quot;Bandits Alpha&quot;, &quot;Bandits Bravo&quot;)
-
--- Une table de noms de groupes
-:addWave({ &quot;Bandits Alpha&quot;, &quot;Bandits Bravo&quot;, &quot;Bandits Charlie&quot; })
-
--- Une table de paramètres avec contrôle complet
-:addWave({
-  groups  = { &quot;Fighter 1&quot;, &quot;Fighter 2&quot;, &quot;Fighter 3&quot;, &quot;Fighter 4&quot;, &quot;Fighter 5&quot; },
-  number  = &quot;1-3&quot;,   -- choisir entre 1 et 3 de ces groupes au hasard
-  bias    = 2,        -- démarrer le tirage aléatoire au 3e groupe (index 2+1)
-  delay   = 30,       -- attendre 30 s avant la vague suivante une fois celle-ci nettoyée
-})
-</code></pre></div></p>
+<span class="c1">-- Une table de paramètres avec contrôle complet</span>
+<span class="p">:</span><span class="nf">addWave</span><span class="p">({</span>
+<span class="w">  </span><span class="nv">groups</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;Fighter 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Fighter 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Fighter 3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Fighter 4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Fighter 5&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nv">number</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1-3&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">-- choisir entre 1 et 3 de ces groupes au hasard</span>
+<span class="w">  </span><span class="nv">bias</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">        </span><span class="c1">-- démarrer le tirage aléatoire au 3e groupe (index 2+1)</span>
+<span class="w">  </span><span class="nv">delay</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">       </span><span class="c1">-- attendre 30 s avant la vague suivante une fois celle-ci nettoyée</span>
+<span class="p">})</span>
+</code></pre></div>
 <h3 id="number--contrôler-combien-de-groupes-apparaissent"><code>number</code> — contrôler combien de groupes apparaissent<a class="headerlink" href="#number--contrôler-combien-de-groupes-apparaissent" title="Permanent link">&para;</a></h3>
 <p><code>number</code> définit combien de groupes de la liste apparaissent réellement. Valeurs possibles :
 - un entier : <code>number = 2</code> fait toujours apparaître exactement 2 groupes ;
@@ -2675,23 +2852,24 @@
 <h3 id="zone-dinterception-basique-à-trois-vagues">Zone d'interception basique à trois vagues<a class="headerlink" href="#zone-dinterception-basique-à-trois-vagues" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nv">AirWaveZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Intercept-West&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-WEST-INTERCEPT&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-WEST-INTERCEPT&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Axe de menace ouest&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addPlayerCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">BLUE</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Su-25T Strike 1a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Su-25T Strike 1b&quot;</span><span class="w"> </span><span class="p">})</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Su-25T Strike 2a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Su-25T Strike 2b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Su-25T Strike 2c&quot;</span><span class="w"> </span><span class="p">})</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Su-24M Deep Strike&quot;</span><span class="w"> </span><span class="p">})</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMinimumPlayersForWave</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDrawZone</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setOnCompleted</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setOnWon</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
 <span class="w">    </span><span class="nv">trigger</span><span class="p">.</span><span class="py">action</span><span class="p">.</span><span class="nf">setUserFlag</span><span class="p">(</span><span class="s2">&quot;WEST_CLEAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
 <span class="w">  </span><span class="kr">end</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="vagues-aléatoires-à-difficulté-croissante">Vagues aléatoires à difficulté croissante<a class="headerlink" href="#vagues-aléatoires-à-difficulté-croissante" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nv">AirWaveZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Intercept-East&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-EAST-INTERCEPT&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-EAST-INTERCEPT&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Axe de menace est — difficulté progressive&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addPlayerCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">BLUE</span><span class="p">)</span>
 <span class="w">  </span><span class="c1">-- Vague 1 : tirer 1 ou 2 chasseurs légers dans un pool</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span>
 <span class="w">    </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;MiG-21 Flight&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;MiG-23 Flight&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;MiG-29 Flight&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Su-27 Flight&quot;</span><span class="w"> </span><span class="p">},</span>
@@ -2709,15 +2887,14 @@
 <span class="w">  </span><span class="c1">-- Vague 3 : escorte lourde + attaque au sol simultanée (delay négatif)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;Su-27 Escort&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nv">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="p">})</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;Su-24M Strike&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">})</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMinimumPlayersForWave</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDrawZone</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="réutiliser-une-zone-modèle-par-copie-profonde">Réutiliser une zone modèle par copie profonde<a class="headerlink" href="#réutiliser-une-zone-modèle-par-copie-profonde" title="Permanent link">&para;</a></h3>
 <p>Quand plusieurs secteurs partagent la même structure de vagues, définissez une zone modèle et clonez-la. Utilisez <code>:resetWaves()</code> pour vider les vagues du modèle avant d'ajouter celles propres au secteur :</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Définir un modèle partagé (PAS encore initialisé)</span>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Définir un modèle partagé (PAS encore démarré)</span>
 <span class="kd">local</span><span class="w"> </span><span class="nv">zoneTemplate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">AirWaveZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMinimumPlayersForWave</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addPlayerCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">BLUE</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDrawZone</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;MiG-29 Wave 1&quot;</span><span class="w"> </span><span class="p">})</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Su-27 Wave 2&quot;</span><span class="w"> </span><span class="p">})</span>
@@ -2726,19 +2903,19 @@
 <span class="kd">local</span><span class="w"> </span><span class="nv">zoneNorth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">mist</span><span class="p">.</span><span class="py">utils</span><span class="p">.</span><span class="nf">deepCopy</span><span class="p">(</span><span class="nv">zoneTemplate</span><span class="p">)</span>
 <span class="nv">zoneNorth</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AW-North&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-AW-NORTH&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-AW-NORTH&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Secteur nord&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 
 <span class="kd">local</span><span class="w"> </span><span class="nv">zoneSouth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">mist</span><span class="p">.</span><span class="py">utils</span><span class="p">.</span><span class="nf">deepCopy</span><span class="p">(</span><span class="nv">zoneTemplate</span><span class="p">)</span>
 <span class="nv">zoneSouth</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AW-South&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-AW-SOUTH&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-AW-SOUTH&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Secteur sud&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">resetWaves</span><span class="p">()</span><span class="w">                          </span><span class="c1">-- vider les vagues du modèle</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Su-25T Wave 1&quot;</span><span class="w"> </span><span class="p">})</span><span class="w">          </span><span class="c1">-- ajouter les vagues propres au secteur</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Su-24M Wave 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Su-24M Wave 2b&quot;</span><span class="w"> </span><span class="p">})</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <hr />
 <h2 id="cycle-de-vie-de-la-zone-machine-détats">Cycle de vie de la zone (machine d'états)<a class="headerlink" href="#cycle-de-vie-de-la-zone-machine-détats" title="Permanent link">&para;</a></h2>
@@ -2799,7 +2976,7 @@
 </tr>
 </tbody>
 </table>
-<p><code>NEXTWAVE</code> est un état transitoire que la zone traverse en un seul cycle de <code>check()</code> : elle n'y reste jamais. Les callbacks comme <code>setOnWaveDestroyed</code> se déclenchent à la sortie de <code>ACTIVE → NEXTWAVE</code>, et <code>setOnCompleted</code> à l'entrée de <code>NEXTWAVE → OVER</code>.</p>
+<p><code>NEXTWAVE</code> est un état transitoire que la zone traverse en un seul cycle de <code>check()</code> : elle n'y reste jamais. Les callbacks comme <code>setOnDestroyed</code> se déclenchent à la sortie de <code>ACTIVE → NEXTWAVE</code>, et <code>setOnWon</code> à l'entrée de <code>NEXTWAVE → OVER</code>.</p>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>

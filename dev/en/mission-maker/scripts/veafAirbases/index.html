@@ -2018,24 +2018,23 @@
 </code></pre></div>
 <hr />
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<p>Airbase data is read automatically from the DCS environment. Mission makers can override or supplement data:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Register a custom airbase configuration</span>
-<span class="nv">veafAirbases</span><span class="p">.</span><span class="nf">setAirbaseData</span><span class="p">(</span><span class="s2">&quot;Senaki-Kolkhi&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nv">atcFrequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">127500000</span><span class="p">,</span><span class="w">   </span><span class="c1">-- Hz</span>
-<span class="w">  </span><span class="nv">atcModulation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">radio</span><span class="p">.</span><span class="py">modulation</span><span class="p">.</span><span class="py">AM</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">elevation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">43</span><span class="p">,</span><span class="w">             </span><span class="c1">-- metres</span>
-<span class="w">  </span><span class="nv">runways</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nv">heading</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w"> </span><span class="nv">ils</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">109300000</span><span class="p">,</span><span class="w"> </span><span class="nv">course</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">110</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nv">heading</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">290</span><span class="w"> </span><span class="p">},</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="p">})</span>
+<p>Airbase data (runways and headings) is read automatically from the DCS environment during <code>veafAirbases.initialize()</code>. You can then query an airbase for its runway in service based on wind:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafAirbases</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">airbase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafAirbases</span><span class="p">.</span><span class="nf">getAirbaseByName</span><span class="p">(</span><span class="s2">&quot;Senaki-Kolkhi&quot;</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">airbase</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="c1">-- runway in service for a given true wind direction (degrees)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">runway</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">airbase</span><span class="p">:</span><span class="nf">getRunwayInServiceString</span><span class="p">(</span><span class="mi">270</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">outTextForUnit</span><span class="p">(</span><span class="nv">unitName</span><span class="p">,</span><span class="w"> </span><span class="nv">airbase</span><span class="p">:</span><span class="nf">toString</span><span class="p">(),</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span>
+<span class="kr">end</span>
 </code></pre></div>
+<p>You can also get the nearest airbase to a unit with <code>veafAirbases.getNearestAirbase(dcsUnit)</code>.</p>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Most DCS airbases are already known to the module</li>
-<li>Override only when you need custom frequencies or corrections</li>
-<li>TACAN/ILS data is used by <code>veafNamedPoints</code> and carrier operations</li>
+<li>Most DCS airbases are detected automatically at initialization</li>
+<li>The runway in service is computed from the wind direction (<code>getRunwayInService</code> / <code>getRunwayInServiceString</code>)</li>
+<li>Get an airbase by name (<code>getAirbaseByName</code>) or the nearest to a unit (<code>getNearestAirbase</code>)</li>
 </ul>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

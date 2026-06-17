@@ -1442,24 +1442,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-configuration" class="md-nav__link">
+  <a href="#marker-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example Configuration
+        Marker command
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Marker command">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#marker-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Marker parameters
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#builder-methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Builder Methods
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2010,24 +2016,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-configuration" class="md-nav__link">
+  <a href="#marker-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example Configuration
+        Marker command
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Marker command">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#marker-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Marker parameters
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#builder-methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Builder Methods
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2077,13 +2089,13 @@
 <p><strong>Module ID:</strong> <code>TRANSPORT</code> | <strong>Version:</strong> — | <strong>File:</strong> <code>veafTransportMission.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
-<p>Creates helicopter/transport pickup-and-delivery missions. Defines cargo or troop pickup zones and drop-off zones. Integrates with CTLD (Combined Arms Transport and Logistics) when available.</p>
+<p>Creates a helicopter transport/logistics training mission, driven by an F10 map marker. When a <code>_transport</code> marker is placed, the module spawns cargo to pick up near a named start point, a friendly group awaiting that cargo at the drop zone (placed under the marker), and optionally enemy air defenses along the route.</p>
 <hr />
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>veafRadio</code> — F10 menu</li>
-<li><code>veafMarkers</code> — optional marker commands</li>
-<li>CTLD script — optional third-party integration</li>
+<li><code>veafMarkers</code> — marker event handler (<code>_transport</code>)</li>
+<li><code>veafSpawn</code>, <code>veafUnits</code>, <code>veafNamedPoints</code>, <code>veafSecurity</code></li>
 </ul>
 <hr />
 <h2 id="enable">Enable<a class="headerlink" href="#enable" title="Permanent link">&para;</a></h2>
@@ -2095,78 +2107,72 @@
 <hr />
 <h2 id="key-concepts">Key Concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Loading zone</strong> — where helicopters or transports pick up cargo/troops</li>
-<li><strong>Delivery zone</strong> — where cargo/troops must be dropped</li>
-<li>Missions can have objectives (e.g., deliver N crates to win)</li>
-<li>Supports both pre-placed and dynamically spawned cargo</li>
+<li><strong>Start point</strong> — a named point (declared via <code>veafNamedPoints</code>) where the cargo to transport is spawned. It is mandatory and given by the <code>from</code> parameter.</li>
+<li><strong>Drop zone</strong> — where the friendly group awaiting the cargo is spawned, under the <code>_transport</code> marker. The route between the start point and the drop zone must be at least 15 km long.</li>
+<li><strong>Route defenses</strong> — optional enemy air defense groups spawned along the route when <code>defense</code> is greater than <code>0</code>.</li>
+<li>Only one transport mission can run at a time.</li>
 </ul>
 <hr />
-<h2 id="example-configuration">Example Configuration<a class="headerlink" href="#example-configuration" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Simple troop transport mission</span>
-<span class="kd">local</span><span class="w"> </span><span class="nv">transportMission</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafTransportMission</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Evac-Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Evacuate troops from Firebase Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setPickupZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-PICKUP-ALPHA&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setDeliveryZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-DELIVERY-BASE&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setCargoType</span><span class="p">(</span><span class="s2">&quot;Troops&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setCargoCount</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;8 soldiers are stranded at Firebase Alpha. Extract them to Senaki base.&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<h2 id="marker-command">Marker command<a class="headerlink" href="#marker-command" title="Permanent link">&para;</a></h2>
+<p>Place a marker on the F10 map and type <code>_transport</code> in its text, optionally followed by parameters separated by commas.</p>
+<div class="highlight"><pre><span></span><code>_transport, size 3, defense 2, from FARP London
 </code></pre></div>
-<hr />
-<h2 id="builder-methods">Builder Methods<a class="headerlink" href="#builder-methods" title="Permanent link">&para;</a></h2>
+<h3 id="marker-parameters">Marker parameters<a class="headerlink" href="#marker-parameters" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
-<th>Method</th>
+<th>Parameter</th>
+<th>Values</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>:setName(name)</code></td>
-<td>Internal identifier</td>
+<td><code>size &lt;n&gt;</code></td>
+<td><code>1</code>–<code>5</code></td>
+<td><code>1</code></td>
+<td>Number of cargo crates to transport</td>
 </tr>
 <tr>
-<td><code>:setDescription(text)</code></td>
-<td>F10 menu label</td>
+<td><code>defense &lt;n&gt;</code></td>
+<td><code>0</code>–<code>5</code></td>
+<td><code>0</code></td>
+<td>Air defense cover along the route (<code>1</code> = light, <code>5</code> = heavy)</td>
 </tr>
 <tr>
-<td><code>:setPickupZoneName(zone)</code></td>
-<td>DCS trigger zone for pickup</td>
+<td><code>blocade &lt;n&gt;</code></td>
+<td><code>0</code>–<code>5</code></td>
+<td><code>0</code></td>
+<td>Enemy blockade around the drop zone (<code>1</code> = light, <code>5</code> = heavy)</td>
 </tr>
 <tr>
-<td><code>:setDeliveryZoneName(zone)</code></td>
-<td>DCS trigger zone for delivery</td>
+<td><code>from &lt;named point&gt;</code></td>
+<td>named point</td>
+<td>—</td>
+<td><strong>Mandatory</strong> start point where the cargo is spawned</td>
 </tr>
 <tr>
-<td><code>:setCargoType(type)</code></td>
-<td><code>"Troops"</code>, <code>"Crates"</code>, <code>"Vehicles"</code></td>
-</tr>
-<tr>
-<td><code>:setCargoCount(n)</code></td>
-<td>Number of cargo units</td>
-</tr>
-<tr>
-<td><code>:setBriefing(text)</code></td>
-<td>Mission briefing text</td>
-</tr>
-<tr>
-<td><code>:setCoalition(side)</code></td>
-<td>Mission coalition</td>
-</tr>
-<tr>
-<td><code>:initialize()</code></td>
-<td>Register and activate</td>
+<td><code>password &lt;pwd&gt;</code></td>
+<td>string</td>
+<td>—</td>
+<td>Security password unlocking the command</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
+<p>The <strong>TRANSPORT MISSION</strong> menu always exposes:</p>
 <ul>
-<li><strong>Info</strong> — pickup zone position, cargo description, delivery zone</li>
-<li><strong>Activate</strong> — spawn pickup zone units</li>
-<li><strong>Deactivate</strong> — clean up mission</li>
+<li><strong>HELP</strong> — usage reminder</li>
+</ul>
+<p>Once a mission is generated, it adds:</p>
+<ul>
+<li><strong>Drop zone information</strong> — count of friendly units at the drop zone, plus its coordinates (Lat/Lon, MGRS, bearing/range from bullseye), altitude and wind</li>
+<li><strong>Skip current objective</strong> — cancel the current mission and clean up</li>
+<li><strong>Drop zone markers</strong> (submenu)</li>
+<li><strong>Request smoke on drop zone</strong> — green smoke over the drop zone</li>
+<li><strong>Request illumination flare over drop zone</strong></li>
 </ul>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

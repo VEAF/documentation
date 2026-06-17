@@ -2018,24 +2018,23 @@
 </code></pre></div>
 <hr />
 <h2 id="utilisation">Utilisation<a class="headerlink" href="#utilisation" title="Permanent link">&para;</a></h2>
-<p>Les données de base aérienne sont lues automatiquement depuis l'environnement DCS. Les créateurs de missions peuvent surcharger ou compléter les données :</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Enregistrer une configuration de base aérienne personnalisée</span>
-<span class="nv">veafAirbases</span><span class="p">.</span><span class="nf">setAirbaseData</span><span class="p">(</span><span class="s2">&quot;Senaki-Kolkhi&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nv">atcFrequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">127500000</span><span class="p">,</span><span class="w">   </span><span class="c1">-- Hz</span>
-<span class="w">  </span><span class="nv">atcModulation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">radio</span><span class="p">.</span><span class="py">modulation</span><span class="p">.</span><span class="py">AM</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">elevation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">43</span><span class="p">,</span><span class="w">             </span><span class="c1">-- mètres</span>
-<span class="w">  </span><span class="nv">runways</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nv">heading</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w"> </span><span class="nv">ils</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">109300000</span><span class="p">,</span><span class="w"> </span><span class="nv">course</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">110</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nv">heading</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">290</span><span class="w"> </span><span class="p">},</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="p">})</span>
+<p>Les données de base aérienne (pistes et orientations) sont lues automatiquement depuis l'environnement DCS lors de <code>veafAirbases.initialize()</code>. On peut ensuite interroger une base pour connaître la piste en service selon le vent :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafAirbases</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">airbase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafAirbases</span><span class="p">.</span><span class="nf">getAirbaseByName</span><span class="p">(</span><span class="s2">&quot;Senaki-Kolkhi&quot;</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">airbase</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="c1">-- piste en service pour une direction de vent vrai donnée (degrés)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">runway</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">airbase</span><span class="p">:</span><span class="nf">getRunwayInServiceString</span><span class="p">(</span><span class="mi">270</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">outTextForUnit</span><span class="p">(</span><span class="nv">unitName</span><span class="p">,</span><span class="w"> </span><span class="nv">airbase</span><span class="p">:</span><span class="nf">toString</span><span class="p">(),</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span>
+<span class="kr">end</span>
 </code></pre></div>
+<p>On peut aussi récupérer la base la plus proche d'une unité avec <code>veafAirbases.getNearestAirbase(dcsUnit)</code>.</p>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>La plupart des bases DCS sont déjà connues du module</li>
-<li>Ne surcharger que si des fréquences personnalisées ou des corrections sont nécessaires</li>
-<li>Les données TACAN/ILS sont utilisées par <code>veafNamedPoints</code> et les opérations de porte-avions</li>
+<li>La plupart des bases DCS sont détectées automatiquement à l'initialisation</li>
+<li>La piste en service est calculée à partir de la direction du vent (<code>getRunwayInService</code> / <code>getRunwayInServiceString</code>)</li>
+<li>Récupérez une base par son nom (<code>getAirbaseByName</code>) ou la plus proche d'une unité (<code>getNearestAirbase</code>)</li>
 </ul>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>

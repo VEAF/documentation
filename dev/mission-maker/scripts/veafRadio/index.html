@@ -2337,7 +2337,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>enable</code></td>
+<td><code>enabled</code></td>
 <td>booléen</td>
 <td><code>true</code></td>
 <td>Non</td>
@@ -2370,9 +2370,8 @@
 <div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">createUserMenu</span><span class="p">(</span>
 <span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">mainmenu</span><span class="p">(</span>
 <span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;Gestion QRA&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Démarrer QRA Nord&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">veafQraManager</span><span class="p">.</span><span class="py">startQra</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">}),</span>
-<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Arrêter QRA Nord&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">veafQraManager</span><span class="p">.</span><span class="py">stopQra</span><span class="p">,</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">}),</span>
-<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Statut&quot;</span><span class="p">,</span><span class="w">            </span><span class="nv">veafQraManager</span><span class="p">.</span><span class="py">getStatus</span><span class="p">,{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">})</span>
+<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Démarrer QRA Nord&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">maMission</span><span class="p">.</span><span class="py">demarrerQra</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Arrêter QRA Nord&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">maMission</span><span class="p">.</span><span class="py">arreterQra</span><span class="p">,</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">})</span>
 <span class="w">    </span><span class="p">),</span>
 <span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;Flags&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Activer Flag 10&quot;</span><span class="p">,</span><span class="w">   </span><span class="nv">trigger</span><span class="p">.</span><span class="py">action</span><span class="p">.</span><span class="py">setUserFlag</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;FLAG-10&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}),</span>
@@ -2461,16 +2460,16 @@
 <span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span>
 <span class="w">  </span><span class="s2">&quot;Démarrer QRA Nord&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nv">menuQra</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">veafQraManager</span><span class="p">.</span><span class="py">startQra</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">maMission</span><span class="p">.</span><span class="py">demarrerQra</span><span class="p">,</span>
 <span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">},</span>
 <span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForAll</span>
 <span class="p">)</span>
 
 <span class="c1">-- Ajouter une commande sécurisée (nécessite /secu login)</span>
 <span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addSecuredCommandToSubmenu</span><span class="p">(</span>
-<span class="w">  </span><span class="s2">&quot;Arrêt d&#39;urgence tous les QRA&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;Arrêt d&#39;urgence&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nv">menuMission</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">veafQraManager</span><span class="p">.</span><span class="py">stopAll</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">maMission</span><span class="p">.</span><span class="py">arretUrgence</span><span class="p">,</span>
 <span class="w">  </span><span class="p">{},</span>
 <span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForAll</span>
 <span class="p">)</span>

@@ -1471,10 +1471,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#weatheryaml-example" class="md-nav__link">
+  <a href="#versionsyaml-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        weather.yaml Example
+        versions.yaml example
       
     </span>
   </a>
@@ -2078,10 +2078,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#weatheryaml-example" class="md-nav__link">
+  <a href="#versionsyaml-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        weather.yaml Example
+        versions.yaml example
       
     </span>
   </a>
@@ -2213,7 +2213,7 @@
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Two distinct roles:</p>
 <ol>
-<li><strong>Design-time</strong>: inject real-world or configured weather into a <code>.miz</code> at build time, before players load the mission. Handled by <code>veaf-tools.exe weather-inject</code>.</li>
+<li><strong>Design-time</strong>: inject real-world or configured weather into a <code>.miz</code> at build time, before players load the mission. Handled by <code>veaf-tools.exe inject-weather</code>.</li>
 <li><strong>Runtime</strong>: players can request weather reports and ATC information via the F10 radio menu, and the mission maker can script dynamic fog changes.</li>
 </ol>
 <hr />
@@ -2230,22 +2230,27 @@
 <hr />
 <h2 id="design-time-weather-injection">Design-Time Weather Injection<a class="headerlink" href="#design-time-weather-injection" title="Permanent link">&para;</a></h2>
 <p>Weather is injected at build time (before the mission is loaded) using <code>veaf-tools.exe</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">weather-inject</span> <span class="p">-</span><span class="n">-mission</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span> <span class="n">weather</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">inject-weather</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span><span class="o">-file</span> <span class="n">versions</span><span class="p">.</span><span class="n">yaml</span>
 </code></pre></div>
-<h3 id="weatheryaml-example">weather.yaml Example<a class="headerlink" href="#weatheryaml-example" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">weather</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">metar</span><span class="w">          </span><span class="c1"># &quot;metar&quot; (real-world) or &quot;manual&quot;</span>
-<span class="w">  </span><span class="nt">icao</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UGSS</span><span class="w">             </span><span class="c1"># ICAO airport code for METAR (Senaki)</span>
-<span class="w">  </span><span class="c1"># manual override (used when source: manual)</span>
-<span class="w">  </span><span class="nt">wind</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">            </span><span class="c1"># knots</span>
-<span class="w">    </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">270</span><span class="w">       </span><span class="c1"># degrees</span>
-<span class="w">  </span><span class="nt">visibility</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8000</span><span class="w">       </span><span class="c1"># metres</span>
-<span class="w">  </span><span class="nt">clouds</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2500</span><span class="w">           </span><span class="c1"># feet</span>
-<span class="w">    </span><span class="nt">density</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">           </span><span class="c1"># 0-10</span>
-<span class="w">  </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18</span><span class="w">        </span><span class="c1"># °C</span>
-<span class="w">  </span><span class="nt">qnh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1013</span><span class="w">              </span><span class="c1"># hPa</span>
+<h3 id="versionsyaml-example">versions.yaml example<a class="headerlink" href="#versionsyaml-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span>
+<span class="w">  </span><span class="nt">longitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.5</span>
+<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Damascus&quot;</span>
+<span class="nt">base_date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-03-15&quot;</span>
+<span class="nt">versions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">noon-clear</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;12:00&quot;</span>
+<span class="w">    </span><span class="nt">weather</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25.0</span>
+<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0</span>
+<span class="w">      </span><span class="nt">wind_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">270.0</span>
+<span class="w">      </span><span class="nt">visibility</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000.0</span>
+<span class="w">      </span><span class="nt">cloud_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;clear&quot;</span>
+<span class="w">      </span><span class="nt">fog_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">with-metar</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;14:00&quot;</span>
+<span class="w">    </span><span class="nt">metar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;METAR</span><span class="nv"> </span><span class="s">OSDI</span><span class="nv"> </span><span class="s">151420Z</span><span class="nv"> </span><span class="s">27015G25KT</span><span class="nv"> </span><span class="s">9999</span><span class="nv"> </span><span class="s">BKN025</span><span class="nv"> </span><span class="s">18/12</span><span class="nv"> </span><span class="s">Q1018</span><span class="nv"> </span><span class="s">NOSIG&quot;</span>
 </code></pre></div>
 <hr />
 <h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
@@ -2283,10 +2288,11 @@
 </table>
 <hr />
 <h2 id="runtime-weather-reports">Runtime Weather Reports<a class="headerlink" href="#runtime-weather-reports" title="Permanent link">&para;</a></h2>
-<p>Get a weather report programmatically:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">weatherReport</span><span class="p">(</span><span class="nv">position</span><span class="p">,</span><span class="w"> </span><span class="nv">altitude</span><span class="p">,</span><span class="w"> </span><span class="nv">withLASTE</span><span class="p">)</span>
+<p>Get a weather report programmatically for a position (a <code>vec3</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafWeatherData</span><span class="p">.</span><span class="nf">getWeatherString</span><span class="p">(</span><span class="nv">position</span><span class="p">)</span>
 <span class="nv">veaf</span><span class="p">.</span><span class="nf">outTextForUnit</span><span class="p">(</span><span class="nv">unitName</span><span class="p">,</span><span class="w"> </span><span class="nv">report</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span>
 </code></pre></div>
+<p>The remaining arguments are optional: <code>getWeatherString(vec3, dcsElementName, unitSystem, iSurfaceAltitudeMeters)</code>. Passing a DCS unit name as <code>dcsElementName</code> tailors the report to the aircraft type (unit system, LASTE data for the A-10).</p>
 <hr />
 <h2 id="fog-management">Fog Management<a class="headerlink" href="#fog-management" title="Permanent link">&para;</a></h2>
 <p>The runtime fog system lets you change visibility conditions during a mission — useful for immersion, training scenarios, or scripted events.</p>
@@ -2371,7 +2377,7 @@
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../../../TOOLS_REFERENCE/">Tools Reference</a> — <code>veaf-tools.exe weather-inject</code> full reference</li>
+<li><a href="../../../TOOLS_REFERENCE/">Tools Reference</a> — <code>veaf-tools.exe inject-weather</code> full reference</li>
 <li><a href="../../../LUA_API_REFERENCE/">Lua API Reference</a> — full <code>veafWeather</code> API</li>
 </ul>
 

@@ -2899,9 +2899,11 @@
 <li><a href="#configuring-modules">Configuring Modules</a></li>
 <li><a href="#design-time-tools">Design-Time Tools</a></li>
 <li><a href="#typical-build-workflow">Typical Build Workflow</a></li>
+<li><a href="#build-profiles">Build Profiles</a></li>
 <li><a href="#scripts-reference">Scripts Reference</a></li>
 <li><a href="#configuration-examples">Configuration Examples</a></li>
 <li><a href="#ctld-and-csar-integration">CTLD and CSAR Integration</a></li>
+<li><a href="#dcs-bridge">DCS Bridge</a></li>
 <li><a href="#debug-logging">Debug Logging</a></li>
 <li><a href="#resources">Resources</a></li>
 </ol>
@@ -3128,7 +3130,7 @@ injection, and the <code>scripts/*.lua</code> files by script loading.</p>
 <span class="c1">-- Put custom aliases, helper functions, and third-party script setup here.</span>
 
 <span class="c1">-- Example: custom shortcut alias</span>
-<span class="c1">-- VeafAlias:new():setName(&quot;cas1&quot;):setCommand(&quot;/_cas_start&quot;):register()</span>
+<span class="c1">-- veafShortcuts.AddAlias(VeafAlias:new():setName(&quot;-cas1&quot;):setVeafCommand(&quot;_cas&quot;))</span>
 
 <span class="c1">-- Example: CTLD third-party integration (see CTLD and CSAR Integration for full details)</span>
 <span class="c1">-- if ctld then ctld.initialize(function()</span>
@@ -3338,52 +3340,52 @@ If you need to run a single step in isolation (e.g. inject weather only, without
 <h3 id="qra-zone">QRA Zone<a class="headerlink" href="#qra-zone" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">northQra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;QRA-North&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZone</span><span class="p">(</span><span class="s2">&quot;ZONE-QRA-NORTH&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-QRA-NORTH&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setGroups</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;MiG-29 QRA&quot;</span><span class="w"> </span><span class="p">})</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setRearmTime</span><span class="p">(</span><span class="mi">600</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;MiG-29 QRA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="combat-zone">Combat Zone<a class="headerlink" href="#combat-zone" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">strikeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Armoured column advancing on Senaki&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">))</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-AAA&quot;</span><span class="p">))</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Destroy all armoured vehicles. Expect AAA.&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Armoured column advancing on Senaki. Destroy all armoured vehicles; expect AAA.&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;ARMOR&quot;</span><span class="p">):</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">))</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">):</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-AAA&quot;</span><span class="p">))</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="air-waves-zone">Air Waves Zone<a class="headerlink" href="#air-waves-zone" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">defenseZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">AirWaveZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AW-Defense&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-DEFENSE&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-DEFENSE&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Intercept zone&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addPlayerCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">BLUE</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;MiG-23 Wave 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;MiG-23 Wave 1b&quot;</span><span class="w"> </span><span class="p">})</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;MiG-29 Wave 2&quot;</span><span class="w"> </span><span class="p">})</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMinimumPlayersForWave</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <hr />
 <h2 id="ctld-and-csar-integration">CTLD and CSAR Integration<a class="headerlink" href="#ctld-and-csar-integration" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/ciribob/DCS-CTLD">CTLD</a> (Combat Troop Loading and Deployment) and <a href="https://github.com/ciribob/DCS-CSAR">CSAR</a> (Combat Search and Rescue) are third-party scripts that VEAF supports natively. VEAF monkey-patches their <code>initialize()</code> functions at startup, so you do not need to load or initialise them separately — just configure them via <code>mission.yaml</code> using the YAML-first approach below.</p>
 <h3 id="configuring-ctld-via-missionyaml-yaml-first">Configuring CTLD via mission.yaml (YAML-first)<a class="headerlink" href="#configuring-ctld-via-missionyaml-yaml-first" title="Permanent link">&para;</a></h3>
 <p>You can enable CTLD and set its properties directly in <code>mission.yaml</code>, without any Lua:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">external_modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">ctld</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">hoverPickup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">slingLoad</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">settings</span><span class="p">:</span><span class="w">                </span><span class="c1"># ctld.xxx = value pairs</span>
+<span class="w">      </span><span class="nt">hoverPickup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">slingLoad</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>VEAF generates the corresponding Lua configuration in <code>veaf-config.lua</code> at build time, including the <code>ctld.initialize()</code> call. Use <code>mission-script.lua</code> only for settings not yet supported by the YAML schema (e.g. <code>aircraftType</code> tables).</p>
 <h3 id="configuring-csar-via-missionyaml-yaml-first">Configuring CSAR via mission.yaml (YAML-first)<a class="headerlink" href="#configuring-csar-via-missionyaml-yaml-first" title="Permanent link">&para;</a></h3>
 <p>CSAR can be configured the same way:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">external_modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">csar</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">enableAllslots</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">useprefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">csarPrefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MEDEVAC&quot;</span>
+<span class="w">    </span><span class="nt">settings</span><span class="p">:</span><span class="w">                </span><span class="c1"># csar.xxx = value pairs</span>
+<span class="w">      </span><span class="nt">enableAllslots</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">useprefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">csarPrefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MEDEVAC&quot;</span>
 </code></pre></div>
 <p>VEAF generates the <code>csar.xxx = value</code> assignments and the <code>csar.initialize()</code> call in <code>veaf-config.lua</code>. For complex settings such as <code>aircraftType</code> (a per-aircraft table), continue using the Lua callback pattern in <code>mission-script.lua</code>.</p>
 <h3 id="loading-order-in-the-dcs-trigger-chain">Loading order in the DCS trigger chain<a class="headerlink" href="#loading-order-in-the-dcs-trigger-chain" title="Permanent link">&para;</a></h3>

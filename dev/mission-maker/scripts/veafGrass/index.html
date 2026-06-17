@@ -1084,13 +1084,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#méthodes-du-builder" class="md-nav__link">
+  <a href="#fonctionnement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Méthodes du builder
+        Fonctionnement
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pistes-en-herbe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pistes en herbe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#farp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FARP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#réapprovisionnement-des-entrepôts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réapprovisionnement des entrepôts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1955,13 +1994,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#méthodes-du-builder" class="md-nav__link">
+  <a href="#fonctionnement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Méthodes du builder
+        Fonctionnement
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pistes-en-herbe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pistes en herbe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#farp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FARP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#réapprovisionnement-des-entrepôts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réapprovisionnement des entrepôts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2016,62 +2094,44 @@
 <h2 id="activation">Activation<a class="headerlink" href="#activation" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafGrass</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
-<p>Puis définir chaque piste :</p>
-<div class="highlight"><pre><span></span><code><span class="nv">VeafGrassRunway</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;FARP Whiskey&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;FARP-WHISKEY-GROUP&quot;</span><span class="p">)</span><span class="w">   </span><span class="c1">-- objets statiques définissant la piste</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setRunwayHeading</span><span class="p">(</span><span class="mi">270</span><span class="p">)</span><span class="w">                </span><span class="c1">-- cap de piste en degrés</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setAtcFrequency</span><span class="p">(</span><span class="mi">127500000</span><span class="p">)</span><span class="w">           </span><span class="c1">-- Hz (127,5 MHz)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setAtcModulation</span><span class="p">(</span><span class="nv">radio</span><span class="p">.</span><span class="py">modulation</span><span class="p">.</span><span class="py">AM</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setTacanChannel</span><span class="p">(</span><span class="mi">74</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;WHK&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- TACAN optionnel</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
-</code></pre></div>
+<p><code>veafGrass.initialize()</code> programme <code>veafGrass.buildFarpsUnits</code> quelques secondes après le démarrage de la mission (le temps que les autres modules soient chargés) et enregistre un gestionnaire d'événement de naissance. Il n'y a <strong>pas de classe builder</strong> : tout est piloté par les noms donnés aux objets dans l'éditeur de mission DCS.</p>
 <hr />
-<h2 id="méthodes-du-builder">Méthodes du builder<a class="headerlink" href="#méthodes-du-builder" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Méthode</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>:setName(name)</code></td>
-<td>Identifiant interne et libellé</td>
-</tr>
-<tr>
-<td><code>:setGroupName(name)</code></td>
-<td>Groupe DCS d'objets statiques formant la piste</td>
-</tr>
-<tr>
-<td><code>:setRunwayHeading(deg)</code></td>
-<td>Cap magnétique principal de la piste</td>
-</tr>
-<tr>
-<td><code>:setAtcFrequency(hz)</code></td>
-<td>Fréquence radio ATC en Hz</td>
-</tr>
-<tr>
-<td><code>:setAtcModulation(mod)</code></td>
-<td><code>radio.modulation.AM</code> ou <code>FM</code></td>
-</tr>
-<tr>
-<td><code>:setTacanChannel(ch, band, morse)</code></td>
-<td>Canal TACAN, bande (X/Y), identifiant Morse</td>
-</tr>
-<tr>
-<td><code>:initialize()</code></td>
-<td>Enregistrer la piste</td>
-</tr>
-</tbody>
-</table>
+<h2 id="fonctionnement">Fonctionnement<a class="headerlink" href="#fonctionnement" title="Permanent link">&para;</a></h2>
+<p>Au démarrage, le module parcourt toutes les unités de la mission et agit selon leur nom :</p>
+<ul>
+<li>Les objets statiques dont le <strong>nom contient <code>GRASS_RUNWAY</code></strong> (insensible à la casse) servent d'origine à une piste en herbe.</li>
+<li>Les unités de type FARP (<code>FARP</code>, <code>FARP_SINGLE_01</code>, <code>Invisible FARP</code>, <code>FARP_T</code>, <code>SINGLE_HELIPAD</code>) dont le <strong>nom de groupe commence par <code>FARP</code> (FARP suivi d'une espace)</strong> reçoivent un décor de FARP.</li>
+</ul>
+<hr />
+<h2 id="pistes-en-herbe">Pistes en herbe<a class="headerlink" href="#pistes-en-herbe" title="Permanent link">&para;</a></h2>
+<p>Pour créer une piste en herbe :</p>
+<ol>
+<li>Placez un objet statique dans l'éditeur de mission DCS, à l'extrémité droite de la future piste, orienté dans l'axe de la piste.</li>
+<li>Nommez-le de façon à ce que son nom <strong>contienne <code>GRASS_RUNWAY</code></strong> (par exemple <code>GRASS_RUNWAY_WHISKEY</code>).</li>
+<li>Appelez <code>veafGrass.initialize()</code> au niveau du module.</li>
+</ol>
+<p>Au démarrage, <code>veafGrass.buildGrassRunway(grassRunwayUnit, hiddenOnMFD)</code> construit le décor de la piste (rangées de plots de chaque côté, tour) à partir de la position et du cap de cet objet.</p>
+<hr />
+<h2 id="farp">FARP<a class="headerlink" href="#farp" title="Permanent link">&para;</a></h2>
+<p>Pour habiller un FARP :</p>
+<ol>
+<li>Placez une unité de type FARP (<code>FARP</code>, <code>FARP_SINGLE_01</code>, <code>Invisible FARP</code>, <code>FARP_T</code> ou <code>SINGLE_HELIPAD</code>).</li>
+<li>Nommez son <strong>groupe</strong> en le faisant commencer par <code>FARP</code> (par exemple <code>FARP Whiskey</code>).</li>
+<li>Appelez <code>veafGrass.initialize()</code>.</li>
+</ol>
+<p>Au démarrage, <code>veafGrass.buildFarpsUnits(hiddenOnMFD)</code> ajoute un décor de FARP autour de chaque unité reconnue (via <code>veafGrass.buildFarpUnits</code>).</p>
+<h3 id="réapprovisionnement-des-entrepôts">Réapprovisionnement des entrepôts<a class="headerlink" href="#réapprovisionnement-des-entrepôts" title="Permanent link">&para;</a></h3>
+<p>Depuis DCS 2.8, les FARP créés apparaissent avec un entrepôt vide. Le module fournit des fonctions pour les réapprovisionner :</p>
+<ul>
+<li><code>veafGrass.fillAllFarpWarehouses()</code> — parcourt tous les FARP et pistes en herbe valides et remplit leurs entrepôts.</li>
+<li><code>veafGrass.fillFarpWarehouse(farp)</code> — remplit l'entrepôt d'un FARP donné.</li>
+</ul>
+<p>Le contenu déposé est défini par la table <code>veafGrass.WAREHOUSE_ITEMS</code>. La table <code>veafGrass.helicoptersOnFARPs</code> liste les types d'hélicoptères ajoutés aux entrepôts des FARP pour être disponibles dans le mécanisme de slots dynamiques.</p>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Le "groupe" doit contenir les objets statiques (manche à air, camions-citerne, etc.) qui définissent visuellement la piste</li>
-<li>La position et le cap sont lus depuis l'unité de tête du groupe</li>
-<li>La fréquence ATC est annoncée via le menu F10 et dans les messages radio</li>
+<li>La position et le cap de la piste en herbe sont lus depuis l'objet statique nommé <code>...GRASS_RUNWAY...</code>.</li>
+<li>Les unités de décor générées sont masquées sur les MFD pour éviter d'encombrer l'affichage.</li>
 </ul>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>

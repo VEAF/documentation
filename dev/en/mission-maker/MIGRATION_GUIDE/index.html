@@ -949,10 +949,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-convert-the-vanilla-miz" class="md-nav__link">
+  <a href="#3-extract-the-vanilla-miz-then-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Convert the vanilla .miz
+        3. Extract the vanilla .miz, then build
       
     </span>
   </a>
@@ -2457,10 +2457,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-convert-the-vanilla-miz" class="md-nav__link">
+  <a href="#3-extract-the-vanilla-miz-then-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Convert the vanilla .miz
+        3. Extract the vanilla .miz, then build
       
     </span>
   </a>
@@ -2798,7 +2798,7 @@
 <tr>
 <td><strong>Skynet / CTLD / CSAR / QRA</strong></td>
 <td>Separate <code>external_modules:</code> and <code>qra:</code> sections</td>
-<td>All under the <code>modules:</code> block (<code>modules.SKYNET</code>, <code>modules.CTLD</code> / <code>modules.CSAR</code> with a <code>settings:</code> sub-block, <code>modules.QRA</code> with <code>silence_all</code> + <code>definitions:</code>). The <code>external_modules:</code> and <code>qra:</code> sections no longer exist — see <a href="../adr/0001-modules-single-source-of-truth.md">ADR 0001</a>. <code>convert-v5</code> emits the new shape directly.</td>
+<td>All under the <code>modules:</code> block (<code>modules.SKYNET</code>, <code>modules.CTLD</code> / <code>modules.CSAR</code> with a <code>settings:</code> sub-block, <code>modules.QRA</code> with <code>silence_all</code> + <code>definitions:</code>). The <code>external_modules:</code> and <code>qra:</code> sections no longer exist — see <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0001-modules-single-source-of-truth.md">ADR 0001</a>. <code>convert-v5</code> emits the new shape directly.</td>
 </tr>
 </tbody>
 </table>
@@ -2829,7 +2829,7 @@
 <li><strong><code>mission.yaml</code> generation</strong> — creates <code>mission.yaml</code> with the correct <code>modules:</code> and <code>pipeline:</code> sections.</li>
 <li><strong>Conversion report</strong> — saves <code>convert-v5-report.md</code> with all actions taken and any items requiring manual review.</li>
 </ul>
-<p>If your pipeline contains <code>realweather</code> weather versions, the tool will ask for the ICAO airport code to embed in the generated config. You can supply it upfront to avoid the interactive prompt:</p>
+<p>If your pipeline contains <code>realweather</code> weather versions, supply the ICAO airport code via the <code>--icao</code> option to embed it in the generated config. If you omit it, the tool prints a warning and you edit the generated config manually:</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="nb">convert-v5</span> <span class="p">.</span> <span class="p">-</span><span class="n">-icao</span> <span class="n">UGGG</span>
 </code></pre></div>
 <p>Old DCS <code>DO SCRIPT FILE</code> triggers are removed automatically by <code>veaf-tools build</code> in the next step — no manual action needed.</p>
@@ -2892,9 +2892,10 @@
 <h4 id="2-install-veaf-mct-v6_1">2. Install VEAF MCT v6<a class="headerlink" href="#2-install-veaf-mct-v6_1" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools-updater</span><span class="p">.</span><span class="n">exe</span>
 </code></pre></div>
-<h4 id="3-convert-the-vanilla-miz">3. Convert the vanilla .miz<a class="headerlink" href="#3-convert-the-vanilla-miz" title="Permanent link">&para;</a></h4>
-<p>The <code>convert-mission</code> command does everything in one step: extract, inject VEAF scripts, rebuild.</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="nb">convert-mission</span> <span class="s2">&quot;C:\path\to\vanilla.miz&quot;</span> <span class="p">.</span>
+<h4 id="3-extract-the-vanilla-miz-then-build">3. Extract the vanilla .miz, then build<a class="headerlink" href="#3-extract-the-vanilla-miz-then-build" title="Permanent link">&para;</a></h4>
+<p>Extract your vanilla <code>.miz</code> into the source folder, then run the build, which injects the VEAF scripts and rebuilds a new <code>.miz</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="s2">&quot;C:\path\to\vanilla.miz&quot;</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>
 </code></pre></div>
 <p>This:
 1. Extracts <code>vanilla.miz</code> into <code>src/mission/</code>
@@ -2910,8 +2911,9 @@
 <span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="n">mission</span> <span class="p">.</span>
 </code></pre></div>
 <h4 id="5-configure-which-modules-to-enable">5. Configure which modules to enable<a class="headerlink" href="#5-configure-which-modules-to-enable" title="Permanent link">&para;</a></h4>
-<p>Edit <code>mission.yaml</code> to enable the modules you want. By default, only the essential modules (markers, spawn, radio) are active:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Vanilla Mission</span>
+<p>Edit <code>mission.yaml</code> to enable the modules you want. A set of common modules is active by default — radio, spawn, shortcuts, CAS, transport, weather… — adjust to taste:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Vanilla Mission</span>
 
 <span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
@@ -2926,7 +2928,7 @@
 <span class="w">  </span><span class="c1">#   enabled: true</span>
 </code></pre></div>
 <p>For custom Lua (advanced module calls, custom aliases, etc.), edit <code>src/scripts/mission-script.lua</code>.</p>
-<p>See the <a href="../../MISSION_YAML_REFERENCE.md">YAML reference</a> and the individual script guides in <a href="../scripts/">scripts/</a> for all options.</p>
+<p>See the <a href="../../MISSION_YAML_REFERENCE/">YAML reference</a> and the individual script guides in <a href="../scripts/">scripts/</a> for all options.</p>
 <h4 id="6-keep-your-existing-mission-content">6. Keep your existing mission content<a class="headerlink" href="#6-keep-your-existing-mission-content" title="Permanent link">&para;</a></h4>
 <p>Everything you built in the DCS Mission Editor (units, triggers, waypoints, zones) is preserved. VEAF does not remove or overwrite mission content — it only:
 - Adds a single loader trigger at mission start
@@ -2981,7 +2983,7 @@ __pycache__/
 <span class="w">    </span><span class="p">:</span><span class="nf">setVeafCommand</span><span class="p">(</span><span class="s2">&quot;_spawn group, name my-template&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>Module enable/disable is configured in <code>mission.yaml</code> → <code>modules:</code> — not in this file. See the <a href="../../MISSION_YAML_REFERENCE.md">YAML reference</a> for the full <code>mission.yaml</code> syntax.</p>
+<p>Module enable/disable is configured in <code>mission.yaml</code> → <code>modules:</code> — not in this file. See the <a href="../../MISSION_YAML_REFERENCE/">YAML reference</a> for the full <code>mission.yaml</code> syntax.</p>
 <hr />
 <h2 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h2>
 <h3 id="veaf-scripts-loader-trigger-appears-twice">"VEAF scripts loader" trigger appears twice<a class="headerlink" href="#veaf-scripts-loader-trigger-appears-twice" title="Permanent link">&para;</a></h3>

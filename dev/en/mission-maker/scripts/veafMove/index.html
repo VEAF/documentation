@@ -1202,10 +1202,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#teleport-a-group" class="md-nav__link">
+  <a href="#move-a-tanker" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Teleport a group
+        Move a tanker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-a-tankers-orbit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change a tanker's orbit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-an-afac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Move an AFAC
       
     </span>
   </a>
@@ -1230,10 +1252,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#change-tanker-orbit" class="md-nav__link">
+  <a href="#change-a-tankers-orbit_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Change tanker orbit
+        Change a tanker's orbit
       
     </span>
   </a>
@@ -1241,10 +1263,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#move-tanker-along-new-route" class="md-nav__link">
+  <a href="#move-a-tanker-along-a-new-route" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Move tanker along new route
+        Move a tanker along a new route
       
     </span>
   </a>
@@ -2067,10 +2089,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#teleport-a-group" class="md-nav__link">
+  <a href="#move-a-tanker" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Teleport a group
+        Move a tanker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-a-tankers-orbit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change a tanker's orbit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-an-afac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Move an AFAC
       
     </span>
   </a>
@@ -2095,10 +2139,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#change-tanker-orbit" class="md-nav__link">
+  <a href="#change-a-tankers-orbit_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Change tanker orbit
+        Change a tanker's orbit
       
     </span>
   </a>
@@ -2106,10 +2150,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#move-tanker-along-new-route" class="md-nav__link">
+  <a href="#move-a-tanker-along-a-new-route" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Move tanker along new route
+        Move a tanker along a new route
       
     </span>
   </a>
@@ -2185,20 +2229,28 @@
 <div class="highlight"><pre><span></span><code>_move group, name [GROUP_NAME]
 </code></pre></div>
 <p>Moves the named group to the marker position. Ground units will path to the destination; aircraft will fly directly.</p>
-<h3 id="teleport-a-group">Teleport a group<a class="headerlink" href="#teleport-a-group" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>_teleport, name [GROUP_NAME]
+<h3 id="move-a-tanker">Move a tanker<a class="headerlink" href="#move-a-tanker" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_move tanker, name [GROUP_NAME]
 </code></pre></div>
-<p>Instantly moves the group to the marker position. Useful for testing.</p>
+<p>Recomputes the named tanker's orbit route so it starts at the marker position. Accepts the optional keywords <code>speed</code>/<code>spd</code>, <code>alt</code>/<code>altitude</code>, <code>heading</code>/<code>hdg</code>, <code>distance</code>/<code>dist</code>, <code>teleport</code> (teleports the tanker near the new orbit instead of flying it there) and <code>silent</code> (skips creating the <code>refuel start</code>/<code>refuel end</code> named points).</p>
+<h3 id="change-a-tankers-orbit">Change a tanker's orbit<a class="headerlink" href="#change-a-tankers-orbit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_move tankermission, name [GROUP_NAME]
+</code></pre></div>
+<p>Finds the tanker nearest the marker and changes its speed (<code>speed</code>/<code>spd</code>) and altitude (<code>alt</code>/<code>altitude</code>) without moving the orbit.</p>
+<h3 id="move-an-afac">Move an AFAC<a class="headerlink" href="#move-an-afac" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_move afac, name [GROUP_NAME]
+</code></pre></div>
+<p>Moves the named AFAC's orbit to the marker position. Accepts the optional keywords <code>speed</code>/<code>spd</code>, <code>alt</code>/<code>altitude</code>, <code>heading</code>/<code>hdg</code> and <code>immortal</code>.</p>
 <hr />
 <h2 id="tanker-management-mission-maker-api">Tanker Management (Mission Maker API)<a class="headerlink" href="#tanker-management-mission-maker-api" title="Permanent link">&para;</a></h2>
-<h3 id="change-tanker-orbit">Change tanker orbit<a class="headerlink" href="#change-tanker-orbit" title="Permanent link">&para;</a></h3>
-<p><code>veafMove.changeTanker(groupName, point, altitude, speed)</code> — moves the tanker's orbit waypoint to a new position.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Move Texaco to a new orbit position</span>
-<span class="nv">veafMove</span><span class="p">.</span><span class="nf">changeTanker</span><span class="p">(</span><span class="s2">&quot;KC-135 Texaco&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="mi">7000</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="o">=</span><span class="mi">2000</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="mi">7000</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="p">)</span>
+<h3 id="change-a-tankers-orbit_1">Change a tanker's orbit<a class="headerlink" href="#change-a-tankers-orbit_1" title="Permanent link">&para;</a></h3>
+<p><code>veafMove.changeTanker(eventPos, speed, alt)</code> — finds the tanker near <code>eventPos</code> and changes its speed (knots) and altitude (feet) without moving the orbit.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Set the tanker near the marker to 430 kn / 7000 ft</span>
+<span class="nv">veafMove</span><span class="p">.</span><span class="nf">changeTanker</span><span class="p">(</span><span class="nv">eventPos</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="p">,</span><span class="w"> </span><span class="mi">7000</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="move-tanker-along-new-route">Move tanker along new route<a class="headerlink" href="#move-tanker-along-new-route" title="Permanent link">&para;</a></h3>
-<p><code>veafMove.moveTanker(groupName, startPoint, endPoint, altitude, speed)</code> — sets a new race-track orbit route.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">veafMove</span><span class="p">.</span><span class="nf">moveTanker</span><span class="p">(</span><span class="s2">&quot;KC-135 Texaco&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">startPoint</span><span class="p">,</span><span class="w"> </span><span class="nv">endPoint</span><span class="p">,</span><span class="w"> </span><span class="mi">7000</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="p">)</span>
+<h3 id="move-a-tanker-along-a-new-route">Move a tanker along a new route<a class="headerlink" href="#move-a-tanker-along-a-new-route" title="Permanent link">&para;</a></h3>
+<p><code>veafMove.moveTanker(eventPos, groupName, speed, alt, hdg, distance, teleport, silent)</code> — recomputes the named tanker's orbit route starting from <code>eventPos</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafMove</span><span class="p">.</span><span class="nf">moveTanker</span><span class="p">(</span><span class="nv">eventPos</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;KC-135 Texaco&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="p">,</span><span class="w"> </span><span class="mi">7000</span><span class="p">,</span><span class="w"> </span><span class="mi">270</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
 </code></pre></div>
 <hr />
 <h2 id="key-constants">Key Constants<a class="headerlink" href="#key-constants" title="Permanent link">&para;</a></h2>
@@ -2212,9 +2264,9 @@
 </thead>
 <tbody>
 <tr>
-<td><code>veafMove.SpawnKeyphrase</code></td>
+<td><code>veafMove.Keyphrase</code></td>
 <td><code>"_move"</code></td>
-<td>Marker command prefix for move</td>
+<td>Marker command prefix</td>
 </tr>
 </tbody>
 </table>

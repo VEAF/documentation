@@ -2610,7 +2610,7 @@
 <p>Pour tout ce qui n'est pas couvert par un alias, vous pouvez écrire directement une commande VEAF complète. Ces commandes commencent par un tiret bas <code>_</code>.</p>
 <p><strong>Faire apparaître une unité — <code>_spawn unit</code> :</strong></p>
 <div class="highlight"><pre><span></span><code>_spawn unit, name F-16C
-_spawn unit, name T-80, group 4, hdg 270
+_spawn unit, name T-80, multiplier 4, hdg 270
 _spawn unit, name SA-6
 </code></pre></div>
 <p>Options courantes :</p>
@@ -2629,9 +2629,9 @@ _spawn unit, name SA-6
 <td><code>name F-16C</code></td>
 </tr>
 <tr>
-<td><code>group [N]</code></td>
+<td><code>multiplier [N]</code></td>
 <td>Nombre d'unités dans le groupe</td>
-<td><code>group 4</code></td>
+<td><code>multiplier 4</code></td>
 </tr>
 <tr>
 <td><code>hdg [DEG]</code></td>
@@ -2680,6 +2680,7 @@ _spawn bomb, power 500, shells 3
 <p><strong>F10 → VEAF → Ressources → AWACS → [Nom] → Infos</strong></p>
 <p>Affiche : indicatif radio (<em>callsign</em>), fréquence et position.</p>
 <h3 id="porte-avions">Porte-avions<a class="headerlink" href="#porte-avions" title="Permanent link">&para;</a></h3>
+<p>Les opérations aériennes du porte-avions ont leur propre menu <strong>CARRIER OPS</strong> (et non sous <em>Ressources</em>), avec un sous-menu par camp puis par porte-avions.</p>
 <table>
 <thead>
 <tr>
@@ -2689,33 +2690,37 @@ _spawn bomb, power 500, shells 3
 </thead>
 <tbody>
 <tr>
+<td>Mettre le porte-avions face au vent (45 minutes)</td>
+<td>CARRIER OPS → [camp] → [Nom] → Start carrier air operations for 45 minutes</td>
+</tr>
+<tr>
+<td>Mettre le porte-avions face au vent (90 minutes)</td>
+<td>CARRIER OPS → [camp] → [Nom] → Start carrier air operations for 90 minutes</td>
+</tr>
+<tr>
+<td>Arrêter les opérations et reprendre la route</td>
+<td>CARRIER OPS → [camp] → [Nom] → End air operations</td>
+</tr>
+<tr>
 <td>Obtenir les infos (BRC, TACAN, ICLS, radio)</td>
-<td>Ressources → Porte-avions → [Nom] → Infos</td>
-</tr>
-<tr>
-<td>Mettre le porte-avions face au vent pour l'appontage</td>
-<td>Ressources → Porte-avions → [Nom] → Commencer récupération</td>
-</tr>
-<tr>
-<td>Reprendre la navigation normale</td>
-<td>Ressources → Porte-avions → [Nom] → Arrêter récupération</td>
+<td>CARRIER OPS → [camp] → [Nom] → ATC - Request informations</td>
 </tr>
 </tbody>
 </table>
 <p><img alt="Sous-menu de récupération du porte-avions" src="../assets/img/pilot/carrier-recovery-menu.png" /></p>
 <p><strong>Procédure d'appontage :</strong></p>
 <ol>
-<li><strong>Demandez la récupération</strong> 10 à 15 minutes avant l'approche (<em>Commencer récupération</em>). Le porte-avions se place face au vent pour offrir environ 30 nœuds de vent relatif sur le pont.</li>
-<li><strong>Consultez les infos</strong> (<em>Infos</em>) :</li>
+<li><strong>Demandez les opérations aériennes</strong> 10 à 15 minutes avant l'approche (<em>Start carrier air operations for 45 minutes</em>). Le porte-avions se place face au vent pour offrir le vent relatif visé sur le pont (environ 20 à 25 nœuds selon le porte-avions).</li>
+<li><strong>Consultez les infos</strong> (<em>ATC - Request informations</em>) :</li>
 <li><strong>BRC</strong> (<em>Base Recovery Course</em>) : le cap du pont pour l'appontage ;</li>
 <li><strong>canal TACAN</strong> (ex. 73X) : pour la navigation jusqu'au porte-avions ;</li>
 <li><strong>canal ICLS</strong> (ex. 13) : pour le guidage sur le plan de descente (F/A-18C, F-14) ;</li>
 <li><strong>fréquence ATC</strong>.</li>
 <li><strong>Approchez et appontez</strong> en suivant le TACAN puis l'ICLS.</li>
-<li><strong>Après l'appontage</strong>, choisissez <em>Arrêter récupération</em> pour rendre sa route au porte-avions.</li>
+<li><strong>Après l'appontage</strong>, choisissez <em>End air operations</em> pour rendre sa route au porte-avions.</li>
 </ol>
 <blockquote>
-<p>La récupération s'arrête automatiquement au bout de 45 minutes.</p>
+<p>Les opérations aériennes s'arrêtent automatiquement au bout de 45 minutes (90 minutes si vous avez choisi l'option longue).</p>
 </blockquote>
 <hr />
 <h2 id="zones-et-missions-de-combat">Zones et missions de combat<a class="headerlink" href="#zones-et-missions-de-combat" title="Permanent link">&para;</a></h2>
@@ -2784,12 +2789,11 @@ _spawn bomb, power 500, shells 3
 <p>Le générateur <strong>CAS</strong> (<em>Close Air Support</em>, appui aérien rapproché) crée une zone de cibles au sol avec un niveau de menace réglable. Idéal pour s'entraîner au pilonnage de positions ennemies.</p>
 <p><strong>Déroulement :</strong></p>
 <ol>
-<li><strong>Générer</strong> — F10 → VEAF → Mission CAS → Générer (avec des paramètres optionnels via marqueur, voir plus bas).</li>
-<li><strong>Marquer la zone</strong> — Fumée ou Fusée éclairante (3 minutes de délai entre deux marquages).</li>
-<li><strong>Obtenir les infos</strong> — position, composition des unités, état.</li>
+<li><strong>Générer</strong> — posez un marqueur <code>_cas</code> sur la carte (avec des paramètres optionnels, voir plus bas). Le sous-menu <strong>CAS MISSION</strong> apparaît alors dans F10 → VEAF.</li>
+<li><strong>Marquer la zone</strong> — <em>Target markers → Request smoke on target area</em> ou <em>Request illumination flare over target area</em> (3 minutes de délai entre deux marquages).</li>
+<li><strong>Obtenir les infos</strong> — <em>Target information</em> : position, composition des unités, état.</li>
 <li><strong>Engager</strong> — attaquez les cibles marquées.</li>
-<li><strong>Avancer</strong> — la zone passe automatiquement à la suivante quand toutes les unités sont détruites, ou utilisez <strong>Passer</strong>.</li>
-<li><strong>Nettoyer</strong> — <em>Nettoyer</em> supprime toutes les unités restantes.</li>
+<li><strong>Avancer</strong> — la zone passe automatiquement à la suivante quand toutes les unités sont détruites, ou utilisez <em>Skip current objective</em>.</li>
 </ol>
 <p><img alt="Fumée marquant une cible CAS" src="../assets/img/pilot/cas-smoke.png" /></p>
 <p><strong>Régler la difficulté</strong> par marqueur : <code>_cas, size 3, defense 2, armor 3</code></p>
@@ -2834,7 +2838,7 @@ _spawn bomb, power 500, shells 3
 </tr>
 </tbody>
 </table>
-<p>Options de la commande <code>_cas</code> : <code>size [0-5]</code> (taille de la force), <code>defense [0-5]</code> (niveau de DCA), <code>armor [0-5]</code> (blindage), <code>side [blue/red]</code> (coalition).</p>
+<p>Options de la commande <code>_cas</code> : <code>size [1-5]</code> (taille de la force), <code>defense [0-5]</code> (niveau de DCA), <code>armor [0-5]</code> (blindage), <code>side [blue/red]</code> (coalition).</p>
 <hr />
 <h2 id="sécurité-et-permissions">Sécurité et permissions<a class="headerlink" href="#sécurité-et-permissions" title="Permanent link">&para;</a></h2>
 <p>Sur les serveurs multijoueurs, le créateur de la mission peut restreindre certaines commandes selon votre niveau de permission :</p>
@@ -2899,8 +2903,8 @@ Vérifiez la syntaxe (les commandes brutes commencent par <code>_</code>, les al
 Les noms de types standard de DCS : <code>F-16C</code>, <code>Su-27</code>, <code>T-80</code>, <code>M1 Abrams</code>, <code>SA-6</code>, etc. Attention, ils sont sensibles à la casse (majuscules/minuscules).</p>
 <p><strong>Les unités que j'ai fait apparaître ont disparu. Est-ce normal ?</strong>
 Oui, certaines missions imposent une limite de distance (environ 40 à 50 NM) : l'IA est nettoyée si vous vous éloignez trop.</p>
-<p><strong>Comment réinitialiser un entraînement CAS ?</strong>
-F10 → Mission CAS → Nettoyer, puis Générer à nouveau.</p>
+<p><strong>Comment passer à la cible CAS suivante ?</strong>
+F10 → CAS MISSION → <em>Skip current objective</em>. Pour repartir de zéro, posez un nouveau marqueur <code>_cas</code>.</p>
 <p><strong>Puis-je faire apparaître des unités amies ?</strong>
 Oui : ajoutez <code>side blue</code> à votre commande.</p>
 <hr />

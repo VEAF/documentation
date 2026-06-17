@@ -1275,10 +1275,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#qra-top-level-fields" class="md-nav__link">
+  <a href="#modulesqra-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        qra: top-level fields
+        modules.QRA fields
       
     </span>
   </a>
@@ -2278,10 +2278,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#qra-top-level-fields" class="md-nav__link">
+  <a href="#modulesqra-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        qra: top-level fields
+        modules.QRA fields
       
     </span>
   </a>
@@ -2583,35 +2583,31 @@
 </code></pre></div>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
-<p>QRA definitions live in the <strong>top-level <code>qra:</code> section</strong> (not under <code>modules:</code>). The <code>QRA</code> module must be enabled in <code>modules:</code>.</p>
+<p>QRA definitions live <strong>under <code>modules.QRA</code></strong> (<code>silence_all</code> + <code>definitions:</code>). The <code>QRA</code> module must be enabled in <code>modules:</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># default: true</span>
-<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">        </span><span class="c1"># optional log level override</span>
-
-<span class="nt">qra</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">silence_all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = suppress all QRA radio messages globally</span>
-<span class="w">  </span><span class="nt">definitions</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-North&quot;</span><span class="w">                 </span><span class="c1"># REQUIRED — identifier and radio prefix</span>
-<span class="w">      </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span><span class="w">                    </span><span class="c1"># REQUIRED — RED | BLUE</span>
-<span class="w">      </span><span class="nt">enemy_coalitions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">BLUE</span><span class="p p-Indicator">]</span><span class="w">          </span><span class="c1"># coalitions that trigger a scramble</span>
-<span class="w">      </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-NORTH&quot;</span><span class="w">   </span><span class="c1"># DCS trigger zone defining the airspace</span>
-<span class="w">      </span><span class="nt">zone_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">               </span><span class="c1"># radius in metres (alternative to trigger_zone)</span>
-<span class="w">      </span><span class="nt">simple_groups</span><span class="p">:</span><span class="w">                   </span><span class="c1"># DCS group names to scramble (unconditional)</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Flight&quot;</span>
-<span class="w">      </span><span class="nt">groups_by_enemy_count</span><span class="p">:</span><span class="w">           </span><span class="c1"># scale response to intruder count</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># scramble when 1 intruder detected</span>
-<span class="w">          </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Pair-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Pair-2&quot;</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># group pool</span>
-<span class="w">          </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># how many groups to pick from the pool</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-<span class="w">          </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Flight-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Flight-2&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<span class="w">      </span><span class="nt">delay_before_rearming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># seconds before zone resets after intruders leave</span>
-<span class="w">      </span><span class="nt">delay_before_activating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">      </span><span class="c1"># seconds after :start() before QRA goes online</span>
-<span class="w">      </span><span class="nt">react_on_helicopters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = also trigger on enemy helicopters</span>
-<span class="w">      </span><span class="nt">airport_link</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi&quot;</span><span class="w">           </span><span class="c1"># QRA goes offline if this airbase is destroyed</span>
+<span class="w">    </span><span class="nt">silence_all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = suppress all QRA radio messages globally</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-North&quot;</span><span class="w">                 </span><span class="c1"># REQUIRED — identifier and radio prefix</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span><span class="w">                    </span><span class="c1"># REQUIRED — RED | BLUE</span>
+<span class="w">        </span><span class="nt">enemy_coalitions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">BLUE</span><span class="p p-Indicator">]</span><span class="w">          </span><span class="c1"># coalitions that trigger a scramble</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-NORTH&quot;</span><span class="w">   </span><span class="c1"># DCS trigger zone defining the airspace</span>
+<span class="w">        </span><span class="nt">zone_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">               </span><span class="c1"># radius in metres (alternative to trigger_zone)</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span><span class="w">                   </span><span class="c1"># DCS group names to scramble (unconditional)</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Flight&quot;</span>
+<span class="w">        </span><span class="nt">groups_by_enemy_count</span><span class="p">:</span><span class="w">           </span><span class="c1"># scale response to intruder count</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># scramble when 1 intruder detected</span>
+<span class="w">            </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Pair-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Pair-2&quot;</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># group pool</span>
+<span class="w">            </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># how many groups to pick from the pool</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">            </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Flight-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Flight-2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">            </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">        </span><span class="nt">delay_before_rearming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># seconds before zone resets after intruders leave</span>
+<span class="w">        </span><span class="nt">delay_before_activating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">      </span><span class="c1"># seconds after :start() before QRA goes online</span>
+<span class="w">        </span><span class="nt">react_on_helicopters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = also trigger on enemy helicopters</span>
+<span class="w">        </span><span class="nt">airport_link</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi&quot;</span><span class="w">           </span><span class="c1"># QRA goes offline if this airbase is destroyed</span>
 </code></pre></div>
-<h3 id="qra-top-level-fields"><code>qra:</code> top-level fields<a class="headerlink" href="#qra-top-level-fields" title="Permanent link">&para;</a></h3>
+<h3 id="modulesqra-fields"><code>modules.QRA</code> fields<a class="headerlink" href="#modulesqra-fields" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2754,15 +2750,12 @@
 <h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-
-<span class="nt">qra</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">definitions</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Sud&quot;</span>
-<span class="w">      </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
-<span class="w">      </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-SUD&quot;</span>
-<span class="w">      </span><span class="nt">simple_groups</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Su-27</span><span class="nv"> </span><span class="s">Intercept&quot;</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Sud&quot;</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-SUD&quot;</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Su-27</span><span class="nv"> </span><span class="s">Intercept&quot;</span>
 </code></pre></div>
 <hr />
 <h2 id="veafqra-builder-methods">VeafQRA Builder Methods<a class="headerlink" href="#veafqra-builder-methods" title="Permanent link">&para;</a></h2>

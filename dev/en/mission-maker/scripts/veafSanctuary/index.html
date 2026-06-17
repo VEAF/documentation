@@ -2086,26 +2086,28 @@
 
 
 <h1 id="veafsanctuary--protected-zones">veafSanctuary — Protected Zones<a class="headerlink" href="#veafsanctuary--protected-zones" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> — | <strong>File:</strong> <code>veafSanctuary.lua</code></p>
+<p><strong>Module ID:</strong> <code>SANCTUARY</code> | <strong>File:</strong> <code>veafSanctuary.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Defines zones that automatically destroy any unit from the specified coalition that enters them. Useful for protecting carrier operating areas, friendly airbases, or rear-area safe zones from enemy intrusion.</p>
 <hr />
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>veafEventHandler</code> — for zone-entry detection</li>
-</ul>
 <hr />
 <h2 id="enable">Enable<a class="headerlink" href="#enable" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafSanctuary</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p>Then define zones:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">VeafSanctuary</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">zone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafSanctuaryZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Carrier Zone&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-CARRIER-PROTECTION&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span><span class="w">  </span><span class="c1">-- destroy Red units that enter</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMessage</span><span class="p">(</span><span class="s2">&quot;Hostile aircraft eliminated in carrier defense zone&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span><span class="w">  </span><span class="c1">-- protect against Red units that enter</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setPolygonFromUnits</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;SANCT-NW&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SANCT-NE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SANCT-SE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SANCT-SW&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setDelayWarning</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w">               </span><span class="c1">-- seconds before warning</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setDelaySpawn</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- seconds before defenses are deployed</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setProtectFromMissiles</span><span class="p">()</span><span class="w">          </span><span class="c1">-- also destroy missiles fired at units inside</span>
+<span class="nv">veafSanctuary</span><span class="p">.</span><span class="nf">addZone</span><span class="p">(</span><span class="nv">zone</span><span class="p">)</span>
+</code></pre></div>
+<p>You can also build a zone from a DCS trigger zone:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSanctuary</span><span class="p">.</span><span class="nf">addZoneFromTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-CARRIER-PROTECTION&quot;</span><span class="p">)</span>
 </code></pre></div>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
@@ -2122,7 +2124,7 @@
 <span class="w">        </span><span class="nt">delay_warning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">              </span><span class="c1"># seconds before warning message is sent (default: 0)</span>
 <span class="w">        </span><span class="nt">delay_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">                </span><span class="c1"># seconds before the zone becomes active after mission start</span>
 <span class="w">        </span><span class="nt">delay_instant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">               </span><span class="c1"># seconds between repeated destruction checks (default: 0)</span>
-<span class="w">        </span><span class="nt">protect_from_missiles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># true = also intercept missiles heading into the zone</span>
+<span class="w">        </span><span class="nt">protect_from_missiles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># true = also destroy missiles fired at units located inside the zone</span>
 </code></pre></div>
 <table>
 <thead>
@@ -2203,7 +2205,7 @@
 <td>boolean</td>
 <td><code>false</code></td>
 <td>No</td>
-<td>Also intercept missiles heading into the zone</td>
+<td>Also destroy missiles fired at units located inside the zone</td>
 </tr>
 </tbody>
 </table>
@@ -2222,6 +2224,7 @@
 </code></pre></div>
 <hr />
 <h2 id="builder-methods">Builder Methods<a class="headerlink" href="#builder-methods" title="Permanent link">&para;</a></h2>
+<p>Zones are built with <code>VeafSanctuaryZone:new()</code> then registered via <code>veafSanctuary.addZone(zone)</code>. Each setter returns the zone, allowing chaining.</p>
 <table>
 <thead>
 <tr>
@@ -2231,28 +2234,68 @@
 </thead>
 <tbody>
 <tr>
-<td><code>:setName(name)</code></td>
+<td><code>:setName(value)</code></td>
 <td>Internal identifier</td>
 </tr>
 <tr>
-<td><code>:setZoneName(zone)</code></td>
-<td>DCS trigger zone</td>
+<td><code>:setCoalition(value)</code></td>
+<td>Protected coalition (units of other coalitions are handled)</td>
 </tr>
 <tr>
-<td><code>:setCoalition(side)</code></td>
-<td>Coalition of units to destroy</td>
+<td><code>:setRadius(value)</code></td>
+<td>Radius of the circular zone (metres)</td>
 </tr>
 <tr>
-<td><code>:setMessage(text)</code></td>
-<td>Message shown when a unit is destroyed</td>
+<td><code>:setPosition(value)</code></td>
+<td>Centre of the circular zone</td>
 </tr>
 <tr>
-<td><code>:setSilent(bool)</code></td>
-<td>Suppress messages</td>
+<td><code>:setPolygonFromUnits(unitNames, markPositions)</code></td>
+<td>Define a polygon from a list of DCS unit names; <code>markPositions</code> set to <code>true</code> draws the zone on the map</td>
 </tr>
 <tr>
-<td><code>:initialize()</code></td>
-<td>Activate the zone</td>
+<td><code>:setPolygonFromUnitsInSequence(unitNamePrefix, markPositions)</code></td>
+<td>Define a polygon from units named <code>prefix #001</code>, <code>prefix #002</code>, ...</td>
+</tr>
+<tr>
+<td><code>:setProtectFromMissiles()</code></td>
+<td>Enable destruction of missiles fired at units inside the zone (no argument — flag)</td>
+</tr>
+<tr>
+<td><code>:setDelayWarning(value)</code></td>
+<td>Seconds before the warning message is sent</td>
+</tr>
+<tr>
+<td><code>:setOffensesBeforeDestruction(value)</code></td>
+<td>Number of shots at players before the shooter is destroyed</td>
+</tr>
+<tr>
+<td><code>:setMessageWarning(value)</code></td>
+<td>Warning message</td>
+</tr>
+<tr>
+<td><code>:setMessageShotTarget(value)</code></td>
+<td>Message to the target when a shot is detected</td>
+</tr>
+<tr>
+<td><code>:setMessageShotLauncher(value)</code></td>
+<td>Message to the shooter when a shot is detected</td>
+</tr>
+<tr>
+<td><code>:setDelayInstant(value)</code></td>
+<td>Seconds before the trespasser is instantly killed (-1 to disable)</td>
+</tr>
+<tr>
+<td><code>:setDelaySpawn(value)</code></td>
+<td>Seconds before defenses are deployed (-1 to disable)</td>
+</tr>
+<tr>
+<td><code>:setMessageSpawn(value)</code></td>
+<td>Message shown when defenses are deployed</td>
+</tr>
+<tr>
+<td><code>:addSpawnedGroups(names)</code></td>
+<td>Register deployed groups associated with the zone</td>
 </tr>
 </tbody>
 </table>

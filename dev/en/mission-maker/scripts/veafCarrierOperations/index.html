@@ -1061,21 +1061,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#f10-radio-menu-per-carrier" class="md-nav__link">
+  <a href="#f10-radio-menu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        F10 Radio Menu (per carrier)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example Configuration
+        F10 Radio Menu
       
     </span>
   </a>
@@ -2077,21 +2066,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#f10-radio-menu-per-carrier" class="md-nav__link">
+  <a href="#f10-radio-menu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        F10 Radio Menu (per carrier)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example Configuration
+        F10 Radio Menu
       
     </span>
   </a>
@@ -2138,23 +2116,16 @@
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>veafRadio</code> — F10 menu</li>
-<li><code>veafAssets</code> — registers carrier assets (optional integration)</li>
+<li><code>veafRemote</code> — exposes a <code>carrier</code> remote command</li>
 </ul>
 <hr />
 <h2 id="enable">Enable<a class="headerlink" href="#enable" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
-<p>Then register each carrier:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">addCarrier</span><span class="p">({</span>
-<span class="w">  </span><span class="nv">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Mother&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73 Theodore Roosevelt&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">groupName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73&quot;</span><span class="p">,</span>
-<span class="p">})</span>
-</code></pre></div>
-<p>Or let <code>veafAssets</code> handle registration automatically when a carrier asset has <code>carrier = true</code>.</p>
+<p>There is no per-carrier registration API. On <code>initialize()</code>, the module scans every group in the mission and automatically registers any group containing a known carrier unit type (see <a href="#supported-carrier-types">Supported Carrier Types</a>). Its initial route, side and ATC data (TACAN/ICLS/LINK4/ACLS/tower, read from the carrier's programmed tasks) are captured at that point. Simply place a carrier group in the mission editor — no script call is needed.</p>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
-<p>Carrier operations are enabled via the <code>CARRIER</code> module ID. Carrier definitions are typically declared through the <code>ASSETS</code> module (see <a href="../veafAssets/#configuration-missionyaml">veafAssets — Configuration</a>).</p>
+<p>Carrier operations are enabled via the <code>CARRIER</code> module ID. Carriers themselves are not declared in <code>mission.yaml</code>: they are auto-discovered from the carrier groups present in the mission (see <a href="#enable">Enable</a>).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CARRIER</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># default: true</span>
@@ -2269,33 +2240,23 @@
 </tbody>
 </table>
 <hr />
-<h2 id="f10-radio-menu-per-carrier">F10 Radio Menu (per carrier)<a class="headerlink" href="#f10-radio-menu-per-carrier" title="Permanent link">&para;</a></h2>
+<h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
+<p>The top-level <strong>CARRIER OPS</strong> menu holds a <strong>CARRIER OPS - BLUE</strong> and a <strong>CARRIER OPS - RED</strong> submenu, each containing one submenu per carrier (named after the carrier group). When operations are stopped, each carrier submenu offers:</p>
 <ul>
-<li><strong>Info</strong> — BRC, relative wind, TACAN channel, ICLS channel, ATC frequency</li>
-<li><strong>Start Recovery</strong> — turn into wind and begin 45-minute recovery window</li>
-<li><strong>Stop Recovery</strong> — end recovery, resume original route</li>
+<li><strong>Start carrier air operations for 45 minutes</strong> — turn into the wind and open a 45-minute recovery window</li>
+<li><strong>Start carrier air operations for 90 minutes</strong> — same, for 90 minutes (<code>MAX_OPERATIONS_DURATION</code> × 2)</li>
+<li><strong>ATC - Request informations</strong> — TACAN, ICLS, LINK 4 / ACLS, tower, BRC and remaining time, plus current navigation and weather</li>
 </ul>
-<hr />
-<h2 id="example-configuration">Example Configuration<a class="headerlink" href="#example-configuration" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1">-- In mission-script.lua</span>
-<span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
-
-<span class="c1">-- Carriers are registered via veafAssets:</span>
-<span class="nv">veafAssets</span><span class="p">.</span><span class="py">Assets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nv">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Mother&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73 Theodore Roosevelt&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">groupName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CVN-73&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">information</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">    </span><span class="nv">carrier</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="p">}</span>
-<span class="nv">veafAssets</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
-</code></pre></div>
+<p>While operations are running, the two <em>Start</em> items are replaced by:</p>
+<ul>
+<li><strong>End air operations</strong> — stop recovery and send the carrier back to its initial route</li>
+</ul>
+<blockquote>
+<p>By default the <em>Start</em>/<em>End</em> items are secured (require a password). Set <code>veafCarrierOperations.DisableSecurity = true</code> to make them open to everyone.</p>
+</blockquote>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../veafAssets/">veafAssets</a> — asset management and radio menu integration</li>
 <li><a href="../../../LUA_API_REFERENCE/">Lua API Reference</a> — full <code>veafCarrierOperations</code> API</li>
 </ul>
 

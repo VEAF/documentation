@@ -2610,7 +2610,7 @@
 <p>For anything not covered by an alias, you can write a full VEAF command directly. These commands start with an underscore <code>_</code>.</p>
 <p><strong>Spawn a unit — <code>_spawn unit</code>:</strong></p>
 <div class="highlight"><pre><span></span><code>_spawn unit, name F-16C
-_spawn unit, name T-80, group 4, hdg 270
+_spawn unit, name T-80, multiplier 4, hdg 270
 _spawn unit, name SA-6
 </code></pre></div>
 <p>Common options:</p>
@@ -2629,9 +2629,9 @@ _spawn unit, name SA-6
 <td><code>name F-16C</code></td>
 </tr>
 <tr>
-<td><code>group [N]</code></td>
+<td><code>multiplier [N]</code></td>
 <td>Number of units in the group</td>
-<td><code>group 4</code></td>
+<td><code>multiplier 4</code></td>
 </tr>
 <tr>
 <td><code>hdg [DEG]</code></td>
@@ -2680,6 +2680,7 @@ _spawn bomb, power 500, shells 3
 <p><strong>F10 → VEAF → Assets → AWACS → [Name] → Info</strong></p>
 <p>Shows: callsign, frequency and position.</p>
 <h3 id="carriers">Carriers<a class="headerlink" href="#carriers" title="Permanent link">&para;</a></h3>
+<p>Carrier air operations have their own <strong>CARRIER OPS</strong> menu (not under <em>Assets</em>), with a submenu per coalition and then per carrier.</p>
 <table>
 <thead>
 <tr>
@@ -2689,33 +2690,37 @@ _spawn bomb, power 500, shells 3
 </thead>
 <tbody>
 <tr>
+<td>Turn the carrier into the wind (45 minutes)</td>
+<td>CARRIER OPS → [coalition] → [Name] → Start carrier air operations for 45 minutes</td>
+</tr>
+<tr>
+<td>Turn the carrier into the wind (90 minutes)</td>
+<td>CARRIER OPS → [coalition] → [Name] → Start carrier air operations for 90 minutes</td>
+</tr>
+<tr>
+<td>Stop operations and resume the route</td>
+<td>CARRIER OPS → [coalition] → [Name] → End air operations</td>
+</tr>
+<tr>
 <td>Get info (BRC, TACAN, ICLS, radio)</td>
-<td>Assets → Carriers → [Name] → Info</td>
-</tr>
-<tr>
-<td>Turn the carrier into the wind for recovery</td>
-<td>Assets → Carriers → [Name] → Start Recovery</td>
-</tr>
-<tr>
-<td>Resume normal navigation</td>
-<td>Assets → Carriers → [Name] → Stop Recovery</td>
+<td>CARRIER OPS → [coalition] → [Name] → ATC - Request informations</td>
 </tr>
 </tbody>
 </table>
 <p><img alt="Carrier recovery submenu" src="../assets/img/pilot/carrier-recovery-menu.png" /></p>
 <p><strong>Recovery procedure:</strong></p>
 <ol>
-<li><strong>Request recovery</strong> 10–15 minutes before your approach (<em>Start Recovery</em>). The carrier turns into the wind to provide about 30 knots of relative wind over the deck.</li>
-<li><strong>Check the info</strong> (<em>Info</em>):</li>
+<li><strong>Request air operations</strong> 10–15 minutes before your approach (<em>Start carrier air operations for 45 minutes</em>). The carrier turns into the wind to provide its target relative wind over the deck (about 20–25 knots depending on the carrier).</li>
+<li><strong>Check the info</strong> (<em>ATC - Request informations</em>):</li>
 <li><strong>BRC</strong> (<em>Base Recovery Course</em>): the deck heading for recovery;</li>
 <li><strong>TACAN channel</strong> (e.g. 73X): for navigation to the carrier;</li>
 <li><strong>ICLS channel</strong> (e.g. 13): for glideslope guidance (F/A-18C, F-14);</li>
 <li><strong>ATC frequency</strong>.</li>
 <li><strong>Approach and land</strong> following TACAN, then ICLS.</li>
-<li><strong>After landing</strong>, choose <em>Stop Recovery</em> to return the carrier to its route.</li>
+<li><strong>After landing</strong>, choose <em>End air operations</em> to return the carrier to its route.</li>
 </ol>
 <blockquote>
-<p>Recovery times out automatically after 45 minutes.</p>
+<p>Air operations time out automatically after 45 minutes (90 minutes if you chose the longer option).</p>
 </blockquote>
 <hr />
 <h2 id="combat-zones-and-missions">Combat Zones and Missions<a class="headerlink" href="#combat-zones-and-missions" title="Permanent link">&para;</a></h2>
@@ -2784,12 +2789,11 @@ _spawn bomb, power 500, shells 3
 <p>The <strong>CAS</strong> generator (<em>Close Air Support</em>) creates a zone of ground targets with an adjustable threat level. Ideal for practising attacks on enemy positions.</p>
 <p><strong>Workflow:</strong></p>
 <ol>
-<li><strong>Generate</strong> — F10 → VEAF → CAS Mission → Generate (with optional parameters via marker, see below).</li>
-<li><strong>Mark the zone</strong> — Smoke or Flare (3-minute cooldown between marks).</li>
-<li><strong>Get info</strong> — position, unit composition, status.</li>
+<li><strong>Generate</strong> — place a <code>_cas</code> marker on the map (with optional parameters, see below). The <strong>CAS MISSION</strong> submenu then appears under F10 → VEAF.</li>
+<li><strong>Mark the zone</strong> — <em>Target markers → Request smoke on target area</em> or <em>Request illumination flare over target area</em> (3-minute cooldown between marks).</li>
+<li><strong>Get info</strong> — <em>Target information</em>: position, unit composition, status.</li>
 <li><strong>Engage</strong> — attack the marked targets.</li>
-<li><strong>Advance</strong> — the zone moves to the next one automatically when all units are destroyed, or use <strong>Skip</strong>.</li>
-<li><strong>Clean up</strong> — <em>Cleanup</em> removes all remaining units.</li>
+<li><strong>Advance</strong> — the zone moves to the next one automatically when all units are destroyed, or use <em>Skip current objective</em>.</li>
 </ol>
 <p><img alt="Smoke marking a CAS target" src="../assets/img/pilot/cas-smoke.png" /></p>
 <p><strong>Set the difficulty</strong> via marker: <code>_cas, size 3, defense 2, armor 3</code></p>
@@ -2834,7 +2838,7 @@ _spawn bomb, power 500, shells 3
 </tr>
 </tbody>
 </table>
-<p>Options for the <code>_cas</code> command: <code>size [0-5]</code> (force size), <code>defense [0-5]</code> (AA level), <code>armor [0-5]</code> (armour), <code>side [blue/red]</code> (coalition).</p>
+<p>Options for the <code>_cas</code> command: <code>size [1-5]</code> (force size), <code>defense [0-5]</code> (AA level), <code>armor [0-5]</code> (armour), <code>side [blue/red]</code> (coalition).</p>
 <hr />
 <h2 id="security-and-permissions">Security and Permissions<a class="headerlink" href="#security-and-permissions" title="Permanent link">&para;</a></h2>
 <p>On multiplayer servers, the mission maker may restrict certain commands according to your permission level:</p>
@@ -2899,8 +2903,8 @@ Check the syntax (raw commands start with <code>_</code>, aliases with <code>-</
 Standard DCS type names: <code>F-16C</code>, <code>Su-27</code>, <code>T-80</code>, <code>M1 Abrams</code>, <code>SA-6</code>, etc. Note that they are case-sensitive.</p>
 <p><strong>The units I spawned disappeared. Is that normal?</strong>
 Yes — some missions enforce a range limit (about 40–50 NM): AI is cleaned up if you fly too far away.</p>
-<p><strong>How do I reset a CAS session?</strong>
-F10 → CAS Mission → Cleanup, then Generate again.</p>
+<p><strong>How do I move to the next CAS target?</strong>
+F10 → CAS MISSION → <em>Skip current objective</em>. To start over, place a new <code>_cas</code> marker.</p>
 <p><strong>Can I spawn friendly units?</strong>
 Yes: add <code>side blue</code> to your command.</p>
 <hr />

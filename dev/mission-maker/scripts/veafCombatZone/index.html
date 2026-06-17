@@ -2760,9 +2760,9 @@
 <li><strong>Enregistrez la zone</strong> dans <code>mission-script.lua</code> :</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Strike Alpha — Colonne blindée&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- nom de la trigger zone DCS</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span><span class="w">                    </span><span class="c1">-- libellé du menu radio</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Strike Alpha — Colonne blindée&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p><code>veafCombatZone.initialize()</code> doit d'abord être appelé au niveau du module.</p>
@@ -2826,21 +2826,22 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 <p>Cela permet de monter des apparitions complexes (batterie SA-11, convois avec routes IA) sans aucun code Lua.</p>
 <hr />
 <h2 id="définir-une-zone">Définir une zone<a class="headerlink" href="#définir-une-zone" title="Permanent link">&para;</a></h2>
+<p>Dans le cas le plus courant, les éléments sont peuplés automatiquement à partir des unités placées dans la trigger zone DCS via <code>:addZoneElementsFromZoneNamed(...)</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">strikeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span><span class="w">                   </span><span class="c1">-- nom interne</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span><span class="w">          </span><span class="c1">-- nom de la zone de trigger DCS</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setDescription</span><span class="p">(</span><span class="s2">&quot;Colonne blindée — Senaki&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">-- nom de la trigger zone DCS</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- libellé du menu radio</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Détruire tous les véhicules. Prévoir de l&#39;AAA et des MANPADS.&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addElement</span><span class="p">(</span>
-<span class="w">    </span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">      </span><span class="p">:</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span><span class="w">    </span><span class="c1">-- groupe DCS à faire apparaître</span>
-<span class="w">      </span><span class="p">:</span><span class="nf">setSpawnRadius</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="w">  </span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addElement</span><span class="p">(</span>
-<span class="w">    </span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">      </span><span class="p">:</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-AAA&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElementsFromZoneNamed</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>On peut aussi construire et attacher un élément manuellement avec <code>:addZoneElement(...)</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setDcsGroup</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span><span class="w">    </span><span class="c1">-- nom du groupe DCS à faire apparaître</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnRadius</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="nv">strikeZone</span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">element</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="méthodes-du-builder-veafcombatzone">Méthodes du builder VeafCombatZone<a class="headerlink" href="#méthodes-du-builder-veafcombatzone" title="Permanent link">&para;</a></h3>
 <table>
@@ -2852,44 +2853,56 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 </thead>
 <tbody>
 <tr>
-<td><code>:setName(name)</code></td>
-<td>Identifiant interne</td>
+<td><code>:setMissionEditorZoneName(name)</code></td>
+<td>Trigger zone DCS qui définit la zone de spawn</td>
 </tr>
 <tr>
-<td><code>:setZoneName(zoneName)</code></td>
-<td>Zone de trigger DCS qui définit la zone de spawn</td>
-</tr>
-<tr>
-<td><code>:setDescription(text)</code></td>
-<td>Nom court affiché dans le menu radio</td>
+<td><code>:setFriendlyName(name)</code></td>
+<td>Libellé affiché dans le menu radio</td>
 </tr>
 <tr>
 <td><code>:setBriefing(text)</code></td>
 <td>Texte complet du briefing</td>
 </tr>
 <tr>
-<td><code>:addElement(element)</code></td>
-<td>Ajouter un groupe d'unités à la zone</td>
-</tr>
-<tr>
-<td><code>:setCoalition(side)</code></td>
-<td>Forcer la coalition de spawn</td>
-</tr>
-<tr>
-<td><code>:setRadioGroup(name)</code></td>
-<td>Regrouper des zones sous un sous-menu radio commun</td>
-</tr>
-<tr>
-<td><code>:setActivateAtStart(bool)</code></td>
-<td>Activer automatiquement au démarrage de la mission</td>
-</tr>
-<tr>
-<td><code>:setSilent(bool)</code></td>
-<td>Supprimer les messages de statut</td>
-</tr>
-<tr>
-<td><code>:setOnCompleted(fn)</code></td>
+<td><code>:setOnCompletedHook(fn)</code></td>
 <td>Callback quand tous les ennemis sont détruits</td>
+</tr>
+<tr>
+<td><code>:addZoneElement(element)</code></td>
+<td>Ajouter un élément à la zone</td>
+</tr>
+<tr>
+<td><code>:addZoneElementsFromZoneNamed(zoneName)</code></td>
+<td>Peupler les éléments depuis les unités d'une trigger zone</td>
+</tr>
+<tr>
+<td><code>:addSpawnedGroup(groupOrName)</code></td>
+<td>Déclarer un groupe déjà apparu comme appartenant à la zone</td>
+</tr>
+<tr>
+<td><code>:setActive(bool)</code></td>
+<td>Activer la zone au démarrage</td>
+</tr>
+<tr>
+<td><code>:setTraining(bool)</code></td>
+<td>Mode entraînement</td>
+</tr>
+<tr>
+<td><code>:setCompletable(bool)</code></td>
+<td>La zone peut être marquée comme terminée</td>
+</tr>
+<tr>
+<td><code>:enableUserActivation()</code> / <code>:disableUserActivation()</code></td>
+<td>Autoriser/interdire l'activation par les joueurs</td>
+</tr>
+<tr>
+<td><code>:setRadioGroupName(name)</code></td>
+<td>Restreindre le menu radio de la zone à un groupe de joueurs</td>
+</tr>
+<tr>
+<td><code>:setRadioMenuPrefix(text)</code></td>
+<td>Préfixe affiché devant le nom de la zone dans le menu</td>
 </tr>
 </tbody>
 </table>
@@ -2903,20 +2916,52 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 </thead>
 <tbody>
 <tr>
-<td><code>:setGroupName(name)</code></td>
-<td>Groupe DCS à faire apparaître (doit exister dans l'éditeur)</td>
+<td><code>:setName(name)</code></td>
+<td>Nom de l'élément</td>
+</tr>
+<tr>
+<td><code>:setPosition(pos)</code></td>
+<td>Position de l'élément</td>
+</tr>
+<tr>
+<td><code>:setDcsGroup(bool)</code></td>
+<td>L'élément référence un groupe DCS</td>
+</tr>
+<tr>
+<td><code>:setDcsStatic(bool)</code></td>
+<td>L'élément référence un objet statique DCS</td>
+</tr>
+<tr>
+<td><code>:setSpawnGroup(name)</code></td>
+<td>Nom du groupe DCS à faire apparaître</td>
+</tr>
+<tr>
+<td><code>:setVeafCommand(cmd)</code></td>
+<td>Commande VEAF à exécuter au lieu d'un spawn</td>
+</tr>
+<tr>
+<td><code>:setRoute(route)</code></td>
+<td>Route IA de l'élément</td>
+</tr>
+<tr>
+<td><code>:setCoalition(side)</code></td>
+<td>Coalition de l'élément</td>
 </tr>
 <tr>
 <td><code>:setSpawnRadius(m)</code></td>
 <td>Rayon de dispersion autour du centre de la zone</td>
 </tr>
 <tr>
-<td><code>:setRespawn(bool)</code></td>
-<td>Réapparaître ou non après destruction</td>
+<td><code>:setSpawnChance(pct)</code></td>
+<td>Probabilité d'apparition (0–100)</td>
 </tr>
 <tr>
-<td><code>:setRespawnDelay(s)</code></td>
-<td>Délai avant réapparition (secondes)</td>
+<td><code>:setSpawnCount(n)</code></td>
+<td>Nombre d'exemplaires à faire apparaître</td>
+</tr>
+<tr>
+<td><code>:setSpawnDelay(s)</code></td>
+<td>Délai avant apparition (secondes)</td>
 </tr>
 </tbody>
 </table>
@@ -2950,8 +2995,8 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 <td>Préfixe affiché devant le nom de la zone dans le menu</td>
 </tr>
 <tr>
-<td><code>:setRadioGroup(name)</code></td>
-<td>Regrouper des zones sous un sous-menu commun</td>
+<td><code>:setRadioGroupName(name)</code></td>
+<td>Restreindre le menu radio de la zone à un groupe de joueurs</td>
 </tr>
 <tr>
 <td><code>:setEnableSmokeAndFlare(bool)</code></td>
@@ -2974,20 +3019,22 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 <hr />
 <h2 id="opérations-zones-groupées">Opérations (zones groupées)<a class="headerlink" href="#opérations-zones-groupées" title="Permanent link">&para;</a></h2>
 <p>Plusieurs zones peuvent être regroupées dans une <strong>Opération</strong> qui se complète quand toutes les zones filles sont terminées :</p>
-<div class="highlight"><pre><span></span><code><span class="nv">VeafCombatOperation</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Operation Thunder&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addZone</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addZone</span><span class="p">(</span><span class="s2">&quot;Strike Bravo&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatOperation</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;OP-THUNDER&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Operation Thunder&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Détruire les deux colonnes blindées avant qu&#39;elles atteignent Senaki.&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+
+<span class="nv">operation</span><span class="p">:</span><span class="nf">addTaskingOrder</span><span class="p">(</span><span class="nv">alphaZone</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- première tâche</span>
+<span class="nv">operation</span><span class="p">:</span><span class="nf">addTaskingOrder</span><span class="p">(</span><span class="nv">bravoZone</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;OP-THUNDER-ALPHA&quot;</span><span class="w"> </span><span class="p">})</span><span class="w">  </span><span class="c1">-- débloquée après Alpha</span>
+<span class="nv">operation</span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
-<p><code>VeafCombatOperation</code> étend <code>VeafCombatZone</code> — toutes les méthodes du builder ci-dessus s'appliquent, et l'opération elle-même apparaît dans le menu radio comme une seule entrée activable.</p>
+<p><code>VeafCombatOperation = VeafCombatZone:new()</code> — l'opération étend <code>VeafCombatZone</code>. Les tâches sont ajoutées avec <code>:addTaskingOrder(zone, requiredComplete)</code>, où <code>zone</code> est une <code>VeafCombatZone</code> et <code>requiredComplete</code> la liste optionnelle des noms de zones devant être terminées avant que celle-ci soit activée. L'opération apparaît dans le menu radio comme une seule entrée.</p>
 <hr />
 <h2 id="chaînage-de-zones">Chaînage de zones<a class="headerlink" href="#chaînage-de-zones" title="Permanent link">&para;</a></h2>
 <p>Une zone peut activer automatiquement une ou plusieurs zones suivantes lorsqu'elle est terminée. Cela permet de construire des progressions de campagne dynamiques sans scripting manuel :</p>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Bravo&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- se déclenche quand Alpha est terminée</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Charlie&quot;</span><span class="p">)</span><span class="w">   </span><span class="c1">-- l&#39;une est choisie au hasard</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setChainedCombatZonesDelay</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="w">           </span><span class="c1">-- attendre 60 s avant le chaînage</span>
@@ -3020,8 +3067,8 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 <li><strong>État détaillé</strong> : le message d'info de la zone liste les unités restantes et leurs positions approximatives (via fumée ou relèvements), donnant aux pilotes une vue claire de ce qu'il reste.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Training-A&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-TRAINING-A&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-TRAINING-A&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Training-A&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setTraining</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>

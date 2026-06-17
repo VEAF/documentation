@@ -1151,10 +1151,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#méthodes-du-builder" class="md-nav__link">
+  <a href="#méthodes-du-builder-veafmg_guardian" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Méthodes du builder
+        Méthodes du builder (VeafMG_Guardian)
       
     </span>
   </a>
@@ -1977,10 +1977,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#méthodes-du-builder" class="md-nav__link">
+  <a href="#méthodes-du-builder-veafmg_guardian" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Méthodes du builder
+        Méthodes du builder (VeafMG_Guardian)
       
     </span>
   </a>
@@ -2030,29 +2030,32 @@
 
 
 <h1 id="veafmissileguardian--interception-de-missiles">veafMissileGuardian — Interception de missiles<a class="headerlink" href="#veafmissileguardian--interception-de-missiles" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> — | <strong>Fichier:</strong> <code>veafMissileGuardian.lua</code></p>
+<p><strong>Module ID:</strong> <code>MISSILEGUARDIAN</code> | <strong>Fichier:</strong> <code>veafMissileGuardian.lua</code></p>
+<hr />
+<blockquote>
+<p><strong>Module expérimental / incomplet.</strong> Ce module est à l'état de squelette (version <code>0.0.2</code>). Les classes décrites ci-dessous existent mais la logique de protection n'est pas encore implémentée (<code>veafMissileGuardian.getLargeScaleProtector()</code> et le watchdog du protecteur sont des ébauches). À utiliser uniquement à des fins exploratoires.</p>
+</blockquote>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
-<p>Intercepte et détruit les missiles entrants spécifiques pour protéger des ressources ou zones désignées. Utile pour protéger les porte-avions, FARP ou autres cibles de haute valeur contre des menaces balistiques dans des scénarios où une défense antimissile réaliste est souhaitée.</p>
+<p>Vise à intercepter et détruire les missiles entrants pour protéger des ressources désignées. Un <code>VeafMG_Guardian</code> observe des unités et réagit lorsqu'un tir vise l'une d'elles dans une zone protégée, en avertissant la cible.</p>
 <hr />
 <h2 id="dépendances">Dépendances<a class="headerlink" href="#dépendances" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>veafEventHandler</code> — pour la surveillance des événements de tir de missile</li>
-</ul>
 <hr />
 <h2 id="activation">Activation<a class="headerlink" href="#activation" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafMissileGuardian</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
-<p>Puis définir les zones de protection :</p>
-<div class="highlight"><pre><span></span><code><span class="nv">VeafMissileGuardian</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Carrier Defense&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;CVN-73&quot;</span><span class="p">)</span><span class="w">           </span><span class="c1">-- protéger ce groupe</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setRadius</span><span class="p">(</span><span class="mi">30000</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- rayon d&#39;interception en mètres</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMissileTypes</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;P-700&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Kh-41&quot;</span><span class="w"> </span><span class="p">})</span><span class="w">  </span><span class="c1">-- intercepter ces types de missiles</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<p><code>initialize()</code> construit le menu radio « GUARDIAN ». Puis définir un gardien :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">guardian</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafMG_Guardian</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;carrier-defense&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Carrier Defense&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addProtectedUnit</span><span class="p">(</span><span class="s2">&quot;CVN-73&quot;</span><span class="p">)</span><span class="w">        </span><span class="c1">-- nom d&#39;unité DCS à protéger (appeler plusieurs fois pour plusieurs unités)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setProtectedZone</span><span class="p">(</span><span class="nv">polygon</span><span class="p">)</span><span class="w">         </span><span class="c1">-- polygone (liste de points) où la protection s&#39;applique</span>
+<span class="nv">guardian</span><span class="p">:</span><span class="nf">start</span><span class="p">()</span><span class="w">                     </span><span class="c1">-- enregistrer le gestionnaire d&#39;événements</span>
 </code></pre></div>
+<p><code>guardian:stop()</code> désenregistre le gestionnaire d'événements.</p>
 <hr />
-<h2 id="méthodes-du-builder">Méthodes du builder<a class="headerlink" href="#méthodes-du-builder" title="Permanent link">&para;</a></h2>
+<h2 id="méthodes-du-builder-veafmg_guardian">Méthodes du builder (<code>VeafMG_Guardian</code>)<a class="headerlink" href="#méthodes-du-builder-veafmg_guardian" title="Permanent link">&para;</a></h2>
+<p>Le gardien est construit avec <code>VeafMG_Guardian:new()</code>. Chaque setter retourne le gardien, ce qui permet le chaînage.</p>
 <table>
 <thead>
 <tr>
@@ -2062,45 +2065,37 @@
 </thead>
 <tbody>
 <tr>
-<td><code>:setName(name)</code></td>
+<td><code>:setName(value)</code></td>
 <td>Identifiant interne</td>
 </tr>
 <tr>
-<td><code>:setGroupName(name)</code></td>
-<td>Groupe DCS à protéger</td>
+<td><code>:setFriendlyName(value)</code></td>
+<td>Nom lisible affiché aux joueurs</td>
 </tr>
 <tr>
-<td><code>:setZoneName(zone)</code></td>
-<td>Alternativement, protéger une zone</td>
+<td><code>:addProtectedUnit(value)</code></td>
+<td>Ajouter une unité DCS à protéger (nom ou objet unité)</td>
 </tr>
 <tr>
-<td><code>:setRadius(m)</code></td>
-<td>Rayon d'interception autour de la cible protégée</td>
+<td><code>:setProtectedZone(value)</code></td>
+<td>Polygone (liste de points) délimitant la zone de protection</td>
 </tr>
 <tr>
-<td><code>:setMissileTypes(list)</code></td>
-<td>Liste des noms de types d'armes DCS à intercepter</td>
+<td><code>:start()</code></td>
+<td>Enregistrer le gestionnaire d'événements</td>
 </tr>
 <tr>
-<td><code>:setAllMissiles(bool)</code></td>
-<td>Si vrai, intercepter tous les missiles</td>
-</tr>
-<tr>
-<td><code>:setSilent(bool)</code></td>
-<td>Supprimer les messages d'interception</td>
-</tr>
-<tr>
-<td><code>:initialize()</code></td>
-<td>Activer le gardien</td>
+<td><code>:stop()</code></td>
+<td>Désenregistrer le gestionnaire d'événements</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Les missiles sont détruits quand ils entrent dans le rayon de protection</li>
-<li>Utiliser des listes de types de missiles spécifiques pour éviter d'intercepter les munitions amies</li>
-<li>Fonctionne pour les missiles anti-navires et sol-air</li>
+<li>Le module est expérimental : la destruction effective des missiles n'est pas encore implémentée</li>
+<li>Un gardien n'avertit que les cibles présentes dans sa zone protégée lorsqu'un tir est détecté</li>
+<li>Classes internes : <code>VeafMG_Weapon</code> (arme en vol), <code>VeafMG_Guardian</code> (observateur), <code>VeafMG_Protector</code> (protecteur, ébauche)</li>
 </ul>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>

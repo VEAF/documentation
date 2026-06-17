@@ -1084,13 +1084,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#builder-methods" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Builder Methods
+        How it works
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grass-runways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grass Runways
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#farps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARPs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FARPs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refilling-warehouses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refilling warehouses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1955,13 +1994,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#builder-methods" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Builder Methods
+        How it works
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grass-runways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grass Runways
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#farps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARPs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FARPs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refilling-warehouses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refilling warehouses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2016,62 +2094,44 @@
 <h2 id="enable">Enable<a class="headerlink" href="#enable" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafGrass</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
-<p>Then define each grass strip:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">VeafGrassRunway</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;FARP Whiskey&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setGroupName</span><span class="p">(</span><span class="s2">&quot;FARP-WHISKEY-GROUP&quot;</span><span class="p">)</span><span class="w">   </span><span class="c1">-- static objects defining the strip</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setRunwayHeading</span><span class="p">(</span><span class="mi">270</span><span class="p">)</span><span class="w">                </span><span class="c1">-- runway heading in degrees</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setAtcFrequency</span><span class="p">(</span><span class="mi">127500000</span><span class="p">)</span><span class="w">           </span><span class="c1">-- Hz (127.5 MHz)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setAtcModulation</span><span class="p">(</span><span class="nv">radio</span><span class="p">.</span><span class="py">modulation</span><span class="p">.</span><span class="py">AM</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setTacanChannel</span><span class="p">(</span><span class="mi">74</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;WHK&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- optional TACAN</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
-</code></pre></div>
+<p><code>veafGrass.initialize()</code> schedules <code>veafGrass.buildFarpsUnits</code> a few seconds after mission start (to let the other modules load) and registers a birth event handler. There is <strong>no builder class</strong>: everything is driven by the names you give to objects in the DCS Mission Editor.</p>
 <hr />
-<h2 id="builder-methods">Builder Methods<a class="headerlink" href="#builder-methods" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>:setName(name)</code></td>
-<td>Internal identifier and label</td>
-</tr>
-<tr>
-<td><code>:setGroupName(name)</code></td>
-<td>DCS group of static objects forming the strip</td>
-</tr>
-<tr>
-<td><code>:setRunwayHeading(deg)</code></td>
-<td>Primary runway magnetic heading</td>
-</tr>
-<tr>
-<td><code>:setAtcFrequency(hz)</code></td>
-<td>ATC radio frequency in Hz</td>
-</tr>
-<tr>
-<td><code>:setAtcModulation(mod)</code></td>
-<td><code>radio.modulation.AM</code> or <code>FM</code></td>
-</tr>
-<tr>
-<td><code>:setTacanChannel(ch, band, morse)</code></td>
-<td>TACAN channel, band (X/Y), Morse ID</td>
-</tr>
-<tr>
-<td><code>:initialize()</code></td>
-<td>Register the strip</td>
-</tr>
-</tbody>
-</table>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<p>At startup the module scans every unit in the mission and acts based on its name:</p>
+<ul>
+<li>Static objects whose <strong>name contains <code>GRASS_RUNWAY</code></strong> (case-insensitive) are used as the origin of a grass strip.</li>
+<li>FARP-type units (<code>FARP</code>, <code>FARP_SINGLE_01</code>, <code>Invisible FARP</code>, <code>FARP_T</code>, <code>SINGLE_HELIPAD</code>) whose <strong>group name starts with <code>FARP</code> (FARP followed by a space)</strong> receive FARP scenery.</li>
+</ul>
+<hr />
+<h2 id="grass-runways">Grass Runways<a class="headerlink" href="#grass-runways" title="Permanent link">&para;</a></h2>
+<p>To create a grass runway:</p>
+<ol>
+<li>Place a static object in the DCS Mission Editor at the right-hand end of the future strip, pointing down the runway axis.</li>
+<li>Name it so that its name <strong>contains <code>GRASS_RUNWAY</code></strong> (for example <code>GRASS_RUNWAY_WHISKEY</code>).</li>
+<li>Call <code>veafGrass.initialize()</code> at the module level.</li>
+</ol>
+<p>At startup, <code>veafGrass.buildGrassRunway(grassRunwayUnit, hiddenOnMFD)</code> builds the strip scenery (rows of plots on each side, a tower) from that object's position and heading.</p>
+<hr />
+<h2 id="farps">FARPs<a class="headerlink" href="#farps" title="Permanent link">&para;</a></h2>
+<p>To dress up a FARP:</p>
+<ol>
+<li>Place a FARP-type unit (<code>FARP</code>, <code>FARP_SINGLE_01</code>, <code>Invisible FARP</code>, <code>FARP_T</code> or <code>SINGLE_HELIPAD</code>).</li>
+<li>Name its <strong>group</strong> so that it starts with <code>FARP</code> (for example <code>FARP Whiskey</code>).</li>
+<li>Call <code>veafGrass.initialize()</code>.</li>
+</ol>
+<p>At startup, <code>veafGrass.buildFarpsUnits(hiddenOnMFD)</code> adds FARP scenery around each recognised unit (via <code>veafGrass.buildFarpUnits</code>).</p>
+<h3 id="refilling-warehouses">Refilling warehouses<a class="headerlink" href="#refilling-warehouses" title="Permanent link">&para;</a></h3>
+<p>Since DCS 2.8, spawned FARPs come up with an empty warehouse. The module provides functions to refill them:</p>
+<ul>
+<li><code>veafGrass.fillAllFarpWarehouses()</code> — browses all valid FARPs and grass strips and fills their warehouses.</li>
+<li><code>veafGrass.fillFarpWarehouse(farp)</code> — fills the warehouse of a given FARP.</li>
+</ul>
+<p>The deposited content is defined by the <code>veafGrass.WAREHOUSE_ITEMS</code> table. The <code>veafGrass.helicoptersOnFARPs</code> table lists the helicopter types added to FARP warehouses so they are available to the dynamic slot mechanism.</p>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>The "group" should contain the static objects (windsock, fuel trucks, etc.) that visually define the strip</li>
-<li>Position and heading are read from the group's lead unit</li>
-<li>ATC frequency is announced via the F10 menu and in radio messages</li>
+<li>The grass strip's position and heading are read from the static object named <code>...GRASS_RUNWAY...</code>.</li>
+<li>The generated scenery units are hidden on MFDs to avoid cluttering the display.</li>
 </ul>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
