@@ -1873,6 +1873,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#updating-to-a-newer-upstream-miz---update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updating to a newer upstream .miz (--update)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2006,6 +2017,28 @@ search.)</p>
   <code>custom_scripts</code> order and dependencies.</li>
 <li>Build and test the mission in DCS to confirm iso-functional behaviour.</li>
 </ul>
+<h2 id="updating-to-a-newer-upstream-miz---update">Updating to a newer upstream <code>.miz</code> (<code>--update</code>)<a class="headerlink" href="#updating-to-a-newer-upstream-miz---update" title="Permanent link">&para;</a></h2>
+<p>When the third-party author ships a new version (e.g. a Lekaa Foothold bump),
+re-import it into your already-adopted folder with <code>--update</code>:</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;new-upstream.miz&gt;<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
+</code></pre></div>
+<p>In update mode <code>convert-other</code>:</p>
+<ul>
+<li><strong>refreshes the third-party scripts</strong> (<code>src/scripts/*.lua</code>) and the <strong>mission
+  base</strong> (<code>src/mission/**</code>) from the fresh <code>.miz</code> — overwriting the previous
+  copies instead of keeping the old ones (a first-time adoption keeps existing
+  files; <code>--update</code> is the explicit "take the new version" switch);</li>
+<li><strong>re-applies versioned-name normalisation</strong> so <code>custom_scripts:</code> paths stay
+  stable across versions (e.g. <code>Moose_&lt;new-date&gt;.lua</code> → <code>Moose.lua</code>);</li>
+<li><strong>preserves your tuned <code>mission.yaml</code></strong> — it is never regenerated, so your
+  modules, <code>config_override</code>, and <code>custom_scripts</code> edits survive;</li>
+<li><strong>reports the scripts added, updated, and removed upstream</strong> in the conversion
+  report, so you can adjust <code>custom_scripts:</code> (and <code>strip_native_triggers:</code>) for
+  any new or vanished script. A script removed upstream is reported but left on
+  disk — drop it from <code>custom_scripts:</code> yourself if it is no longer needed.</li>
+</ul>
+<p>Review the report, reconcile <code>custom_scripts:</code> / <code>strip_native_triggers:</code> with
+any added/removed scripts, then rebuild and test in DCS.</p>
 
 
 

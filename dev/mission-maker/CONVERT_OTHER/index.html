@@ -1873,6 +1873,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mettre-à-jour-vers-un-miz-upstream-plus-récent---update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mettre à jour vers un .miz upstream plus récent (--update)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2009,6 +2020,31 @@ exécuté : la vérification est une recherche mot entier en Python pur.)</p>
 <li>Construisez puis testez la mission dans DCS pour confirmer le comportement
   iso-fonctionnel.</li>
 </ul>
+<h2 id="mettre-à-jour-vers-un-miz-upstream-plus-récent---update">Mettre à jour vers un <code>.miz</code> upstream plus récent (<code>--update</code>)<a class="headerlink" href="#mettre-à-jour-vers-un-miz-upstream-plus-récent---update" title="Permanent link">&para;</a></h2>
+<p>Quand l'auteur tiers publie une nouvelle version (p. ex. une montée de version
+Foothold de Lekaa), ré-importez-la dans votre dossier déjà adopté avec <code>--update</code> :</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;nouveau-upstream.miz&gt;<span class="w"> </span>&lt;dossier-sortie&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
+</code></pre></div>
+<p>En mode mise à jour, <code>convert-other</code> :</p>
+<ul>
+<li><strong>rafraîchit les scripts tiers</strong> (<code>src/scripts/*.lua</code>) et la <strong>base de mission</strong>
+  (<code>src/mission/**</code>) depuis le <code>.miz</code> frais — en écrasant les copies précédentes
+  au lieu de garder les anciennes (une première adoption conserve les fichiers
+  existants ; <code>--update</code> est l'interrupteur explicite « prends la nouvelle
+  version ») ;</li>
+<li><strong>ré-applique la normalisation des noms versionnés</strong> pour que les chemins
+  <code>custom_scripts:</code> restent stables d'une version à l'autre (p. ex.
+  <code>Moose_&lt;nouvelle-date&gt;.lua</code> → <code>Moose.lua</code>) ;</li>
+<li><strong>préserve votre <code>mission.yaml</code> réglé</strong> — il n'est jamais régénéré, donc vos
+  modules, votre <code>config_override</code> et vos <code>custom_scripts</code> survivent ;</li>
+<li><strong>rapporte les scripts ajoutés, mis à jour et retirés en amont</strong> dans le rapport
+  de conversion, pour que vous ajustiez <code>custom_scripts:</code> (et
+  <code>strip_native_triggers:</code>) pour tout script nouveau ou disparu. Un script retiré
+  en amont est signalé mais laissé sur disque — retirez-le de <code>custom_scripts:</code>
+  vous-même s'il ne sert plus.</li>
+</ul>
+<p>Relisez le rapport, réconciliez <code>custom_scripts:</code> / <code>strip_native_triggers:</code> avec
+les scripts ajoutés/retirés, puis reconstruisez et testez dans DCS.</p>
 
 
 
