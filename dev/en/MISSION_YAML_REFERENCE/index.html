@@ -1936,6 +1936,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#build_variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_variants:
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2466,6 +2477,17 @@
     <span class="md-ellipsis">
       
         profiles:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build_variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_variants:
       
     </span>
   </a>
@@ -3409,6 +3431,44 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <blockquote>
 <p>If the named profile does not exist in <code>mission.yaml</code>, a warning is emitted and the base config is used unchanged.</p>
 </blockquote>
+<hr />
+<h3 id="build_variants"><code>build_variants:</code><a class="headerlink" href="#build_variants" title="Permanent link">&para;</a></h3>
+<p>A list of build profiles to <strong>emit together</strong>: a single <code>veaf-tools build</code> then produces <strong>one <code>.miz</code> per variant</strong> (the "moulinette" goal — typically Modern and Cold-War from one mission folder, the variant being only a <strong>config</strong> difference). Each variant builds the full pipeline with its merged profile (see <a href="#profiles"><code>profiles:</code></a>) and its <code>.miz</code> is suffixed with the variant name (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build_variants</code></td>
+<td><code>list[str]</code></td>
+<td>Profile names (declared under <code>profiles:</code>) to each emit as a distinct <code>.miz</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules</strong>
+- Without <code>build_variants:</code> (or an empty list) → a single <code>.miz</code>, behaviour unchanged.
+- <code>--profile &lt;name&gt;</code> is the <strong>escape hatch</strong>: it forces building a single variant (that profile), unsuffixed — <code>build_variants:</code> is ignored.
+- Variants build in declaration order; each name must match a <code>profiles:</code> profile (otherwise a warning + base config, like <code>--profile</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MODERN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mission</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span>
+<span class="w">  </span><span class="nt">COLD_WAR</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mission</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
+
+<span class="nt">build_variants</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>          <span class="c"># produces &lt;base&gt;_MODERN.miz AND &lt;base&gt;_COLD_WAR.miz</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># produces only the MODERN variant (unsuffixed)</span>
+</code></pre></div>
 <hr />
 <h2 id="index-by-category">Index by category<a class="headerlink" href="#index-by-category" title="Permanent link">&para;</a></h2>
 <h3 id="core">Core<a class="headerlink" href="#core" title="Permanent link">&para;</a></h3>

@@ -1936,6 +1936,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#build_variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_variants:
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2433,6 +2444,17 @@
     <span class="md-ellipsis">
       
         profiles:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build_variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_variants:
       
     </span>
   </a>
@@ -3343,6 +3365,44 @@ Ces paramètres sont normalement définis via la CLI (<code>--dev-mode</code>, <
 <blockquote>
 <p>Si le profil nommé n'existe pas dans <code>mission.yaml</code>, un avertissement est émis et la config de base est utilisée sans modification.</p>
 </blockquote>
+<hr />
+<h3 id="build_variants"><code>build_variants:</code><a class="headerlink" href="#build_variants" title="Permanent link">&para;</a></h3>
+<p>Liste de profils de build à <strong>émettre ensemble</strong> : un seul <code>veaf-tools build</code> produit alors <strong>un <code>.miz</code> par variante</strong> (objectif « moulinette » — typiquement Modern et Cold-War d'un même dossier de mission, la variante n'étant qu'une différence de <strong>config</strong>). Chaque variante construit le pipeline complet avec son profil fusionné (voir <a href="#profiles"><code>profiles:</code></a>) et son <code>.miz</code> est suffixé du nom de variante (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build_variants</code></td>
+<td><code>list[str]</code></td>
+<td>Noms de profils (déclarés sous <code>profiles:</code>) à émettre chacun comme un <code>.miz</code> distinct.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Règles</strong>
+- Sans <code>build_variants:</code> (ou liste vide) → un seul <code>.miz</code>, comportement inchangé.
+- <code>--profile &lt;nom&gt;</code> est l'<strong>échappatoire</strong> : il force la construction d'une seule variante (ce profil), sans suffixe — <code>build_variants:</code> est ignoré.
+- Les variantes sont construites dans l'ordre déclaré ; chaque nom doit correspondre à un profil de <code>profiles:</code> (sinon avertissement + config de base, comme <code>--profile</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MODERN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mission</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span>
+<span class="w">  </span><span class="nt">COLD_WAR</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mission</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
+
+<span class="nt">build_variants</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>          <span class="c"># produit &lt;base&gt;_MODERN.miz ET &lt;base&gt;_COLD_WAR.miz</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># ne produit que la variante MODERN (sans suffixe)</span>
+</code></pre></div>
 <hr />
 <h2 id="index-par-catégorie">Index par catégorie<a class="headerlink" href="#index-par-catégorie" title="Permanent link">&para;</a></h2>
 <h3 id="essentiel--toute-mission">Essentiel — toute mission<a class="headerlink" href="#essentiel--toute-mission" title="Permanent link">&para;</a></h3>
