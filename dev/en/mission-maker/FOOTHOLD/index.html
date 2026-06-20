@@ -2258,11 +2258,14 @@ triggers (in order), and generates a <code>mission.yaml</code> with:</p>
 <p>Three adjustments, all <strong>config-only</strong> (the upstream scripts are never touched):</p>
 <h3 id="a-veaf-community-scripts-already-turned-off-by-the-profile">a. VEAF community scripts (already turned off by the profile)<a class="headerlink" href="#a-veaf-community-scripts-already-turned-off-by-the-profile" title="Permanent link">&para;</a></h3>
 <p>Foothold ships <strong>its own</strong> libraries (Moose, its own CTLD, AIEN, EWRS, Splash…)
-as <code>custom_scripts</code>. The VEAF community scripts must therefore stay OFF to avoid
-double-loading and conflicts. The <code>foothold</code> profile <strong>already scaffolds</strong> this
-block — nothing to do, just confirm it is present:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">community_scripts</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">mist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+as <code>custom_scripts</code>. The VEAF community scripts must therefore stay OFF — otherwise,
+for example, VEAF's AIEN clobbers Foothold's and the mission crashes. The <code>foothold</code>
+profile <strong>already scaffolds</strong> these disables <strong>inside the <code>modules:</code> block</strong> (not in
+a separate <code>community_scripts:</code> block, which is <em>ignored</em> once <code>modules:</code> exists) —
+nothing to do, just confirm they are present:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># … VEAF modules …</span>
+<span class="w">  </span><span class="c1"># ── Community scripts OFF ──</span>
 <span class="w">  </span><span class="nt">stts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">ctld</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">aien</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
@@ -2271,6 +2274,9 @@ block — nothing to do, just confirm it is present:</p>
 <span class="w">  </span><span class="nt">skynet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">tum</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<blockquote>
+<p>MiST is not in the list: it is a mandatory VEAF dependency (always loaded).</p>
+</blockquote>
 <h3 id="b-partial-override-of-the-foothold-config">b. Partial override of the Foothold config<a class="headerlink" href="#b-partial-override-of-the-foothold-config" title="Permanent link">&para;</a></h3>
 <p>Uncomment the <code>config_override:</code> block and put in <strong>only</strong> the globals you change
 (the rest of <code>Foothold Config.lua</code> stays untouched and updates by itself on the

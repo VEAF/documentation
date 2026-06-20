@@ -2259,11 +2259,14 @@ natifs (dans l'ordre), et génère un <code>mission.yaml</code> avec :</p>
 <p>Trois ajustements, tous <strong>config-only</strong> (on ne touche jamais aux scripts upstream) :</p>
 <h3 id="a-community-scripts-veaf-déjà-coupés-par-le-profil">a. Community scripts VEAF (déjà coupés par le profil)<a class="headerlink" href="#a-community-scripts-veaf-déjà-coupés-par-le-profil" title="Permanent link">&para;</a></h3>
 <p>Foothold embarque <strong>ses propres</strong> bibliothèques (Moose, sa CTLD, AIEN, EWRS,
-Splash…) en <code>custom_scripts</code>. Les community scripts VEAF doivent donc rester OFF
-pour éviter un double chargement et des conflits. Le profil <code>foothold</code> <strong>scaffolde
-déjà</strong> ce bloc — rien à faire, vérifiez juste qu'il est présent :</p>
-<div class="highlight"><pre><span></span><code><span class="nt">community_scripts</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">mist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+Splash…) en <code>custom_scripts</code>. Les community scripts VEAF doivent donc rester OFF —
+sinon, par exemple, l'AIEN de VEAF écrase celui de Foothold et la mission plante.
+Le profil <code>foothold</code> <strong>scaffolde déjà</strong> ces désactivations <strong>dans le bloc <code>modules:</code></strong>
+(et pas dans un bloc <code>community_scripts:</code> séparé, qui serait <em>ignoré</em> dès que
+<code>modules:</code> existe) — rien à faire, vérifiez juste leur présence :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># … modules VEAF …</span>
+<span class="w">  </span><span class="c1"># ── Community scripts OFF ──</span>
 <span class="w">  </span><span class="nt">stts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">ctld</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">aien</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
@@ -2272,6 +2275,10 @@ déjà</strong> ce bloc — rien à faire, vérifiez juste qu'il est présent :<
 <span class="w">  </span><span class="nt">skynet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">tum</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<blockquote>
+<p>MiST n'est pas dans la liste : c'est une dépendance VEAF obligatoire (toujours
+chargée).</p>
+</blockquote>
 <h3 id="b-override-partiel-de-la-config-foothold">b. Override partiel de la config Foothold<a class="headerlink" href="#b-override-partiel-de-la-config-foothold" title="Permanent link">&para;</a></h3>
 <p>Décommentez le bloc <code>config_override:</code> et n'y mettez <strong>que</strong> les globals que vous
 changez (le reste de <code>Foothold Config.lua</code> reste intact et se met à jour tout seul
