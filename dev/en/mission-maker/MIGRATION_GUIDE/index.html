@@ -2883,6 +2883,7 @@
 <li><strong><code>missionConfig.lua</code> migration</strong> — comments out <code>doFile()</code> calls that load VEAF scripts (the builder injects them automatically), wraps bare <code>veafXxx.initialize()</code> calls in <code>if veafXxx then … end</code> guards.</li>
 <li><strong>Pipeline config conversion</strong> — converts v5 config files (radio presets, waypoints, weather, aircraft groups) from Lua to v6 YAML format.</li>
 <li><strong><code>mission.yaml</code> generation</strong> — creates <code>mission.yaml</code> with the correct <code>modules:</code> and <code>pipeline:</code> sections.</li>
+<li><strong><code>src/mission/</code> promotion to v6</strong> — rewrites the exploded <code>.miz</code> (<code>src/mission/</code>) to v6: a base build migrates the legacy v5 triggers <strong>on disk</strong>, after backing up the original to <code>backup_v5/src/mission/</code>. On by default; all editor content (groups, routes, units) is preserved — only the legacy v5 trigger layer is purged. Use <code>--no-promote</code> to skip it.</li>
 <li><strong>Conversion report</strong> — saves <code>convert-v5-report.md</code> with all actions taken and any items requiring manual review.</li>
 </ul>
 <p>If your pipeline contains <code>realweather</code> weather versions, supply the ICAO airport code via the <code>--icao</code> option to embed it in the generated config. If you omit it, the tool prints a warning and you edit the generated config manually:</p>
@@ -2890,6 +2891,7 @@
 </code></pre></div>
 <p>Old DCS <code>DO SCRIPT FILE</code> triggers are removed automatically by <code>veaf-tools build</code> in the next step — no manual action needed.</p>
 <blockquote>
+<p><strong><code>src/mission/</code> promotion to v6 (on by default)</strong>: <code>convert-v5</code> finishes by rewriting <code>src/mission/</code> to v6 (base build + extract), making the v6 switch definitive and avoiding a re-migration of the v5 triggers on every build. The original is backed up to <code>backup_v5/src/mission/</code>. If you'd rather review the generated configs and build yourself first, disable the step with <code>--no-promote</code>; you can re-run <code>convert-v5</code> later to promote.</p>
 <p><strong>If you only need to migrate <code>missionConfig.lua</code></strong> without converting pipeline files, use <code>veaf-tools.exe migrate-config src\scripts\missionConfig.lua</code> directly.</p>
 </blockquote>
 <h4 id="4-check-removed-v5-patterns">4. Check removed v5 patterns<a class="headerlink" href="#4-check-removed-v5-patterns" title="Permanent link">&para;</a></h4>
