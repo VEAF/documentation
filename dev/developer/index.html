@@ -1697,6 +1697,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#artefacts-tiers-vendorés--veille-de-dérive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artefacts tiers vendorés — veille de dérive
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2174,6 +2185,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#artefacts-tiers-vendorés--veille-de-dérive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artefacts tiers vendorés — veille de dérive
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2292,6 +2314,12 @@
 <li><strong>Aide IDE (optionnel)</strong> — <code>.luarc.json</code> câble LuaLS sur l'annotation EmmyLua <code>dcs-world-api.lua</code> vendorée, pour l'autocomplétion et le diagnostic de signatures dans VSCode lors de l'écriture du Lua VEAF.</li>
 </ul>
 <p>Mettre à jour cette copie = un commit de bump explicite (re-télécharger les artefacts d'une release plus récente). La veille de dérive est gérée par le lot VENDORED-DRIFT-WATCH.</p>
+<h2 id="artefacts-tiers-vendorés--veille-de-dérive">Artefacts tiers vendorés — veille de dérive<a class="headerlink" href="#artefacts-tiers-vendorés--veille-de-dérive" title="Permanent link">&para;</a></h2>
+<p>On fige (commit d'une copie) plusieurs artefacts tiers : Lua communautaire (<code>mist</code>, <code>CTLD</code>, <code>CSAR</code>, <code>AIEN</code>, <code>TheUniversalMission</code>, <code>Skynet</code>, <code>Hercules_Cargo</code>, <code>DCS-SimpleTextToSpeech</code>), la lib Python <code>luadata</code>, des sons, et le schéma DCS ci-dessus. Le manifeste <strong><code>vendored.yaml</code></strong> (racine du repo) est la source de vérité unique des pins : par artefact il enregistre la <code>source</code> réelle (établie par <strong>comparaison de contenu</strong>, jamais en supposant qu'un fork VEAF est l'origine), l'<code>upstream</code>, le mode <code>vendoring</code> (<code>verbatim</code> / <code>adapted</code> / <code>fork</code> / <code>compiled</code>), et les <code>manual_steps</code> pour mettre à jour (re-copie vs rebase de fork / recompilation).</p>
+<ul>
+<li><strong><code>poetry run check-vendored</code></strong> compare chaque pin à l'upstream <strong>via l'API GitHub uniquement</strong> (aucun téléchargement d'artefact) — dernier tag de release ou dernier commit du fichier — et signale <code>drifted</code> / <code>up-to-date</code> / <code>manual</code> (sortie <code>--format table|json|markdown</code>, code de sortie ≠ 0 si quelque chose est actionnable).</li>
+<li>Le workflow planifié <strong><code>vendored-drift-watch.yml</code></strong> (cron hebdomadaire + <code>workflow_dispatch</code>) le lance et <strong>ouvre ou met à jour une seule issue récap</strong> listant les dérives + les rappels de re-vérification manuelle, chacun avec ses <code>manual_steps</code>. <strong>Notification seulement — jamais de mise à jour automatique</strong> (c'est la vision COMMUNITY-AUTOUPDATE).</li>
+</ul>
 
 
 

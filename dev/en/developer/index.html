@@ -1697,6 +1697,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#vendored-third-party-artifacts--drift-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vendored third-party artifacts — drift watch
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2174,6 +2185,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#vendored-third-party-artifacts--drift-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vendored third-party artifacts — drift watch
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2292,6 +2314,12 @@
 <li><strong>IDE help (optional)</strong> — <code>.luarc.json</code> wires LuaLS to the vendored <code>dcs-world-api.lua</code> EmmyLua annotations, for autocomplete and signature diagnostics in VSCode while writing VEAF Lua.</li>
 </ul>
 <p>Updating this copy is an explicit bump commit (re-download the artifacts from a newer release). Drift-watch is handled by the VENDORED-DRIFT-WATCH lot.</p>
+<h2 id="vendored-third-party-artifacts--drift-watch">Vendored third-party artifacts — drift watch<a class="headerlink" href="#vendored-third-party-artifacts--drift-watch" title="Permanent link">&para;</a></h2>
+<p>We freeze (commit a copy of) several third-party artifacts: community Lua (<code>mist</code>, <code>CTLD</code>, <code>CSAR</code>, <code>AIEN</code>, <code>TheUniversalMission</code>, <code>Skynet</code>, <code>Hercules_Cargo</code>, <code>DCS-SimpleTextToSpeech</code>), the Python <code>luadata</code> lib, sounds, and the DCS schema above. The <strong><code>vendored.yaml</code></strong> manifest (repo root) is the single source of truth for every pin: per artifact it records the real <code>source</code> (established by <strong>content comparison</strong>, never by assuming a VEAF fork is the origin), the <code>upstream</code>, the <code>vendoring</code> mode (<code>verbatim</code> / <code>adapted</code> / <code>fork</code> / <code>compiled</code>), and the <code>manual_steps</code> to update it (a plain re-copy vs a fork-rebase / recompile).</p>
+<ul>
+<li><strong><code>poetry run check-vendored</code></strong> compares each pin against upstream <strong>via the GitHub API only</strong> (no artifact download) — latest release tag or latest file commit — and reports <code>drifted</code> / <code>up-to-date</code> / <code>manual</code> (<code>--format table|json|markdown</code>, non-zero exit on anything actionable).</li>
+<li>The scheduled <strong><code>vendored-drift-watch.yml</code></strong> workflow (weekly cron + <code>workflow_dispatch</code>) runs it and <strong>opens or updates a single recap issue</strong> listing the drifts + the manual re-check reminders, each with its <code>manual_steps</code>. <strong>Notify only — never auto-update</strong> (that is the COMMUNITY-AUTOUPDATE vision).</li>
+</ul>
 
 
 
