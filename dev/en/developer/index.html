@@ -1678,6 +1678,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="External references — DCS API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendored-dcs-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vendored DCS schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2138,6 +2155,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="External references — DCS API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendored-dcs-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vendored DCS schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2251,6 +2285,13 @@
 <ul>
 <li><strong><a href="https://github.com/YoloWingPixie/dcs-world-schema">DCS World Schema</a></strong> (YoloWingPixie, MIT) — a complete YAML schema of the DCS World mission-scripting API, exported as JSON Schema, EmmyLua annotations (<code>dcs-world-api.lua</code>) and TypeScript/Go/Python types. A reference for DCS API signatures; useful for LuaLS linting and to extend our <code>test/lua/dcs_mocks.lua</code> stubs.</li>
 </ul>
+<h3 id="vendored-dcs-schema">Vendored DCS schema<a class="headerlink" href="#vendored-dcs-schema" title="Permanent link">&para;</a></h3>
+<p>A frozen copy (release <code>v0.3.5</code>) is vendored under <code>src/python/veaf-tools/veaf_libs/data/dcs-schema/</code> (upstream MIT <code>LICENSE</code> + a <code>NOTICE</code> recording the tag, URL and fetch date). It serves two purposes:</p>
+<ul>
+<li><strong>Mock-coverage audit</strong> — <code>poetry run audit-dcs-mocks</code> cross-references the schema's DCS functions, the calls actually made by <code>src/scripts/veaf/*.lua</code> and the stubs in <code>test/lua/dcs_mocks.lua</code>, then lists the DCS calls used by VEAF but not mocked (the gap we find too late today, when a test fails). Use <code>--format json</code>/<code>markdown</code> for machine-readable output. A non-blocking CI job publishes the report to the run summary.</li>
+<li><strong>IDE help (optional)</strong> — <code>.luarc.json</code> wires LuaLS to the vendored <code>dcs-world-api.lua</code> EmmyLua annotations, for autocomplete and signature diagnostics in VSCode while writing VEAF Lua.</li>
+</ul>
+<p>Updating this copy is an explicit bump commit (re-download the artifacts from a newer release). Drift-watch is handled by the VENDORED-DRIFT-WATCH lot.</p>
 
 
 

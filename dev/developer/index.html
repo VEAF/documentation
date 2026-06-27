@@ -1678,6 +1678,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Ressources externes — API DCS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schéma-dcs-vendoré" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma DCS vendoré
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2138,6 +2155,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Ressources externes — API DCS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schéma-dcs-vendoré" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma DCS vendoré
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2251,6 +2285,13 @@
 <ul>
 <li><strong><a href="https://github.com/YoloWingPixie/dcs-world-schema">DCS World Schema</a></strong> (YoloWingPixie, MIT) — schéma YAML complet de l'API de scripting de mission DCS World, exporté en JSON Schema, annotations EmmyLua (<code>dcs-world-api.lua</code>) et types TypeScript/Go/Python. Référence pour les signatures de l'API DCS ; utile pour le linting LuaLS et pour compléter nos stubs <code>test/lua/dcs_mocks.lua</code>.</li>
 </ul>
+<h3 id="schéma-dcs-vendoré">Schéma DCS vendoré<a class="headerlink" href="#schéma-dcs-vendoré" title="Permanent link">&para;</a></h3>
+<p>Une copie figée (release <code>v0.3.5</code>) est vendorée sous <code>src/python/veaf-tools/veaf_libs/data/dcs-schema/</code> (<code>LICENSE</code> MIT + <code>NOTICE</code> rappelant le tag, l'URL et la date de récupération). Elle sert à deux choses :</p>
+<ul>
+<li><strong>Audit de couverture des mocks</strong> — <code>poetry run audit-dcs-mocks</code> croise les fonctions DCS du schéma, les appels réellement faits par <code>src/scripts/veaf/*.lua</code> et les stubs de <code>test/lua/dcs_mocks.lua</code>, puis liste les appels DCS utilisés par VEAF mais non mockés (le trou qu'on découvre aujourd'hui trop tard, quand un test échoue). <code>--format json</code>/<code>markdown</code> pour la sortie machine. Un job CI non bloquant publie le rapport dans le résumé du run.</li>
+<li><strong>Aide IDE (optionnel)</strong> — <code>.luarc.json</code> câble LuaLS sur l'annotation EmmyLua <code>dcs-world-api.lua</code> vendorée, pour l'autocomplétion et le diagnostic de signatures dans VSCode lors de l'écriture du Lua VEAF.</li>
+</ul>
+<p>Mettre à jour cette copie = un commit de bump explicite (re-télécharger les artefacts d'une release plus récente). La veille de dérive est gérée par le lot VENDORED-DRIFT-WATCH.</p>
 
 
 
