@@ -1839,10 +1839,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema" class="md-nav__link">
+  <a href="#two-authoring-formats" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Schema
+        Two authoring formats
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema--channel_lists-recommended-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema — channel_lists (recommended model)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema--legacy-format-manual-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema — legacy format (manual override)
       
     </span>
   </a>
@@ -1922,7 +1944,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_1" class="md-nav__link">
+  <a href="#schema" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -1994,7 +2016,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_2" class="md-nav__link">
+  <a href="#schema_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2044,7 +2066,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_3" class="md-nav__link">
+  <a href="#schema_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2138,7 +2160,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_4" class="md-nav__link">
+  <a href="#schema_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2199,7 +2221,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_5" class="md-nav__link">
+  <a href="#schema_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2442,10 +2464,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema" class="md-nav__link">
+  <a href="#two-authoring-formats" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Schema
+        Two authoring formats
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema--channel_lists-recommended-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema — channel_lists (recommended model)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema--legacy-format-manual-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema — legacy format (manual override)
       
     </span>
   </a>
@@ -2525,7 +2569,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_1" class="md-nav__link">
+  <a href="#schema" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2597,7 +2641,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_2" class="md-nav__link">
+  <a href="#schema_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2647,7 +2691,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_3" class="md-nav__link">
+  <a href="#schema_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2741,7 +2785,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_4" class="md-nav__link">
+  <a href="#schema_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -2802,7 +2846,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema_5" class="md-nav__link">
+  <a href="#schema_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Schema
@@ -3000,8 +3044,15 @@
 <h3 id="default-file-location">Default file location<a class="headerlink" href="#default-file-location" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>&lt;mission-folder&gt;/src/presets.yaml
 </code></pre></div>
-<h3 id="schema">Schema<a class="headerlink" href="#schema" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># ── Channel definitions ────────────────────────────────────────────────────</span>
+<h3 id="two-authoring-formats">Two authoring formats<a class="headerlink" href="#two-authoring-formats" title="Permanent link">&para;</a></h3>
+<p>Since <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>presets.yaml</code> accepts two layers, which coexist:</p>
+<ul>
+<li><strong><code>channel_lists</code></strong> (recommended): the mission-maker declares their channel lists once per coalition, by functional <strong>Radio role</strong> (primary UHF, primary VHF, FM…), and the build automatically projects each list onto every aircraft type's physical radios, honouring that type's hardware quirks. One frequency change propagates to the whole fleet.</li>
+<li><strong><code>radios_collection</code> / <code>presets_collection</code> / <code>presets_assignments</code></strong> (legacy): the mission-maker defines each preset's content radio by radio, then explicitly assigns it per aircraft type. This format remains fully supported and now serves as the <strong>manual override mechanism</strong>: an explicit assignment in <code>presets_assignments</code> for a given type always wins over the <code>channel_lists</code> automatic projection — including the special value <code>none</code> (no injection at all).</li>
+</ul>
+<p>In both cases, <code>channels_collection</code> (the frequencies) stays the shared source for both formats.</p>
+<h3 id="schema--channel_lists-recommended-model">Schema — <code>channel_lists</code> (recommended model)<a class="headerlink" href="#schema--channel_lists-recommended-model" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ── Channel definitions (shared by both formats) ───────────────────────────</span>
 <span class="nt">channels_collection</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">&lt;set-name&gt;</span><span class="p">:</span><span class="w">                           </span><span class="c1"># logical group of channels (e.g. airports-caucasus)</span>
 <span class="w">    </span><span class="nt">&lt;channel-name&gt;</span><span class="p">:</span><span class="w">                     </span><span class="c1"># individual channel identifier</span>
@@ -3011,7 +3062,62 @@
 <span class="w">        </span><span class="nt">vhf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">131</span><span class="w">                        </span><span class="c1"># VHF-AM frequency (MHz)</span>
 <span class="w">        </span><span class="nt">fm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40.4</span><span class="w">                        </span><span class="c1"># FM frequency (MHz)</span>
 
-<span class="c1"># ── Radio definitions ──────────────────────────────────────────────────────</span>
+<span class="c1"># ── Channel lists by radio role ─────────────────────────────────────────────</span>
+<span class="nt">channel_lists</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                          </span><span class="c1"># blue | red</span>
+<span class="w">    </span><span class="nt">primary_1</span><span class="p">:</span><span class="w">                          </span><span class="c1"># 1st V/UHF radio (uhf band)</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
+<span class="w">      </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Batumi</span>
+<span class="w">    </span><span class="nt">primary_2</span><span class="p">:</span><span class="w">                          </span><span class="c1"># 2nd V/UHF radio (vhf band); also the warbirds&#39; single radio</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
+<span class="w">      </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Batumi</span>
+<span class="w">    </span><span class="nt">fm_supplement</span><span class="p">:</span><span class="w">                      </span><span class="c1"># FM as a 3rd radio, atop two primaries (e.g. A-10C)</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">fm_substitute</span><span class="p">:</span><span class="w">                      </span><span class="c1"># FM as the 2nd radio, replacing a 2nd primary (e.g. helicopters)</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">fm_secondary</span><span class="p">:</span><span class="w">                       </span><span class="c1"># a 2nd supplemental FM radio (e.g. OH-58D); defaults to a copy of fm_supplement</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">31</span>
+</code></pre></div>
+<p><strong>Radio roles</strong> (fixed vocabulary):</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Band</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary_1</code></td>
+<td>uhf</td>
+<td>1st V/UHF radio</td>
+</tr>
+<tr>
+<td><code>primary_2</code></td>
+<td>vhf</td>
+<td>2nd V/UHF radio; the warbirds' single radio</td>
+</tr>
+<tr>
+<td><code>fm_substitute</code></td>
+<td>fm</td>
+<td>FM replacing a 2nd primary radio (helicopters with a single primary radio)</td>
+</tr>
+<tr>
+<td><code>fm_supplement</code></td>
+<td>fm</td>
+<td>FM atop two primary radios (attack aircraft, e.g. A-10C)</td>
+</tr>
+<tr>
+<td><code>fm_secondary</code></td>
+<td>fm</td>
+<td>a 2nd supplemental FM radio (e.g. OH-58D); defaults to a copy of <code>fm_supplement</code> if not declared</td>
+</tr>
+</tbody>
+</table>
+<p>The build automatically assigns each aircraft type's physical radios to the role they match (deduced from their hardware frequency ranges), then projects that role's declared channel list onto it. A channel lacking a frequency for the role's band is silently dropped (reported under <code>validate</code>).</p>
+<h3 id="schema--legacy-format-manual-override">Schema — legacy format (manual override)<a class="headerlink" href="#schema--legacy-format-manual-override" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ── Radio definitions ──────────────────────────────────────────────────────</span>
 <span class="nt">radios_collection</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">&lt;set-name&gt;</span><span class="p">:</span><span class="w">                           </span><span class="c1"># logical group of radios (e.g. blue_radios)</span>
 <span class="w">    </span><span class="nt">&lt;radio-name&gt;</span><span class="p">:</span><span class="w">                       </span><span class="c1"># identifier referenced in presets_collection</span>
@@ -3032,12 +3138,13 @@
 <span class="w">        </span><span class="nt">radio_2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;radio-name&gt;</span>
 <span class="w">        </span><span class="nt">radio_3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;radio-name&gt;</span>
 
-<span class="c1"># ── Assignment rules ──────────────────────────────────────────────────────</span>
+<span class="c1"># ── Assignment rules (manual override of channel_lists) ────────────────────</span>
 <span class="nt">presets_assignments</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                          </span><span class="c1"># blue | red</span>
 <span class="w">    </span><span class="nt">&lt;category&gt;</span><span class="p">:</span><span class="w">                         </span><span class="c1"># plane | helicopter</span>
 <span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;preset-name&gt;</span><span class="w">               </span><span class="c1"># default preset for all aircraft of this type</span>
 <span class="w">      </span><span class="nt">&lt;aircraft-type&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;preset-name&gt;</span><span class="w">   </span><span class="c1"># override for a specific DCS type (e.g. A-10C_2) or a regex pattern (e.g. A[-]10C.*)</span>
+<span class="w">      </span><span class="nt">&lt;aircraft-type&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w">             </span><span class="c1"># disables all injection for this type (no channel_lists equivalent)</span>
 </code></pre></div>
 <h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">channels_collection</span><span class="p">:</span>
@@ -3048,30 +3155,13 @@
 <span class="w">        </span><span class="nt">uhf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">243.0</span>
 <span class="w">        </span><span class="nt">vhf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">121.5</span>
 
-<span class="nt">radios_collection</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">blue_radios</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">radio_uhf</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UHF</span>
-<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uhf</span>
-<span class="w">      </span><span class="nt">channels</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
-
-<span class="nt">presets_collection</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">blue_presets</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">blue_default</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Blue Default</span>
-<span class="w">      </span><span class="nt">radios</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">radio_1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">radio_uhf</span>
-
-<span class="nt">presets_assignments</span><span class="p">:</span>
+<span class="nt">channel_lists</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">blue</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">plane</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue_default</span>
-<span class="w">    </span><span class="nt">helicopter</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue_default</span>
+<span class="w">    </span><span class="nt">primary_1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
 </code></pre></div>
 <h3 id="channel-value">Channel value<a class="headerlink" href="#channel-value" title="Permanent link">&para;</a></h3>
-<p>A channel can be defined in three ways:</p>
+<p>A channel can be defined in three ways, in <code>channel_lists</code> as well as <code>radios_collection</code>:</p>
 <ul>
 <li>a <strong>channel name</strong> (alias resolved from <code>channels_collection</code>): <code>01: Guard</code>;</li>
 <li>a direct <strong>frequency</strong> (MHz): <code>01: 243.0</code>;</li>
@@ -3111,7 +3201,7 @@ To regenerate after a DCS update: <code>poetry run update-radio-specs</code></p>
 
 Also accepted: waypoints.yaml  (mission root)
 </code></pre></div>
-<h3 id="schema_1">Schema<a class="headerlink" href="#schema_1" title="Permanent link">&para;</a></h3>
+<h3 id="schema">Schema<a class="headerlink" href="#schema" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># ── Waypoint definitions ───────────────────────────────────────────────────</span>
 <span class="nt">waypoints</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">&lt;WAYPOINT_NAME&gt;</span><span class="p">:</span>
@@ -3198,7 +3288,7 @@ Also accepted: waypoints.yaml  (mission root)
 </tr>
 </tbody>
 </table>
-<h3 id="schema_2">Schema<a class="headerlink" href="#schema_2" title="Permanent link">&para;</a></h3>
+<h3 id="schema_1">Schema<a class="headerlink" href="#schema_1" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">airplanes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">coalitions</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                        </span><span class="c1"># blue | red</span>
@@ -3245,7 +3335,7 @@ Also accepted: waypoints.yaml  (mission root)
 
 Also accepted: versions.yaml  (mission root)
 </code></pre></div>
-<h3 id="schema_3">Schema<a class="headerlink" href="#schema_3" title="Permanent link">&para;</a></h3>
+<h3 id="schema_2">Schema<a class="headerlink" href="#schema_2" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># ── Geographic position for solar calculations ─────────────────────────────</span>
 <span class="nt">position</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span><span class="w">                        </span><span class="c1"># Decimal degrees, -90 to 90</span>
@@ -3466,7 +3556,7 @@ fuel / munitions and aircraft stock, and links each offered aircraft type to its
 template group via <code>linkDynTempl</code>.</p>
 <h3 id="default-file-location_3">Default file location<a class="headerlink" href="#default-file-location_3" title="Permanent link">&para;</a></h3>
 <p><code>src/warehouses.yaml</code> (auto-enabled when present; disable with <code>pipeline: { warehouses: false }</code>).</p>
-<h3 id="schema_4">Schema<a class="headerlink" href="#schema_4" title="Permanent link">&para;</a></h3>
+<h3 id="schema_3">Schema<a class="headerlink" href="#schema_3" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                 </span><span class="c1"># blue | red | neutral. An undeclared coalition is left untouched.</span>
 <span class="w">  </span><span class="nt">defaults</span><span class="p">:</span><span class="w">                  </span><span class="c1"># applied to every selected airport</span>
 <span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span><span class="w">          </span><span class="c1"># optional -&gt; unlimitedFuel</span>
@@ -3507,7 +3597,7 @@ template group via <code>linkDynTempl</code>.</p>
 <li>a brand-new alias is <strong>appended</strong>;</li>
 <li>an alias already present in the framework <strong>replaces</strong> that entry (override).</li>
 </ul>
-<h3 id="schema_5">Schema<a class="headerlink" href="#schema_5" title="Permanent link">&para;</a></h3>
+<h3 id="schema_4">Schema<a class="headerlink" href="#schema_4" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">units</span><span class="p">:</span><span class="w">                              </span><span class="c1"># -&gt; _spawn unit &lt;alias&gt;</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aliases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">myaaa</span><span class="p p-Indicator">]</span><span class="w">                </span><span class="c1"># one or more case-insensitive aliases</span>
 <span class="w">    </span><span class="nt">unitType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZSU-23-4 Shilka</span><span class="w">       </span><span class="c1"># a DCS unit type id</span>
