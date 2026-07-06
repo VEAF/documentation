@@ -1742,6 +1742,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#la-table-des-fréquences-daérodrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La table des fréquences d'aérodrome
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2152,6 +2163,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#la-table-des-fréquences-daérodrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La table des fréquences d'aérodrome
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2222,8 +2244,9 @@ veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--units
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--radio
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
 </code></pre></div>
-<p><code>--radio</code> et <code>--airdromes</code> sont exclus du run sans flag / <code>--all</code> : radio a des
-overlays manuels, et airdromes nécessite le chemin d'une install DCS locale.</p>
+<p><code>--radio</code>, <code>--airdromes</code> et <code>--airfield-freqs</code> sont exclus du run sans flag / <code>--all</code> :
+radio a des overlays manuels, et airdromes / airfield-freqs nécessitent le chemin
+d'une install DCS locale.</p>
 <p>Le datamine est cloné à un ref <strong>pinné</strong>
 (<code>veaf_build.dcs_data.datamine.DATAMINE_REF</code>), donc la génération est
 reproductible : relancer sur le même ref produit un artefact identique au
@@ -2367,6 +2390,17 @@ n'a pas d'install DCS) :</p>
 table ne couvre que les théâtres <strong>installés</strong>, et les cartes sans beacons (ex.
 Normandy, WW2) ne donnent aucune entrée — l'appelant retombe alors sur les ids. La
 résolution est insensible à la casse.</p>
+<h2 id="la-table-des-fréquences-daérodrome">La table des fréquences d'aérodrome<a class="headerlink" href="#la-table-des-fréquences-daérodrome" title="Permanent link">&para;</a></h2>
+<p><code>src/python/veaf-tools/veaf_libs/data/airfield-frequencies.yaml</code> associe, <strong>par
+théâtre</strong>, un nom d'aérodrome à ses <strong>fréquences ATC</strong> (<code>uhf</code>, <code>vhf</code>, <code>fm</code>, en MHz).
+Elle sert à <code>convert-v5</code> pour remplacer les fréquences en dur des presets par des
+alias lisibles (ex. <code>Gudauta</code>).</p>
+<p>Comme la table des aérodromes, elle est <strong>dépendante de l'install</strong> (source :
+<code>Mods/terrains/&lt;Théâtre&gt;/Radio.lua</code>, bloc <code>frequency</code> — <code>UHF</code>→<code>uhf</code>, <code>VHF_HI</code>→<code>vhf</code>,
+<code>VHF_LOW</code>→<code>fm</code>, HF ignoré) et <strong>non gardée par la CI</strong> :</p>
+<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airfield-freqs<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
+</code></pre></div>
+<p>Elle ne couvre que les théâtres <strong>installés</strong>.</p>
 
 
 
