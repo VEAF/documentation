@@ -1894,10 +1894,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iso-functional-v5-conversion-convert-v5" class="md-nav__link">
+  <a href="#v5-conversion-two-files-convert-v5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Iso-functional v5 conversion (convert-v5)
+        v5 conversion: two files (convert-v5)
       
     </span>
   </a>
@@ -2519,10 +2519,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iso-functional-v5-conversion-convert-v5" class="md-nav__link">
+  <a href="#v5-conversion-two-files-convert-v5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Iso-functional v5 conversion (convert-v5)
+        v5 conversion: two files (convert-v5)
       
     </span>
   </a>
@@ -3167,8 +3167,13 @@
 <li>a direct <strong>frequency</strong> (MHz): <code>01: 243.0</code>;</li>
 <li>an <strong>object</strong>: <code>01: { freq: 243.0, mod: 1 }</code>, where <code>mod</code> is the modulation (<code>0</code> = AM, <code>1</code> = FM). The <code>mod</code> field is optional; when absent, DCS uses its default.</li>
 </ul>
-<h3 id="iso-functional-v5-conversion-convert-v5">Iso-functional v5 conversion (<code>convert-v5</code>)<a class="headerlink" href="#iso-functional-v5-conversion-convert-v5" title="Permanent link">&para;</a></h3>
-<p>For <strong>standard</strong> radio layouts (channels that are a 1:1 image of a preset table), <code>convert-v5</code> produces a lightweight shared assignment. For <strong>bespoke</strong> layouts — channel rotation (Mi-24P channel 0 → preset #20), leading dummy channel / hardcoded frequencies / per-channel AM-FM modulations (AJS37), or extra radios — it emits a <strong>dedicated <code>{coalition}_{aircraft}</code> preset</strong> that reproduces the exact channel → frequency map (including <code>mod</code>), keeping the conversion iso-functional with the v5 mission (see ADR 0003).</p>
+<h3 id="v5-conversion-two-files-convert-v5">v5 conversion: two files (<code>convert-v5</code>)<a class="headerlink" href="#v5-conversion-two-files-convert-v5" title="Permanent link">&para;</a></h3>
+<p>Since <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>convert-v5</code> emits <strong>two</strong> preset files:</p>
+<ul>
+<li><strong><code>presets.yaml</code> — simplified plan (default, loaded by the build)</strong>: <code>channel_lists</code> alone (plus the rare overrides the packer cannot project at all). The build projects the crystallisation onto every aircraft automatically — warbirds included (VHF/FM-capable radios), dropping out-of-band channels. This is the file that fully exploits the preset-plan model.</li>
+<li><strong><code>presets.v5.yaml</code> — faithful copy (reference / rollback, NOT loaded by the build)</strong>: the complete iso-functional conversion (<code>channel_lists</code> + a dedicated <code>{coalition}_{aircraft}</code> preset per bespoke layout, reproducing the exact channel → frequency map and <code>mod</code>, see ADR 0003).</li>
+</ul>
+<p><strong>Caution</strong>: the plan may make some frequencies <strong>diverge</strong> from the original v5 mission — warbirds move to the coalition channels, and jets' fused/modulated radios (F-14, AV8B…) are projected at best effort (partially) until a dedicated <code>dcs-radio-layouts.yaml</code> entry exists for their type. <code>convert-v5</code> warns which aircraft are projected at best effort. <strong>Review and edit <code>presets.yaml</code></strong>; when in doubt, the exact v5 reproduction stays in <code>presets.v5.yaml</code> (copy it over <code>presets.yaml</code> to restore iso-functional behaviour).</p>
 <h3 id="frequency-validation">Frequency validation<a class="headerlink" href="#frequency-validation" title="Permanent link">&para;</a></h3>
 <p>At injection time, every frequency assigned to an aircraft is checked against the hardware specs of that aircraft's radios.</p>
 <p><strong>Default behaviour (normal build):</strong></p>
