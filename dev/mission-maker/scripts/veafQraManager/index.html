@@ -1353,6 +1353,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#menu-radio-de-contrôle-raccourci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio de contrôle (raccourci)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#exemple-minimal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2356,6 +2367,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#menu-radio-de-contrôle-raccourci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio de contrôle (raccourci)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#exemple-minimal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2801,8 +2823,36 @@
 <td>Non</td>
 <td>Nom de base aérienne DCS liée — QRA hors ligne si détruite</td>
 </tr>
+<tr>
+<td><code>radio_menu</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Générer automatiquement un sous-menu radio F10 de contrôle de cette QRA (voir ci-dessous)</td>
+</tr>
+<tr>
+<td><code>radio_menu_restrict_to_group</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Nom d'un groupe DCS ; le sous-menu généré n'apparaît que pour ce groupe</td>
+</tr>
 </tbody>
 </table>
+<h3 id="menu-radio-de-contrôle-raccourci">Menu radio de contrôle (raccourci)<a class="headerlink" href="#menu-radio-de-contrôle-raccourci" title="Permanent link">&para;</a></h3>
+<p>Les commandes de démarrage/arrêt d'une QRA <strong>n'existent pas</strong> dans le menu radio VEAF standard (contrairement à CombatZone ou Carrier). Pour donner au Mission Master un contrôle F10 sur une QRA, ajoutez <code>radio_menu: true</code> à sa définition : le framework génère automatiquement un sous-menu nommé d'après la QRA, avec les commandes « Démarrer &lt;nom&gt; » et « Arrêter &lt;nom&gt; ».</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Nord&quot;</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-NORD&quot;</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Nord&quot;</span>
+<span class="w">        </span><span class="nt">radio_menu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                         </span><span class="c1"># génère le sous-menu de contrôle</span>
+<span class="w">        </span><span class="nt">radio_menu_restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">  </span><span class="c1"># optionnel : réserver le sous-menu à ce groupe DCS</span>
+</code></pre></div>
+<p>C'est le <strong>mécanisme 1</strong> (raccourci par module). Pour un menu MM personnalisé, structuré ou combinant plusieurs actions (QRA, AirWaves, flags, messages, Lua), utilisez le <strong>mécanisme 2</strong> décrit dans <a href="../veafRadio/#menus-radio-en-yaml">veafRadio → Menus radio en YAML</a>.</p>
 <h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>

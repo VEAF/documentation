@@ -1375,6 +1375,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#menus-radio-en-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus radio en YAML
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menus radio en YAML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-de-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure de tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restrict_to_group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        restrict_to_group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vocabulaire-dactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vocabulaire d'actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constantes-dutilisation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2223,6 +2273,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#menus-radio-en-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus radio en YAML
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menus radio en YAML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-de-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure de tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restrict_to_group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        restrict_to_group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vocabulaire-dactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vocabulaire d'actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constantes-dutilisation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2473,6 +2573,112 @@
 <span class="w">  </span><span class="nv">groupIdJoueur</span>
 <span class="p">)</span>
 </code></pre></div>
+<blockquote>
+<p><strong>Lua vs YAML.</strong> <code>veafRadio.createUserMenu(configuration, groupId)</code> est du <strong>Lua</strong> : il se place dans <code>mission-script.lua</code>. Depuis ADR 0011, la même chose se déclare directement en YAML sous <code>modules.RADIO.user_menus</code> (voir <a href="#menus-radio-en-yaml">Menus radio en YAML</a>), sans écrire de Lua. L'action YAML <code>lua</code> reste le pont pour rattacher une fonction Lua écrite par le créateur de mission à un menu déclaré en YAML.</p>
+</blockquote>
+<hr />
+<h2 id="menus-radio-en-yaml">Menus radio en YAML<a class="headerlink" href="#menus-radio-en-yaml" title="Permanent link">&para;</a></h2>
+<p>Depuis ADR 0011, un créateur de mission peut déclarer un menu radio F10 personnalisé <strong>entièrement en YAML</strong>, sans écrire de Lua, sous <code>modules.RADIO.user_menus</code>. C'est le pendant déclaratif de <code>veafRadio.createUserMenu()</code> (voir l'encart ci-dessus), destiné notamment aux menus de contrôle du Mission Master (MM).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">user_menus</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">   </span><span class="c1"># optionnel : nom d&#39;un groupe DCS ; le menu n&#39;apparaît que pour ce groupe. Absent = menu global.</span>
+<span class="w">      </span><span class="nt">tree</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">menu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Contrôle</span><span class="nv"> </span><span class="s">QRA&quot;</span>
+<span class="w">          </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Démarrer</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Nord&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">qra.start</span><span class="p p-Indicator">,</span><span class="nt"> qra</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Nord&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Arrêter</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Nord&quot;</span><span class="p p-Indicator">,</span><span class="nt">  action</span><span class="p">:</span><span class="w"> </span><span class="nv">qra.stop</span><span class="p p-Indicator">,</span><span class="nt">  qra</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Nord&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">menu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Phases&quot;</span>
+<span class="w">          </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Activer</span><span class="nv"> </span><span class="s">Phase</span><span class="nv"> </span><span class="s">2&quot;</span><span class="p p-Indicator">,</span><span class="nt">   action</span><span class="p">:</span><span class="w"> </span><span class="nv">flag.on</span><span class="p p-Indicator">,</span><span class="nt">  flag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PHASE2&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Régler</span><span class="nv"> </span><span class="s">compteur&quot;</span><span class="p p-Indicator">,</span><span class="nt">   action</span><span class="p">:</span><span class="w"> </span><span class="nv">flag.set</span><span class="p p-Indicator">,</span><span class="nt"> flag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SCORE&quot;</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">100</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Message</span><span class="nv"> </span><span class="s">global&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">message</span><span class="p p-Indicator">,</span><span class="nt"> text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;La</span><span class="nv"> </span><span class="s">mission</span><span class="nv"> </span><span class="s">commence</span><span class="nv"> </span><span class="s">!&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Fonction</span><span class="nv"> </span><span class="s">custom&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">lua</span><span class="p p-Indicator">,</span><span class="nt"> function</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;maMission.demarrerTout&quot;</span><span class="p p-Indicator">,</span><span class="nt"> args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;alpha&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<h3 id="structure-de-tree">Structure de <code>tree</code><a class="headerlink" href="#structure-de-tree" title="Permanent link">&para;</a></h3>
+<p>Chaque nœud de <code>tree</code> est <strong>soit un sous-menu, soit une commande</strong> :</p>
+<ul>
+<li><strong>Sous-menu</strong> — <code>{ menu: "Titre", items: [ ... ] }</code>. Le champ <code>items</code> contient à son tour des sous-menus ou des commandes ; l'imbrication est récursive.</li>
+<li><strong>Commande</strong> — <code>{ command: "Libellé", action: &lt;verbe&gt;, &lt;clés cibles&gt; }</code>. Placée directement dans <code>tree</code> (premier niveau) ou dans les <code>items</code> d'un sous-menu.</li>
+</ul>
+<h3 id="restrict_to_group"><code>restrict_to_group</code><a class="headerlink" href="#restrict_to_group" title="Permanent link">&para;</a></h3>
+<p><code>restrict_to_group</code> est <strong>optionnel</strong>. S'il est présent, le menu n'apparaît que pour le groupe DCS nommé (par exemple un groupe de contrôle « MM Ctrl »). Absent, le menu est global et visible par tous les joueurs.</p>
+<h3 id="vocabulaire-dactions">Vocabulaire d'actions<a class="headerlink" href="#vocabulaire-dactions" title="Permanent link">&para;</a></h3>
+<p>Le vocabulaire d'actions est <strong>fermé</strong> (v1). Chaque <code>action</code> requiert les clés indiquées :</p>
+<table>
+<thead>
+<tr>
+<th><code>action</code></th>
+<th>Clés requises</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qra.start</code></td>
+<td><code>qra: "&lt;nom de la QRA&gt;"</code></td>
+<td>Met en ligne la QRA nommée</td>
+</tr>
+<tr>
+<td><code>qra.stop</code></td>
+<td><code>qra: "&lt;nom de la QRA&gt;"</code></td>
+<td>Met hors ligne la QRA nommée</td>
+</tr>
+<tr>
+<td><code>airwave.start</code></td>
+<td><code>airwave: "&lt;nom de la zone AirWave&gt;"</code></td>
+<td>Démarre la zone AirWave nommée</td>
+</tr>
+<tr>
+<td><code>airwave.stop</code></td>
+<td><code>airwave: "&lt;nom de la zone AirWave&gt;"</code></td>
+<td>Arrête la zone AirWave nommée</td>
+</tr>
+<tr>
+<td><code>airwave.reset</code></td>
+<td><code>airwave: "&lt;nom de la zone AirWave&gt;"</code></td>
+<td>Réinitialise la zone AirWave nommée</td>
+</tr>
+<tr>
+<td><code>flag.on</code></td>
+<td><code>flag: "&lt;nom ou numéro de flag&gt;"</code></td>
+<td>Met le flag à <code>1</code></td>
+</tr>
+<tr>
+<td><code>flag.off</code></td>
+<td><code>flag: "&lt;nom ou numéro de flag&gt;"</code></td>
+<td>Met le flag à <code>0</code></td>
+</tr>
+<tr>
+<td><code>flag.set</code></td>
+<td><code>flag</code>, <code>value</code> (entier)</td>
+<td>Met le flag à la valeur entière donnée</td>
+</tr>
+<tr>
+<td><code>flag.increment</code></td>
+<td><code>flag</code></td>
+<td>Incrémente le flag de <code>1</code></td>
+</tr>
+<tr>
+<td><code>flag.decrement</code></td>
+<td><code>flag</code></td>
+<td>Décrémente le flag de <code>1</code></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>text: "&lt;texte affiché&gt;"</code></td>
+<td>Affiche le texte à l'écran</td>
+</tr>
+<tr>
+<td><code>lua</code></td>
+<td><code>function: "&lt;nom.de.fonction&gt;"</code>, <code>args: [ ... ]</code> (optionnel)</td>
+<td>Appelle une fonction Lua du créateur de mission</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>L'action <code>lua</code> est le pont vers votre Lua.</strong> La fonction référencée par <code>function:</code> doit être définie par le créateur de mission dans <code>mission-script.lua</code>. Si elle est référencée en YAML mais <strong>absente</strong> du Lua de la mission, <strong>le build échoue</strong> (et <code>veaf-tools validate</code> la signale). C'est le moyen de rattacher une fonction Lua personnalisée à un menu déclaré en YAML.</p>
+</blockquote>
 <hr />
 <h2 id="constantes-dutilisation">Constantes d'utilisation<a class="headerlink" href="#constantes-dutilisation" title="Permanent link">&para;</a></h2>
 <p>Lors de l'ajout de commandes via l'API bas niveau, le paramètre <code>usage</code> contrôle qui voit l'entrée :</p>

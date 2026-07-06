@@ -1039,6 +1039,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#menu-radio-de-contrôle-raccourci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio de contrôle (raccourci)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#exemple-minimal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2272,6 +2283,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#menu-radio-de-contrôle-raccourci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio de contrôle (raccourci)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#exemple-minimal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2680,6 +2702,48 @@
 </tr>
 </tbody>
 </table>
+<h3 id="menu-radio-de-contrôle-raccourci">Menu radio de contrôle (raccourci)<a class="headerlink" href="#menu-radio-de-contrôle-raccourci" title="Permanent link">&para;</a></h3>
+<p>Les commandes de démarrage/arrêt/réinitialisation d'une zone AirWave <strong>n'existent pas</strong> dans le menu radio VEAF standard (contrairement à CombatZone ou Carrier). Pour donner au Mission Master un contrôle F10 sur une zone, ajoutez <code>radio_menu: true</code> à sa définition : le framework génère automatiquement un sous-menu nommé d'après la zone, avec les commandes « Démarrer &lt;nom&gt; », « Arrêter &lt;nom&gt; » et « Réinitialiser &lt;nom&gt; ».</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>radio_menu</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Générer automatiquement un sous-menu radio F10 de contrôle de cette zone</td>
+</tr>
+<tr>
+<td><code>radio_menu_restrict_to_group</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Nom d'un groupe DCS ; le sous-menu généré n'apparaît que pour ce groupe</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">AIRWAVES</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">airwave_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zone</span><span class="nv"> </span><span class="s">BVR&quot;</span>
+<span class="w">        </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">player_coalitions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">BLUE</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">trigger_zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-BVR&quot;</span>
+<span class="w">        </span><span class="nt">waves</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;su27-flight&quot;</span>
+<span class="w">        </span><span class="nt">radio_menu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                         </span><span class="c1"># génère le sous-menu de contrôle</span>
+<span class="w">        </span><span class="nt">radio_menu_restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">  </span><span class="c1"># optionnel : réserver le sous-menu à ce groupe DCS</span>
+</code></pre></div>
+<p>C'est le <strong>mécanisme 1</strong> (raccourci par module). Pour un menu MM personnalisé, structuré ou combinant plusieurs actions (AirWaves, QRA, flags, messages, Lua), utilisez le <strong>mécanisme 2</strong> décrit dans <a href="../veafRadio/#menus-radio-en-yaml">veafRadio → Menus radio en YAML</a>.</p>
 <h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">AIRWAVES</span><span class="p">:</span>
