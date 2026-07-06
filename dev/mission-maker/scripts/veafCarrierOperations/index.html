@@ -1117,6 +1117,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pedro-et-ravitailleur-s3b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pedro et ravitailleur S3B
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#menu-radio-f10" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2122,6 +2133,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pedro-et-ravitailleur-s3b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pedro et ravitailleur S3B
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#menu-radio-f10" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2179,6 +2201,9 @@
 <div class="highlight"><pre><span></span><code><span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p>Il n'existe pas d'API d'enregistrement par porte-avions. À l'<code>initialize()</code>, le module parcourt tous les groupes de la mission et enregistre automatiquement tout groupe contenant un type d'unité porte-avions connu (voir <a href="#types-de-porte-avions-supportés">Types de porte-avions supportés</a>). Sa route initiale, son camp et ses données ATC (TACAN/ICLS/LINK4/ACLS/tour, lues dans les tâches programmées du porte-avions) sont capturés à ce moment-là. Il suffit de placer un groupe porte-avions dans l'éditeur de mission — aucun appel de script n'est nécessaire.</p>
+<blockquote>
+<p>Le module gère aussi deux groupes de soutien optionnels (hélicoptère de sauvetage et ravitailleur de récupération), eux aussi détectés par leur nom — voir <a href="#pedro-et-ravitailleur-s3b">Pedro et ravitailleur S3B</a>.</p>
+</blockquote>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
 <p>Les opérations de porte-avions sont activées via l'ID de module <code>CARRIER</code>. Les porte-avions eux-mêmes ne sont pas déclarés dans <code>mission.yaml</code> : ils sont détectés automatiquement à partir des groupes porte-avions présents dans la mission (voir <a href="#activation">Activation</a>).</p>
@@ -2295,6 +2320,41 @@
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="pedro-et-ravitailleur-s3b">Pedro et ravitailleur S3B<a class="headerlink" href="#pedro-et-ravitailleur-s3b" title="Permanent link">&para;</a></h2>
+<p>En plus du porte-avions lui-même, le module gère automatiquement deux groupes de soutien, détectés <strong>par leur nom</strong> — aucun appel de script, aucune entrée <code>mission.yaml</code>. Il suffit de les placer dans l'éditeur de mission en respectant la convention de nommage.</p>
+<table>
+<thead>
+<tr>
+<th>Groupe</th>
+<th>Nom attendu</th>
+<th>Rôle</th>
+<th>Positionnement automatique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pedro</td>
+<td><code>&lt;nom unité porte-avions&gt; Pedro</code></td>
+<td>Hélicoptère de sauvetage (SH-60B)</td>
+<td>250 ft, 1 nm sur tribord, accompagne le porte-avions à la même vitesse et au même cap</td>
+</tr>
+<tr>
+<td>Ravitailleur S3B</td>
+<td><code>&lt;nom unité porte-avions&gt; S3B-Tanker</code></td>
+<td>Ravitailleur de récupération d'urgence (S-3B Tanker)</td>
+<td>8000 ft, 10 nm en arrière et 4 nm sur tribord, ravitaillement sur le BRC</td>
+</tr>
+</tbody>
+</table>
+<p><code>&lt;nom unité porte-avions&gt;</code> est le nom de l'<strong>unité</strong> porte-avions (identique au nom du groupe pour un porte-avions seul dans son groupe, le cas courant). Exemple : pour une unité porte-avions nommée <code>CVN-73</code>, placez les groupes <code>CVN-73 Pedro</code> et <code>CVN-73 S3B-Tanker</code>.</p>
+<p>Une fois nommés correctement, les deux groupes sont, à chaque cycle d'opérations :</p>
+<ul>
+<li><strong>détectés automatiquement</strong> ;</li>
+<li><strong>respawnés</strong> lorsqu'ils sont détruits ;</li>
+<li><strong>routés</strong> automatiquement, leur trajectoire étant (re)calculée pour rester en formation avec le porte-avions.</li>
+</ul>
+<p>Si un groupe est absent, le module l'ignore et journalise un avertissement — <code>No Pedro group named &lt;nom&gt;</code> ou <code>No Tanker group named &lt;nom&gt;</code> — sans bloquer les opérations.</p>
 <hr />
 <h2 id="menu-radio-f10">Menu radio F10<a class="headerlink" href="#menu-radio-f10" title="Permanent link">&para;</a></h2>
 <p>Le menu de premier niveau <strong>CARRIER OPS</strong> contient un sous-menu <strong>CARRIER OPS - BLUE</strong> et un sous-menu <strong>CARRIER OPS - RED</strong>, chacun avec un sous-menu par porte-avions (nommé d'après le groupe porte-avions). Lorsque les opérations sont arrêtées, chaque sous-menu de porte-avions propose :</p>

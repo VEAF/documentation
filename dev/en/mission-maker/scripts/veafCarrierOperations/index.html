@@ -1117,6 +1117,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pedro-and-s3b-recovery-tanker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pedro and S3B recovery tanker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#f10-radio-menu" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2122,6 +2133,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pedro-and-s3b-recovery-tanker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pedro and S3B recovery tanker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#f10-radio-menu" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2179,6 +2201,9 @@
 <div class="highlight"><pre><span></span><code><span class="nv">veafCarrierOperations</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p>There is no per-carrier registration API. On <code>initialize()</code>, the module scans every group in the mission and automatically registers any group containing a known carrier unit type (see <a href="#supported-carrier-types">Supported Carrier Types</a>). Its initial route, side and ATC data (TACAN/ICLS/LINK4/ACLS/tower, read from the carrier's programmed tasks) are captured at that point. Simply place a carrier group in the mission editor — no script call is needed.</p>
+<blockquote>
+<p>The module also manages two optional support groups (a rescue helicopter and a recovery tanker), likewise detected by name — see <a href="#pedro-and-s3b-recovery-tanker">Pedro and S3B recovery tanker</a>.</p>
+</blockquote>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
 <p>Carrier operations are enabled via the <code>CARRIER</code> module ID. Carriers themselves are not declared in <code>mission.yaml</code>: they are auto-discovered from the carrier groups present in the mission (see <a href="#enable">Enable</a>).</p>
@@ -2295,6 +2320,41 @@
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="pedro-and-s3b-recovery-tanker">Pedro and S3B recovery tanker<a class="headerlink" href="#pedro-and-s3b-recovery-tanker" title="Permanent link">&para;</a></h2>
+<p>Beyond the carrier itself, the module automatically manages two support groups, detected <strong>by name</strong> — no script call, no <code>mission.yaml</code> entry. Just place them in the mission editor following the naming convention.</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Expected name</th>
+<th>Role</th>
+<th>Automatic positioning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pedro</td>
+<td><code>&lt;carrier unit name&gt; Pedro</code></td>
+<td>Rescue helicopter (SH-60B)</td>
+<td>250 ft, 1 nm to starboard, riding along with the carrier at the same speed and heading</td>
+</tr>
+<tr>
+<td>S3B tanker</td>
+<td><code>&lt;carrier unit name&gt; S3B-Tanker</code></td>
+<td>Emergency recovery tanker (S-3B Tanker)</td>
+<td>8000 ft, 10 nm aft and 4 nm to starboard, refueling on the BRC</td>
+</tr>
+</tbody>
+</table>
+<p><code>&lt;carrier unit name&gt;</code> is the name of the carrier <strong>unit</strong> (identical to the group name for a carrier alone in its group, the common case). Example: for a carrier unit named <code>CVN-73</code>, place the groups <code>CVN-73 Pedro</code> and <code>CVN-73 S3B-Tanker</code>.</p>
+<p>Once named correctly, both groups are, on every operations cycle:</p>
+<ul>
+<li><strong>auto-detected</strong>;</li>
+<li><strong>respawned</strong> when destroyed;</li>
+<li><strong>routed</strong> automatically, their path (re)computed to stay in formation with the carrier.</li>
+</ul>
+<p>If a group is missing, the module ignores it and logs a warning — <code>No Pedro group named &lt;name&gt;</code> or <code>No Tanker group named &lt;name&gt;</code> — without blocking operations.</p>
 <hr />
 <h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
 <p>The top-level <strong>CARRIER OPS</strong> menu holds a <strong>CARRIER OPS - BLUE</strong> and a <strong>CARRIER OPS - RED</strong> submenu, each containing one submenu per carrier (named after the carrier group). When operations are stopped, each carrier submenu offers:</p>

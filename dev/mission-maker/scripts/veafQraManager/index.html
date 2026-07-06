@@ -3143,8 +3143,22 @@
 <ol>
 <li><strong>Créez une trigger zone</strong> — dessinez l'espace aérien à protéger. Donnez-lui un nom mémorable, par exemple <code>ZONE-QRA-NORTH</code>.</li>
 <li><strong>Placez le groupe QRA</strong> — créez le groupe d'aéronefs qui décollera. Mettez-le en <strong>Activation différée</strong> (<em>Late Activation</em>) pour qu'il n'apparaisse pas au démarrage (VEAF gère l'activation). Donnez au groupe un nom distinctif, par exemple <code>MiG-29 QRA North</code>.</li>
-<li><strong>Reliez le tout dans <code>mission-script.lua</code></strong> (ou via <code>mission.yaml</code> → <code>qra:</code> pour l'approche YAML recommandée) :</li>
+<li><strong>Reliez le tout</strong> — l'approche recommandée est <code>mission.yaml</code> (aucun Lua requis) ; l'équivalent <code>mission-script.lua</code> est donné ensuite.</li>
 </ol>
+<p><strong>Via <code>mission.yaml</code></strong> (recommandé) — ajoutez la définition sous <code>modules.QRA</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-North&quot;</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-NORTH&quot;</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">North&quot;</span>
+</code></pre></div>
+<blockquote>
+<p>Il n'y a pas d'équivalent YAML de <code>:start()</code> : toute définition listée sous <code>definitions:</code> est démarrée automatiquement au chargement de la mission. Pour retarder sa mise en ligne, utilisez <code>delay_before_activating</code> ; pour ne pas la démarrer, retirez-la (ou commentez-la) de <code>definitions:</code>.</p>
+</blockquote>
+<p><strong>Via <code>mission-script.lua</code></strong> — appelez le builder après <code>veafQraManager.initialize()</code>, puis <code>:start()</code> explicitement :</p>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;QRA-North&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-QRA-NORTH&quot;</span><span class="p">)</span>
