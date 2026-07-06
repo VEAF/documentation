@@ -925,6 +925,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configuring-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring the build pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#design-time-tools" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2628,6 +2639,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configuring-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring the build pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#design-time-tools" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2953,6 +2975,7 @@
 <li><a href="#creating-a-new-mission">Creating a New Mission</a></li>
 <li><a href="#how-scripts-are-loaded">How Scripts Are Loaded</a></li>
 <li><a href="#configuring-modules">Configuring Modules</a></li>
+<li><a href="#configuring-pipeline">Configuring the build pipeline</a></li>
 <li><a href="#design-time-tools">Design-Time Tools</a></li>
 <li><a href="#typical-build-workflow">Typical Build Workflow</a></li>
 <li><a href="#build-profiles">Build Profiles</a></li>
@@ -3229,6 +3252,47 @@ injection, and the <code>scripts/*.lua</code> files by script loading.</p>
 <span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;SHA-256</span><span class="nv"> </span><span class="s">hash</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">password&gt;&quot;</span>
 </code></pre></div>
+<hr />
+<h2 id="configuring-pipeline">Configuring the build pipeline<a class="headerlink" href="#configuring-pipeline" title="Permanent link">&para;</a></h2>
+<p>Beyond the Lua modules that run inside DCS, <code>veaf-tools build</code> can chain <strong>pipeline steps</strong> at build time: they inject data into the <code>.miz</code> (radio presets, waypoints, aircraft groups, weather variants) from separate YAML files placed in <code>src/</code>. Each step is <strong>auto-detected</strong> (it runs when its config file exists) and is controlled from the <code>pipeline:</code> section of <code>mission.yaml</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Role</th>
+<th>Detailed schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>presets</code></td>
+<td>Injects radio frequency presets into human-piloted aircraft groups and generates the associated kneeboard PNG plates</td>
+<td><a href="../../PIPELINE_REFERENCE/#step-1--radio-presets-presetsyaml">presets.yaml</a></td>
+</tr>
+<tr>
+<td><code>waypoints</code></td>
+<td>Injects waypoint templates (bullseye, navigation) into human aircraft groups</td>
+<td><a href="../../PIPELINE_REFERENCE/#step-2--waypoints-waypointsyaml">waypoints.yaml</a></td>
+</tr>
+<tr>
+<td><code>spawnable_aircrafts</code> / <code>dynamic_slot_templates</code></td>
+<td>Injects spawnable aircraft groups and dynamic-slot templates</td>
+<td><a href="../../PIPELINE_REFERENCE/#step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c">aircraft groups</a></td>
+</tr>
+<tr>
+<td><code>weather</code></td>
+<td>Creates several mission variants with different weather and time settings</td>
+<td><a href="../../PIPELINE_REFERENCE/#step-6--weather--time-versions-versionsyaml">versions.yaml</a></td>
+</tr>
+</tbody>
+</table>
+<p>Each step accepts the <strong>scalar</strong> form (<code>true</code>/<code>false</code> to enable or skip) or the <strong>mapping</strong> form (detailed options). For example, the <code>presets</code> step can keep the radio injection while suppressing the PNG plates globally:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">presets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># default true — inject radio presets</span>
+<span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># default true — when false, no kneeboard PNG is generated</span>
+</code></pre></div>
+<p>See the <a href="../../PIPELINE_REFERENCE/">Pipeline Reference</a> for the full schema of each step and the <a href="../../MISSION_YAML_REFERENCE/#pipeline">mission.yaml Reference</a> for all <code>pipeline:</code> fields.</p>
 <hr />
 <h2 id="design-time-tools">Design-Time Tools<a class="headerlink" href="#design-time-tools" title="Permanent link">&para;</a></h2>
 <p><code>veaf-tools.exe</code> manipulates <code>.miz</code> files at build time — before loading them in DCS.</p>

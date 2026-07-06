@@ -925,6 +925,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configuring-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configurer le pipeline de build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#outils-de-conception" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2628,6 +2639,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configuring-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configurer le pipeline de build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#outils-de-conception" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2953,6 +2975,7 @@
 <li><a href="#créer-une-nouvelle-mission">Créer une nouvelle mission</a></li>
 <li><a href="#comment-les-scripts-sont-chargés">Comment les scripts sont chargés</a></li>
 <li><a href="#configurer-les-modules">Configurer les modules</a></li>
+<li><a href="#configuring-pipeline">Configurer le pipeline de build</a></li>
 <li><a href="#outils-de-conception">Outils de conception</a></li>
 <li><a href="#workflow-de-build-typique">Workflow de build typique</a></li>
 <li><a href="#profils-de-build">Profils de build</a></li>
@@ -3229,6 +3252,47 @@ par injection dans le <code>.miz</code>, et les <code>scripts/*.lua</code> par l
 <span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;hachage</span><span class="nv"> </span><span class="s">SHA-256</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">votre</span><span class="nv"> </span><span class="s">mot</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">passe&gt;&quot;</span>
 </code></pre></div>
+<hr />
+<h2 id="configuring-pipeline">Configurer le pipeline de build<a class="headerlink" href="#configuring-pipeline" title="Permanent link">&para;</a></h2>
+<p>Au-delà des modules Lua exécutés dans DCS, <code>veaf-tools build</code> peut enchaîner des <strong>étapes de pipeline</strong> au moment du build : elles injectent des données dans le <code>.miz</code> (préréglages radio, points de cheminement, groupes d'aéronefs, variantes météo) à partir de fichiers YAML séparés placés dans <code>src/</code>. Chaque étape est <strong>auto-détectée</strong> (elle s'exécute si son fichier de config existe) et se pilote depuis la section <code>pipeline:</code> de <code>mission.yaml</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Rôle</th>
+<th>Schéma détaillé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>presets</code></td>
+<td>Injecte les préréglages de fréquences radio dans les groupes d'avions pilotés par des humains et génère les planchettes (kneeboards) PNG associées</td>
+<td><a href="../../PIPELINE_REFERENCE/#étape-1--préréglages-radio-presetsyaml">presets.yaml</a></td>
+</tr>
+<tr>
+<td><code>waypoints</code></td>
+<td>Injecte des modèles de points de cheminement (bullseye, navigation) dans les groupes d'avions humains</td>
+<td><a href="../../PIPELINE_REFERENCE/#étape-2--points-de-cheminement-waypointsyaml">waypoints.yaml</a></td>
+</tr>
+<tr>
+<td><code>spawnable_aircrafts</code> / <code>dynamic_slot_templates</code></td>
+<td>Injecte les groupes d'aéronefs spawnables et les modèles de slot dynamique</td>
+<td><a href="../../PIPELINE_REFERENCE/#étape-3--groupes-daéronefs--spawnables-b-et-modèles-de-slot-dynamique-c">groupes d'aéronefs</a></td>
+</tr>
+<tr>
+<td><code>weather</code></td>
+<td>Crée plusieurs variantes de mission avec différentes météos et heures</td>
+<td><a href="../../PIPELINE_REFERENCE/#étape-6--variantes-météo--horaire-versionsyaml">versions.yaml</a></td>
+</tr>
+</tbody>
+</table>
+<p>Chaque étape accepte la forme <strong>scalaire</strong> (<code>true</code>/<code>false</code> pour activer ou ignorer) ou la forme <strong>mapping</strong> (options détaillées). Par exemple, l'étape <code>presets</code> peut conserver l'injection radio tout en supprimant les planchettes PNG globalement :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">presets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># défaut true — injecte les préréglages radio</span>
+<span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># défaut true — si false, aucune planchette PNG n&#39;est générée</span>
+</code></pre></div>
+<p>Voir la <a href="../../PIPELINE_REFERENCE/">Référence Pipeline</a> pour le schéma complet de chaque étape et la <a href="../../MISSION_YAML_REFERENCE/#pipeline">Référence mission.yaml</a> pour tous les champs de <code>pipeline:</code>.</p>
 <hr />
 <h2 id="outils-de-conception">Outils de conception<a class="headerlink" href="#outils-de-conception" title="Permanent link">&para;</a></h2>
 <p><code>veaf-tools.exe</code> manipule les fichiers <code>.miz</code> au moment du build — avant de les charger dans DCS.</p>
