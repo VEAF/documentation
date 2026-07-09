@@ -1941,6 +1941,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#priorité-et-couleur-des-canaux-adr-0012" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priorité et couleur des canaux (ADR 0012)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planchettes-par-type-adr-0012" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planchettes par type (ADR 0012)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ajouter-ou-corriger-un-type" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1976,7 +1998,8 @@
 <p><strong>Public : développeurs.</strong> Comment le build projette les listes de canaux
 (<code>channel_lists</code>, le « mode plan » de <code>presets.yaml</code>) sur les radios physiques
 de chaque type d'aéronef, en tenant compte de ses particularités matérielles
-(canal 0, slots réservés, canaux spéciaux en dur, fusion de radios…).</p>
+(canal 0, slots réservés, canaux spéciaux en dur, mapping par clé…), plus la
+priorité/couleur des canaux et les planchettes par type (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>).</p>
 <p>Décision d'architecture : <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>
 (étend <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0003-presets-fidelity.md">ADR 0003</a>).
 Analyse amont : <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/exploration/RADIO-PRESETS-PER-TYPE-PROJECTION.md">exploration</a>.
@@ -2083,16 +2106,12 @@ résolus correctement par le défaut.</p>
 <td><strong>Rotation « canal 0 »</strong> : la dernière entrée de la liste passe en tête (slot 1), le reste suit en 2..N.</td>
 </tr>
 <tr>
-<td><code>fuse: [role_a, role_b, …]</code></td>
-<td><strong>Fusion de radios</strong> : concatène les listes de plusieurs rôles dans une seule radio physique, renumérotées à partir du slot 1.</td>
+<td><code>keyed_groups: {block_size, bases}</code></td>
+<td><strong>Mapping par clé</strong> (ADR 0012) : plusieurs rôles partagent une radio, chaque canal placé par sa <strong>clé</strong> (Group = <code>base + clé</code>, slot = <code>((Group − min_base) mod block_size) + 1</code>). Trous préservés, débordement rebouclé sur le slot 1 (le Group 100 du Viggen recycle le 20ᵉ canal de <code>primary_2</code>). Une clé au-delà de la part du rôle (<code>block_size / nb_rôles</code>) est droppée + <code>WARNING</code>.</td>
 </tr>
 <tr>
-<td><code>leading_dummy: {freq, mod}</code></td>
-<td><strong>Slot 1 réservé en dur</strong> (constante d'airframe, sans entrée de liste) ; le reste décale en slot 2.</td>
-</tr>
-<tr>
-<td><code>trailing_specials: [{freq, mod}, …]</code></td>
-<td><strong>Canaux spéciaux en dur</strong> ajoutés en fin de radio (constantes d'airframe, surchargeable par le mission-maker).</td>
+<td><code>trailing_specials: [{…}, …]</code></td>
+<td><strong>Canaux spéciaux en fin de radio.</strong> Chaque entrée est soit une <strong>constante d'airframe</strong> <code>{freq, mod}</code> (ex. E/F/G du Viggen), soit <strong>issue du plan</strong> <code>{priority: N}</code> — la fréquence vient du canal marqué <code>priority: N</code> (toujours AM ; slot vide si absent). <code>label</code> optionnel = nom pilote (Sp1, H…). Surchargeable via <code>presets_assignments</code>.</td>
 </tr>
 <tr>
 <td><code>reserved_head_slots: [idx, …]</code></td>
@@ -2105,9 +2124,10 @@ résolus correctement par le défaut.</p>
 </tbody>
 </table>
 <p><strong>Ordre de composition</strong> quand plusieurs primitives coexistent sur une radio :
-fusion (ou liste de rôle) → rotation <em>ou</em> slots de tête réservés (mutuellement
-exclusifs) → insertion du <code>leading_dummy</code> en slot 1 → ajout des
-<code>trailing_specials</code> → troncature à la <code>capacity</code>.</p>
+contenu de base (<code>keyed_groups</code> <em>ou</em> liste de rôle) → (chemin liste seulement)
+rotation <em>ou</em> slots de tête réservés (mutuellement exclusifs) → ajout des
+<code>trailing_specials</code> (au bord du bloc pour <code>keyed_groups</code>, sinon juste après le
+contenu) → troncature à la <code>capacity</code>.</p>
 <p>Le packer vérifie aussi le nombre de radios déclarées contre les specs réelles
 et logue un <code>WARNING</code> en cas de dérive (<code>_check_layout_radio_count</code>) — utile
 après un patch DCS qui change le nombre de radios d'un appareil.</p>
@@ -2141,13 +2161,35 @@ autres passent par le défaut par bande.</p>
 <tr>
 <td><strong>AJS37</strong> (Viggen)</td>
 <td>1 (V/UHF, 47 slots)</td>
-<td>L'entrée la plus complexe : <strong>fusion</strong> <code>primary_1</code>+<code>primary_2</code> + <strong><code>leading_dummy</code></strong> (« canal 100 » à 0) + <strong>7 <code>trailing_specials</code></strong> FR22/FR24 (dont GUARD 243).</td>
+<td><strong><code>keyed_groups</code></strong> (bloc Groups 100-139 : <code>primary_1</code> clés 1-20 → 101-120, <code>primary_2</code> clés 1-20 → 121-139 + recyclage du Group 100) + <strong>7 <code>trailing_specials</code></strong> slots 41-47 : Sp1/Sp2/Sp3 + H <strong>issus du plan</strong> (<code>priority</code> 1-4), E/F/G <strong>en dur</strong>. Casse volontairement l'iso-fonctionnalité ADR 0003 (slot 1 = 20ᵉ de <code>primary_2</code>, plus un mannequin).</td>
 </tr>
 </tbody>
 </table>
 <p>Le détail slot-par-slot de chaque type (avec les commentaires expliquant le
 pourquoi de chaque choix) vit directement dans
 <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/src/python/veaf-tools/presets_injector/data/dcs-radio-layouts.yaml"><code>dcs-radio-layouts.yaml</code></a>.</p>
+<h2 id="priorité-et-couleur-des-canaux-adr-0012">Priorité et couleur des canaux (ADR 0012)<a class="headerlink" href="#priorité-et-couleur-des-canaux-adr-0012" title="Permanent link">&para;</a></h2>
+<p>Deux attributs facultatifs, posés par le mission-maker sur une entrée du plan
+(<code>channel_lists</code>) :</p>
+<ul>
+<li><strong><code>priority: N</code></strong> — rang d'importance. <strong>Universel</strong> : le canal est stabiloté
+  sur toute planchette (marqueur <code>Pn</code> + cellules Name/Freq en orange). <strong>Routage
+  Viggen</strong> : les priorités 1-4 remplissent FR22 Special 1/2/3 + FR24 H (bande
+  selon le rôle : <code>primary_1</code>→UHF, <code>primary_2</code>→VHF ; toujours AM). Une seule
+  entrée par valeur ; <code>priority</code> n'est <strong>pas</strong> lu depuis <code>channels_collection</code>.</li>
+<li><strong><code>color: &lt;nom|#RRGGBBAA&gt;</code></strong> — regroupe visuellement des canaux en colorisant
+  la cellule <strong>CH</strong> (texte auto-contrasté). Accepté dans <code>channel_lists</code> <strong>et</strong>
+  <code>channels_collection</code> (l'entrée du plan surcharge la définition). Un nom
+  inconnu → <code>WARNING</code> + canal non colorisé. Décoratif, sans effet sur le packing.</li>
+</ul>
+<h2 id="planchettes-par-type-adr-0012">Planchettes par type (ADR 0012)<a class="headerlink" href="#planchettes-par-type-adr-0012" title="Permanent link">&para;</a></h2>
+<p>Le build génère <strong>une planchette par <code>(coalition, type)</code> réellement injecté</strong>,
+déposée dans le dossier DCS du type : <code>KNEEBOARD/&lt;type&gt;/IMAGES/presets.png</code>
+(suffixée <code>-&lt;coalition&gt;</code> seulement si le même type vole dans les deux camps).
+Remplace l'ancien dossier générique <code>KNEEBOARD/IMAGES/</code>. Le titre est le type
+concret. Les bandeaux radio sont <strong>gris</strong> (fini le codage rouge/vert/orange).
+Pour l'AJS-37, la colonne CH affiche les <strong>libellés pilote</strong> (<code>100</code>-<code>139</code> puis
+<code>Sp1/Sp2/Sp3/E/F/G/H</code>) et la radio (47 slots) est <strong>répartie sur deux colonnes</strong>.</p>
 <h2 id="ajouter-ou-corriger-un-type">Ajouter ou corriger un type<a class="headerlink" href="#ajouter-ou-corriger-un-type" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Identifier les radios physiques de l'appareil dans

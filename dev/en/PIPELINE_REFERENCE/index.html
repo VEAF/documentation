@@ -1894,6 +1894,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#channel-priority-and-colour-kneeboards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Channel priority and colour (kneeboards)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v5-conversion-two-files-convert-v5" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2512,6 +2523,17 @@
     <span class="md-ellipsis">
       
         Channel value
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#channel-priority-and-colour-kneeboards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Channel priority and colour (kneeboards)
       
     </span>
   </a>
@@ -3173,6 +3195,28 @@
 <li>a direct <strong>frequency</strong> (MHz): <code>01: 243.0</code>;</li>
 <li>an <strong>object</strong>: <code>01: { freq: 243.0, mod: 1 }</code>, where <code>mod</code> is the modulation (<code>0</code> = AM, <code>1</code> = FM). The <code>mod</code> field is optional; when absent, DCS uses its default.</li>
 </ul>
+<h3 id="channel-priority-and-colour-kneeboards">Channel priority and colour (kneeboards)<a class="headerlink" href="#channel-priority-and-colour-kneeboards" title="Permanent link">&para;</a></h3>
+<p>On a plan entry (object form), two optional attributes enrich the kneeboard
+(<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>):</p>
+<ul>
+<li><strong><code>priority: &lt;n&gt;</code></strong> — highlights the channel on <strong>every</strong> kneeboard (a <code>Pn</code>
+  marker + orange Name/Freq cells). On the <strong>AJS-37 (Viggen)</strong> only, priorities
+  1 to 4 additionally fill the FR22 Special 1/2/3 and FR24 H shortcut buttons.
+  Declare it <strong>in <code>channel_lists</code></strong> (one entry per priority value).</li>
+<li><strong><code>color: &lt;colour&gt;</code></strong> — colours the <strong>CH</strong> cell to group channels visually.
+  Value: a colour name (<code>green</code>, <code>blue</code>…) or <code>#RRGGBBAA</code>. Accepted in
+  <code>channel_lists</code> <strong>and</strong> in <code>channels_collection</code> (the plan entry wins over the
+  channel definition).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">channel_lists</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blue</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">primary_1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Guard</span><span class="p p-Indicator">,</span><span class="nt"> priority</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="nv">red</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># Pn + highlight; on the Viggen → FR24 H</span>
+<span class="w">      </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Texaco-1</span><span class="p p-Indicator">,</span><span class="nt"> priority</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">             </span><span class="c1"># on the Viggen → FR22 Special 1</span>
+<span class="w">      </span><span class="nt">03</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Batumi</span><span class="p p-Indicator">,</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#2E7D32&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">          </span><span class="c1"># visual grouping (CH cell)</span>
+</code></pre></div>
+<p>Kneeboards are generated <strong>one per injected aircraft type</strong>, in that type's DCS
+folder (<code>KNEEBOARD/&lt;type&gt;/IMAGES/</code>).</p>
 <h3 id="v5-conversion-two-files-convert-v5">v5 conversion: two files (<code>convert-v5</code>)<a class="headerlink" href="#v5-conversion-two-files-convert-v5" title="Permanent link">&para;</a></h3>
 <p>Since <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>convert-v5</code> emits <strong>two</strong> preset files:</p>
 <ul>

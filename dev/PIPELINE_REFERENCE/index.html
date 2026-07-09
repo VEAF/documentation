@@ -1894,6 +1894,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#priorité-et-couleur-dun-canal-planchettes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priorité et couleur d'un canal (planchettes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#conversion-v5--deux-fichiers-convert-v5" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2512,6 +2523,17 @@
     <span class="md-ellipsis">
       
         Valeur d'un canal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priorité-et-couleur-dun-canal-planchettes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priorité et couleur d'un canal (planchettes)
       
     </span>
   </a>
@@ -3173,6 +3195,29 @@
 <li>une <strong>fréquence</strong> directe (MHz) : <code>01: 243.0</code> ;</li>
 <li>un <strong>objet</strong> : <code>01: { freq: 243.0, mod: 1 }</code>, où <code>mod</code> est la modulation (<code>0</code> = AM, <code>1</code> = FM). Le champ <code>mod</code> est optionnel ; absent, DCS utilise sa valeur par défaut.</li>
 </ul>
+<h3 id="priorité-et-couleur-dun-canal-planchettes">Priorité et couleur d'un canal (planchettes)<a class="headerlink" href="#priorité-et-couleur-dun-canal-planchettes" title="Permanent link">&para;</a></h3>
+<p>Sur une entrée du plan (forme objet), deux attributs facultatifs enrichissent la
+planchette (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>) :</p>
+<ul>
+<li><strong><code>priority: &lt;n&gt;</code></strong> — met le canal en évidence sur <strong>toute</strong> planchette
+  (marqueur <code>Pn</code> + cellules Name/Freq stabilotées en orange). Sur l'<strong>AJS-37
+  (Viggen)</strong> uniquement, les priorités 1 à 4 alimentent en plus les raccourcis
+  FR22 Special 1/2/3 et FR24 H. À déclarer <strong>dans <code>channel_lists</code></strong> (une seule
+  entrée par valeur de priorité).</li>
+<li><strong><code>color: &lt;couleur&gt;</code></strong> — colorise la cellule <strong>CH</strong> pour regrouper visuellement
+  des canaux. Valeur : un nom de couleur (<code>green</code>, <code>blue</code>…) ou <code>#RRGGBBAA</code>.
+  Accepté dans <code>channel_lists</code> <strong>et</strong> dans <code>channels_collection</code> (l'entrée du
+  plan l'emporte sur la définition du canal).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">channel_lists</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blue</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">primary_1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Guard</span><span class="p p-Indicator">,</span><span class="nt"> priority</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="nv">red</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># Pn + stabilo ; sur Viggen → FR24 H</span>
+<span class="w">      </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Texaco-1</span><span class="p p-Indicator">,</span><span class="nt"> priority</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">             </span><span class="c1"># sur Viggen → FR22 Special 1</span>
+<span class="w">      </span><span class="nt">03</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Batumi</span><span class="p p-Indicator">,</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#2E7D32&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">          </span><span class="c1"># regroupement visuel (cellule CH)</span>
+</code></pre></div>
+<p>Les planchettes sont générées <strong>une par type d'aéronef</strong> injecté, dans le dossier
+DCS du type (<code>KNEEBOARD/&lt;type&gt;/IMAGES/</code>).</p>
 <h3 id="conversion-v5--deux-fichiers-convert-v5">Conversion v5 : deux fichiers (<code>convert-v5</code>)<a class="headerlink" href="#conversion-v5--deux-fichiers-convert-v5" title="Permanent link">&para;</a></h3>
 <p>Depuis <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>convert-v5</code> produit <strong>deux</strong> fichiers de préréglages :</p>
 <ul>
