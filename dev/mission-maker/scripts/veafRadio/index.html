@@ -1448,10 +1448,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#menus-paginés" class="md-nav__link">
+  <a href="#pagination-automatique" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Menus paginés
+        Pagination automatique
       
     </span>
   </a>
@@ -2346,10 +2346,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#menus-paginés" class="md-nav__link">
+  <a href="#pagination-automatique" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Menus paginés
+        Pagination automatique
       
     </span>
   </a>
@@ -2739,18 +2739,24 @@
 <span class="c1">-- Déclencher une reconstruction</span>
 <span class="nv">veafRadio</span><span class="p">.</span><span class="nf">refreshRadioMenu</span><span class="p">()</span>
 </code></pre></div>
-<h3 id="menus-paginés">Menus paginés<a class="headerlink" href="#menus-paginés" title="Permanent link">&para;</a></h3>
-<p>Quand un sous-menu compte plus d'environ 9 entrées (limite DCS), utilisez les helpers paginés :</p>
-<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addPaginatedRadioMenu</span><span class="p">(</span>
-<span class="w">  </span><span class="s2">&quot;All Zones&quot;</span><span class="p">,</span><span class="w">          </span><span class="c1">-- titre du menu</span>
-<span class="w">  </span><span class="nv">parentMenu</span><span class="p">,</span><span class="w">           </span><span class="c1">-- nœud du menu parent</span>
-<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">addCommandToSubmenu</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">myZonesList</span><span class="p">,</span><span class="w">          </span><span class="c1">-- table d&#39;éléments</span>
-<span class="w">  </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w">               </span><span class="c1">-- attribut utilisé comme titre d&#39;entrée</span>
-<span class="w">  </span><span class="s2">&quot;sortKey&quot;</span><span class="w">             </span><span class="c1">-- attribut utilisé pour le tri (optionnel)</span>
-<span class="p">)</span>
+<h3 id="pagination-automatique">Pagination automatique<a class="headerlink" href="#pagination-automatique" title="Permanent link">&para;</a></h3>
+<p>DCS tronque un sous-menu au-delà de <strong>10 entrées</strong>. Vous n'avez rien à faire :
+tout menu radio dépassant cette limite est <strong>paginé automatiquement au rendu</strong>.
+Les entrées en trop sont réparties dans des sous-menus « Page suivante » créés à la
+demande — inutile d'appeler un helper de pagination. Un menu qui tient en 10 entrées
+n'a pas de « Page suivante » (aucun slot gaspillé).</p>
+<p>Pour <strong>désactiver</strong> la pagination sur un menu précis :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">doNotPaginate</span><span class="p">(</span><span class="nv">monMenu</span><span class="p">)</span>
 </code></pre></div>
-<p>Des pages de 10 sont créées automatiquement avec un sous-menu « Page suivante ».</p>
+<p>Cas particulier : un menu contenant une commande <code>USAGE_ForUnit</code> (une entrée par
+appareil du groupe) désactive sa pagination automatiquement, avec un avertissement
+dans le log — le découpage global ne pourrait pas garantir la limite par groupe.</p>
+<blockquote>
+<p>La taille de page est fixée à la limite DCS (<code>veafRadio.MENU_PAGE_SIZE = 10</code>).
+Les helpers <code>addPaginatedRadioElements</code> / <code>addPaginatedRadioMenu</code> existent toujours
+(ils trient et insèrent les éléments) mais ne paginent plus eux-mêmes : le rendu
+s'en charge.</p>
+</blockquote>
 <hr />
 <h2 id="exemples-pratiques-de-fonctions-de-callback">Exemples pratiques de fonctions de callback<a class="headerlink" href="#exemples-pratiques-de-fonctions-de-callback" title="Permanent link">&para;</a></h2>
 <p>Les commandes d'un menu utilisateur appellent une fonction Lua. Voici des exemples courants :</p>

@@ -1448,10 +1448,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#paginated-menus" class="md-nav__link">
+  <a href="#automatic-pagination" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paginated menus
+        Automatic pagination
       
     </span>
   </a>
@@ -2346,10 +2346,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#paginated-menus" class="md-nav__link">
+  <a href="#automatic-pagination" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paginated menus
+        Automatic pagination
       
     </span>
   </a>
@@ -2739,18 +2739,23 @@
 <span class="c1">-- Trigger a rebuild</span>
 <span class="nv">veafRadio</span><span class="p">.</span><span class="nf">refreshRadioMenu</span><span class="p">()</span>
 </code></pre></div>
-<h3 id="paginated-menus">Paginated menus<a class="headerlink" href="#paginated-menus" title="Permanent link">&para;</a></h3>
-<p>When a submenu has more than ~9 entries (DCS limit), use paginated helpers:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addPaginatedRadioMenu</span><span class="p">(</span>
-<span class="w">  </span><span class="s2">&quot;All Zones&quot;</span><span class="p">,</span><span class="w">          </span><span class="c1">-- menu title</span>
-<span class="w">  </span><span class="nv">parentMenu</span><span class="p">,</span><span class="w">           </span><span class="c1">-- parent menu node</span>
-<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">addCommandToSubmenu</span><span class="p">,</span>
-<span class="w">  </span><span class="nv">myZonesList</span><span class="p">,</span><span class="w">          </span><span class="c1">-- table of elements</span>
-<span class="w">  </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w">               </span><span class="c1">-- attribute used as the entry title</span>
-<span class="w">  </span><span class="s2">&quot;sortKey&quot;</span><span class="w">             </span><span class="c1">-- attribute used for sorting (optional)</span>
-<span class="p">)</span>
+<h3 id="automatic-pagination">Automatic pagination<a class="headerlink" href="#automatic-pagination" title="Permanent link">&para;</a></h3>
+<p>DCS truncates a submenu past <strong>10 entries</strong>. You don't have to do anything: any
+radio menu that exceeds the limit is <strong>paginated automatically at render time</strong>.
+The overflow is spread across "Next page" submenus created on demand — no
+pagination helper call needed. A menu that fits in 10 entries gets no "Next page"
+(no wasted slot).</p>
+<p>To <strong>opt a specific menu out</strong> of pagination:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">doNotPaginate</span><span class="p">(</span><span class="nv">myMenu</span><span class="p">)</span>
 </code></pre></div>
-<p>Pages of 10 are created automatically with a "Next page" submenu.</p>
+<p>Special case: a menu holding a <code>USAGE_ForUnit</code> command (one entry per aircraft in
+the group) disables its own pagination automatically, with a log warning — a
+global split cannot guarantee the per-group limit.</p>
+<blockquote>
+<p>Page size is fixed at the DCS limit (<code>veafRadio.MENU_PAGE_SIZE = 10</code>). The
+<code>addPaginatedRadioElements</code> / <code>addPaginatedRadioMenu</code> helpers still exist (they
+sort and insert elements) but no longer paginate themselves: the render does.</p>
+</blockquote>
 <hr />
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="qra-startstop-from-a-custom-menu">QRA start/stop from a custom menu<a class="headerlink" href="#qra-startstop-from-a-custom-menu" title="Permanent link">&para;</a></h3>
