@@ -1,0 +1,3070 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.10.0/mission-maker/scripts/veafRadio/">
+      
+      
+        <link rel="prev" href="../veafQraManager/">
+      
+      
+        <link rel="next" href="../veafSanctuary/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../../en/mission-maker/scripts/veafRadio/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>veafRadio - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#veafradio--gestionnaire-du-menu-radio-f10" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              veafRadio
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/mission-maker/scripts/veafRadio/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer/" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#créer-un-menu-personnalisé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Créer un menu personnalisé
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer un menu personnalisé">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helpers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menus-spécifiques-à-un-groupe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus spécifiques à un groupe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menus-radio-en-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus radio en YAML
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menus radio en YAML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-de-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure de tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restrict_to_group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        restrict_to_group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vocabulaire-dactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vocabulaire d'actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constantes-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constantes d'utilisation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-bas-niveau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API bas niveau
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API bas niveau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pagination-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pagination automatique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-pratiques-de-fonctions-de-callback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples pratiques de fonctions de callback
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples pratiques de fonctions de callback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#démarrer--arrêter-une-qra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Démarrer / arrêter une QRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#détruire-un-groupe-par-son-nom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Détruire un groupe par son nom
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gérer-des-drapeaux-dcs-pour-déclencher-des-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gérer des drapeaux DCS (pour déclencher des triggers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commande-par-groupe-forgroup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commande par groupe (ForGroup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSecurity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI des outils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#créer-un-menu-personnalisé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Créer un menu personnalisé
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer un menu personnalisé">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helpers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menus-spécifiques-à-un-groupe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus spécifiques à un groupe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menus-radio-en-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus radio en YAML
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menus radio en YAML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-de-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure de tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restrict_to_group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        restrict_to_group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vocabulaire-dactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vocabulaire d'actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constantes-dutilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constantes d'utilisation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-bas-niveau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API bas niveau
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API bas niveau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pagination-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pagination automatique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-pratiques-de-fonctions-de-callback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples pratiques de fonctions de callback
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples pratiques de fonctions de callback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#démarrer--arrêter-une-qra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Démarrer / arrêter une QRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#détruire-un-groupe-par-son-nom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Détruire un groupe par son nom
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gérer-des-drapeaux-dcs-pour-déclencher-des-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gérer des drapeaux DCS (pour déclencher des triggers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commande-par-groupe-forgroup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commande par groupe (ForGroup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="veafradio--gestionnaire-du-menu-radio-f10">veafRadio — Gestionnaire du menu radio F10<a class="headerlink" href="#veafradio--gestionnaire-du-menu-radio-f10" title="Permanent link">&para;</a></h1>
+<p><strong>Module ID :</strong> <code>RADIO</code> | <strong>Fichier :</strong> <code>veafRadio.lua</code></p>
+<hr />
+<h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
+<p>Le menu "Autre" F10 de DCS est l'interface principale entre les joueurs et les scripts VEAF. <code>veafRadio</code> gère l'intégralité de cet arbre de menus : sa construction, son rafraîchissement à mesure que les groupes humains rejoignent et quittent la mission, et fournit des helpers qui permettent aux autres modules VEAF et aux créateurs de missions d'ajouter leurs propres entrées sans se soucier des limites du menu radio DCS.</p>
+<hr />
+<h2 id="activation">Activation<a class="headerlink" href="#activation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>Paramètres optionnels :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">initialize</span><span class="p">(</span>
+<span class="w">  </span><span class="nv">skipHelpMenus</span><span class="p">,</span><span class="w">   </span><span class="c1">-- bool : omettre les entrées &quot;Aide&quot; des menus intégrés (défaut false)</span>
+<span class="w">  </span><span class="nv">dontCreateMenus</span><span class="w">  </span><span class="c1">-- bool : supprimer toute création de menu radio DCS (défaut false)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Après l'initialisation de tous les modules, appeler :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">refreshRadioMenu</span><span class="p">()</span>
+</code></pre></div>
+<p>Cela reconstruit l'intégralité de l'arbre F10. L'appel est idempotent — il gère en interne un délai anti-rebond de 1 seconde.</p>
+<hr />
+<h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># défaut : true</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">        </span><span class="c1"># surcharge optionnelle du niveau de log</span>
+<span class="w">    </span><span class="nt">init</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">help_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># afficher les entrées &quot;Aide&quot; intégrées dans les menus radio (défaut : true)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td>Activer ou désactiver le module</td>
+</tr>
+<tr>
+<td><code>logLevel</code></td>
+<td>string</td>
+<td><em>(global)</em></td>
+<td>Non</td>
+<td>Surcharge du niveau de log par module</td>
+</tr>
+<tr>
+<td><code>init.help_menus</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td>Afficher les entrées "Aide" intégrées dans les menus radio générés</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<hr />
+<h2 id="créer-un-menu-personnalisé">Créer un menu personnalisé<a class="headerlink" href="#créer-un-menu-personnalisé" title="Permanent link">&para;</a></h2>
+<p>Utilisez <code>veafRadio.createUserMenu()</code> pour construire un arbre de menus structuré à partir d'une simple table Lua, en utilisant trois helpers :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">createUserMenu</span><span class="p">(</span>
+<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">mainmenu</span><span class="p">(</span>
+<span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;Gestion QRA&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Démarrer QRA Nord&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">maMission</span><span class="p">.</span><span class="py">demarrerQra</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Arrêter QRA Nord&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">maMission</span><span class="p">.</span><span class="py">arreterQra</span><span class="p">,</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">})</span>
+<span class="w">    </span><span class="p">),</span>
+<span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;Flags&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Activer Flag 10&quot;</span><span class="p">,</span><span class="w">   </span><span class="nv">trigger</span><span class="p">.</span><span class="py">action</span><span class="p">.</span><span class="py">setUserFlag</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;FLAG-10&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">      </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Désactiver Flag 10&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">trigger</span><span class="p">.</span><span class="py">action</span><span class="p">.</span><span class="py">setUserFlag</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;FLAG-10&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">})</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="w">  </span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="helpers">Helpers<a class="headerlink" href="#helpers" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Helper</th>
+<th>Signature</th>
+<th>Retourne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mainmenu(...)</code></td>
+<td>Arguments variables de <code>menu()</code> ou <code>command()</code></td>
+<td>Tableau plat pour <code>createUserMenu()</code></td>
+</tr>
+<tr>
+<td><code>menu(name, ...)</code></td>
+<td>Nom + arguments variables d'éléments imbriqués</td>
+<td>Nœud de sous-menu</td>
+</tr>
+<tr>
+<td><code>command(name, fn, params)</code></td>
+<td>Nom + fonction + table de paramètres</td>
+<td>Nœud de commande</td>
+</tr>
+</tbody>
+</table>
+<h3 id="menus-spécifiques-à-un-groupe">Menus spécifiques à un groupe<a class="headerlink" href="#menus-spécifiques-à-un-groupe" title="Permanent link">&para;</a></h3>
+<p>Passer un <code>groupId</code> comme second argument de <code>createUserMenu()</code> — le menu n'apparaîtra que pour ce groupe :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">groupIdJoueur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">101</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">createUserMenu</span><span class="p">(</span>
+<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">mainmenu</span><span class="p">(</span>
+<span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Demander ravitailleur&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">maMission</span><span class="p">.</span><span class="py">demanderRavitailleur</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">groupId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">groupIdJoueur</span><span class="w"> </span><span class="p">})</span>
+<span class="w">  </span><span class="p">),</span>
+<span class="w">  </span><span class="nv">groupIdJoueur</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Lua vs YAML.</strong> <code>veafRadio.createUserMenu(configuration, groupId)</code> est du <strong>Lua</strong> : il se place dans <code>mission-script.lua</code>. Depuis ADR 0011, la même chose se déclare directement en YAML sous <code>modules.RADIO.user_menus</code> (voir <a href="#menus-radio-en-yaml">Menus radio en YAML</a>), sans écrire de Lua. L'action YAML <code>lua</code> reste le pont pour rattacher une fonction Lua écrite par le créateur de mission à un menu déclaré en YAML.</p>
+</blockquote>
+<hr />
+<h2 id="menus-radio-en-yaml">Menus radio en YAML<a class="headerlink" href="#menus-radio-en-yaml" title="Permanent link">&para;</a></h2>
+<p>Depuis ADR 0011, un créateur de mission peut déclarer un menu radio F10 personnalisé <strong>entièrement en YAML</strong>, sans écrire de Lua, sous <code>modules.RADIO.user_menus</code>. C'est le pendant déclaratif de <code>veafRadio.createUserMenu()</code> (voir l'encart ci-dessus), destiné notamment aux menus de contrôle du Mission Master (MM).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">user_menus</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">   </span><span class="c1"># optionnel : nom d&#39;un groupe DCS ; le menu n&#39;apparaît que pour ce groupe. Absent = menu global.</span>
+<span class="w">      </span><span class="nt">tree</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">menu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Contrôle</span><span class="nv"> </span><span class="s">QRA&quot;</span>
+<span class="w">          </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Démarrer</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Nord&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">qra.start</span><span class="p p-Indicator">,</span><span class="nt"> qra</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Nord&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Arrêter</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Nord&quot;</span><span class="p p-Indicator">,</span><span class="nt">  action</span><span class="p">:</span><span class="w"> </span><span class="nv">qra.stop</span><span class="p p-Indicator">,</span><span class="nt">  qra</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Nord&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">menu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Phases&quot;</span>
+<span class="w">          </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Activer</span><span class="nv"> </span><span class="s">Phase</span><span class="nv"> </span><span class="s">2&quot;</span><span class="p p-Indicator">,</span><span class="nt">   action</span><span class="p">:</span><span class="w"> </span><span class="nv">flag.on</span><span class="p p-Indicator">,</span><span class="nt">  flag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PHASE2&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Régler</span><span class="nv"> </span><span class="s">compteur&quot;</span><span class="p p-Indicator">,</span><span class="nt">   action</span><span class="p">:</span><span class="w"> </span><span class="nv">flag.set</span><span class="p p-Indicator">,</span><span class="nt"> flag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SCORE&quot;</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">100</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Message</span><span class="nv"> </span><span class="s">global&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">message</span><span class="p p-Indicator">,</span><span class="nt"> text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;La</span><span class="nv"> </span><span class="s">mission</span><span class="nv"> </span><span class="s">commence</span><span class="nv"> </span><span class="s">!&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Fonction</span><span class="nv"> </span><span class="s">custom&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">lua</span><span class="p p-Indicator">,</span><span class="nt"> function</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;maMission.demarrerTout&quot;</span><span class="p p-Indicator">,</span><span class="nt"> args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;alpha&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<h3 id="structure-de-tree">Structure de <code>tree</code><a class="headerlink" href="#structure-de-tree" title="Permanent link">&para;</a></h3>
+<p>Chaque nœud de <code>tree</code> est <strong>soit un sous-menu, soit une commande</strong> :</p>
+<ul>
+<li><strong>Sous-menu</strong> — <code>{ menu: "Titre", items: [ ... ] }</code>. Le champ <code>items</code> contient à son tour des sous-menus ou des commandes ; l'imbrication est récursive.</li>
+<li><strong>Commande</strong> — <code>{ command: "Libellé", action: &lt;verbe&gt;, &lt;clés cibles&gt; }</code>. Placée directement dans <code>tree</code> (premier niveau) ou dans les <code>items</code> d'un sous-menu.</li>
+</ul>
+<h3 id="restrict_to_group"><code>restrict_to_group</code><a class="headerlink" href="#restrict_to_group" title="Permanent link">&para;</a></h3>
+<p><code>restrict_to_group</code> est <strong>optionnel</strong>. S'il est présent, le menu n'apparaît que pour le groupe DCS nommé (par exemple un groupe de contrôle « MM Ctrl »). Absent, le menu est global et visible par tous les joueurs.</p>
+<h3 id="vocabulaire-dactions">Vocabulaire d'actions<a class="headerlink" href="#vocabulaire-dactions" title="Permanent link">&para;</a></h3>
+<p>Le vocabulaire d'actions est <strong>fermé</strong> (v1). Chaque <code>action</code> requiert les clés indiquées :</p>
+<table>
+<thead>
+<tr>
+<th><code>action</code></th>
+<th>Clés requises</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qra.start</code></td>
+<td><code>qra: "&lt;nom de la QRA&gt;"</code></td>
+<td>Met en ligne la QRA nommée</td>
+</tr>
+<tr>
+<td><code>qra.stop</code></td>
+<td><code>qra: "&lt;nom de la QRA&gt;"</code></td>
+<td>Met hors ligne la QRA nommée</td>
+</tr>
+<tr>
+<td><code>airwave.start</code></td>
+<td><code>airwave: "&lt;nom de la zone AirWave&gt;"</code></td>
+<td>Démarre la zone AirWave nommée</td>
+</tr>
+<tr>
+<td><code>airwave.stop</code></td>
+<td><code>airwave: "&lt;nom de la zone AirWave&gt;"</code></td>
+<td>Arrête la zone AirWave nommée</td>
+</tr>
+<tr>
+<td><code>airwave.reset</code></td>
+<td><code>airwave: "&lt;nom de la zone AirWave&gt;"</code></td>
+<td>Réinitialise la zone AirWave nommée</td>
+</tr>
+<tr>
+<td><code>flag.on</code></td>
+<td><code>flag: "&lt;nom ou numéro de flag&gt;"</code></td>
+<td>Met le flag à <code>1</code></td>
+</tr>
+<tr>
+<td><code>flag.off</code></td>
+<td><code>flag: "&lt;nom ou numéro de flag&gt;"</code></td>
+<td>Met le flag à <code>0</code></td>
+</tr>
+<tr>
+<td><code>flag.set</code></td>
+<td><code>flag</code>, <code>value</code> (entier)</td>
+<td>Met le flag à la valeur entière donnée</td>
+</tr>
+<tr>
+<td><code>flag.increment</code></td>
+<td><code>flag</code></td>
+<td>Incrémente le flag de <code>1</code></td>
+</tr>
+<tr>
+<td><code>flag.decrement</code></td>
+<td><code>flag</code></td>
+<td>Décrémente le flag de <code>1</code></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>text: "&lt;texte affiché&gt;"</code></td>
+<td>Affiche le texte à l'écran</td>
+</tr>
+<tr>
+<td><code>lua</code></td>
+<td><code>function: "&lt;nom.de.fonction&gt;"</code>, <code>args: [ ... ]</code> (optionnel)</td>
+<td>Appelle une fonction Lua du créateur de mission</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>L'action <code>lua</code> est le pont vers votre Lua.</strong> La fonction référencée par <code>function:</code> doit être définie par le créateur de mission dans <code>mission-script.lua</code>. Si elle est référencée en YAML mais <strong>absente</strong> du Lua de la mission, <strong>le build échoue</strong> (et <code>veaf-tools validate</code> la signale). C'est le moyen de rattacher une fonction Lua personnalisée à un menu déclaré en YAML.</p>
+</blockquote>
+<hr />
+<h2 id="constantes-dutilisation">Constantes d'utilisation<a class="headerlink" href="#constantes-dutilisation" title="Permanent link">&para;</a></h2>
+<p>Lors de l'ajout de commandes via l'API bas niveau, le paramètre <code>usage</code> contrôle qui voit l'entrée :</p>
+<table>
+<thead>
+<tr>
+<th>Constante</th>
+<th>Valeur</th>
+<th>Comportement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafRadio.USAGE_ForAll</code></td>
+<td><code>0</code></td>
+<td>Entrée unique visible pour tous les joueurs</td>
+</tr>
+<tr>
+<td><code>veafRadio.USAGE_ForGroup</code></td>
+<td><code>1</code></td>
+<td>Une entrée par groupe humain connecté ; le nom de l'unité est ajouté automatiquement aux paramètres</td>
+</tr>
+<tr>
+<td><code>veafRadio.USAGE_ForUnit</code></td>
+<td><code>2</code></td>
+<td>Une entrée par pilote humain connecté ; le titre est préfixé avec l'indicatif du pilote</td>
+</tr>
+</tbody>
+</table>
+<p><code>USAGE_ForGroup</code> est idéal pour les commandes qui doivent répondre différemment par vol (ex : "Demander appui pour mon vol"). <code>USAGE_ForUnit</code> est pour les interactions individuelles par pilote.</p>
+<hr />
+<h2 id="api-bas-niveau">API bas niveau<a class="headerlink" href="#api-bas-niveau" title="Permanent link">&para;</a></h2>
+<p>Pour un contrôle plus fin, construire l'arbre de menus directement :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Ajouter un sous-menu de premier niveau sous la racine VEAF</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">menuMission</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addMenu</span><span class="p">(</span><span class="s2">&quot;Contrôle Mission&quot;</span><span class="p">)</span>
+
+<span class="c1">-- Ajouter un sous-menu à l&#39;intérieur</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">menuQra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addSubMenu</span><span class="p">(</span><span class="s2">&quot;QRA&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">menuMission</span><span class="p">)</span>
+
+<span class="c1">-- Ajouter une commande (ForAll)</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span>
+<span class="w">  </span><span class="s2">&quot;Démarrer QRA Nord&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">menuQra</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">maMission</span><span class="p">.</span><span class="py">demarrerQra</span><span class="p">,</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;QRA-NORD&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForAll</span>
+<span class="p">)</span>
+
+<span class="c1">-- Ajouter une commande sécurisée (nécessite /secu login)</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addSecuredCommandToSubmenu</span><span class="p">(</span>
+<span class="w">  </span><span class="s2">&quot;Arrêt d&#39;urgence&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">menuMission</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">maMission</span><span class="p">.</span><span class="py">arretUrgence</span><span class="p">,</span>
+<span class="w">  </span><span class="p">{},</span>
+<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForAll</span>
+<span class="p">)</span>
+
+<span class="c1">-- Déclencher une reconstruction</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">refreshRadioMenu</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="pagination-automatique">Pagination automatique<a class="headerlink" href="#pagination-automatique" title="Permanent link">&para;</a></h3>
+<p>DCS tronque un sous-menu au-delà de <strong>10 entrées</strong>. Vous n'avez rien à faire :
+tout menu radio dépassant cette limite est <strong>paginé automatiquement au rendu</strong>.
+Les entrées en trop sont réparties dans des sous-menus « Page suivante » créés à la
+demande — inutile d'appeler un helper de pagination. Un menu qui tient en 10 entrées
+n'a pas de « Page suivante » (aucun slot gaspillé).</p>
+<p>Pour <strong>désactiver</strong> la pagination sur un menu précis :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">doNotPaginate</span><span class="p">(</span><span class="nv">monMenu</span><span class="p">)</span>
+</code></pre></div>
+<p>Cas particulier : un menu contenant une commande <code>USAGE_ForUnit</code> (une entrée par
+appareil du groupe) désactive sa pagination automatiquement, avec un avertissement
+dans le log — le découpage global ne pourrait pas garantir la limite par groupe.</p>
+<blockquote>
+<p>La taille de page est fixée à la limite DCS (<code>veafRadio.MENU_PAGE_SIZE = 10</code>).
+Les helpers <code>addPaginatedRadioElements</code> / <code>addPaginatedRadioMenu</code> existent toujours
+(ils trient et insèrent les éléments) mais ne paginent plus eux-mêmes : le rendu
+s'en charge.</p>
+</blockquote>
+<hr />
+<h2 id="exemples-pratiques-de-fonctions-de-callback">Exemples pratiques de fonctions de callback<a class="headerlink" href="#exemples-pratiques-de-fonctions-de-callback" title="Permanent link">&para;</a></h2>
+<p>Les commandes d'un menu utilisateur appellent une fonction Lua. Voici des exemples courants :</p>
+<h3 id="démarrer--arrêter-une-qra">Démarrer / arrêter une QRA<a class="headerlink" href="#démarrer--arrêter-une-qra" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">_changeQra</span><span class="p">(</span><span class="nv">parameters</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">safeUnpack</span><span class="p">(</span><span class="nv">parameters</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">qra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafQraManager</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">qra</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">action</span><span class="p">:</span><span class="nf">upper</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;START&quot;</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">            </span><span class="nv">qra</span><span class="p">:</span><span class="nf">start</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+<span class="w">        </span><span class="kr">else</span>
+<span class="w">            </span><span class="nv">qra</span><span class="p">:</span><span class="nf">stop</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+<span class="w">        </span><span class="kr">end</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">createUserMenu</span><span class="p">(</span>
+<span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">mainmenu</span><span class="p">(</span>
+<span class="w">        </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;Gestion QRA&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;QRA Maykop&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;START&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">_changeQra</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;QRA-Maykop&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;start&quot;</span><span class="p">}),</span>
+<span class="w">                </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;STOP&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">_changeQra</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;QRA-Maykop&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;stop&quot;</span><span class="p">})</span>
+<span class="w">            </span><span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="détruire-un-groupe-par-son-nom">Détruire un groupe par son nom<a class="headerlink" href="#détruire-un-groupe-par-son-nom" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">_destroyGroup</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">type</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="p">{</span><span class="nv">name</span><span class="p">}</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">name</span>
+<span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">pairs</span><span class="p">(</span><span class="nv">names</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Group</span><span class="p">.</span><span class="nf">getByName</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span>
+<span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">            </span><span class="nv">g</span><span class="p">:</span><span class="nf">destroy</span><span class="p">()</span>
+<span class="w">            </span><span class="nv">trigger</span><span class="p">.</span><span class="py">action</span><span class="p">.</span><span class="nf">outText</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;Group %s destroyed&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">),</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">        </span><span class="kr">end</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">createUserMenu</span><span class="p">(</span>
+<span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">mainmenu</span><span class="p">(</span>
+<span class="w">        </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;Adversaires&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;CAP Maykop&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">_destroyGroup</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;CAP-Maykop&quot;</span><span class="p">),</span>
+<span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;SA-6 Minvody&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">_destroyGroup</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SA6-Minvody&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="gérer-des-drapeaux-dcs-pour-déclencher-des-triggers">Gérer des drapeaux DCS (pour déclencher des triggers)<a class="headerlink" href="#gérer-des-drapeaux-dcs-pour-déclencher-des-triggers" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">createUserMenu</span><span class="p">(</span>
+<span class="w">    </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">mainmenu</span><span class="p">(</span>
+<span class="w">        </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">menu</span><span class="p">(</span><span class="s2">&quot;Flags&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Flag ALPHA ON&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">veafSpawn</span><span class="p">.</span><span class="py">missionMasterSetFlagFromTable</span><span class="p">,</span><span class="w">       </span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span>
+<span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Flag ALPHA OFF&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">veafSpawn</span><span class="p">.</span><span class="py">missionMasterSetFlagFromTable</span><span class="p">,</span><span class="w">       </span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">}),</span>
+<span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Incrémenter 127&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">veafSpawn</span><span class="p">.</span><span class="py">missionMasterIncrementFlagValue</span><span class="p">,</span><span class="w">   </span><span class="mi">127</span><span class="p">),</span>
+<span class="w">            </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">command</span><span class="p">(</span><span class="s2">&quot;Décrémenter 127&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">veafSpawn</span><span class="p">.</span><span class="py">missionMasterDecrementFlagValue</span><span class="p">,</span><span class="w">   </span><span class="mi">127</span><span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="commande-par-groupe-forgroup">Commande par groupe (ForGroup)<a class="headerlink" href="#commande-par-groupe-forgroup" title="Permanent link">&para;</a></h3>
+<p>Une entrée « Demander un appui aérien » qui apparaît une fois par patrouille connectée, en passant automatiquement le nom d'unité de ce groupe :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span>
+<span class="w">  </span><span class="s2">&quot;Request CAS&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">supportMenu</span><span class="p">,</span>
+<span class="w">  </span><span class="nv">myCasDispatch</span><span class="p">,</span><span class="w">      </span><span class="c1">-- reçoit { originalParams, unitName } à l&#39;exécution</span>
+<span class="w">  </span><span class="p">{},</span>
+<span class="w">  </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForGroup</span>
+<span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../veafSecurity/">veafSecurity</a> — sécuriser les commandes avec <code>/secu login</code></li>
+<li><a href="../../../LUA_API_REFERENCE/">Référence API Lua</a> — API complète de <code>veafRadio</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>
