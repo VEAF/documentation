@@ -2251,7 +2251,8 @@ server's <code>Scripts/Hooks/</code> folder and loaded at DCS startup.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Drop <code>VEAF-Server-hook.lua</code> into <code>Saved Games/&lt;server&gt;/Scripts/Hooks/</code>.</li>
-<li>Drop <code>veaf-pilots.txt</code> next to it (or in a shared folder, see <code>pilotsDir</code>) and edit it.</li>
+<li>Drop <code>veaf-pilots.txt</code> into the <code>Saved Games/</code> root (one shared file serves every server by
+   default) and edit it. To use a per-server file instead, set <code>pilotsDir</code> (see below).</li>
 <li>Add a <code>VEAF-specific-server-hook.lua</code> in the same folder for per-server configuration
    (see below).</li>
 <li><strong>Restart the server</strong>: the hook is loaded at DCS startup; reloading the mission is not
@@ -2266,7 +2267,7 @@ below before the first event fires.</p>
 goes into <code>VEAF-specific-server-hook.lua</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veafServerHook</span><span class="p">.</span><span class="py">enableAutoRestart</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">  </span><span class="c1">-- restart watchdog + /restart /restartnow /halt commands</span>
 <span class="nv">veafServerHook</span><span class="p">.</span><span class="py">enableBufferingSocket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">  </span><span class="c1">-- telemetry to an API server (native BufferingSocket module)</span>
-<span class="nv">veafServerHook</span><span class="p">.</span><span class="py">pilotsDir</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span><span class="w">     </span><span class="c1">-- pilots file folder; default = the hook&#39;s folder</span>
+<span class="nv">veafServerHook</span><span class="p">.</span><span class="py">pilotsDir</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span><span class="w">     </span><span class="c1">-- pilots file folder; default = shared Saved Games/ root</span>
 </code></pre></div>
 <ul>
 <li><strong><code>enableAutoRestart</code></strong> (default <code>false</code>): enables the idle-server restart and the
@@ -2275,8 +2276,9 @@ goes into <code>VEAF-specific-server-hook.lua</code>:</p>
 <li><strong><code>enableBufferingSocket</code></strong> (default <code>false</code>): enables telemetry. The native <code>BufferingSocket</code>
   module is loaded defensively: if absent, telemetry is disabled automatically and the hook keeps
   working (no crash).</li>
-<li><strong><code>pilotsDir</code></strong> (default <code>nil</code> → the hook's folder): lets several servers share one
-  <code>veaf-pilots.txt</code> (e.g. the <code>Saved Games/</code> root).</li>
+<li><strong><code>pilotsDir</code></strong> (default <code>nil</code> → the shared <code>Saved Games/</code> root, one level above the server
+  folder): every VEAF server reads the same <code>veaf-pilots.txt</code> there with no per-server config.
+  Point it elsewhere (e.g. the hook's own folder) for a standalone server with its own list.</li>
 </ul>
 <p>The specific hook also carries <code>serverName</code> and <code>serverBotChannel</code> (injected into the mission).</p>
 <hr />
