@@ -2985,6 +2985,13 @@
 <td>Also trigger on enemy helicopters</td>
 </tr>
 <tr>
+<td><code>active_at_start</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the QRA is declared but <strong>not armed</strong> at start — it waits for a <code>qra.start</code> (radio menu) or a scripted call</td>
+</tr>
+<tr>
 <td><code>airport_link</code></td>
 <td>string</td>
 <td>—</td>
@@ -3374,7 +3381,7 @@
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">North&quot;</span>
 </code></pre></div>
 <blockquote>
-<p>There is no YAML equivalent of <code>:start()</code>: any definition listed under <code>definitions:</code> is started automatically when the mission loads. To delay when it comes online, use <code>delay_before_activating</code>; to leave it off, remove it (or comment it out) from <code>definitions:</code>.</p>
+<p>A definition listed under <code>definitions:</code> is started automatically when the mission loads. To delay when it comes online, use <code>delay_before_activating</code>; to declare it <strong>without arming it</strong>, set <code>active_at_start: false</code> (it can then be armed by a <code>qra.start</code> radio command or a script); to drop it entirely, remove it from <code>definitions:</code>.</p>
 </blockquote>
 <p><strong>Via <code>mission-script.lua</code></strong> — call the builder after <code>veafQraManager.initialize()</code>, then <code>:start()</code> explicitly:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
