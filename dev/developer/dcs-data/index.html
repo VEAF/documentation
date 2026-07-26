@@ -2388,15 +2388,15 @@ que le build n'ait jamais besoin d'une installation DCS.</p>
 </tr>
 <tr>
 <td><strong>Export in-DCS</strong></td>
-<td>exécuter <code>src/scripts/veaf/dcsDataExport.lua</code> depuis l'éditeur, committer le dump</td>
-<td>oui</td>
-<td>airbases, armements</td>
+<td>capturer un dump en jeu (dcs-bridge <code>world.getAirbases()</code>, ou <code>dcsDataExport.lua</code>), committer le dump</td>
+<td>oui (DCS lancé)</td>
+<td>table nom→id des aérodromes, armements</td>
 </tr>
 <tr>
 <td><strong>Fichiers d'install DCS</strong></td>
 <td>lire les fichiers terrain d'une install locale (<code>--dcs-path</code>)</td>
 <td>install seule (pas lancé)</td>
-<td>table nom→id des aérodromes</td>
+<td>fréquences ATC d'aérodrome</td>
 </tr>
 </tbody>
 </table>
@@ -2410,11 +2410,11 @@ une rare étape manuelle.</p>
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--countries
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--units<span class="w">    </span><span class="c1"># régénère dcsUnits.yaml ET dcsUnits.lua</span>
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--radio
-veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
+veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w">    </span><span class="c1"># fusionne les dumps runtime committés</span>
 </code></pre></div>
 <p><code>--radio</code>, <code>--airdromes</code> et <code>--airfield-freqs</code> sont exclus du run sans flag / <code>--all</code> :
-radio a des overlays manuels, et airdromes / airfield-freqs nécessitent le chemin
-d'une install DCS locale.</p>
+radio a des overlays manuels, airdromes fusionne des dumps runtime committés, et
+airfield-freqs nécessite le chemin d'une install DCS locale (<code>--dcs-path</code>).</p>
 <p>Le datamine est cloné à un ref <strong>pinné</strong>
 (<code>veaf_build.dcs_data.datamine.DATAMINE_REF</code>), donc la génération est
 reproductible : relancer sur le même ref produit un artefact identique au
@@ -2547,17 +2547,35 @@ ajoutez-le à la constante correspondante.</p>
 nom d'aérodrome à son <strong>id numérique</strong> — le même id que <code>airports[&lt;id&gt;]</code> dans les
 <code>warehouses</code> d'une mission. Elle permet aux outils de build (le câblage warehouse
 des Dynamic Slots) d'accepter des <strong>noms</strong> d'aérodrome au lieu d'ids bruts.</p>
-<p>Elle est <strong>dépendante de l'install</strong>, pas du datamine : la donnée n'existe que dans
-le <code>Mods/terrains/&lt;Théâtre&gt;/Beacons.lua</code> de chaque carte (les beacons d'aérodrome
-portent un <code>display_name</code> et un <code>beaconId = 'airfield&lt;ID&gt;_&lt;n&gt;'</code>). Elle est donc
-générée depuis une install DCS locale et <strong>non gardée par la CI</strong> (un runner CI
-n'a pas d'install DCS) :</p>
-<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
+<p>Elle est <strong>dépendante du runtime</strong> : la seule source du nom <em>exact</em> attendu par
+<code>Airbase.getByName</code> / le <code>airport_link</code> d'une QRA est DCS lui-même
+(<code>Airbase:getName()</code>). Les fichiers terrain portent des libellés de <em>beacon</em> ou d'<em>ATC</em>
+qui diffèrent du vrai nom (ex. <code>Abu_Ad_Duhur</code> au lieu de <code>Abu al-Duhur</code>) — d'où
+l'abandon de <code>Beacons.lua</code>. Chaque théâtre est capturé une fois en jeu avec le
+<strong>VEAF dcs-bridge</strong> (<code>world.getAirbases()</code>, catégorie <code>AIRDROME</code> — tout, aérodromes
+<strong>et</strong> héliports de terrain, tous des <code>Airbase</code> valides avec warehouse), et le dump
+committé sous <code>veaf_build/dcs_data/airdrome_dumps/&lt;Théâtre&gt;.tsv</code> (<code>&lt;id&gt;&lt;TAB&gt;&lt;nom&gt;</code>).
+<code>--airdromes</code> fusionne les dumps disponibles dans le YAML (un théâtre dumpé est
+régénéré, un théâtre sans dump est préservé — migration lot par lot). <strong>Non gardée
+par la CI</strong> (dépend d'un DCS lancé) :</p>
+<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes
 </code></pre></div>
+<p><strong>Capturer un dump (délégable, sans source ni Python).</strong> Deux commandes <code>veaf-tools</code>
+(donc dans l'exe distribué, utilisable par un non-dev) produisent le dump riche
+<code>airbase_dumps/&lt;theatre&gt;.json</code> (<code>{id, name, lat, lon, coalition}</code> par aérodrome) :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. injecter le pont dans n&#39;importe quelle mission du théâtre voulu</span>
+veaf-tools<span class="w"> </span>inject-bridge<span class="w"> </span>maMission.miz
+<span class="c1"># 2. lancer maMission.miz dans DCS + démarrer dcs-serve, puis capturer</span>
+veaf-tools<span class="w"> </span>capture-map<span class="w"> </span>--api-key<span class="w"> </span>&lt;token<span class="w"> </span>superuser<span class="w"> </span>dcs-serve&gt;<span class="w"> </span>--out-dir<span class="w"> </span>&lt;dossier&gt;
+</code></pre></div>
+<p>Le <code>veaf-build update-dcs-data --airdromes</code> (côté dev) fusionne ensuite les <code>.json</code>
+committés sous <code>veaf_build/dcs_data/airbase_dumps/</code> dans le YAML (projection nom→id).
+Procédure complète pour les assistants : <a href="../capture-airbases/">capture-airbases</a>. Voir
+le <a href="https://github.com/VEAF/VEAF-dcs-bridge">dépôt VEAF-dcs-bridge</a> pour <code>dcs-serve</code>.</p>
 <p><code>veaf_libs.dcs_airdromes.airdrome_id_for_name(theatre, name)</code> la lit. Limites : la
-table ne couvre que les théâtres <strong>installés</strong>, et les cartes sans beacons (ex.
-Normandy, WW2) ne donnent aucune entrée — l'appelant retombe alors sur les ids. La
-résolution est insensible à la casse.</p>
+table ne couvre que les théâtres <strong>déjà dumpés</strong> ; un théâtre non dumpé ne donne
+aucune entrée — l'appelant retombe alors sur les ids. La résolution est insensible
+à la casse.</p>
 <h2 id="la-table-des-fréquences-daérodrome">La table des fréquences d'aérodrome<a class="headerlink" href="#la-table-des-fréquences-daérodrome" title="Permanent link">&para;</a></h2>
 <p><code>src/python/veaf-tools/veaf_libs/data/airfield-frequencies.yaml</code> associe, <strong>par
 théâtre</strong>, un nom d'aérodrome à ses <strong>fréquences ATC</strong> (<code>uhf</code>, <code>vhf</code>, <code>fm</code>, en MHz).
