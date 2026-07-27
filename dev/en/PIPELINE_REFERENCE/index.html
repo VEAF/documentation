@@ -3238,7 +3238,7 @@
 <div class="highlight"><pre><span></span><code>&lt;mission-folder&gt;/src/presets.yaml
 </code></pre></div>
 <h3 id="two-authoring-formats">Two authoring formats<a class="headerlink" href="#two-authoring-formats" title="Permanent link">&para;</a></h3>
-<p>Since <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>presets.yaml</code> accepts two layers, which coexist:</p>
+<p>Since <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>presets.yaml</code> accepts two layers, which coexist:</p>
 <ul>
 <li><strong><code>channel_lists</code></strong> (recommended): the mission-maker declares their channel lists once per coalition, by functional <strong>Radio role</strong> (primary UHF, primary VHF, FM…), and the build automatically projects each list onto every aircraft type's physical radios, honouring that type's hardware quirks (channel 0, reserved slots, hardcoded special channels, radio fusion — AJS-37, OH-58D, Mi-24P…). One frequency change propagates to the whole fleet. These per-type projection rules are documented on the developer side: <a href="../developer/radio-preset-projection/">Per-type radio-preset projection</a>.</li>
 <li><strong><code>radios_collection</code> / <code>presets_collection</code> / <code>presets_assignments</code></strong> (legacy): the mission-maker defines each preset's content radio by radio, then explicitly assigns it per aircraft type. This format remains fully supported and now serves as the <strong>manual override mechanism</strong>: an explicit assignment in <code>presets_assignments</code> for a given type always wins over the <code>channel_lists</code> automatic projection — including the special value <code>none</code> (no injection at all).</li>
@@ -3365,7 +3365,7 @@
 </ul>
 <h3 id="channel-priority-and-colour-kneeboards">Channel priority and colour (kneeboards)<a class="headerlink" href="#channel-priority-and-colour-kneeboards" title="Permanent link">&para;</a></h3>
 <p>On a plan entry (object form), two optional attributes enrich the kneeboard
-(<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>):</p>
+(<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>):</p>
 <ul>
 <li><strong><code>priority: &lt;n&gt;</code></strong> — highlights the channel on <strong>every</strong> kneeboard (a <code>Pn</code>
   marker + orange Name/Freq cells). On the <strong>AJS-37 (Viggen)</strong> only, priorities
@@ -3386,7 +3386,7 @@
 <p>Kneeboards are generated <strong>one per injected aircraft type</strong>, in that type's DCS
 folder (<code>KNEEBOARD/&lt;type&gt;/IMAGES/</code>).</p>
 <h3 id="v5-conversion-two-files-convert-v5">v5 conversion: two files (<code>convert-v5</code>)<a class="headerlink" href="#v5-conversion-two-files-convert-v5" title="Permanent link">&para;</a></h3>
-<p>Since <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>convert-v5</code> emits <strong>two</strong> preset files:</p>
+<p>Since <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>convert-v5</code> emits <strong>two</strong> preset files:</p>
 <ul>
 <li><strong><code>presets.yaml</code> — simplified plan (default, loaded by the build)</strong>: <code>channel_lists</code> alone (plus the rare overrides the packer cannot project at all). The build projects the crystallisation onto every aircraft automatically — warbirds included (VHF/FM-capable radios), dropping out-of-band channels. This is the file that fully exploits the preset-plan model.</li>
 <li><strong><code>presets.v5.yaml</code> — faithful copy (reference / rollback, NOT loaded by the build)</strong>: the complete iso-functional conversion (<code>channel_lists</code> + a dedicated <code>{coalition}_{aircraft}</code> preset per bespoke layout, reproducing the exact channel → frequency map and <code>mod</code>, see ADR 0003).</li>
@@ -3479,7 +3479,7 @@ Also accepted: waypoints.yaml  (mission root)
 </code></pre></div>
 <hr />
 <h2 id="step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c">Step 3 — Aircraft Groups: spawnables (B) and dynamic-slot templates (C)<a class="headerlink" href="#step-3--aircraft-groups-spawnables-b-and-dynamic-slot-templates-c" title="Permanent link">&para;</a></h2>
-<p>Two <strong>distinct uses</strong> of injected aircraft groups, handled by two independent steps (see <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0002-aircraft-group-injection-sort-criteria.md">ADR 0002</a>):</p>
+<p>Two <strong>distinct uses</strong> of injected aircraft groups, handled by two independent steps (see <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0002-aircraft-group-injection-sort-criteria.md">ADR 0002</a>):</p>
 <ul>
 <li><strong>(B) spawnable groups</strong> (<code>src/spawnables.yaml</code>, step <code>spawnable_aircrafts</code>): real hidden groups cloned on demand in-game by <code>veafSpawn</code>. Marker: the <code>veafSpawn-</code> name prefix.</li>
 <li><strong>(C) dynamic-slot templates</strong> (<code>src/dynamic-slot-templates.yaml</code>, step <code>dynamic_slot_templates</code>): groups used as a <strong>model</strong> for DCS Dynamic Slots, consumed natively by the engine. Marker: the DCS flag <code>dynSpawnTemplate = true</code>.</li>
@@ -3808,7 +3808,7 @@ template group via <code>linkDynTempl</code>.</p>
 </code></pre></div>
 <hr />
 <h2 id="step-5--spawn-data-spawn-groupsyaml">Step 5 — Spawn Data (<code>spawn-groups.yaml</code>)<a class="headerlink" href="#step-5--spawn-data-spawn-groupsyaml" title="Permanent link">&para;</a></h2>
-<p>The <code>_spawn unit &lt;alias&gt;</code> and <code>_spawn group &lt;alias&gt;</code> marker commands rely on two Lua tables (<code>veafUnits.UnitsDatabase</code> and <code>veafUnits.GroupsDatabase</code>). Since v6 these are no longer hard-coded in <code>veafUnits.lua</code>: they come from YAML, are rendered to Lua, and <strong>injected into the <code>.miz</code> at mission build</strong> (DCS cannot parse YAML at runtime). See <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0005-spawn-data-externalization.md">ADR 0005</a>.</p>
+<p>The <code>_spawn unit &lt;alias&gt;</code> and <code>_spawn group &lt;alias&gt;</code> marker commands rely on two Lua tables (<code>veafUnits.UnitsDatabase</code> and <code>veafUnits.GroupsDatabase</code>). Since v6 these are no longer hard-coded in <code>veafUnits.lua</code>: they come from YAML, are rendered to Lua, and <strong>injected into the <code>.miz</code> at mission build</strong> (DCS cannot parse YAML at runtime). See <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0005-spawn-data-externalization.md">ADR 0005</a>.</p>
 <h3 id="always-on">Always on<a class="headerlink" href="#always-on" title="Permanent link">&para;</a></h3>
 <p>Unlike the other steps, <code>spawn_data</code> <strong>always</strong> runs (even with no mission file) because the framework spawn database must be embedded for <code>_spawn</code> to work. To disable it entirely:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>

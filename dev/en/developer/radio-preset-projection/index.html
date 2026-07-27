@@ -2322,10 +2322,10 @@
 (<code>channel_lists</code>, the "plan mode" of <code>presets.yaml</code>) onto each aircraft type's
 physical radios, honouring its hardware quirks (channel 0, reserved slots,
 hardcoded special channels, key-based mapping…), plus channel priority/colour
-and per-type kneeboards (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>).</p>
-<p>Architecture decision: <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>
-(extends <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/adr/0003-presets-fidelity.md">ADR 0003</a>).
-Upstream analysis: <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/docs/exploration/RADIO-PRESETS-PER-TYPE-PROJECTION.md">exploration</a>.
+and per-type kneeboards (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>).</p>
+<p>Architecture decision: <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>
+(extends <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0003-presets-fidelity.md">ADR 0003</a>).
+Upstream analysis: <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/exploration/RADIO-PRESETS-PER-TYPE-PROJECTION.md">exploration</a>.
 Mission-maker side: <a href="../../PIPELINE_REFERENCE/#two-authoring-formats"><code>presets.yaml</code> format</a>.</p>
 </blockquote>
 <hr />
@@ -2356,15 +2356,15 @@ always wins over the packer.</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/src/python/veaf-tools/presets_injector/data/dcs-radio-layouts.yaml"><code>dcs-radio-layouts.yaml</code></a></td>
+<td><a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/python/veaf-tools/presets_injector/data/dcs-radio-layouts.yaml"><code>dcs-radio-layouts.yaml</code></a></td>
 <td><strong>Source of truth for per-type quirks.</strong> Hand-maintained. Every primitive is documented in the file header.</td>
 </tr>
 <tr>
-<td><a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/src/python/veaf-tools/presets_injector/data/dcs-radio-specs.yaml"><code>dcs-radio-specs.yaml</code></a></td>
+<td><a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/python/veaf-tools/presets_injector/data/dcs-radio-specs.yaml"><code>dcs-radio-specs.yaml</code></a></td>
 <td>Per-physical-radio frequency ranges / modulation. <strong>Auto-generated</strong> (<code>poetry run update-radio-specs</code>), never hand-edit.</td>
 </tr>
 <tr>
-<td><a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/src/python/veaf-tools/presets_injector/presets_manager.py"><code>presets_manager.py</code></a></td>
+<td><a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/python/veaf-tools/presets_injector/presets_manager.py"><code>presets_manager.py</code></a></td>
 <td>The packer and its rules: <code>_assign_roles_by_position</code> (band-based default), <code>_check_layout_radio_count</code> (count guard), <code>_channel_list_for_role</code> (role resolution).</td>
 </tr>
 </tbody>
@@ -2489,7 +2489,7 @@ through the band-based default.</p>
 </table>
 <p>The slot-by-slot detail of each type (with comments explaining every choice)
 lives directly in
-<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/src/python/veaf-tools/presets_injector/data/dcs-radio-layouts.yaml"><code>dcs-radio-layouts.yaml</code></a>.</p>
+<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/python/veaf-tools/presets_injector/data/dcs-radio-layouts.yaml"><code>dcs-radio-layouts.yaml</code></a>.</p>
 <h2 id="channel-priority-and-colour-adr-0012">Channel priority and colour (ADR 0012)<a class="headerlink" href="#channel-priority-and-colour-adr-0012" title="Permanent link">&para;</a></h2>
 <p>Two optional attributes the mission-maker sets on a plan entry (<code>channel_lists</code>):</p>
 <ul>
@@ -2514,14 +2514,14 @@ radio is <strong>split across two columns</strong>.</p>
 <h2 id="adding-or-fixing-a-type">Adding or fixing a type<a class="headerlink" href="#adding-or-fixing-a-type" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Identify the aircraft's physical radios in
-   <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop-v6/src/python/veaf-tools/presets_injector/data/dcs-radio-specs.yaml"><code>dcs-radio-specs.yaml</code></a>
+   <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/python/veaf-tools/presets_injector/data/dcs-radio-specs.yaml"><code>dcs-radio-specs.yaml</code></a>
    (index, bands) — see also the readable table
    <a href="../../mission-maker/dcs-radio-specs/"><code>dcs-radio-specs.md</code></a>.</li>
 <li>Check whether the band-based default is enough (often yes). If not, add an
    entry in <code>dcs-radio-layouts.yaml</code> with the index → role mapping and the
    needed primitives; comment each radio (name + band).</li>
 <li>Cover the behaviour with a test in
-   <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/tree/develop-v6/test/python/presets_injector"><code>test/python/presets_injector/</code></a>
+   <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/tree/develop/test/python/presets_injector"><code>test/python/presets_injector/</code></a>
    (layout fidelity, capacity, the AJS-37 case…).</li>
 </ol>
 
