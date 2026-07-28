@@ -1492,6 +1492,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#coalition-scoped-menus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restricting a menu to one coalition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#low-level-api" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1964,6 +1975,34 @@
     
   
     DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capture a map's airbases
   
 
     
@@ -2502,6 +2541,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#coalition-scoped-menus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restricting a menu to one coalition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#low-level-api" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2877,6 +2927,29 @@
 </tbody>
 </table>
 <p><code>USAGE_ForGroup</code> is ideal for commands that should respond differently per flight (e.g. "Request support for my flight"). <code>USAGE_ForUnit</code> is for individual pilot interactions.</p>
+<hr />
+<h2 id="coalition-scoped-menus">Restricting a menu to one coalition<a class="headerlink" href="#coalition-scoped-menus" title="Permanent link">&para;</a></h2>
+<p><code>usage</code> decides <strong>who gets a command</strong>. To hide a <strong>whole submenu</strong> from the other side, pass a
+coalition as <code>addSubMenu</code>'s third argument:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- this submenu, and everything under it, only exists for red</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">redMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addSubMenu</span><span class="p">(</span><span class="s2">&quot;RED zones&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">redMenu</span><span class="p">,</span><span class="w"> </span><span class="nv">myFunction</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForGroup</span><span class="p">)</span>
+</code></pre></div>
+<p>Three consequences, all automatic:</p>
+<ul>
+<li><strong>the side is inherited</strong> — by child submenus, commands, and the pagination pages created when a
+  menu exceeds <code>MENU_PAGE_SIZE</code>; there is no "visible to all" child under a restricted menu;</li>
+<li>a <code>USAGE_ForGroup</code> or <code>USAGE_ForUnit</code> command is only attached for groups <strong>of that side</strong> (a
+  group whose coalition DCS does not report is kept);</li>
+<li>the menu is rebuilt on every player join, and restricted menus are removed explicitly at that
+  point — otherwise they would stack up one duplicate per join.</li>
+</ul>
+<p>The <strong>parent</strong> menu is untouched: hang a restricted submenu under a global one and the other side
+still sees the parent, simply without that entry.</p>
+<blockquote>
+<p>Used by combat zones, which offer their menu to the side playing them — see
+<a href="../veafCombatZone/#f10-menu-audience">veafCombatZone</a>.</p>
+</blockquote>
 <hr />
 <h2 id="low-level-api">Low-level API<a class="headerlink" href="#low-level-api" title="Permanent link">&para;</a></h2>
 <p>For finer control, build the menu tree directly:</p>

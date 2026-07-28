@@ -1492,6 +1492,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#coalition-scoped-menus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réserver un menu à une coalition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-bas-niveau" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1964,6 +1975,34 @@
     
   
     DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
   
 
     
@@ -2502,6 +2541,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#coalition-scoped-menus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réserver un menu à une coalition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-bas-niveau" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2877,6 +2927,29 @@
 </tbody>
 </table>
 <p><code>USAGE_ForGroup</code> est idéal pour les commandes qui doivent répondre différemment par vol (ex : "Demander appui pour mon vol"). <code>USAGE_ForUnit</code> est pour les interactions individuelles par pilote.</p>
+<hr />
+<h2 id="coalition-scoped-menus">Réserver un menu à une coalition<a class="headerlink" href="#coalition-scoped-menus" title="Permanent link">&para;</a></h2>
+<p><code>usage</code> décide <strong>qui reçoit une commande</strong>. Pour masquer un <strong>sous-menu entier</strong> à l'autre camp,
+passez une coalition en troisième argument de <code>addSubMenu</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- ce sous-menu, et tout ce qu&#39;il contient, n&#39;existe que pour les rouges</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">menuRouge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addSubMenu</span><span class="p">(</span><span class="s2">&quot;Zones ROUGE&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span><span class="s2">&quot;Statut&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">menuRouge</span><span class="p">,</span><span class="w"> </span><span class="nv">maFonction</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForGroup</span><span class="p">)</span>
+</code></pre></div>
+<p>Trois conséquences, automatiques :</p>
+<ul>
+<li><strong>l'appartenance est héritée</strong> — sous-menus, commandes et pages de pagination créées quand le
+  menu dépasse <code>MENU_PAGE_SIZE</code> ; il n'y a pas d'enfant « visible par tous » sous un menu réservé ;</li>
+<li>une commande <code>USAGE_ForGroup</code> ou <code>USAGE_ForUnit</code> n'est posée que pour les groupes <strong>de ce camp</strong>
+  (un groupe dont DCS ne nous donne pas la coalition est conservé) ;</li>
+<li>le menu est reconstruit à chaque connexion de joueur, et les menus réservés sont retirés
+  explicitement à ce moment-là — sans quoi ils s'empileraient en double à chaque arrivée.</li>
+</ul>
+<p>Le menu <strong>parent</strong> n'est pas modifié : si vous accrochez un menu réservé sous un menu global,
+l'autre camp continue de voir le parent, simplement vide de cette entrée.</p>
+<blockquote>
+<p>Utilisé par les zones de combat, qui proposent leur menu au camp qui les joue — voir
+<a href="../veafCombatZone/#f10-menu-audience">veafCombatZone</a>.</p>
+</blockquote>
 <hr />
 <h2 id="api-bas-niveau">API bas niveau<a class="headerlink" href="#api-bas-niveau" title="Permanent link">&para;</a></h2>
 <p>Pour un contrôle plus fin, construire l'arbre de menus directement :</p>
