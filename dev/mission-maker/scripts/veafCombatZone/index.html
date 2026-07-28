@@ -1245,6 +1245,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#à-qui-le-menu-f10-est-il-proposé-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        À qui le menu F10 est-il proposé ?
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2506,6 +2517,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#à-qui-le-menu-f10-est-il-proposé-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        À qui le menu F10 est-il proposé ?
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2900,6 +2922,13 @@
 <td>Coalition <strong>hostile</strong> : ses unités sont celles qu'il faut détruire pour terminer la zone, et celles que le rapport F10 annonce comme « ennemis ». <code>BLUE</code> pour une zone jouée <strong>côté rouge</strong> (voir ci-dessous)</td>
 </tr>
 <tr>
+<td><code>radio_menu_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code> | <code>ALL</code></td>
+<td><em>(camp qui joue la zone)</em></td>
+<td>Non</td>
+<td>Coalition à qui le menu F10 de la zone est proposé. Par défaut : le camp opposé à <code>enemy_coalition</code>. <code>ALL</code> le montre aux deux camps (voir ci-dessous)</td>
+</tr>
+<tr>
 <td><code>active_at_start</code></td>
 <td>booléen</td>
 <td><code>false</code></td>
@@ -3019,6 +3048,46 @@ d'appeler les ennemis bleus « amis ». <code>enemy_coalition</code> remplace ce
 </blockquote>
 <p>Côté Lua, l'équivalent est <code>VeafCombatZone:setEnemyCoalition(coalition.side.BLUE)</code> ; le setter
 accepte aussi la chaîne <code>"blue"</code> / <code>"red"</code>.</p>
+<h3 id="à-qui-le-menu-f10-est-il-proposé-">À qui le menu F10 est-il proposé ?<a class="headerlink" href="#à-qui-le-menu-f10-est-il-proposé-" title="Permanent link">&para;</a></h3>
+<p>Le menu F10 d'une zone n'est pas seulement de la lecture : c'est par lui qu'on <strong>active</strong> la
+zone, qu'on demande son état, qu'on tire la fumée. Il est donc proposé au <strong>camp qui joue la
+zone</strong>, c'est-à-dire l'opposé de <code>enemy_coalition</code> :</p>
+<table>
+<thead>
+<tr>
+<th><code>enemy_coalition</code></th>
+<th>Menu F10 visible par</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RED</code> (défaut)</td>
+<td>les bleus</td>
+</tr>
+<tr>
+<td><code>BLUE</code></td>
+<td>les rouges</td>
+</tr>
+</tbody>
+</table>
+<p>Rien à écrire pour obtenir ce comportement. Pour y déroger, <code>radio_menu_coalition</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+<span class="w">        </span><span class="nt">radio_menu_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ALL</span><span class="w">   </span><span class="c1"># les deux camps voient la zone et peuvent l&#39;activer</span>
+</code></pre></div>
+<p><code>ALL</code> est utile pour un arbitre ou un Mission Master qui occupe un slot rouge et doit pouvoir
+déclencher une zone bleue. On peut aussi nommer un camp explicitement (<code>RED</code> / <code>BLUE</code>) quand il
+ne correspond pas à celui qui joue la zone.</p>
+<blockquote>
+<p><strong>Changement de comportement (6.11.8)</strong> : avant cette version, toutes les zones étaient
+proposées aux deux camps. Une mission dont tous les slots joueurs sont bleus ne verra aucune
+différence ; une mission avec des slots rouges qui doivent garder l'accès aux zones bleues doit
+ajouter <code>radio_menu_coalition: ALL</code> sur ces zones.</p>
+</blockquote>
+<p>Le menu parent (<code>COMBAT ZONES</code>, et le sous-menu de <code>radio_group_name</code>) reste visible par tout le
+monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit donc l'entrée
+<code>COMBAT ZONES</code> sans les zones de l'autre.</p>
+<p>Côté Lua : <code>VeafCombatZone:setRadioMenuCoalition(coalition.side.RED)</code> ou <code>"all"</code>.</p>
 <hr />
 <h2 id="constantes-du-module">Constantes du module<a class="headerlink" href="#constantes-du-module" title="Permanent link">&para;</a></h2>
 <table>

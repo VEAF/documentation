@@ -1245,6 +1245,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#who-is-offered-the-f10-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who is offered the F10 menu?
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2495,6 +2506,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#who-is-offered-the-f10-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who is offered the F10 menu?
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2878,6 +2900,13 @@
 <td>The <strong>hostile</strong> coalition: its units are the ones that must be destroyed for the zone to complete, and the ones the F10 report calls "enemies". Use <code>BLUE</code> for a zone played from the <strong>red side</strong> (see below)</td>
 </tr>
 <tr>
+<td><code>radio_menu_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code> | <code>ALL</code></td>
+<td><em>(the side playing the zone)</em></td>
+<td>No</td>
+<td>Which coalition is offered the zone's F10 menu. Defaults to the opposite of <code>enemy_coalition</code>. <code>ALL</code> shows it to both sides (see below)</td>
+</tr>
+<tr>
 <td><code>active_at_start</code></td>
 <td>boolean</td>
 <td><code>false</code></td>
@@ -2996,6 +3025,45 @@ enemies "friends". <code>enemy_coalition</code> replaces that workaround.</p>
 </blockquote>
 <p>In Lua the equivalent is <code>VeafCombatZone:setEnemyCoalition(coalition.side.BLUE)</code>; the setter also
 accepts the <code>"blue"</code> / <code>"red"</code> string form.</p>
+<h3 id="who-is-offered-the-f10-menu">Who is offered the F10 menu?<a class="headerlink" href="#who-is-offered-the-f10-menu" title="Permanent link">&para;</a></h3>
+<p>A zone's F10 menu is not read-only: it is how the zone gets <strong>activated</strong>, its status requested,
+its smoke popped. So it is offered to the <strong>side playing the zone</strong> — the opposite of
+<code>enemy_coalition</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>enemy_coalition</code></th>
+<th>F10 menu visible to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RED</code> (default)</td>
+<td>blue</td>
+</tr>
+<tr>
+<td><code>BLUE</code></td>
+<td>red</td>
+</tr>
+</tbody>
+</table>
+<p>Nothing to write to get that. To override it, use <code>radio_menu_coalition</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+<span class="w">        </span><span class="nt">radio_menu_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ALL</span><span class="w">   </span><span class="c1"># both sides see the zone and can activate it</span>
+</code></pre></div>
+<p><code>ALL</code> is what you want for an umpire or Mission Master sitting in a red slot who must be able to
+trigger a blue zone. A side can also be named explicitly (<code>RED</code> / <code>BLUE</code>) when it is not the one
+playing the zone.</p>
+<blockquote>
+<p><strong>Behaviour change (6.11.8)</strong>: before this version every zone was offered to both sides. A
+mission whose player slots are all blue sees no difference; a mission with red slots that must
+keep access to the blue zones needs <code>radio_menu_coalition: ALL</code> on those zones.</p>
+</blockquote>
+<p>The parent menu (<code>COMBAT ZONES</code>, and the <code>radio_group_name</code> submenu) stays visible to everyone: a
+radio group may hold zones of both sides. So each side sees the <code>COMBAT ZONES</code> entry without the
+other side's zones under it.</p>
+<p>In Lua: <code>VeafCombatZone:setRadioMenuCoalition(coalition.side.RED)</code> or <code>"all"</code>.</p>
 <hr />
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
 <p>Place all the units that should appear in the zone directly in the DCS Mission Editor, inside the trigger zone. When the mission starts VEAF removes them all — the zone is empty. When a player activates the zone via the F10 menu, all units are respawned at randomised positions within the zone radius. When every enemy unit is destroyed, the zone is marked as completed (optional callback fires, optional chained zones activate).</p>
