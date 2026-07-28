@@ -2149,6 +2149,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#republishing-an-already-released-versions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Republishing an already-released version's documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#releasing-a-new-version" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3187,6 +3198,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#republishing-an-already-released-versions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Republishing an already-released version's documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#releasing-a-new-version" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3775,6 +3797,33 @@ heading stays in the page's own language.</p>
 readable range (<code>6.11.x</code>) and the deploy workflow replaces it with the shipped version
 (<code>poetry run docs-stamp-version</code>).</p>
 </blockquote>
+<h3 id="republishing-an-already-released-versions-documentation">Republishing an already-released version's documentation<a class="headerlink" href="#republishing-an-already-released-versions-documentation" title="Permanent link">&para;</a></h3>
+<p>Re-running the tag build is not enough: it would rebuild from the <strong>tagged commit</strong>, so a fix that
+landed after the tag would never reach the pages. Use the <code>Deploy Docs</code> workflow's manual trigger:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>branch</td>
+<td>the one carrying the fix (<code>develop</code>)</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>the version to republish, e.g. <code>6.12.0</code></td>
+</tr>
+<tr>
+<td><code>set_latest</code></td>
+<td>ticked if that version should remain the site's <code>latest</code></td>
+</tr>
+</tbody>
+</table>
+<p>The version you enter is also the one stamped into the pages — otherwise republishing 6.12.0 from a
+6.12.1 tree would stamp 6.12.1 onto them. Leaving <code>version</code> empty simply redeploys the <code>dev</code> alias.</p>
 <h3 id="releasing-a-new-version">Releasing a new version<a class="headerlink" href="#releasing-a-new-version" title="Permanent link">&para;</a></h3>
 <p>Push a <code>published-v*</code> tag — the <code>Release</code> CI workflow does everything automatically:</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v6.1.0

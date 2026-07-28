@@ -2149,6 +2149,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#republier-la-documentation-dune-version-déjà-sortie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Republier la documentation d'une version déjà sortie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#publier-une-nouvelle-version" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3187,6 +3198,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#republier-la-documentation-dune-version-déjà-sortie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Republier la documentation d'une version déjà sortie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#publier-une-nouvelle-version" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3775,6 +3797,34 @@ le titre affiché, lui, reste dans la langue de la page.</p>
 garde un intervalle lisible (<code>6.11.x</code>) et le workflow de publication la remplace par la version
 livrée (<code>poetry run docs-stamp-version</code>).</p>
 </blockquote>
+<h3 id="republier-la-documentation-dune-version-déjà-sortie">Republier la documentation d'une version déjà sortie<a class="headerlink" href="#republier-la-documentation-dune-version-déjà-sortie" title="Permanent link">&para;</a></h3>
+<p>Relancer le build du tag ne suffit pas : il reconstruirait depuis le <strong>commit tagué</strong>, donc sans
+un correctif arrivé après le tag. Utilisez le déclenchement manuel du workflow <code>Deploy Docs</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>branche</td>
+<td>celle qui contient le correctif (<code>develop</code>)</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>la version à republier, par exemple <code>6.12.0</code></td>
+</tr>
+<tr>
+<td><code>set_latest</code></td>
+<td>coché si cette version doit rester la <code>latest</code> du site</td>
+</tr>
+</tbody>
+</table>
+<p>La version saisie est aussi celle qui est tamponnée dans les pages — sans quoi republier la 6.12.0
+depuis un dépôt en 6.12.1 estampillerait les pages 6.12.1. Laisser <code>version</code> vide redéploie
+simplement l'alias <code>dev</code>.</p>
 <hr />
 <h3 id="publier-une-nouvelle-version">Publier une nouvelle version<a class="headerlink" href="#publier-une-nouvelle-version" title="Permanent link">&para;</a></h3>
 <p>Pousser un tag <code>published-v*</code> — le workflow CI <code>Release</code> fait tout automatiquement :</p>
