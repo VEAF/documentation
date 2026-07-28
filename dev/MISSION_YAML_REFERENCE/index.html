@@ -2009,6 +2009,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="mission:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#icao-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le nom du .miz est une interface — _ICAO_&lt;code&gt; et la météo réelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2534,6 +2551,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="mission:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#icao-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le nom du .miz est une interface — _ICAO_&lt;code&gt; et la météo réelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2997,7 +3031,7 @@
 <td>string</td>
 <td>—</td>
 <td>Non</td>
-<td>Nom de la mission affiché dans les menus et les logs</td>
+<td>Nom de la mission affiché dans les menus et les logs, <strong>et nom du <code>.miz</code> construit</strong> — voir la note de nommage ci-dessous</td>
 </tr>
 <tr>
 <td><code>export_path</code></td>
@@ -3036,15 +3070,44 @@
 </tr>
 </tbody>
 </table>
+<h4 id="icao-naming">Le nom du <code>.miz</code> est une interface — <code>_ICAO_&lt;code&gt;</code> et la météo réelle<a class="headerlink" href="#icao-naming" title="Permanent link">&para;</a></h4>
+<p><code>mission.name</code> devient le nom du fichier construit : <code>&lt;nom&gt;_&lt;AAAAMMJJ&gt;.miz</code>, plus un suffixe
+<code>_&lt;VARIANTE&gt;</code> si <a href="#build_variants"><code>build_variants:</code></a> est utilisé. Donnez au contraire un nom
+terminé par <code>.miz</code> et il est repris <strong>tel quel</strong>, sans date.</p>
+<p>C'est important parce que <strong>l'outillage serveur lit le nom du fichier</strong>. Sur les serveurs VEAF,
+l'extension RealWeather de <a href="https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot">DCSServerBot</a>
+cherche <strong><code>_ICAO_&lt;code&gt;</code></strong> dans le nom du <code>.miz</code> et récupère le METAR réel de cet aérodrome au
+démarrage de la mission — la météo suit donc la réalité sans reconstruire. Nommez la mission en
+conséquence :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VEAF_Foothold_Caucasus_ICAO_URSS</span><span class="w">   </span><span class="c1"># -&gt; VEAF_Foothold_Caucasus_ICAO_URSS_20260728.miz</span>
+</code></pre></div>
+<p>Deux règles pour choisir le code :</p>
+<ul>
+<li>ce doit être <strong>un aérodrome du théâtre</strong> (n'importe lequel ; un grand vaut mieux) ;</li>
+<li>il doit avoir une <strong>station METAR vivante</strong>. Vérifiez-le avant de vous y fier : une station peut
+  exister <em>et</em> être périmée, ce qui est pire que pas de météo réelle du tout, puisque la mission
+  annonce alors une météo « réelle » vieille de plusieurs jours. Contrôle en une ligne :</li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://tgftp.nws.noaa.gov/data/observations/metar/stations/URSS.TXT
+</code></pre></div>
+<p>Les deux premiers chiffres du groupe <code>JJHHMMZ</code> sont le jour de l'observation — comparez-les à la
+date du jour.</p>
+<p>Quand tout un théâtre est dégradé, deux réponses se défendent, et le choix revient à qui exploite
+le serveur. Mesuré sur l'Afghanistan, <strong>toutes</strong> les stations retardent (Kaboul un mois, Herat
+seize jours, Bagram un jour ; six aérodromes n'ont aucune station) : soit on <strong>omet</strong> le marqueur,
+ce qui laisse RealWeather tranquille et conserve la météo choisie, soit on <strong>prend la moins
+mauvaise</strong> en sachant ce qu'on obtient. Le Foothold Afghanistan de VEAF utilise <code>OAIX</code> (Bagram,
+environ un jour de retard) — un choix assumé, pas un oubli.</p>
 <hr />
 <h3 id="security"><code>security:</code><a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
 <p>Contrôle le système de sécurité VEAF. Par défaut, la sécurité est désactivée (tous les joueurs ont accès complet).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                    </span><span class="c1"># true = aucun mot de passe requis (défaut)</span>
-<span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span><span class="w">                  </span><span class="c1"># hashes SHA-256 pour l&#39;accès joueur/JTF</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;e3b0c44298fc1c149afbf4c8996fb924...&quot;</span>
-<span class="w">  </span><span class="nt">password_mm_hashes</span><span class="p">:</span><span class="w">               </span><span class="c1"># hashes SHA-256 pour l&#39;accès Mission Master</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;e3b0c44298fc1c149afbf4c8996fb924...&quot;</span>
+<span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                   </span><span class="c1"># false = un mot de passe est requis</span>
+<span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span><span class="w">                  </span><span class="c1"># hashes SHA-1 donnant l&#39;accès joueur/JTF</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;2a4efd2397e081bcacb82b3e447c584c65cc83ee&quot;</span>
+<span class="w">  </span><span class="nt">password_mm_hashes</span><span class="p">:</span><span class="w">               </span><span class="c1"># hashes SHA-1 donnant l&#39;accès Mission Master</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;99685b3c7cb1fb08a829fc97d4a8564fc5f9435a&quot;</span>
 </code></pre></div>
 <table>
 <thead>
@@ -3069,19 +3132,24 @@
 <td>string[]</td>
 <td><code>[]</code></td>
 <td>Non</td>
-<td>Hashes SHA-256 pour l'accès joueur</td>
+<td>Hashes <strong>SHA-1</strong> donnant l'accès joueur. Émis aux niveaux <strong>L1 et L9</strong>, pour que le mot de passe ouvre l'authentification par marqueur et les spawns sensibles, pas seulement les portes L9</td>
 </tr>
 <tr>
 <td><code>password_mm_hashes</code></td>
 <td>string[]</td>
 <td><code>[]</code></td>
 <td>Non</td>
-<td>Hashes SHA-256 pour l'accès Mission Master</td>
+<td>Hashes <strong>SHA-1</strong> donnant l'accès Mission Master (table dédiée, sans cascade de niveaux)</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p>Pour générer un hash SHA-256 : <code>echo -n "votremotdepasse" | sha256sum</code> (Linux/macOS) ou utilisez un outil en ligne.</p>
+<p><strong>SHA-1, pas SHA-256.</strong> <code>veafSecurity._checkPassword</code> hashe ce que tape le joueur avec
+<code>sha1.hex(password)</code> puis cherche le résultat dans la table : un hash SHA-256 ne correspondra
+donc jamais et le mot de passe ne fonctionnera <strong>jamais</strong>, en silence. Cette page indiquait
+SHA-256 jusqu'à sa correction — vérifiez toute mission dont le mot de passe semble ignoré.</p>
+<p>Pour en générer un : <code>echo -n "votremotdepasse" | sha1sum</code> (Linux/macOS), ou
+<code>python -c "import hashlib,sys; print(hashlib.sha1(sys.argv[1].encode()).hexdigest())" votremotdepasse</code>.</p>
 </blockquote>
 <hr />
 <h3 id="settings"><code>settings:</code><a class="headerlink" href="#settings" title="Permanent link">&para;</a></h3>
@@ -3280,6 +3348,37 @@
 </tbody>
 </table>
 <p>Les champs supplémentaires <code>init:</code> ou de données sont spécifiques à chaque module — voir la page de documentation de chaque module.</p>
+<p><strong>Champs <code>init:</code> du module <code>RADIO</code> :</strong></p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>help_menus</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Transmis à <code>veafRadio.initialize</code> en tant que <code>skipHelpMenus</code></td>
+</tr>
+<tr>
+<td><code>create_menus</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td><code>false</code> ne construit <strong>aucun menu F10 VEAF</strong> (<code>dontCreateMenus</code>). Combiné à <code>security:</code>, c'est ainsi qu'une mission publique garde les commandes VEAF accessibles uniquement via des marqueurs protégés par mot de passe. Omettez la clé pour conserver le comportement actuel</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">init</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">create_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># pas de menu radio VEAF ; commandes via marqueurs</span>
+</code></pre></div>
 <p><strong>Les scripts communautaires</strong> se déclarent dans le même bloc, via leurs IDs en majuscules. Lorsqu'un script est absent de <code>modules:</code>, il garde son état par défaut (inclus). Mettez-le à <code>false</code> pour l'exclure :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>

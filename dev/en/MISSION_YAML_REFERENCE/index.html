@@ -2009,6 +2009,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="mission:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#icao-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The .miz file name is an interface — _ICAO_&lt;code&gt; and real weather
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2567,6 +2584,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="mission:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#icao-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The .miz file name is an interface — _ICAO_&lt;code&gt; and real weather
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3063,7 +3097,7 @@
 <td>string</td>
 <td>—</td>
 <td>No</td>
-<td>Mission name shown in menus and logs</td>
+<td>Mission name shown in menus and logs, <strong>and the name of the built <code>.miz</code></strong> — see the naming note below</td>
 </tr>
 <tr>
 <td><code>export_path</code></td>
@@ -3102,15 +3136,42 @@
 </tr>
 </tbody>
 </table>
+<h4 id="icao-naming">The <code>.miz</code> file name is an interface — <code>_ICAO_&lt;code&gt;</code> and real weather<a class="headerlink" href="#icao-naming" title="Permanent link">&para;</a></h4>
+<p><code>mission.name</code> becomes the built file name: <code>&lt;name&gt;_&lt;YYYYMMDD&gt;.miz</code>, plus a <code>_&lt;VARIANT&gt;</code> suffix
+when <a href="#build_variants"><code>build_variants:</code></a> is used. Give a name ending in <code>.miz</code> instead and the
+name is taken <strong>verbatim</strong>, with no date.</p>
+<p>That matters because <strong>server-side tooling reads the file name</strong>. On the VEAF servers, the
+RealWeather extension of <a href="https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot">DCSServerBot</a>
+looks for <strong><code>_ICAO_&lt;code&gt;</code></strong> in the mission's file name and fetches that airfield's live METAR at
+mission start — so the weather follows reality without rebuilding. Name the mission accordingly:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VEAF_Foothold_Caucasus_ICAO_URSS</span><span class="w">   </span><span class="c1"># -&gt; VEAF_Foothold_Caucasus_ICAO_URSS_20260728.miz</span>
+</code></pre></div>
+<p>Two rules when picking the code:</p>
+<ul>
+<li>it must be <strong>an airfield on that theatre</strong> (any one; a large one is better);</li>
+<li>it must have a <strong>live METAR station</strong>. Check before trusting it — a station can exist and be
+  stale, which is worse than no real weather at all, since the mission then advertises a
+  "real" weather that is days old. A one-line check:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://tgftp.nws.noaa.gov/data/observations/metar/stations/URSS.TXT
+</code></pre></div>
+<p>The first two digits of the <code>DDHHMMZ</code> group are the day of observation — compare them with today.</p>
+<p>When a whole theatre is degraded, there are two defensible answers, and the choice belongs to
+whoever runs the server. Measured on Afghanistan, <strong>every</strong> station lags (Kabul a month, Herat
+sixteen days, Bagram a day; six airfields have no station at all): either <strong>omit</strong> the marker, so
+RealWeather leaves the mission alone and the authored weather stands, or <strong>take the least bad</strong>
+and know what you are getting. The VEAF Foothold Afghanistan uses <code>OAIX</code> (Bagram, about a day
+behind) — a deliberate choice, not an oversight.</p>
 <hr />
 <h3 id="security"><code>security:</code><a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
 <p>Controls the VEAF security system. By default, security is disabled (all players have full access).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                    </span><span class="c1"># true = no password required (default)</span>
-<span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span><span class="w">                  </span><span class="c1"># SHA-256 hashes for player/JTF access</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;e3b0c44298fc1c149afbf4c8996fb924...&quot;</span>
-<span class="w">  </span><span class="nt">password_mm_hashes</span><span class="p">:</span><span class="w">               </span><span class="c1"># SHA-256 hashes for Mission Master access</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;e3b0c44298fc1c149afbf4c8996fb924...&quot;</span>
+<span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                   </span><span class="c1"># false = a password is required</span>
+<span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span><span class="w">                  </span><span class="c1"># SHA-1 hashes granting player/JTF access</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;2a4efd2397e081bcacb82b3e447c584c65cc83ee&quot;</span>
+<span class="w">  </span><span class="nt">password_mm_hashes</span><span class="p">:</span><span class="w">               </span><span class="c1"># SHA-1 hashes granting Mission Master access</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;99685b3c7cb1fb08a829fc97d4a8564fc5f9435a&quot;</span>
 </code></pre></div>
 <table>
 <thead>
@@ -3135,19 +3196,24 @@
 <td>string[]</td>
 <td><code>[]</code></td>
 <td>No</td>
-<td>SHA-256 hashes for player access</td>
+<td><strong>SHA-1</strong> hashes granting player access. Emitted at levels <strong>L1 and L9</strong>, so the password opens marker authentication and the sensitive spawns, not only the L9 gates</td>
 </tr>
 <tr>
 <td><code>password_mm_hashes</code></td>
 <td>string[]</td>
 <td><code>[]</code></td>
 <td>No</td>
-<td>SHA-256 hashes for Mission Master access</td>
+<td><strong>SHA-1</strong> hashes granting Mission Master access (its own table, no level cascade)</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p>To generate a SHA-256 hash: <code>echo -n "yourpassword" | sha256sum</code> (Linux/macOS) or use an online tool.</p>
+<p><strong>SHA-1, not SHA-256.</strong> <code>veafSecurity._checkPassword</code> hashes what the player types with
+<code>sha1.hex(password)</code> and looks it up in the table, so a SHA-256 hash never matches and the
+password silently never works. This page said SHA-256 until it was corrected — check any
+existing mission whose password appears to be ignored.</p>
+<p>To generate one: <code>echo -n "yourpassword" | sha1sum</code> (Linux/macOS), or
+<code>python -c "import hashlib,sys; print(hashlib.sha1(sys.argv[1].encode()).hexdigest())" yourpassword</code>.</p>
 </blockquote>
 <hr />
 <h3 id="settings"><code>settings:</code><a class="headerlink" href="#settings" title="Permanent link">&para;</a></h3>
@@ -3346,6 +3412,37 @@
 </tbody>
 </table>
 <p>Additional <code>init:</code> or data fields are module-specific — see each module's documentation page.</p>
+<p><strong><code>RADIO</code> <code>init:</code> fields:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>help_menus</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>Passed to <code>veafRadio.initialize</code> as <code>skipHelpMenus</code></td>
+</tr>
+<tr>
+<td><code>create_menus</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td><code>false</code> builds <strong>no VEAF F10 menu at all</strong> (<code>dontCreateMenus</code>). Combined with <code>security:</code>, that is how a public mission keeps the VEAF commands reachable only through password-protected map markers. Omit the key to keep today's behaviour</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">init</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">create_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># no VEAF radio menu; commands via markers only</span>
+</code></pre></div>
 <p><strong>Community scripts</strong> are listed in the same block, using their uppercase IDs. When a script is absent from <code>modules:</code>, it keeps its default state (included). Set it to <code>false</code> to exclude it:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
