@@ -1800,7 +1800,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-stylua-240-lua-code-quality" class="md-nav__link">
+  <a href="#stylua-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
         5. StyLua 2.4.0 (Lua code quality)
@@ -2131,6 +2131,17 @@
     <span class="md-ellipsis">
       
         CI Jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before a commit touching the documentation
       
     </span>
   </a>
@@ -2827,7 +2838,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-stylua-240-lua-code-quality" class="md-nav__link">
+  <a href="#stylua-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
         5. StyLua 2.4.0 (Lua code quality)
@@ -3165,6 +3176,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#docs-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before a commit touching the documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#releasing-a-new-version" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3439,7 +3461,7 @@
 <p>Verify:</p>
 <div class="highlight"><pre><span></span><code><span class="n">lua</span> <span class="n">-v</span>   <span class="c"># Lua 5.1.x expected</span>
 </code></pre></div>
-<h4 id="5-stylua-240-lua-code-quality">5. StyLua 2.4.0 (Lua code quality)<a class="headerlink" href="#5-stylua-240-lua-code-quality" title="Permanent link">&para;</a></h4>
+<h4 id="stylua-setup">5. StyLua 2.4.0 (Lua code quality)<a class="headerlink" href="#stylua-setup" title="Permanent link">&para;</a></h4>
 <p>StyLua formats Lua code. <strong>Version 2.4.0 is enforced by CI</strong> — any other version will fail the formatting job.</p>
 <p>Download <code>stylua-windows-x86_64.zip</code> from the <a href="https://github.com/JohnnyMorganz/StyLua/releases/tag/v2.4.0">v2.4.0 release page</a>, then install:</p>
 <div class="highlight"><pre><span></span><code><span class="c"># Create target folder</span>
@@ -3701,12 +3723,58 @@ Luacheck is enforced by the <code>Luacheck</code> CI job.</p>
 <td>ruff lint + format, mypy types, pytest</td>
 </tr>
 <tr>
+<td><code>Docs Check</code></td>
+<td>Documentation links and anchors, FR/EN pairing, pages missing from the menu</td>
+</tr>
+<tr>
 <td><code>Release</code></td>
 <td>Triggered on <code>published-v*</code> tag push — builds and publishes to GitHub</td>
 </tr>
 </tbody>
 </table>
 <p>All CI jobs must be green before a PR can be merged.</p>
+<h3 id="docs-check">Before a commit touching the documentation<a class="headerlink" href="#docs-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>docs-check
+</code></pre></div>
+<p>The <code>Docs Check</code> CI job runs exactly that command. It refuses four kinds of rot that had quietly
+accumulated before it existed (see the <code>DOC-AUDIT-PASS</code> lot):</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>relative <code>.md</code> link to a file that does not exist</td>
+<td>six links were returning 404 <strong>in production</strong></td>
+</tr>
+<tr>
+<td>cross-page anchor the target does not expose</td>
+<td>a section renumbering had left links behind</td>
+</tr>
+<tr>
+<td>cross-page anchor derived from a heading</td>
+<td>it breaks on the first reword and <strong>differs between FR and EN</strong>; declare <code>{#anchor}</code></td>
+</tr>
+<tr>
+<td>FR page with no <code>.en.md</code>, or absent from the <code>nav</code></td>
+<td>one page went untranslated for months, serving French on its English URL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Anchor convention</strong>: the anchor name is <strong>English</strong> and identical in both languages; the visible
+heading stays in the page's own language.</p>
+<div class="highlight"><pre><span></span><code><span class="gu">## Couverture {#coverage}      &lt;!-- FR: French heading, English anchor --&gt;</span>
+<span class="gu">## Coverage {#coverage}        &lt;!-- EN: same anchor --&gt;</span>
+</code></pre></div>
+<p>A cross-page link then always targets <code>#coverage</code>, whatever language the reader is in.</p>
+<blockquote>
+<p>The version shown in the big references' headers is <strong>not</strong> hand-written: the repository keeps a
+readable range (<code>6.11.x</code>) and the deploy workflow replaces it with the shipped version
+(<code>poetry run docs-stamp-version</code>).</p>
+</blockquote>
 <h3 id="releasing-a-new-version">Releasing a new version<a class="headerlink" href="#releasing-a-new-version" title="Permanent link">&para;</a></h3>
 <p>Push a <code>published-v*</code> tag — the <code>Release</code> CI workflow does everything automatically:</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v6.1.0
