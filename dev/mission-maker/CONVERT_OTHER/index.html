@@ -789,6 +789,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lentrée-peut-être-une-archive-de-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L'entrée peut être une archive de release
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -799,6 +816,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Profils de conversion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#profils-livrés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profils livrés
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2176,6 +2210,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lentrée-peut-être-une-archive-de-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L'entrée peut être une archive de release
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2186,6 +2237,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Profils de conversion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#profils-livrés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profils livrés
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2269,6 +2337,17 @@ retirer, réglages à surcharger…) est porté par un <em>profil de conversion<
 </code></pre></div>
 <p>Sans argument (dans un terminal interactif), la commande ouvre l'assistant TUI
 et demande le <code>.miz</code> source puis le dossier de sortie.</p>
+<h3 id="lentrée-peut-être-une-archive-de-release">L'entrée peut être une archive de release<a class="headerlink" href="#lentrée-peut-être-une-archive-de-release" title="Permanent link">&para;</a></h3>
+<p>Les missions tierces sont souvent distribuées sous forme d'<strong>archive <code>.zip</code></strong> plutôt que de
+<code>.miz</code> nu — les assets Foothold de Lekaa contiennent la mission avec un exécutable de
+gestion de configuration, le manuel et un raccourci. Passez l'archive que vous avez
+téléchargée, <code>convert-other</code> adopte le <code>.miz</code> qu'elle contient :</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>Foothold_CA_4.4.1_Multi_Language_Coldwar-Modern-Vietnam.zip<span class="w"> </span>&lt;dossier-de-sortie&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
+</code></pre></div>
+<p>Seul le membre <code>.miz</code> est lu ; rien d'autre dans l'archive n'est écrit où que ce soit
+(l'exécutable embarqué n'est jamais extrait, ni exécuté). L'archive doit contenir
+<strong>exactement un</strong> <code>.miz</code> : s'il n'y en a aucun, ou plusieurs, la commande s'arrête et
+nomme ce qu'elle a trouvé plutôt que de deviner quelle mission vous visiez.</p>
 <table>
 <thead>
 <tr>
@@ -2279,7 +2358,7 @@ et demande le <code>.miz</code> source puis le dossier de sortie.</p>
 <tbody>
 <tr>
 <td><code>INPUT_MIZ</code></td>
-<td>Chemin du <code>.miz</code> tiers à adopter</td>
+<td>Chemin de la mission tierce à adopter : un <code>.miz</code>, ou une archive <code>.zip</code> en contenant exactement un</td>
 </tr>
 <tr>
 <td><code>OUTPUT_FOLDER</code></td>
@@ -2307,8 +2386,11 @@ connaissance propre à une famille de missions est appliquée — <strong>donné
 <ul>
 <li><strong>active les modules VEAF</strong> que Foothold utilise (RADIO, SPAWN, WEATHER,
   SHORTCUTS, SECURITY, REMOTE) au lieu du tier <code>minimal</code> ;</li>
-<li><strong>normalise les noms versionnés</strong> (<code>Moose_2026-04-28.lua</code> → <code>Moose.lua</code>) pour que
-  les chemins <code>custom_scripts:</code> restent stables entre versions de Lekaa ;</li>
+<li><strong>normalise les noms versionnés</strong> (<code>Moose_2026-06-14.lua</code> → <code>Moose.lua</code>,
+  <code>Splash_Damage_3.4.1_leka.lua</code> → <code>Splash_Damage.lua</code>) pour que les chemins
+  <code>custom_scripts:</code> restent stables entre versions de Lekaa. Le script de setup propre à
+  chaque carte (<code>MA_Setup_CA.lua</code>, <code>footholdSyriaSetup.lua</code>, <code>kola_setup.lua</code>…) n'est
+  <strong>pas</strong> normalisé : ces noms varient par carte, pas par version ;</li>
 <li><strong>inscrit un marqueur</strong> <code>conversion_profile: foothold</code> dans le <code>mission.yaml</code> ;</li>
 <li><strong>pré-remplit un <code>config_override</code> commenté</strong> ciblant <code>Foothold Config.lua</code> ;</li>
 <li><strong>déclare les modules incompatibles</strong> (<code>CTLD</code> : Foothold embarque sa propre CTLD).
@@ -2317,6 +2399,26 @@ connaissance propre à une famille de missions est appliquée — <strong>donné
 </ul>
 <div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;mission.miz&gt;<span class="w"> </span>&lt;dossier-de-sortie&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
 </code></pre></div>
+<h3 id="profils-livrés">Profils livrés<a class="headerlink" href="#profils-livrés" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Profil</th>
+<th>Pour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>foothold</code></td>
+<td>le Foothold de Lekaa sur Caucasus, Persian Gulf, Sinaï, Syrie, Cold War Germany, Kola, Irak, Afghanistan</td>
+</tr>
+<tr>
+<td><code>foothold-ww2</code></td>
+<td>le Foothold Normandie WWII — autre fichier de config (<code>Foothold Config WW2.lua</code>), pas de <code>Era</code>, et pas de CTLD Foothold, donc la CTLD VEAF n'y est <em>pas</em> incompatible</td>
+</tr>
+</tbody>
+</table>
+<p>Voir <a href="../FOOTHOLD/">FOOTHOLD</a> pour la procédure complète à chaque version.</p>
 <h2 id="ce-que-fait-la-commande">Ce que fait la commande<a class="headerlink" href="#ce-que-fait-la-commande" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Extrait</strong> le <code>.miz</code> dans le dossier de mission (les scripts atterrissent
@@ -2374,6 +2476,8 @@ exécuté : la vérification est une recherche mot entier en Python pur.)</p>
 Foothold de Lekaa), ré-importez-la dans votre dossier déjà adopté avec <code>--update</code> :</p>
 <div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;nouveau-upstream.miz&gt;<span class="w"> </span>&lt;dossier-sortie&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
 </code></pre></div>
+<p>Le nouvel upstream peut aussi être l'archive <code>.zip</code> de release — même règle, exactement un
+<code>.miz</code> dedans.</p>
 <p>En mode mise à jour, <code>convert-other</code> :</p>
 <ul>
 <li><strong>rafraîchit les scripts tiers</strong> (<code>src/scripts/*.lua</code>) et la <strong>base de mission</strong>

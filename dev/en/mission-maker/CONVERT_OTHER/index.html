@@ -789,6 +789,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-input-can-be-a-release-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The input can be a release archive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -799,6 +816,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Conversion profiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bundled-profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bundled profiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2176,6 +2210,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-input-can-be-a-release-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The input can be a release archive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2186,6 +2237,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Conversion profiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bundled-profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bundled profiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2269,6 +2337,17 @@ next). See ADR 0007.</p>
 </code></pre></div>
 <p>With no argument (in an interactive terminal) the command opens the TUI wizard
 and asks for the source <code>.miz</code> then the output folder.</p>
+<h3 id="the-input-can-be-a-release-archive">The input can be a release archive<a class="headerlink" href="#the-input-can-be-a-release-archive" title="Permanent link">&para;</a></h3>
+<p>Third-party missions are often distributed as a <strong>release <code>.zip</code></strong> rather than a bare
+<code>.miz</code> — Lekaa's Foothold assets bundle the mission with a config-manager executable, the
+manual and a shortcut. Pass the archive you downloaded and <code>convert-other</code> adopts the <code>.miz</code>
+inside it:</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>Foothold_CA_4.4.1_Multi_Language_Coldwar-Modern-Vietnam.zip<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
+</code></pre></div>
+<p>Only the <code>.miz</code> member is read; nothing else in the archive is written anywhere (the bundled
+executable is never extracted, and never run). The archive must contain <strong>exactly one</strong>
+<code>.miz</code>: with none, or with several, the command stops and names what it found rather than
+guessing which mission you meant.</p>
 <table>
 <thead>
 <tr>
@@ -2279,7 +2358,7 @@ and asks for the source <code>.miz</code> then the output folder.</p>
 <tbody>
 <tr>
 <td><code>INPUT_MIZ</code></td>
-<td>Path to the third-party <code>.miz</code> to adopt</td>
+<td>Path to the third-party mission to adopt: a <code>.miz</code>, or a release <code>.zip</code> containing exactly one</td>
 </tr>
 <tr>
 <td><code>OUTPUT_FOLDER</code></td>
@@ -2307,8 +2386,11 @@ mission-family-specific knowledge is applied — <strong>data, not code</strong>
 <ul>
 <li><strong>enables the VEAF modules</strong> Foothold uses (RADIO, SPAWN, WEATHER, SHORTCUTS,
   SECURITY, REMOTE) instead of the <code>minimal</code> tier;</li>
-<li><strong>normalises versioned names</strong> (<code>Moose_2026-04-28.lua</code> → <code>Moose.lua</code>) so
-  <code>custom_scripts:</code> paths stay stable across Lekaa versions;</li>
+<li><strong>normalises versioned names</strong> (<code>Moose_2026-06-14.lua</code> → <code>Moose.lua</code>,
+  <code>Splash_Damage_3.4.1_leka.lua</code> → <code>Splash_Damage.lua</code>) so <code>custom_scripts:</code> paths stay
+  stable across Lekaa versions. The per-map setup script (<code>MA_Setup_CA.lua</code>,
+  <code>footholdSyriaSetup.lua</code>, <code>kola_setup.lua</code>…) is <strong>not</strong> normalised: those names vary per
+  map, not per version;</li>
 <li><strong>writes a marker</strong> <code>conversion_profile: foothold</code> into <code>mission.yaml</code>;</li>
 <li><strong>scaffolds a commented <code>config_override</code></strong> targeting <code>Foothold Config.lua</code>;</li>
 <li><strong>declares incompatible modules</strong> (<code>CTLD</code>: Foothold ships its own). Enabling an
@@ -2317,6 +2399,26 @@ mission-family-specific knowledge is applied — <strong>data, not code</strong>
 </ul>
 <div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;mission.miz&gt;<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
 </code></pre></div>
+<h3 id="bundled-profiles">Bundled profiles<a class="headerlink" href="#bundled-profiles" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>foothold</code></td>
+<td>Lekaa's Foothold on Caucasus, Persian Gulf, Sinai, Syria, Cold War Germany, Kola, Iraq, Afghanistan</td>
+</tr>
+<tr>
+<td><code>foothold-ww2</code></td>
+<td>WWII Normandy Foothold — a different config file (<code>Foothold Config WW2.lua</code>), no <code>Era</code>, and no Foothold CTLD, so the VEAF CTLD is <em>not</em> incompatible there</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="../FOOTHOLD/">FOOTHOLD</a> for the full per-version procedure.</p>
 <h2 id="what-it-does">What it does<a class="headerlink" href="#what-it-does" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Extracts</strong> the <code>.miz</code> into the mission folder (scripts land in
@@ -2371,6 +2473,7 @@ search.)</p>
 re-import it into your already-adopted folder with <code>--update</code>:</p>
 <div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;new-upstream.miz&gt;<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
 </code></pre></div>
+<p>The new upstream can be the release <code>.zip</code> here too — same rule, exactly one <code>.miz</code> inside.</p>
 <p>In update mode <code>convert-other</code>:</p>
 <ul>
 <li><strong>refreshes the third-party scripts</strong> (<code>src/scripts/*.lua</code>) and the <strong>mission

@@ -817,6 +817,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Prérequis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#où-récupérer-lupstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Où récupérer l'upstream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quel-profil-pour-quelle-carte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quel profil pour quelle carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -869,6 +897,17 @@
     <span class="md-ellipsis">
       
         b. Override partiel de la config Foothold
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ La config externe du Config Manager (à ne pas installer)
       
     </span>
   </a>
@@ -2237,6 +2276,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Prérequis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#où-récupérer-lupstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Où récupérer l'upstream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quel-profil-pour-quelle-carte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quel profil pour quelle carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2289,6 +2356,17 @@
     <span class="md-ellipsis">
       
         b. Override partiel de la config Foothold
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ La config externe du Config Manager (à ne pas installer)
       
     </span>
   </a>
@@ -2392,11 +2470,71 @@ Le détail de chaque commande est dans <a href="../CONVERT_OTHER/">CONVERT_OTHER
 <h2 id="prérequis">Prérequis<a class="headerlink" href="#prérequis" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>veaf-tools</code> (ou <code>veaf-tools.exe</code>) à jour.</li>
-<li>Le <code>.miz</code> upstream Foothold de la carte visée (p. ex. Caucasus).</li>
+<li>L'archive de release Foothold de la carte visée (p. ex. Caucasus) — voir ci-dessous.</li>
 <li>Le profil de conversion <strong><code>foothold</code></strong> (livré avec les outils).</li>
 </ul>
+<h3 id="où-récupérer-lupstream">Où récupérer l'upstream<a class="headerlink" href="#où-récupérer-lupstream" title="Permanent link">&para;</a></h3>
+<p>Foothold est publié sur GitHub : <strong><a href="https://github.com/leka1986/Lekas-Foothold">leka1986/Lekas-Foothold</a></strong>,
+onglet <em>Releases</em>. Une release fournit un <code>.zip</code> par carte (Caucasus, Persian Gulf, Sinaï,
+Syrie, Cold War Germany, Kola, Irak, Afghanistan, Normandie WWII), chacun contenant :</p>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Ce qu'on en fait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Foothold_&lt;carte&gt;_&lt;version&gt;.miz</code></td>
+<td><strong>c'est l'entrée de la moulinette</strong></td>
+</tr>
+<tr>
+<td><code>Foothold Config Manager &lt;version&gt;.exe</code></td>
+<td>ignoré — voir <a href="#external-config">la mise en garde</a></td>
+</tr>
+<tr>
+<td><code>Foothold_Manual_v&lt;x&gt;.pdf</code></td>
+<td>documentation amont, utile à lire</td>
+</tr>
+<tr>
+<td><code>Getting Started.url</code></td>
+<td>raccourci vidéo</td>
+</tr>
+</tbody>
+</table>
+<p>Passez le <code>.zip</code> directement à <code>convert-other</code> : il adopte le <code>.miz</code> qu'il contient et
+ignore le reste. Pas besoin de dézipper à la main.</p>
+<h3 id="quel-profil-pour-quelle-carte">Quel profil pour quelle carte<a class="headerlink" href="#quel-profil-pour-quelle-carte" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Carte</th>
+<th>Profil</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Caucasus, Persian Gulf, Sinaï, Syrie, Cold War Germany, Kola, Irak, Afghanistan</td>
+<td><code>foothold</code></td>
+</tr>
+<tr>
+<td><strong>Normandie WWII</strong></td>
+<td><code>foothold-ww2</code></td>
+</tr>
+</tbody>
+</table>
+<p>La Normandie est une autre famille, d'où son profil : son fichier de config s'appelle
+<code>Foothold Config WW2.lua</code>, il n'a <strong>pas</strong> de global <code>Era</code> (la Seconde Guerre mondiale n'a pas
+de sélecteur d'ère) ni de <code>StartNormal</code>, et la mission <strong>n'embarque aucune CTLD Foothold</strong> —
+la CTLD VEAF n'y est donc pas incompatible (elle reste OFF par défaut, mais vous pouvez
+l'activer).</p>
+<p>Si vous adoptez la Normandie avec le profil <code>foothold</code>, <code>validate</code> vous arrête : le
+<code>config_override</code> viserait <code>Foothold Config.lua</code>, absent de cette mission, et l'override
+serait alors chargé <strong>en dernier</strong> — après le script de setup qui a déjà lu les réglages —
+donc sans aucun effet.</p>
 <h2 id="vue-densemble">Vue d'ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>.miz upstream  ──(1) convert-other --profile foothold──►  dossier mission v6
+<div class="highlight"><pre><span></span><code>.zip release   ──(1) convert-other --profile foothold──►  dossier mission v6
                                                           │
                               (2) réglage mission.yaml ◄──┘
                                                           │
@@ -2408,10 +2546,10 @@ Le détail de chaque commande est dans <a href="../CONVERT_OTHER/">CONVERT_OTHER
 Nouvelle version Lekaa ──► convert-other --update ──► (re)validate ──► build
 </code></pre></div>
 <h2 id="1-initialiser-adopter">1. Initialiser (adopter)<a class="headerlink" href="#1-initialiser-adopter" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;Foothold_upstream.miz&gt;<span class="w"> </span>&lt;dossier-mission&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>Foothold_CA_4.4.1_Multi_Language_Coldwar-Modern-Vietnam.zip<span class="w"> </span>&lt;dossier-mission&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
 </code></pre></div>
-<p><code>convert-other</code> extrait le <code>.miz</code>, détecte les scripts chargés par les triggers
-natifs (dans l'ordre), et génère un <code>mission.yaml</code> avec :</p>
+<p><code>convert-other</code> extrait le <code>.miz</code> (de l'archive si besoin), détecte les scripts chargés par
+les triggers natifs (dans l'ordre), et génère un <code>mission.yaml</code> avec :</p>
 <ul>
 <li>un bloc <strong><code>custom_scripts:</code> ordonné</strong> (Moose, zoneCommander, Foothold Config,
   setup, CTLD Foothold, Splash, AIEN, EWRS… — l'ordre de chargement d'origine) ;</li>
@@ -2450,18 +2588,54 @@ chargée).</p>
 <h3 id="b-override-partiel-de-la-config-foothold">b. Override partiel de la config Foothold<a class="headerlink" href="#b-override-partiel-de-la-config-foothold" title="Permanent link">&para;</a></h3>
 <p>Décommentez le bloc <code>config_override:</code> et n'y mettez <strong>que</strong> les globals que vous
 changez (le reste de <code>Foothold Config.lua</code> reste intact et se met à jour tout seul
-à la prochaine version). Chaque clé est <strong>validée lexicalement</strong> contre le code
-injecté : une faute de frappe fait échouer <code>validate</code> et le build.</p>
+à la prochaine version). Deux contrôles au <code>validate</code> :</p>
+<ul>
+<li>chaque clé est <strong>validée lexicalement</strong> contre le code injecté — une faute de frappe ou un
+  renommage amont fait échouer <code>validate</code> et le build ;</li>
+<li>le <code>target</code> doit <strong>désigner un script de la mission</strong>. Sinon l'override serait chargé en
+  dernier, après le script de setup qui a déjà lu les réglages, et n'aurait donc aucun effet —
+  une panne silencieuse, désormais bloquée.</li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="nt">config_override</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Foothold</span><span class="nv"> </span><span class="s">Config.lua&quot;</span>
 <span class="w">  </span><span class="nt">values</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">Era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Modern</span><span class="w">          </span><span class="c1"># défaut ; surchargé par variante ci-dessous</span>
 <span class="w">    </span><span class="nt">AutoRestart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">FootholdLocale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FR</span><span class="w">   </span><span class="c1"># langue des messages Foothold à l&#39;écran</span>
 </code></pre></div>
+<p><code>FootholdLocale</code> (config amont V1.0.9) accepte <code>EN</code>, <code>DE</code>, <code>FR</code>, <code>ES</code>, <code>RU</code>, <code>PT-BR</code>, <code>TR</code>,
+<code>IT</code>, <code>zh-CN</code>, <code>zh-TW</code>. Elle ne force pas la langue du menu radio des joueurs, qui reste
+réglable par chacun en jeu.</p>
+<h3 id="external-config">⚠️ La config externe du Config Manager (à ne pas installer)<a class="headerlink" href="#external-config" title="Permanent link">&para;</a></h3>
+<p>Depuis la config V1.0.9, <code>Foothold Config.lua</code> <strong>cherche un fichier de config externe</strong> et,
+s'il le trouve, l'applique par-dessus les valeurs embarquées dans le <code>.miz</code> :</p>
+<div class="highlight"><pre><span></span><code>&lt;Saved Games&gt;\DCS…\Missions\Saves\Foothold Config.lua
+</code></pre></div>
+<p>C'est le canal du <strong>Foothold Config Manager</strong> (l'exécutable livré dans l'archive) : son bouton
+<em>Import MIZ Config</em> installe ce fichier. Conséquences à connaître :</p>
+<ul>
+<li><strong>notre <code>config_override</code> gagne quand même</strong> : le <code>veaf-config-override.lua</code> généré est
+  chargé <em>après</em> le script de config, donc il réassigne les globals en dernier —
+  <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0008-foothold-config-override.md">ADR 0008</a>
+  reste valable ;</li>
+<li><strong>mais</strong> un tel fichier posé dans le <code>Saved Games</code> d'un serveur modifie <strong>silencieusement</strong>
+  toutes les missions Foothold de cette instance, y compris les nôtres, pour tous les
+  réglages que nous ne surchargeons pas explicitement ;</li>
+<li>Foothold affiche en plus un avertissement à l'écran (<code>FOOTHOLD_CONFIG_EXTERNAL_OUTDATED</code>)
+  quand ce fichier externe est plus vieux que la config embarquée.</li>
+</ul>
+<blockquote>
+<p><strong>Donc : n'installez pas la config externe du Config Manager sur un serveur VEAF.</strong> La
+configuration d'une mission VEAF vit dans son <code>mission.yaml</code>, versionnée avec le dossier de
+mission et validée au build — ce qu'un fichier dans <code>Saved Games</code> n'est pas. Le Config
+Manager reste utile hors ligne pour <em>explorer</em> les réglages disponibles et voir ce que
+chaque option fait.</p>
+</blockquote>
 <h3 id="c-variantes-modern--cold-war">c. Variantes Modern / Cold-War<a class="headerlink" href="#c-variantes-modern--cold-war" title="Permanent link">&para;</a></h3>
-<p>L'ère Foothold est pilotée par le global <code>Era</code> (<code>"Modern"</code> ou <code>"Coldwar"</code>) —
-c'est une <strong>différence de config</strong>. On émet donc les deux <code>.miz</code> en un seul build
-via <a href="../../MISSION_YAML_REFERENCE/"><code>build_variants:</code></a> :</p>
+<p>L'ère Foothold est pilotée par le global <code>Era</code>, qui accepte quatre valeurs — <code>"Modern"</code>,
+<code>"Coldwar"</code>, <code>"Gulfwar"</code> (le nom de l'ère Cold-War côté Irak) et <code>"Vietnam"</code>. C'est une
+<strong>différence de config</strong>, donc on émet plusieurs <code>.miz</code> en un seul build via
+<a href="../../MISSION_YAML_REFERENCE/"><code>build_variants:</code></a> :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VEAF-Foothold-Caucasus</span>
 
@@ -2483,6 +2657,9 @@ via <a href="../../MISSION_YAML_REFERENCE/"><code>build_variants:</code></a> :</
 <span class="w">      </span><span class="nt">values</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">Era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Coldwar</span>
 </code></pre></div>
+<p>Le même schéma donne une variante Vietnam si on la veut (<code>Era: Vietnam</code>) : les missions
+récentes de Lekaa embarquent les appareils et les armements de l'époque, sélectionnés par
+<code>Era</code>. Sur la carte Irak, l'ère Cold-War s'appelle <code>Gulfwar</code>.</p>
 <h2 id="3-valider">3. Valider<a class="headerlink" href="#3-valider" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>validate<span class="w"> </span>&lt;dossier-mission&gt;
 </code></pre></div>
@@ -2505,14 +2682,21 @@ build, voir la <a href="../../MISSION_YAML_REFERENCE/">référence mission.yaml<
 (menu radio VEAF présent, moteur Foothold opérationnel, équipements cohérents avec
 l'ère). C'est l'étape de validation finale avant de publier le dossier mission.</p>
 <h2 id="mettre-à-jour-nouvelle-version-lekaa">Mettre à jour (nouvelle version Lekaa)<a class="headerlink" href="#mettre-à-jour-nouvelle-version-lekaa" title="Permanent link">&para;</a></h2>
-<p>Quand Foothold sort une nouvelle version, ré-importez-la <strong>dans le même dossier</strong> :</p>
-<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;nouveau_upstream.miz&gt;<span class="w"> </span>&lt;dossier-mission&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
+<p>Quand Foothold sort une nouvelle release, téléchargez la nouvelle archive et ré-importez-la
+<strong>dans le même dossier</strong> :</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;nouvelle_release.zip&gt;<span class="w"> </span>&lt;dossier-mission&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
 </code></pre></div>
 <p><code>--update</code> rafraîchit les scripts tiers et la base de mission, <strong>préserve votre
-<code>mission.yaml</code> réglé</strong>, normalise les noms versionnés (<code>Moose_&lt;date&gt;.lua</code> →
-<code>Moose.lua</code>), et <strong>rapporte les scripts ajoutés / mis à jour / retirés</strong> en amont.
-Relisez le rapport, réconciliez <code>custom_scripts:</code> / <code>strip_native_triggers:</code> au
-besoin, puis revalidez et reconstruisez. Voir <a href="../CONVERT_OTHER/">CONVERT_OTHER</a>.</p>
+<code>mission.yaml</code> réglé</strong>, normalise les noms versionnés (<code>Moose_&lt;date&gt;.lua</code> → <code>Moose.lua</code>,
+<code>Splash_Damage_&lt;version&gt;_leka.lua</code> → <code>Splash_Damage.lua</code>), et <strong>rapporte les scripts
+ajoutés / mis à jour / retirés</strong> en amont. Relisez le rapport, réconciliez
+<code>custom_scripts:</code> / <code>strip_native_triggers:</code> au besoin, puis revalidez et reconstruisez.
+Voir <a href="../CONVERT_OTHER/">CONVERT_OTHER</a>.</p>
+<blockquote>
+<p>Surveillez dans le rapport l'apparition d'un <strong>nouveau script</strong> en amont : il n'est pas
+ajouté à <code>custom_scripts:</code> à votre place, justement parce que sa position dans l'ordre de
+chargement est une décision qui revient à un humain.</p>
+</blockquote>
 
 
 
