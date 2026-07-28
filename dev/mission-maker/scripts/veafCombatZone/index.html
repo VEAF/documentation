@@ -1234,6 +1234,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#zone-jouée-côté-rouge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone jouée côté rouge
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2484,6 +2495,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#zone-jouée-côté-rouge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone jouée côté rouge
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2868,7 +2890,14 @@
 <td>booléen</td>
 <td><code>true</code></td>
 <td>Non</td>
-<td><code>false</code> : la zone ne se termine (et ne se désactive) jamais d'elle-même. Nécessaire pour une zone <strong>sans unité ROUGE</strong> : la complétion étant décidée sur le seul décompte des rouges, une telle zone se désactiverait dès la première vérification (~1 min)</td>
+<td><code>false</code> : la zone ne se termine (et ne se désactive) jamais d'elle-même</td>
+</tr>
+<tr>
+<td><code>enemy_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code></td>
+<td><code>RED</code></td>
+<td>Non</td>
+<td>Coalition <strong>hostile</strong> : ses unités sont celles qu'il faut détruire pour terminer la zone, et celles que le rapport F10 annonce comme « ennemis ». <code>BLUE</code> pour une zone jouée <strong>côté rouge</strong> (voir ci-dessous)</td>
 </tr>
 <tr>
 <td><code>active_at_start</code></td>
@@ -2965,6 +2994,31 @@
 <span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
 <span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alpha&quot;</span>
 </code></pre></div>
+<h3 id="zone-jouée-côté-rouge">Zone jouée côté rouge<a class="headerlink" href="#zone-jouée-côté-rouge" title="Permanent link">&para;</a></h3>
+<p>Par défaut, une zone de combat suppose que les joueurs sont <strong>bleus</strong> et que les unités à
+détruire sont <strong>rouges</strong>. Deux comportements en découlaient : la zone se terminait quand il ne
+restait plus d'unité rouge, et le rapport F10 annonçait les bleus comme « amis » et les rouges
+comme « ennemis ».</p>
+<p><code>enemy_coalition: BLUE</code> inverse les deux : la zone se termine quand ses unités <strong>bleues</strong> ont
+été détruites, et le rapport nomme les bleus « ennemis » et les rouges « amis ».</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">enemy_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span><span class="w">   </span><span class="c1"># les joueurs sont rouges, les bleus sont les ennemis</span>
+</code></pre></div>
+<p>Le décompte des unités reste identique — seul change le camp sur lequel porte la condition de
+fin. Une zone qui ne précise rien se comporte exactement comme avant.</p>
+<blockquote>
+<p>Auparavant, une zone sans unité rouge nécessitait <code>completable: false</code>, ce qui n'en faisait pas
+une zone rouge : cela désactivait simplement la fin automatique, et le rapport continuait
+d'appeler les ennemis bleus « amis ». <code>enemy_coalition</code> remplace ce contournement.</p>
+</blockquote>
+<p>Côté Lua, l'équivalent est <code>VeafCombatZone:setEnemyCoalition(coalition.side.BLUE)</code> ; le setter
+accepte aussi la chaîne <code>"blue"</code> / <code>"red"</code>.</p>
 <hr />
 <h2 id="constantes-du-module">Constantes du module<a class="headerlink" href="#constantes-du-module" title="Permanent link">&para;</a></h2>
 <table>

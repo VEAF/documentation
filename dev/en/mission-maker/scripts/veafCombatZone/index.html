@@ -1234,6 +1234,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-zone-played-from-the-red-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A zone played from the red side
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2473,6 +2484,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-zone-played-from-the-red-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A zone played from the red side
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2846,7 +2868,14 @@
 <td>boolean</td>
 <td><code>true</code></td>
 <td>No</td>
-<td><code>false</code>: the zone never completes (nor deactivates) on its own. Required for a zone holding <strong>no RED unit</strong>: completion is decided on the red count alone, so such a zone would deactivate on its first check (~1 min)</td>
+<td><code>false</code>: the zone never completes (nor deactivates) on its own</td>
+</tr>
+<tr>
+<td><code>enemy_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code></td>
+<td><code>RED</code></td>
+<td>No</td>
+<td>The <strong>hostile</strong> coalition: its units are the ones that must be destroyed for the zone to complete, and the ones the F10 report calls "enemies". Use <code>BLUE</code> for a zone played from the <strong>red side</strong> (see below)</td>
 </tr>
 <tr>
 <td><code>active_at_start</code></td>
@@ -2943,6 +2972,30 @@
 <span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
 <span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alpha&quot;</span>
 </code></pre></div>
+<h3 id="a-zone-played-from-the-red-side">A zone played from the red side<a class="headerlink" href="#a-zone-played-from-the-red-side" title="Permanent link">&para;</a></h3>
+<p>By default a combat zone assumes the players are <strong>blue</strong> and the units to destroy are <strong>red</strong>.
+Two behaviours followed from that: the zone completed once no red unit was left, and the F10
+report labelled the blue tally "friends" and the red one "enemies".</p>
+<p><code>enemy_coalition: BLUE</code> flips both: the zone completes once its <strong>blue</strong> units are destroyed, and
+the report calls the blue units "enemies" and the red ones "friends".</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">enemy_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span><span class="w">   </span><span class="c1"># players are red, blue are the enemies</span>
+</code></pre></div>
+<p>Unit counting itself is unchanged — only the side the completion condition looks at. A zone that
+says nothing behaves exactly as before.</p>
+<blockquote>
+<p>A zone holding no red unit previously needed <code>completable: false</code>, which did not make it a
+red-side zone: it merely switched auto-completion off, and the report still called the blue
+enemies "friends". <code>enemy_coalition</code> replaces that workaround.</p>
+</blockquote>
+<p>In Lua the equivalent is <code>VeafCombatZone:setEnemyCoalition(coalition.side.BLUE)</code>; the setter also
+accepts the <code>"blue"</code> / <code>"red"</code> string form.</p>
 <hr />
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
 <p>Place all the units that should appear in the zone directly in the DCS Mission Editor, inside the trigger zone. When the mission starts VEAF removes them all — the zone is empty. When a player activates the zone via the F10 menu, all units are respawned at randomised positions within the zone radius. When every enemy unit is destroyed, the zone is marked as completed (optional callback fires, optional chained zones activate).</p>
