@@ -1995,6 +1995,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#fréquence-principale-du-groupe-human_radio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fréquence principale du groupe (human_radio)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#avions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2165,6 +2176,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#fréquence-principale-du-groupe-human_radio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fréquence principale du groupe (human_radio)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#avions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2263,6 +2285,55 @@ chaque build.</p>
 <p>Si vous découvrez un autre appareil qui pousse DCS à rejeter la mission, ajoutez
 <code>dcs_rejects_on_load: true</code> à son entrée dans
 <code>src/python/veaf-tools/presets_injector/data/dcs-radio-specs.yaml</code> et ouvrez une pull request.</p>
+<hr />
+<h2 id="fréquence-principale-du-groupe-human_radio">Fréquence principale du groupe (<code>human_radio</code>)<a class="headerlink" href="#fréquence-principale-du-groupe-human_radio" title="Permanent link">&para;</a></h2>
+<p>Un appareil DCS impose <strong>deux</strong> contraintes de fréquence différentes, et il est facile de les
+confondre :</p>
+<table>
+<thead>
+<tr>
+<th>Contrainte</th>
+<th>Ce qu'elle borne</th>
+<th>Où elle apparaît</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>plages <code>radios</code> (tableaux ci-dessous)</td>
+<td>les <strong>canaux préréglés</strong> de la radio</td>
+<td>onglet radio du slot</td>
+</tr>
+<tr>
+<td><code>human_radio</code></td>
+<td>la <strong>fréquence principale du groupe</strong></td>
+<td>champ « fréquence » du groupe dans l'éditeur</td>
+</tr>
+</tbody>
+</table>
+<p>Pour la plupart des appareils modernes, la seconde est aussi large que la première et la
+distinction est invisible. Mais pour 27 appareils elle est <strong>plus étroite</strong> — parfois
+radicalement. Le FW-190A8 accepte des canaux préréglés de 38 à 156 MHz, alors que sa fréquence
+principale est confinée entre 38.4 et 42.4 MHz.</p>
+<p>Si la fréquence principale sort de la plage <code>human_radio</code>, l'éditeur de mission <strong>refuse
+d'enregistrer la mission</strong> avec un message du type :</p>
+<div class="highlight"><pre><span></span><code>FW-190D9 Template: Fréquence invalide 134 MHz
+</code></pre></div>
+<p><code>inject-presets</code> promeut normalement le canal 1 de la première radio en fréquence principale du
+groupe, pour que le champ de l'éditeur reflète le canal 1. Quand ce canal sort de la plage
+<code>human_radio</code> de l'appareil, la promotion est <strong>abandonnée</strong> : le groupe conserve sa propre
+fréquence (celle de la mission source, ou la valeur par défaut de DCS), ce qui garde la mission
+enregistrable. Le build le signale en mode détaillé ; les préréglages, eux, sont injectés
+normalement.</p>
+<p>Les plages <code>human_radio</code> sont extraites du datamine avec le reste des specs et vivent dans
+<code>dcs-radio-specs.yaml</code>, sous chaque appareil :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">FW-190A8</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">human_radio</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">min_mhz</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.4</span>
+<span class="w">    </span><span class="nt">max_mhz</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">42.4</span>
+<span class="w">    </span><span class="nt">default_mhz</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">38.4</span><span class="w">      </span><span class="c1"># valeur par défaut de DCS</span>
+<span class="w">    </span><span class="nt">modulation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AM</span>
+</code></pre></div>
+<p>Un appareil sans bloc <code>human_radio</code> n'impose aucune borne : la promotion se fait comme avant.</p>
 <hr />
 <h2 id="avions">Avions<a class="headerlink" href="#avions" title="Permanent link">&para;</a></h2>
 <table>
