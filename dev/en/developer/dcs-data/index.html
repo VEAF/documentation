@@ -1865,6 +1865,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cockpit-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cockpit-control indexes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The cockpit-control indexes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-index-says-and-what-it-does-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the index says, and what it does not
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2398,6 +2426,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cockpit-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cockpit-control indexes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The cockpit-control indexes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-index-says-and-what-it-does-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the index says, and what it does not
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2450,9 +2506,9 @@ interchangeable:</p>
 </tr>
 <tr>
 <td><strong>DCS install files</strong></td>
-<td>read terrain files from a local DCS install (<code>--dcs-path</code>)</td>
+<td>read files from a local DCS install (<code>--dcs-path</code>)</td>
 <td>install only (not running)</td>
-<td>airfield ATC frequencies</td>
+<td>airfield ATC frequencies, cockpit controls</td>
 </tr>
 </tbody>
 </table>
@@ -2467,9 +2523,9 @@ veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--units
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--radio
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w">    </span><span class="c1"># merges the committed runtime dumps</span>
 </code></pre></div>
-<p><code>--radio</code>, <code>--airdromes</code> and <code>--airfield-freqs</code> are excluded from the no-flag /
-<code>--all</code> run: radio has manual overlays, airdromes merges committed runtime dumps, and
-airfield-freqs needs a local DCS install path (<code>--dcs-path</code>).</p>
+<p><code>--radio</code>, <code>--airdromes</code>, <code>--airfield-freqs</code> and <code>--cockpit-controls</code> are excluded from
+the no-flag / <code>--all</code> run: radio has manual overlays, airdromes merges committed runtime
+dumps, and the last two need a local DCS install path (<code>--dcs-path</code>).</p>
 <p>The datamine is cloned at a <strong>pinned</strong> ref
 (<code>veaf_build.dcs_data.datamine.DATAMINE_REF</code>), so generation is reproducible:
 re-running on the same ref yields a byte-identical artifact, and CI can detect a
@@ -2638,6 +2694,41 @@ an airfield name to its <strong>ATC frequencies</strong> (<code>uhf</code>, <cod
 <div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airfield-freqs<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
 </code></pre></div>
 <p>It only covers <strong>installed</strong> theatres.</p>
+<h2 id="cockpit-controls">The cockpit-control indexes<a class="headerlink" href="#cockpit-controls" title="Permanent link">&para;</a></h2>
+<p><code>src/python/veaf-tools/veaf_libs/data/cockpit-controls/&lt;type&gt;.yaml</code> describes, for one
+aircraft, each of its <strong>clickable controls</strong>: the animation argument to read, the hint DCS
+shows on mouse-over, the named positions, the value window, and whether the control has a
+<strong>readable</strong> position. This is what the guided-checklist resolver reads to turn an
+instructor's <code>throttle sur idle</code> into technical fields, without anyone opening a DCS
+install.</p>
+<p>Source: <code>Mods/aircraft/&lt;Module&gt;/Cockpit/Scripts/clickabledata.lua</code> (or <code>Cockpit/</code> for
+Heatblur), plus <code>clickable_defs.lua</code> for the value window and <code>draw_args.lua</code> when the
+module names its arguments. <strong>Install-dependent</strong>, so <strong>not CI-guarded</strong>:</p>
+<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--cockpit-controls<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
+</code></pre></div>
+<p><code>--aircraft F-16C</code> restricts generation to one module. A module the install does not have
+is skipped; the number of elements the parser could not read is <strong>printed</strong>, never
+swallowed.</p>
+<h3 id="what-the-index-says-and-what-it-does-not">What the index says, and what it does not<a class="headerlink" href="#what-the-index-says-and-what-it-does-not" title="Permanent link">&para;</a></h3>
+<p>Three traps, all measured on real cockpits:</p>
+<ul>
+<li><strong><code>positions</code> is in hint order, not value order.</strong> The F-16C's <code>MAIN PWR Switch, MAIN
+  PWR/BATT/OFF</code> runs +1 / 0 / -1 in that order, while <code>DIGITAL BACKUP, OFF/BACKUP</code> runs
+  0 / 1. Inferring a value from a rank is wrong half the time, silently.</li>
+<li><strong>Naming positions in the hint is a recent ED habit, not a rule.</strong> Across the cockpits
+  indexed here: F-16C 127 controls out of 284, AH-64D 123 of 478, A-10C 8 of 470, F-14B
+  <strong>none</strong> (Heatblur writes <code>Hydraulic Transfer Pump Switch</code>, with no positions). A
+  resolver that assumes named positions only works on ED aircraft.</li>
+<li><strong><code>readable: false</code> is not a gap in the index.</strong> A button has no position, and a
+  spring-loaded switch is back at neutral before anything can poll it; a step on one of
+  those has to be pilot-confirmed.</li>
+</ul>
+<p>Every module has its own dialect, and each was found by indexing a real cockpit: the
+AH-64D, a two-seater, names the crew station before the hint (<code>mpd_button(CREW.PLT,
+_("..."), ...)</code>) and uses single quotes; the A-10C's UFC keypad passes an empty hint;
+Heatblur names its arguments (<code>cockpit_args.HYD_ISOLATION_Switch</code>) instead of writing them
+out. The F-14B(U) has no cockpit of its own: its <code>clickabledata.lua</code> is two lines of
+<code>dofile</code> pointing at the F-14B's, so both aircraft share one index.</p>
 
 
 
