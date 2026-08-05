@@ -2793,9 +2793,15 @@ poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"
 <h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>poetry install</code> must have been run once</li>
-<li>Lua 5.1 on PATH (<code>lua5.1</code> on Linux/DevContainer, <code>lua</code> or <code>C:\Program Files (x86)\Lua\5.1\lua.exe</code> on Windows)</li>
+<li>Lua 5.1 on PATH (<code>lua5.1</code>, <code>lua51</code> or <code>lua</code>, or <code>C:\Program Files (x86)\Lua\5.1\lua.exe</code> on Windows)</li>
 <li>No other dependencies (luaunit is bundled in <code>test/lua/luaunit.lua</code>)</li>
 </ul>
+<p>Version <strong>5.1</strong> is verified: every candidate is queried with <code>lua -v</code>, and a 5.2+ interpreter is
+refused rather than used. That is deliberate — Lua 5.2 removed <code>unpack</code> and made
+<code>string.format('%d', ...)</code> reject a fractional number, so a run under 5.4 produces dozens of
+failures that look like regressions and are not.</p>
+<p>On Windows, <code>scoop install lua51</code> provides Lua 5.1.5. Note that its <code>lua</code> shim replaces the one
+of any other Lua already installed through scoop; the <code>lua51</code> shim lets you keep both.</p>
 <hr />
 <h2 id="coverage">Coverage<a class="headerlink" href="#coverage" title="Permanent link">&para;</a></h2>
 <p>Generate a per-file line coverage report using <a href="https://github.com/lunarmodules/luacov">luacov</a>:</p>

@@ -2793,9 +2793,15 @@ poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"
 <h3 id="prérequis">Prérequis<a class="headerlink" href="#prérequis" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>poetry install</code> doit avoir été exécuté une fois</li>
-<li>Lua 5.1 dans le PATH (<code>lua5.1</code> sous Linux/DevContainer, <code>lua</code> ou <code>C:\Program Files (x86)\Lua\5.1\lua.exe</code> sous Windows)</li>
+<li>Lua 5.1 dans le PATH (<code>lua5.1</code>, <code>lua51</code> ou <code>lua</code>, ou <code>C:\Program Files (x86)\Lua\5.1\lua.exe</code> sous Windows)</li>
 <li>Aucune autre dépendance (luaunit est embarqué dans <code>test/lua/luaunit.lua</code>)</li>
 </ul>
+<p>La version <strong>5.1</strong> est vérifiée : chaque candidat est interrogé avec <code>lua -v</code>, et un interpréteur
+5.2+ est refusé au lieu d'être utilisé. C'est délibéré — Lua 5.2 a supprimé <code>unpack</code> et rendu
+<code>string.format('%d', ...)</code> intolérant aux nombres fractionnaires, donc une exécution sous 5.4
+produit des dizaines d'échecs qui ressemblent à des régressions et n'en sont pas.</p>
+<p>Sous Windows, <code>scoop install lua51</code> fournit Lua 5.1.5. Attention : son shim <code>lua</code> remplace celui
+d'une autre version de Lua déjà installée par scoop ; le shim <code>lua51</code> permet de garder les deux.</p>
 <hr />
 <h2 id="coverage">Couverture<a class="headerlink" href="#coverage" title="Permanent link">&para;</a></h2>
 <p>Générez un rapport de couverture ligne par ligne avec <a href="https://github.com/lunarmodules/luacov">luacov</a> :</p>

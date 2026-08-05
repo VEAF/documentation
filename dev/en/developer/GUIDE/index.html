@@ -3507,10 +3507,18 @@
 <span class="c"># Install Lua 5.1</span>
 <span class="n">scoop</span> <span class="n">install</span> <span class="n">lua51</span>
 </code></pre></div>
+<blockquote>
+<p>If another Lua version is already installed through scoop, <code>lua51</code> <strong>replaces its <code>lua</code> shim</strong>
+(the package declares one). The <code>lua51</code> shim stays available for both, and
+<code>poetry run test-lua</code> knows how to find it — but the bare <code>lua</code> command in your terminal will
+have changed version.</p>
+</blockquote>
 <p>Alternatively, download a binary from <a href="https://luabinaries.sourceforge.net/">LuaBinaries</a> (<code>lua-5.1.x_Win64_bin.zip</code>), extract it, and add the folder to the system PATH.</p>
 <p>Verify:</p>
 <div class="highlight"><pre><span></span><code><span class="n">lua</span> <span class="n">-v</span>   <span class="c"># Lua 5.1.x expected</span>
 </code></pre></div>
+<p>If it is not 5.1, <code>poetry run test-lua</code> refuses to run and prints what it found: running the suite
+under 5.4 produces dozens of failures that look like regressions in the VEAF code and are not.</p>
 <h4 id="stylua-setup">5. StyLua 2.4.0 (Lua code quality)<a class="headerlink" href="#stylua-setup" title="Permanent link">&para;</a></h4>
 <p>StyLua formats Lua code. <strong>Version 2.4.0 is enforced by CI</strong> — any other version will fail the formatting job.</p>
 <p>Download <code>stylua-windows-x86_64.zip</code> from the <a href="https://github.com/JohnnyMorganz/StyLua/releases/tag/v2.4.0">v2.4.0 release page</a>, then install:</p>
@@ -3713,7 +3721,7 @@ Checksum verified before extraction
 <div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>test-lua
 </code></pre></div>
 <p>Exit code <code>0</code> = all pass, <code>1</code> = failures.</p>
-<p>Works on Windows, Linux, and inside the DevContainer (auto-detects <code>lua5.1</code> / <code>lua</code> / Windows fallback path).</p>
+<p>Works on Windows, Linux, and inside the DevContainer (auto-detects <code>lua5.1</code> / <code>lua51</code> / <code>lua</code> / Windows fallback path). Every candidate is <strong>queried with <code>lua -v</code></strong>: a 5.2+ interpreter is refused, with install instructions, rather than used — otherwise 5.4's incompatibilities look like regressions in the VEAF code.</p>
 <h3 id="filtered-run">Filtered Run<a class="headerlink" href="#filtered-run" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"> </span>--filter<span class="w"> </span>spawn
 poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"> </span>--filter<span class="w"> </span>combat
