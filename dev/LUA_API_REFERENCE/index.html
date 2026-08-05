@@ -2492,6 +2492,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#veaffindspawnpointvec3-radius-saferadius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.findSpawnPoint(vec3, radius, safeRadius)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#veafgetlandheightvec3" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3144,6 +3155,39 @@
     <span class="md-ellipsis">
       
         veaf.getTriggerZone(zoneName)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertyzonename-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZoneProperty(zoneName, key)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertybooleanzonename-key-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyBoolean(zoneName, key, default)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertynumberzonename-key-default-min-max" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyNumber(zoneName, key, default, min, max)
       
     </span>
   </a>
@@ -6749,6 +6793,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#veaffindspawnpointvec3-radius-saferadius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.findSpawnPoint(vec3, radius, safeRadius)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#veafgetlandheightvec3" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7401,6 +7456,39 @@
     <span class="md-ellipsis">
       
         veaf.getTriggerZone(zoneName)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertyzonename-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZoneProperty(zoneName, key)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertybooleanzonename-key-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyBoolean(zoneName, key, default)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertynumberzonename-key-default-min-max" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyNumber(zoneName, key, default, min, max)
       
     </span>
   </a>
@@ -10493,7 +10581,7 @@
 
 
 <h1 id="modules-lua-veaf--référence-api-complète">Modules Lua VEAF — Référence API complète<a class="headerlink" href="#modules-lua-veaf--référence-api-complète" title="Permanent link">&para;</a></h1>
-<p><strong>Version :</strong> générée pour la 6.13.17
+<p><strong>Version :</strong> générée pour la 6.13.18
 <strong>Dernière mise à jour :</strong> Août 2026
 <strong>Projet :</strong> VEAF Mission Creation Tools</p>
 <hr />
@@ -10822,6 +10910,34 @@
 <li><code>vec3</code> (vec3) — Position à ajuster</li>
 </ul>
 <p><strong>Retourne :</strong> <code>vec3</code> — Position sur la surface</p>
+<h5 id="veaffindspawnpointvec3-radius-saferadius"><code>veaf.findSpawnPoint(vec3, radius, safeRadius)</code><a class="headerlink" href="#veaffindspawnpointvec3-radius-saferadius" title="Permanent link">&para;</a></h5>
+<p>Cherche un point d'apparition au sol acceptable près d'un centre. Là où <code>placePointOnLand</code>
+déplace un point <strong>verticalement</strong>, celle-ci en <strong>cherche</strong> un.</p>
+<p>La recherche dégrade en trois paliers bornés :</p>
+<ol>
+<li><strong>Tous les critères, dégagement du décor inclus</strong> — via le singleton DCS <code>Disposition</code>, qui
+   rend des points à l'écart des bâtiments et des forêts.</li>
+<li><strong>Tous les critères sauf le dégagement</strong> — tirages aléatoires validés dans le rayon.</li>
+<li><strong>Échec</strong> — retourne <code>nil</code> ; l'appelant signale et abandonne l'apparition.</li>
+</ol>
+<p><strong>Paramètres :</strong></p>
+<ul>
+<li><code>vec3</code> (vec3) — Centre de la recherche</li>
+<li><code>radius</code> (number) — Rayon de recherche en mètres, utilisé par le palier aléatoire</li>
+<li><code>safeRadius</code> (number, optionnel) — Dégagement exigé (défaut <code>veaf.DEFAULT_SPAWN_CLEARANCE</code>)</li>
+</ul>
+<p><strong>Retourne :</strong> <code>vec3</code> posé sur le sol, ou <code>nil</code> si aucun point acceptable n'a été trouvé</p>
+<p><strong>Réglages :</strong></p>
+<ul>
+<li><code>veaf.SPAWN_SEARCH_ATTEMPTS</code> (défaut 10) — nombre de candidats examinés par palier</li>
+<li><code>veaf.DEFAULT_SPAWN_CLEARANCE</code> (défaut 100) — dégagement demandé, en mètres</li>
+<li><code>veaf.doNotAvoidScenery</code> (défaut <code>false</code>) — à <code>true</code>, saute le palier 1</li>
+</ul>
+<blockquote>
+<p><strong>Note :</strong> <code>Disposition</code> est une API DCS <strong>native mais non documentée</strong>, absente de
+<code>dcs-world-schema</code>. L'appel est gardé et protégé par <code>pcall</code> : si le singleton est absent de
+cette version de DCS ou de cette carte, la recherche passe au palier 2 au lieu d'échouer.</p>
+</blockquote>
 <h5 id="veafgetlandheightvec3"><code>veaf.getLandHeight(vec3)</code><a class="headerlink" href="#veafgetlandheightvec3" title="Permanent link">&para;</a></h5>
 <p>Obtient la hauteur du terrain aux coordonnées.</p>
 <p><strong>Paramètres :</strong></p>
@@ -11276,6 +11392,40 @@ Wind: 270° at 10 kts
 <li><code>zoneName</code> (string) — Nom de la zone</li>
 </ul>
 <p><strong>Retourne :</strong> <code>DCS Zone</code> — Objet zone ou nil</p>
+<h5 id="veafgetzonepropertyzonename-key"><code>veaf.getZoneProperty(zoneName, key)</code><a class="headerlink" href="#veafgetzonepropertyzonename-key" title="Permanent link">&para;</a></h5>
+<p>Lit une propriété de zone trigger, telle que saisie par le mission maker dans l'éditeur.</p>
+<p>DCS stocke ces propriétés sous forme de <strong>tableau de paires</strong> <code>{ key = "…", value = "…" }</code>,
+jamais de dictionnaire, et <strong>toute valeur est une chaîne</strong>. Ces trois accesseurs remplacent le
+parcours linéaire et le <code>tonumber</code> que chaque appelant devrait écrire.</p>
+<p><strong>Paramètres :</strong></p>
+<ul>
+<li><code>zoneName</code> (string) — Nom de la zone</li>
+<li><code>key</code> (string) — Nom de la propriété</li>
+</ul>
+<p><strong>Retourne :</strong> <code>string</code> — ou <code>nil</code> si la zone, ses propriétés ou la clé sont absentes</p>
+<h5 id="veafgetzonepropertybooleanzonename-key-default"><code>veaf.getZonePropertyBoolean(zoneName, key, default)</code><a class="headerlink" href="#veafgetzonepropertybooleanzonename-key-default" title="Permanent link">&para;</a></h5>
+<p>Lit une propriété comme booléen. Accepte <code>true</code>/<code>false</code> sans distinction de casse ; toute autre
+valeur est un échec de lecture et rend <code>default</code> — une coquille ne peut donc pas se lire
+silencieusement comme <code>false</code>.</p>
+<p><strong>Paramètres :</strong></p>
+<ul>
+<li><code>zoneName</code> (string) — Nom de la zone</li>
+<li><code>key</code> (string) — Nom de la propriété</li>
+<li><code>default</code> (boolean) — Valeur rendue si absente ou illisible</li>
+</ul>
+<p><strong>Retourne :</strong> <code>boolean</code></p>
+<h5 id="veafgetzonepropertynumberzonename-key-default-min-max"><code>veaf.getZonePropertyNumber(zoneName, key, default, min, max)</code><a class="headerlink" href="#veafgetzonepropertynumberzonename-key-default-min-max" title="Permanent link">&para;</a></h5>
+<p>Lit une propriété comme nombre, <strong>borné</strong> dans un intervalle optionnel. Borne au lieu de
+rejeter : un mission maker qui saisit une valeur absurde obtient la borne, pas un module mort.</p>
+<p><strong>Paramètres :</strong></p>
+<ul>
+<li><code>zoneName</code> (string) — Nom de la zone</li>
+<li><code>key</code> (string) — Nom de la propriété</li>
+<li><code>default</code> (number) — Valeur rendue si absente ou non numérique</li>
+<li><code>min</code> (number, optionnel) — Borne basse</li>
+<li><code>max</code> (number, optionnel) — Borne haute</li>
+</ul>
+<p><strong>Retourne :</strong> <code>number</code></p>
 <h4 id="fonctions-de-contrôle-de-mission">Fonctions de contrôle de mission<a class="headerlink" href="#fonctions-de-contrôle-de-mission" title="Permanent link">&para;</a></h4>
 <h5 id="veafendmissionatendtimehour-endtimeminute-checkintervalinseconds-checkmessage-"><code>veaf.endMissionAt(endTimeHour, endTimeMinute, checkIntervalInSeconds, checkMessage, ...)</code><a class="headerlink" href="#veafendmissionatendtimehour-endtimeminute-checkintervalinseconds-checkmessage-" title="Permanent link">&para;</a></h5>
 <p>Planifie la fin de mission à une heure spécifique.</p>
@@ -13694,7 +13844,7 @@ défaut <code>.\</code>, le répertoire courant).</p>
 <hr />
 <p><strong>Version du document :</strong> 1.0
 <strong>Dernière mise à jour :</strong> Août 2026
-<strong>Généré pour :</strong> VEAF Mission Creation Tools v6.13.17</p>
+<strong>Généré pour :</strong> VEAF Mission Creation Tools v6.13.18</p>
 
 
 

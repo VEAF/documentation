@@ -2492,6 +2492,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#veaffindspawnpointvec3-radius-saferadius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.findSpawnPoint(vec3, radius, safeRadius)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#veafgetlandheightvec3" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3144,6 +3155,39 @@
     <span class="md-ellipsis">
       
         veaf.getTriggerZone(zoneName)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertyzonename-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZoneProperty(zoneName, key)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertybooleanzonename-key-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyBoolean(zoneName, key, default)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertynumberzonename-key-default-min-max" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyNumber(zoneName, key, default, min, max)
       
     </span>
   </a>
@@ -6749,6 +6793,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#veaffindspawnpointvec3-radius-saferadius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.findSpawnPoint(vec3, radius, safeRadius)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#veafgetlandheightvec3" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7401,6 +7456,39 @@
     <span class="md-ellipsis">
       
         veaf.getTriggerZone(zoneName)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertyzonename-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZoneProperty(zoneName, key)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertybooleanzonename-key-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyBoolean(zoneName, key, default)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafgetzonepropertynumberzonename-key-default-min-max" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf.getZonePropertyNumber(zoneName, key, default, min, max)
       
     </span>
   </a>
@@ -10493,7 +10581,7 @@
 
 
 <h1 id="veaf-lua-modules---complete-api-reference">VEAF Lua Modules - Complete API Reference<a class="headerlink" href="#veaf-lua-modules---complete-api-reference" title="Permanent link">&para;</a></h1>
-<p><strong>Version:</strong> generated for 6.13.17
+<p><strong>Version:</strong> generated for 6.13.18
 <strong>Last Updated:</strong> August 2026
 <strong>Project:</strong> VEAF Mission Creation Tools</p>
 <hr />
@@ -10822,6 +10910,34 @@
 <li><code>vec3</code> (vec3) - Position to adjust</li>
 </ul>
 <p><strong>Returns:</strong> <code>vec3</code> - Position on land surface</p>
+<h5 id="veaffindspawnpointvec3-radius-saferadius"><code>veaf.findSpawnPoint(vec3, radius, safeRadius)</code><a class="headerlink" href="#veaffindspawnpointvec3-radius-saferadius" title="Permanent link">&para;</a></h5>
+<p>Searches for an acceptable ground spawn point near a centre. Where <code>placePointOnLand</code> moves a
+point <strong>vertically</strong>, this one <strong>searches</strong> for one.</p>
+<p>The search degrades in three bounded tiers:</p>
+<ol>
+<li><strong>Every criterion, clearance from scenery included</strong> - through the <code>Disposition</code> DCS
+   singleton, which returns points clear of buildings and forests.</li>
+<li><strong>Every criterion except that clearance</strong> - validated random draws within the radius.</li>
+<li><strong>Failure</strong> - returns <code>nil</code>; the caller reports it and aborts the spawn.</li>
+</ol>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>vec3</code> (vec3) - Centre of the search</li>
+<li><code>radius</code> (number) - Search radius in metres, used by the random tier</li>
+<li><code>safeRadius</code> (number, optional) - Required clearance (default <code>veaf.DEFAULT_SPAWN_CLEARANCE</code>)</li>
+</ul>
+<p><strong>Returns:</strong> <code>vec3</code> placed on land, or <code>nil</code> when no acceptable point was found</p>
+<p><strong>Settings:</strong></p>
+<ul>
+<li><code>veaf.SPAWN_SEARCH_ATTEMPTS</code> (default 10) - candidates examined per tier</li>
+<li><code>veaf.DEFAULT_SPAWN_CLEARANCE</code> (default 100) - requested clearance, in metres</li>
+<li><code>veaf.doNotAvoidScenery</code> (default <code>false</code>) - when <code>true</code>, skips tier 1</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> <code>Disposition</code> is a <strong>native but undocumented</strong> DCS API, absent from
+<code>dcs-world-schema</code>. The call is guarded and <code>pcall</code>-wrapped: if the singleton is missing on
+this DCS version or map, the search falls through to tier 2 instead of failing.</p>
+</blockquote>
 <h5 id="veafgetlandheightvec3"><code>veaf.getLandHeight(vec3)</code><a class="headerlink" href="#veafgetlandheightvec3" title="Permanent link">&para;</a></h5>
 <p>Get terrain height at coordinates.</p>
 <p><strong>Parameters:</strong></p>
@@ -11276,6 +11392,39 @@ Wind: 270° at 10 kts
 <li><code>zoneName</code> (string) - Zone name</li>
 </ul>
 <p><strong>Returns:</strong> <code>DCS Zone</code> - Zone object or nil</p>
+<h5 id="veafgetzonepropertyzonename-key"><code>veaf.getZoneProperty(zoneName, key)</code><a class="headerlink" href="#veafgetzonepropertyzonename-key" title="Permanent link">&para;</a></h5>
+<p>Reads a trigger-zone property, as typed by the mission maker in the editor.</p>
+<p>DCS stores these as an <strong>array of pairs</strong> <code>{ key = "…", value = "…" }</code>, never a map, and <strong>every
+value is a string</strong>. These three accessors replace the linear scan and the <code>tonumber</code> every
+caller would otherwise write.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>zoneName</code> (string) - Zone name</li>
+<li><code>key</code> (string) - Property name</li>
+</ul>
+<p><strong>Returns:</strong> <code>string</code> - or <code>nil</code> when the zone, its properties or the key are missing</p>
+<h5 id="veafgetzonepropertybooleanzonename-key-default"><code>veaf.getZonePropertyBoolean(zoneName, key, default)</code><a class="headerlink" href="#veafgetzonepropertybooleanzonename-key-default" title="Permanent link">&para;</a></h5>
+<p>Reads a property as a boolean. Accepts <code>true</code>/<code>false</code> in any case; anything else is a failed
+read and yields <code>default</code> - so a typo cannot silently read as <code>false</code>.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>zoneName</code> (string) - Zone name</li>
+<li><code>key</code> (string) - Property name</li>
+<li><code>default</code> (boolean) - Value returned when absent or unparseable</li>
+</ul>
+<p><strong>Returns:</strong> <code>boolean</code></p>
+<h5 id="veafgetzonepropertynumberzonename-key-default-min-max"><code>veaf.getZonePropertyNumber(zoneName, key, default, min, max)</code><a class="headerlink" href="#veafgetzonepropertynumberzonename-key-default-min-max" title="Permanent link">&para;</a></h5>
+<p>Reads a property as a number, <strong>clamped</strong> into an optional range. Clamps rather than rejects: a
+mission maker who types an absurd value gets the bound, not a dead module.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>zoneName</code> (string) - Zone name</li>
+<li><code>key</code> (string) - Property name</li>
+<li><code>default</code> (number) - Value returned when absent or not a number</li>
+<li><code>min</code> (number, optional) - Lower bound</li>
+<li><code>max</code> (number, optional) - Upper bound</li>
+</ul>
+<p><strong>Returns:</strong> <code>number</code></p>
 <h4 id="mission-control-functions">Mission Control Functions<a class="headerlink" href="#mission-control-functions" title="Permanent link">&para;</a></h4>
 <h5 id="veafendmissionatendtimehour-endtimeminute-checkintervalinseconds-checkmessage-"><code>veaf.endMissionAt(endTimeHour, endTimeMinute, checkIntervalInSeconds, checkMessage, ...)</code><a class="headerlink" href="#veafendmissionatendtimehour-endtimeminute-checkintervalinseconds-checkmessage-" title="Permanent link">&para;</a></h5>
 <p>Schedule mission end at specific time.</p>
@@ -13697,7 +13846,7 @@ the current directory).</p>
 <hr />
 <p><strong>Document Version:</strong> 1.0
 <strong>Last Updated:</strong> August 2026
-<strong>Generated for:</strong> VEAF Mission Creation Tools v6.13.17</p>
+<strong>Generated for:</strong> VEAF Mission Creation Tools v6.13.18</p>
 
 
 
