@@ -3485,29 +3485,52 @@ injection, and the <code>scripts/*.lua</code> files by script loading.</p>
 <table>
 <thead>
 <tr>
-<th>Level</th>
+<th>Tier</th>
 <th>Constant</th>
-<th>Who can use</th>
+<th>Passes without a password when the pilot's level is</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0 (public)</td>
-<td><code>veafSecurity.LEVEL_L0</code></td>
-<td>All players</td>
+<td><code>L9</code></td>
+<td><code>veafSecurity.LEVEL_L9</code> = 1</td>
+<td><strong>≥ 1</strong> — any pilot listed in the server's <code>veaf-pilots.txt</code></td>
 </tr>
 <tr>
-<td>1 (pilots)</td>
-<td><code>veafSecurity.LEVEL_L1</code></td>
-<td>Non-spectator pilots</td>
+<td><code>L1</code></td>
+<td><code>veafSecurity.LEVEL_L1</code> = 10</td>
+<td><strong>≥ 10</strong> — a senior pilot</td>
 </tr>
 <tr>
-<td>9 (admin)</td>
-<td><code>veafSecurity.LEVEL_L9</code></td>
-<td>Authenticated admins</td>
+<td><code>L0</code></td>
+<td><code>veafSecurity.LEVEL_L0</code> = 90</td>
+<td><strong>≥ 90</strong> — a server administrator</td>
+</tr>
+<tr>
+<td><code>MM</code></td>
+<td>(no level)</td>
+<td>never — the Mission Master password is the only way in</td>
+</tr>
+<tr>
+<td><code>OPEN</code></td>
+<td>(no check)</td>
+<td>always — the command is deliberately available to everyone</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">The tiers do not run in the order their names suggest</p>
+<p><code>L9</code> is the <strong>loosest</strong> tier and <code>L0</code> the <strong>tightest</strong>. Read the names as password
+tiers, where <code>L0</code> is the most secret one, rather than as user levels. A check passes
+when the pilot's level is <em>at least</em> the constant, and the constants descend: 1, 10, 90.</p>
+<p>This page said the opposite until 2026-08-06 — that <code>L0</code> meant "all players" — which
+is how a lot came within one line of locking a public command to administrators. The
+naming is being revisited; the behaviour above is what the code does today.</p>
+</div>
+<p>Two things satisfy a check. Either the player's <strong>pilot level</strong>, published by the server
+hook from <code>veaf-pilots.txt</code>, is high enough for the tier — that is the identity path, and
+it needs no password — or the correct <strong>password</strong> for that tier appears in the marker
+text. Without the hook there are no pilot levels, so everything falls back to passwords.</p>
 <p>Set passwords (SHA-256 hashes) in <code>mission.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
