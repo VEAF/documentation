@@ -1947,6 +1947,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Ajouter une vérification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-règle--votre-lua-doit-renvoyer-une-chaîne-toujours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La règle : votre Lua doit renvoyer une chaîne. Toujours.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#la-source-qui-tranche--la-doc-ded-livrée-avec-dcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La source qui tranche : la doc d'ED, livrée avec DCS
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2323,6 +2351,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Ajouter une vérification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-règle--votre-lua-doit-renvoyer-une-chaîne-toujours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La règle : votre Lua doit renvoyer une chaîne. Toujours.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#la-source-qui-tranche--la-doc-ded-livrée-avec-dcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La source qui tranche : la doc d'ED, livrée avec DCS
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2386,14 +2442,30 @@ n'y a rien à interroger — sinon il deviendrait rouge sur chaque machine et pe
    pour la raison de cet état et ce qui le remplacera.
 </code></pre>
 <ol>
-<li><strong>Une mission chargée</strong> pour les assertions — l'environnement de mission n'existe qu'à partir de là.</li>
+<li>
+<p><strong><code>net.dostring_in</code> disponible</strong> — c'est le seul chemin vers l'environnement de mission, donc sans lui
+   aucune assertion ne peut tourner. <strong>Rien à configurer : mesuré présent sur une installation
+   standard</strong> (2026-08-06), <code>autoexec.cfg</code> ne listant ni <code>net.allow_unsafe_api</code> ni
+   <code>net.allow_dostring_in</code>. La doc d'ED laisse entendre le contraire ; voir la section sur cette doc
+   plus bas. Si un jour il manque, le harnais le nomme précisément plutôt que d'accuser la mission.</p>
+</li>
+<li>
+<p><strong>Une mission chargée</strong> pour les assertions — l'environnement de mission n'existe qu'à partir de là.</p>
+</li>
 </ol>
 <h2 id="utilisation">Utilisation<a class="headerlink" href="#utilisation" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>veaf-tools smoke-test --probe-only
 </code></pre></div>
 <p>Ne lance aucune assertion : rapporte seulement <strong>ce que ce DCS autorise</strong>. À lancer en premier, c'est
-la même discipline que la sonde <code>Disposition</code> — mesurer avant de bâtir dessus. Il répond notamment si
-<code>net.load_mission</code> et <code>DCS.exitProcess</code> existent, deux appels que ce dépôt n'a <strong>jamais</strong> faits.</p>
+la même discipline que la sonde <code>Disposition</code> — mesurer avant de bâtir dessus.</p>
+<p>Ce qu'il mesure, en un aller-retour : quelle table de contrôle répond (<code>Sim</code>, <code>DCS</code>, ou les deux), si
+<code>exitProcess</code> / <code>stopMission</code> / <code>setUserCallbacks</code> sont là, si <code>net.load_mission</code> existe <strong>et</strong> si
+cette instance se déclare serveur, si <code>net.dostring_in</code> est permis, et — ce que seul le processus en
+cours sait — <strong>quel dossier d'installation et quel dossier <code>Saved Games</code> cette instance utilise</strong>.</p>
+<p>Il termine par <strong>le blocage à corriger en premier</strong>, et l'ordre compte : « pas de hook », puis « pas de
+permission », puis « pas de mission ». La version précédente rapportait le manque de permission comme
+« aucune mission chargée », ce qui envoyait chercher une mission à charger là où charger une mission ne
+pouvait rien changer.</p>
 <div class="highlight"><pre><span></span><code>veaf-tools smoke-test
 </code></pre></div>
 <p>Sonde, puis exécute les vérifications. Sort en 1 si l'une échoue, en 0 si tout passe <strong>ou si le run a
@@ -2418,11 +2490,30 @@ la même discipline que la sonde <code>Disposition</code> — mesurer avant de b
 </tr>
 <tr>
 <td><code>mission</code></td>
-<td>l'environnement de mission, via <code>net.dostring_in</code></td>
-<td>là où vivent les scripts VEAF — donc les assertions</td>
+<td>l'état <strong>trigger</strong>, via <code>net.dostring_in</code></td>
+<td>là où vivent <code>a_do_script</code> et les actions <code>a_*</code></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title"><code>env=mission</code> n'est pas là où vivent les scripts VEAF</p>
+<p>C'était l'hypothèse de la première tranche, et elle est fausse — <strong>mesuré le 2026-08-06</strong>, mission
+chargée et pilote dans le cockpit : un chunk envoyé là renvoie
+<code>:1: attempt to index global 'env' (a nil value)</code>. Le chunk <strong>a tourné</strong> — c'est une erreur
+d'exécution Lua venue de l'intérieur de l'état ciblé, pas un refus — donc cet état n'a simplement
+pas de <code>env</code>. C'est l'état <strong>trigger</strong>.</p>
+<p>Notre propre dépôt l'avait déjà établi sans en tirer la conséquence : le ticket 01 de
+<code>FEAT-ASSIST-CHECKLISTS</code> avait situé <code>a_cockpit_highlight</code> « à un <code>net.dostring_in</code> de distance ».
+Et le hook le dit en une ligne, dans son propre amorçage :
+<code>net.dostring_in("mission", 'a_do_script("dofile(…)")')</code> — il atteint l'état de script <strong>à travers</strong>
+<code>a_do_script</code>, pas directement.</p>
+<p>Conséquence : les six vérifications de la première tranche visaient un état trop court. Elles
+passent maintenant par une <strong>route mesurée</strong>, que la sonde découvre en essayant
+<code>a_do_script</code> (le chemin qu'ED documente comme actuel, et qui renvoie ses valeurs directement) puis
+<code>net.dostring_in("scripting", …)</code>. Le test de la route est <code>return type(env)</code> et la réponse doit
+<strong>valoir</strong> <code>table</code> : une route qui exécute le chunk ailleurs renvoie une erreur Lua, que ce
+transport rend comme une chaîne ordinaire — « quelque chose est revenu » ne prouve rien.</p>
+</div>
 <p>Ce n'est <strong>pas</strong> le bridge que <code>capture-map</code> utilise (<code>dcs-serve</code> + <code>dcs-bridge.lua</code>) : celui-là vit
 <em>dans</em> la mission, il ne peut donc pas répondre avant que la mission existe, ni la charger.</p>
 <h2 id="le-contrat-de-la-mission-de-test">Le contrat de la mission de test<a class="headerlink" href="#le-contrat-de-la-mission-de-test" title="Permanent link">&para;</a></h2>
@@ -2446,16 +2537,92 @@ l'événement arriver fait partie du ticket 01 du lot.</p>
 (<code>veaf_libs/dcs_smoke.py</code>), avec un nom, un extrait Lua, ce que son résultat doit valoir, et <strong>pourquoi
 on veut le savoir</strong>. Une vérification dont personne n'a écrit la raison est une vérification que
 personne n'osera supprimer.</p>
+<h3 id="la-règle--votre-lua-doit-renvoyer-une-chaîne-toujours">La règle : votre Lua doit renvoyer une <strong>chaîne</strong>. Toujours.<a class="headerlink" href="#la-règle--votre-lua-doit-renvoyer-une-chaîne-toujours" title="Permanent link">&para;</a></h3>
+<p>Mesuré le 2026-08-06 en mission, et tout le reste en découle :</p>
+<table>
+<thead>
+<tr>
+<th>Le Lua renvoie</th>
+<th>Python reçoit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'x'</code></td>
+<td><code>'x'</code></td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td><code>'3'</code> — une <strong>chaîne</strong></td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td><code>''</code> — <strong>détruit</strong></td>
+</tr>
+<tr>
+<td><code>{1, 2}</code></td>
+<td><code>''</code> — <strong>détruit</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Un booléen et une table sont donc indiscernables l'un de l'autre <em>et</em> d'un chunk qui n'a rien renvoyé.
+Deux des six vérifications d'origine en sont mortes : l'une attendait un nombre, l'autre <code>true</code> — et la
+seconde était pire qu'impossible, elle était <strong>muette sur la seule question qu'elle devait trancher</strong>.</p>
+<p>Corollaire pratique : <strong>taguez</strong> vos valeurs numériques (<code>count:10</code> plutôt que <code>10</code>), pour que « j'ai
+demandé, il n'y a rien » (<code>count:0</code>) reste distinct de « la réponse a été détruite » (<code>''</code>). Un test
+balaie toutes les vérifications contre <code>''</code> : une attente que <code>''</code> satisfait est une attente incapable de
+distinguer un succès d'une valeur perdue.</p>
 <p>Un piège à connaître : les extraits renvoient des <strong>sentinelles</strong> (<code>veaf-absent</code>, <code>no-singleton</code>,
 <code>not-a-table</code>, <code>raised: …</code>) plutôt que de lever, pour qu'un prérequis manquant soit lisible. Ce sont
 des chaînes <strong>non vides, donc vraies</strong> — une attente écrite avec un simple test de vérité passe donc
 exactement dans le cas qu'elle devait attraper. C'est arrivé pendant l'écriture ; un test balaie
 maintenant toutes les vérifications contre toutes les sentinelles.</p>
+<h2 id="la-source-qui-tranche--la-doc-ded-livrée-avec-dcs">La source qui tranche : la doc d'ED, livrée avec DCS<a class="headerlink" href="#la-source-qui-tranche--la-doc-ded-livrée-avec-dcs" title="Permanent link">&para;</a></h2>
+<p><code>&lt;installation DCS&gt;/API/Sim_ControlAPI.md</code> documente l'API du hook. <strong>Lisez-la avant d'ajouter un appel
+ici</strong> : trois de ses affirmations contredisent ce que ce module supposait au départ.</p>
+<table>
+<thead>
+<tr>
+<th>Ce qu'on supposait</th>
+<th>Ce qu'ED documente</th>
+<th>Conséquence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>la table de contrôle est <code>DCS.*</code></td>
+<td>c'est <code>Sim.*</code></td>
+<td><strong>mesuré : <code>Sim</code> et <code>DCS</code> sont la <em>même table</em></strong> — les deux noms marchent, mais la sonde le rapporte au lieu d'en supposer un</td>
+</tr>
+<tr>
+<td><code>net.load_mission</code> charge une mission</td>
+<td><code>net.load_mission</code> est <strong>SERVER ONLY</strong></td>
+<td>mesuré : <code>isServer=true</code> en solo, donc l'appel est légitime sur une instance locale</td>
+</tr>
+<tr>
+<td><code>net.dostring_in</code> est disponible</td>
+<td><strong>OBSOLETE et UNSAFE</strong>, conditionné à <code>autoexec.cfg</code></td>
+<td><strong>la restriction ne s'applique pas telle quelle</strong> : mesuré présent sans aucune des deux clés. Le harnais vérifie donc la <em>fonction</em>, pas la config</td>
+</tr>
+</tbody>
+</table>
+<p>Et une chose qu'aucune doc ne dit : <strong>le transport ment sur l'échec.</strong> <code>net.dostring_in(state, string)</code>
+renvoie une erreur Lua <strong>comme résultat</strong>, en HTTP 200 avec un corps <code>{result=…}</code> — une erreur dans
+l'environnement de mission a donc exactement la forme d'une réponse réussie. Mesuré au menu principal :
+<code>return env.mission.theatre</code> a renvoyé <code>:1: attempt to index global 'env' (a nil value)</code>, et la sonde a
+conclu « l'environnement de mission a répondu ». C'est la <strong>troisième</strong> fois que ce lot se fait prendre
+par un échec véridique — les sentinelles, le check de sous-menu qui renvoyait une constante, et
+celui-ci. Dans ce transport, « ça est revenu » n'est pas « ça a marché ».</p>
+<p>Deux autres choses utiles y sont documentées et pas encore exploitées :
+<code>onMissionLoadBegin</code> / <code>onMissionLoadProgress(progress, message)</code> / <code>onMissionLoadEnd</code> — un signal
+d'<strong>événement</strong> pour savoir qu'un chargement est terminé, bien meilleur que de surveiller un compteur
+d'images qui gèle pendant le chargement ; et <code>Sim.getLogHistory(from)</code>, qui rend le <code>dcs.log</code> lisible à
+travers le hook au lieu d'être analysé sur disque.</p>
 <h2 id="ce-qui-reste-à-faire">Ce qui reste à faire<a class="headerlink" href="#ce-qui-reste-à-faire" title="Permanent link">&para;</a></h2>
 <p>Le lot <a href="../../.backlog/FEAT-DCS-SMOKE-HARNESS/PRD.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> porte le détail. En
-résumé : DCS doit être lancé <strong>à la main</strong> pour l'instant. Le lancer et le quitter automatiquement
-demande des appels DCS que ce dépôt n'a jamais faits — <code>--probe-only</code> dit s'ils sont disponibles, ce
-qui donne au suivant ses faits au lieu de le laisser deviner.</p>
+résumé : DCS doit être lancé <strong>à la main</strong> pour l'instant. Le lancer, charger la mission et le quitter
+reste à écrire, et la sonde ci-dessus est ce qui donne les faits pour l'écrire — notamment le point
+<code>SERVER ONLY</code>, qui décide si une instance solo suffit ou s'il faut passer par le mode serveur.</p>
 
 
 
