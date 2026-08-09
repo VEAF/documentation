@@ -10609,7 +10609,7 @@
 
 
 <h1 id="veaf-lua-modules---complete-api-reference">VEAF Lua Modules - Complete API Reference<a class="headerlink" href="#veaf-lua-modules---complete-api-reference" title="Permanent link">&para;</a></h1>
-<p><strong>Version:</strong> generated for 6.13.36
+<p><strong>Version:</strong> generated for 6.13.43
 <strong>Last Updated:</strong> August 2026
 <strong>Project:</strong> VEAF Mission Creation Tools</p>
 <hr />
@@ -10672,8 +10672,17 @@
 <li><code>table</code> - Lua table/array</li>
 <li><code>vec3</code> - 3D vector: <code>{x=number, y=number, z=number}</code></li>
 <li><code>function</code> - Callback function</li>
-<li><code>coalition</code> - Coalition ID: 0=neutral, 1=blue, 2=red</li>
+<li><code>coalition</code> - Coalition ID: 0=neutral, <strong>1=red, 2=blue</strong> (<code>coalition.side.RED</code> is 1 — see the note below)</li>
 </ul>
+<div class="admonition danger">
+<p class="admonition-title"><code>coalition.side</code> is RED=1, BLUE=2 — and this page said the opposite until 6.13.38</p>
+<div class="highlight"><pre><span></span><code><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">NEUTRAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">RED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">BLUE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>The inversion matters because nothing catches it: code written from the wrong mapping
+compiles, runs, and quietly targets <strong>the other side</strong>. It was found by the 2026-07-01
+security review (VMR-014) and fixed on 2026-08-08; the repository's own Lua never used
+the wrong values, so nothing had to be corrected beyond this page and its French twin.</p>
+</div>
 <p><strong>Return Values:</strong></p>
 <ul>
 <li>Functions return <code>nil</code> on failure unless otherwise specified</li>
@@ -11923,7 +11932,7 @@ mission maker who types an absurd value gets the bound, not a dead module.</p>
 <span class="w">  </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">number</span><span class="p">,</span><span class="w">              </span><span class="c1">-- Marker ID</span>
 <span class="w">  </span><span class="nv">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">number</span><span class="p">,</span><span class="w">            </span><span class="c1">-- Mission time</span>
 <span class="w">  </span><span class="nv">initiator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">DCS_Unit</span><span class="p">,</span><span class="w">     </span><span class="c1">-- Unit that created marker (if applicable)</span>
-<span class="w">  </span><span class="nv">coalition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">coalition</span><span class="p">,</span><span class="w">    </span><span class="c1">-- Coalition (-1 for all, 0=neutral, 1=blue, 2=red)</span>
+<span class="w">  </span><span class="nv">coalition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">coalition</span><span class="p">,</span><span class="w">    </span><span class="c1">-- Coalition (-1 for all, 0=neutral, 1=red, 2=blue)</span>
 <span class="w">  </span><span class="nv">groupID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">number</span><span class="p">,</span><span class="w">         </span><span class="c1">-- Group ID</span>
 <span class="w">  </span><span class="nv">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">string</span><span class="p">,</span><span class="w">            </span><span class="c1">-- Marker text</span>
 <span class="w">  </span><span class="nv">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">vec3</span><span class="w">                </span><span class="c1">-- Marker position</span>
@@ -13874,7 +13883,7 @@ the current directory).</p>
 <hr />
 <p><strong>Document Version:</strong> 1.0
 <strong>Last Updated:</strong> August 2026
-<strong>Generated for:</strong> VEAF Mission Creation Tools v6.13.36</p>
+<strong>Generated for:</strong> VEAF Mission Creation Tools v6.13.43</p>
 
 
 

@@ -2519,7 +2519,12 @@
 <p><strong>Module ID:</strong> <code>WEATHER</code> | <strong>Version:</strong> — | <strong>Fichier:</strong> <code>veafWeather.lua</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
-<p>Fournit des rapports météo et l'injection de météo dynamique pour les missions DCS. Génère des rapports lisibles au format METAR et s'intègre avec <code>veaf-tools.exe inject-weather</code> pour injecter de la météo réelle ou configurée au moment du build.</p>
+<p>Deux rôles distincts :</p>
+<ol>
+<li><strong>Au build</strong> : injecter dans un <code>.miz</code> une météo réelle ou configurée, avant même que les joueurs chargent la mission. C'est le travail de <code>veaf-tools.exe inject-weather</code>.</li>
+<li><strong>En jeu</strong> : les joueurs demandent des rapports météo et des informations ATC via le menu radio F10, et le créateur de mission peut scripter des changements de brouillard dynamiques.</li>
+</ol>
+<p>Les rapports sont générés au format METAR, lisible par un pilote.</p>
 <hr />
 <h2 id="dépendances">Dépendances<a class="headerlink" href="#dépendances" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2565,12 +2570,37 @@
 <hr />
 <h2 id="menu-radio-f10">Menu radio F10<a class="headerlink" href="#menu-radio-f10" title="Permanent link">&para;</a></h2>
 <p>Le sous-menu <strong>WEATHER AND ATC</strong> du menu radio F10 permet aux joueurs d'obtenir des informations détaillées sur la météo et la base aérienne la plus proche.</p>
-<ul>
-<li><strong>Weather on closest point</strong> — météo locale adaptée au type d'appareil (unités et format conformes à l'avion du joueur)</li>
-<li><strong>ATC on closest airbase</strong> — informations ATIS de la base la plus proche (piste en service, QFU, etc.)</li>
-<li><strong>ATC and weather in one go</strong> — les deux d'un coup</li>
-<li><strong>Fog settings → ...</strong> — Réglages brouillard (modifier les conditions de brouillard, voir plus bas)</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Entrée</th>
+<th>Accessible à</th>
+<th>Ce qu'elle affiche</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Weather on closest point</td>
+<td>Par groupe</td>
+<td>Vent, visibilité, QNH, température au point nommé le plus proche — unités et format adaptés à l'appareil du joueur</td>
+</tr>
+<tr>
+<td>ATC on closest airbase</td>
+<td>Par groupe</td>
+<td>Piste en service, QFE/QNH, informations de circuit sur la base la plus proche</td>
+</tr>
+<tr>
+<td>ATC and weather in one go</td>
+<td>Par groupe</td>
+<td>Les deux rapports d'un coup</td>
+</tr>
+<tr>
+<td>Fog settings → …</td>
+<td>Tous (sécurisé)</td>
+<td>Modifier les conditions de brouillard (voir plus bas)</td>
+</tr>
+</tbody>
+</table>
 <p>Ces commandes sont aussi accessibles depuis le chat multijoueur (avec le hook serveur VEAF) : <code>atc</code></p>
 <hr />
 <h2 id="gestion-du-brouillard">Gestion du brouillard<a class="headerlink" href="#gestion-du-brouillard" title="Permanent link">&para;</a></h2>

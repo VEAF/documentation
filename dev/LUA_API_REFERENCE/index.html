@@ -10609,7 +10609,7 @@
 
 
 <h1 id="modules-lua-veaf--référence-api-complète">Modules Lua VEAF — Référence API complète<a class="headerlink" href="#modules-lua-veaf--référence-api-complète" title="Permanent link">&para;</a></h1>
-<p><strong>Version :</strong> générée pour la 6.13.36
+<p><strong>Version :</strong> générée pour la 6.13.43
 <strong>Dernière mise à jour :</strong> Août 2026
 <strong>Projet :</strong> VEAF Mission Creation Tools</p>
 <hr />
@@ -10672,8 +10672,18 @@
 <li><code>table</code> — Table/tableau Lua</li>
 <li><code>vec3</code> — Vecteur 3D : <code>{x=number, y=number, z=number}</code></li>
 <li><code>function</code> — Fonction callback</li>
-<li><code>coalition</code> — ID de coalition : 0=neutre, 1=bleu, 2=rouge</li>
+<li><code>coalition</code> — ID de coalition : 0=neutre, <strong>1=rouge, 2=bleu</strong> (<code>coalition.side.RED</code> vaut 1 — voir la note ci-dessous)</li>
 </ul>
+<div class="admonition danger">
+<p class="admonition-title"><code>coalition.side</code> vaut RED=1, BLUE=2 — et cette page affirmait l'inverse jusqu'à la 6.13.38</p>
+<div class="highlight"><pre><span></span><code><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">NEUTRAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">RED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">BLUE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>L'inversion est dangereuse parce que rien ne l'attrape : du code écrit d'après le mauvais
+tableau compile, s'exécute, et vise silencieusement <strong>le camp adverse</strong>. Défaut relevé par
+la revue de sécurité du 2026-07-01 (VMR-014) et corrigé le 2026-08-08 ; le Lua du dépôt
+n'a jamais utilisé les mauvaises valeurs, donc rien d'autre que cette page et sa jumelle
+anglaise n'était à corriger.</p>
+</div>
 <p><strong>Valeurs de retour :</strong></p>
 <ul>
 <li>Les fonctions retournent <code>nil</code> en cas d'échec sauf mention contraire</li>
@@ -13872,7 +13882,7 @@ défaut <code>.\</code>, le répertoire courant).</p>
 <hr />
 <p><strong>Version du document :</strong> 1.0
 <strong>Dernière mise à jour :</strong> Août 2026
-<strong>Généré pour :</strong> VEAF Mission Creation Tools v6.13.36</p>
+<strong>Généré pour :</strong> VEAF Mission Creation Tools v6.13.43</p>
 
 
 
