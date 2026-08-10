@@ -3011,13 +3011,13 @@
 
 
 <h1 id="missionyaml-reference">mission.yaml Reference<a class="headerlink" href="#missionyaml-reference" title="Permanent link">&para;</a></h1>
-<p><code>mission.yaml</code> is the optional build-time configuration file for veaf-tools. Place it at the root of your mission folder, next to <code>veaf-tools-updater.exe</code>. If absent, <code>veaf-tools build</code> works with default settings.</p>
+<p><code>mission.yaml</code> is the optional build-time configuration file for veaf-tools. Place it at the root of your mission folder, next to <code>veaf-tools-updater.exe</code>. If absent, <code>veaf-tools mission build</code> works with default settings.</p>
 <p>This page covers the <strong>top-level sections</strong> of <code>mission.yaml</code>. Configuration for individual Lua modules is documented in each module's own page (see the <a href="#index-by-module">index by module</a> below).</p>
 <hr />
 <h2 id="understanding-the-yaml-file-landscape">Understanding the YAML file landscape<a class="headerlink" href="#understanding-the-yaml-file-landscape" title="Permanent link">&para;</a></h2>
 <p>A VEAF mission folder uses <strong>two distinct categories</strong> of YAML files. Understanding the difference helps you know which file to edit for a given task.</p>
 <h3 id="category-a--build-pipeline-files">Category A — Build pipeline files<a class="headerlink" href="#category-a--build-pipeline-files" title="Permanent link">&para;</a></h3>
-<p>These files drive the <strong>design-time injection</strong> steps that <code>veaf-tools build</code> performs before writing the final <code>.miz</code>. Each step reads its own YAML file and injects data into the mission. They are listed under the <code>pipeline:</code> section of <code>mission.yaml</code>.</p>
+<p>These files drive the <strong>design-time injection</strong> steps that <code>veaf-tools mission build</code> performs before writing the final <code>.miz</code>. Each step reads its own YAML file and injects data into the mission. They are listed under the <code>pipeline:</code> section of <code>mission.yaml</code>.</p>
 <table>
 <thead>
 <tr>
@@ -3059,7 +3059,7 @@
 </tr>
 </tbody>
 </table>
-<p>These files are <strong>not</strong> loaded at DCS runtime — they are consumed by <code>veaf-tools build</code> and then compiled into the <code>.miz</code>.</p>
+<p>These files are <strong>not</strong> loaded at DCS runtime — they are consumed by <code>veaf-tools mission build</code> and then compiled into the <code>.miz</code>.</p>
 <h3 id="category-b--runtime-module-configuration-this-file">Category B — Runtime module configuration (this file)<a class="headerlink" href="#category-b--runtime-module-configuration-this-file" title="Permanent link">&para;</a></h3>
 <p><code>mission.yaml</code> itself configures <strong>how VEAF Lua modules behave at DCS runtime</strong>. It is translated at build time into <code>veaf-config.lua</code>, which is injected into the mission and executed when DCS loads the mission.</p>
 <p>Sections such as <code>modules:</code>, <code>qra:</code>, <code>assets:</code>, and <code>shortcuts:</code> all describe runtime module behaviour.</p>
@@ -3103,7 +3103,7 @@
 </code></pre></div>
 <hr />
 <h2 id="syntax-errors">Syntax errors<a class="headerlink" href="#syntax-errors" title="Permanent link">&para;</a></h2>
-<p>If <code>mission.yaml</code> contains a YAML syntax error (wrong indentation, a missing colon, a tab character…), <code>veaf-tools build</code> stops immediately and displays a clear message indicating the file name, the line and column of the problem, and a plain-language hint on how to fix it:</p>
+<p>If <code>mission.yaml</code> contains a YAML syntax error (wrong indentation, a missing colon, a tab character…), <code>veaf-tools mission build</code> stops immediately and displays a clear message indicating the file name, the line and column of the problem, and a plain-language hint on how to fix it:</p>
 <div class="highlight"><pre><span></span><code>Syntax error in mission.yaml, line 81, column 4.
   The error starts near line 34, column 3.
   → Check the indentation around these lines. YAML uses spaces only (never tabs).
@@ -3805,7 +3805,7 @@ A declared script is included in the <code>.miz</code> <strong>without</strong> 
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">    </span><span class="c1"># ⚠️ must repeat the base scripts</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgDebug.lua</span><span class="w">      </span><span class="c1"># extra, dev-only</span>
 </code></pre></div>
-<p>Build the dev variant with <code>veaf-tools build --profile DEV</code> (it loads <code>FgMission.lua</code> + <code>FgDebug.lua</code>); the default build loads only <code>FgMission.lua</code>.</p>
+<p>Build the dev variant with <code>veaf-tools mission build --profile DEV</code> (it loads <code>FgMission.lua</code> + <code>FgDebug.lua</code>); the default build loads only <code>FgMission.lua</code>.</p>
 <blockquote>
 <p>⚠️ <strong>Pitfall</strong>: profile deep-merge <strong>replaces lists, it does not concatenate them</strong> (see <a href="#profiles"><code>profiles:</code></a>). The profile's <code>custom_scripts.scripts</code> must therefore <strong>repeat</strong> the base scripts and add the variant-specific one — otherwise the base scripts are lost in that profile.</p>
 </blockquote>
@@ -3830,7 +3830,7 @@ A declared script is included in the <code>.miz</code> <strong>without</strong> 
 </code></pre></div>
 <hr />
 <h3 id="build"><code>build:</code><a class="headerlink" href="#build" title="Permanent link">&para;</a></h3>
-<p>Controls how <code>veaf-tools build</code> resolves the VEAF scripts bundle.
+<p>Controls how <code>veaf-tools mission build</code> resolves the VEAF scripts bundle.
 These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--scripts-path</code>) and then persisted here automatically.</p>
 <table>
 <thead>
@@ -3888,7 +3888,7 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 </blockquote>
 <hr />
 <h3 id="profiles"><code>profiles:</code><a class="headerlink" href="#profiles" title="Permanent link">&para;</a></h3>
-<p>Named build profiles. Each profile is a set of config overrides that deep-merge onto the base <code>mission.yaml</code> when you pass <code>--profile &lt;name&gt;</code> to <code>veaf-tools build</code>. Keys absent from the profile retain their base values. Lists are replaced, not concatenated. The <code>profiles:</code> key itself is never written to the built mission.</p>
+<p>Named build profiles. Each profile is a set of config overrides that deep-merge onto the base <code>mission.yaml</code> when you pass <code>--profile &lt;name&gt;</code> to <code>veaf-tools mission build</code>. Keys absent from the profile retain their base values. Lists are replaced, not concatenated. The <code>profiles:</code> key itself is never written to the built mission.</p>
 <table>
 <thead>
 <tr>
@@ -3922,15 +3922,15 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <span class="w">      </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>Usage:</p>
-<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">SERVER</span>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">SERVER</span>
 </code></pre></div>
 <blockquote>
 <p>If the named profile does not exist in <code>mission.yaml</code>, a warning is emitted and the base config is used unchanged.</p>
 </blockquote>
 <hr />
 <h3 id="build_variants"><code>build_variants:</code><a class="headerlink" href="#build_variants" title="Permanent link">&para;</a></h3>
-<p>A list of build profiles to <strong>emit together</strong>: a single <code>veaf-tools build</code> then produces <strong>one <code>.miz</code> per variant</strong> (the "moulinette" goal — typically Modern and Cold-War from one mission folder, the variant being only a <strong>config</strong> difference). Each variant builds the full pipeline with its merged profile (see <a href="#profiles"><code>profiles:</code></a>) and its <code>.miz</code> is suffixed with the variant name (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
+<p>A list of build profiles to <strong>emit together</strong>: a single <code>veaf-tools mission build</code> then produces <strong>one <code>.miz</code> per variant</strong> (the "moulinette" goal — typically Modern and Cold-War from one mission folder, the variant being only a <strong>config</strong> difference). Each variant builds the full pipeline with its merged profile (see <a href="#profiles"><code>profiles:</code></a>) and its <code>.miz</code> is suffixed with the variant name (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
 <table>
 <thead>
 <tr>
@@ -3963,8 +3963,8 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>          <span class="c"># produces &lt;base&gt;_MODERN.miz AND &lt;base&gt;_COLD_WAR.miz</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># produces only the MODERN variant (unsuffixed)</span>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>          <span class="c"># produces &lt;base&gt;_MODERN.miz AND &lt;base&gt;_COLD_WAR.miz</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># produces only the MODERN variant (unsuffixed)</span>
 </code></pre></div>
 <hr />
 <h2 id="index-by-category">Index by category<a class="headerlink" href="#index-by-category" title="Permanent link">&para;</a></h2>

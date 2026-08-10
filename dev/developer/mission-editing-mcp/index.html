@@ -3374,7 +3374,7 @@ est fourni — son état activé. Les clés de config de chaque module vivent da
 <h2 id="composites--une-passe-deux-mondes-vague-8">Composites — une passe, deux mondes (vague 8)<a class="headerlink" href="#composites--une-passe-deux-mondes-vague-8" title="Permanent link">&para;</a></h2>
 <p>Actions haut niveau qui posent une <strong>fonctionnalité complète</strong> en un appel, sur un <strong>dossier de
 mission</strong> : elles éditent la <strong>source durable</strong> (le <code>src/mission/</code> exploité — zones/groupes — via
-<code>mission_folder</code>, <strong>et</strong> <code>mission.yaml</code>), sans déclencher de build (un <code>veaf-tools build</code> ultérieur
+<code>mission_folder</code>, <strong>et</strong> <code>mission.yaml</code>), sans déclencher de build (un <code>veaf-tools mission build</code> ultérieur
 produit le <code>.miz</code>). Elles orchestrent les primitives des vagues 1-7 (<code>insert_trigger_zone</code>,
 <code>insert_group_into_content</code>, l'éditeur <code>mission.yaml</code>). Implémentation : <code>veaf_mission_mcp/composites.py</code>.</p>
 <h3 id="create_combat_zone"><code>create_combat_zone</code><a class="headerlink" href="#create_combat_zone" title="Permanent link">&para;</a></h3>
@@ -3398,7 +3398,7 @@ ferait un Mission Maker à sa première installation.</p>
    <code>veaf-tools-updater-&lt;os&gt;-&lt;arch&gt;</code> sous Unix) et le télécharge depuis l'<strong>URL de release stable</strong>
    (<code>…/releases/download/&lt;tag&gt;/&lt;asset&gt;</code> — pas d'API GitHub, donc pas de rate-limit).</li>
 <li>Lance l'updater dans le dossier (il télécharge et installe les outils VEAF + <code>published/</code>).</li>
-<li>Lance <code>veaf-tools prepare --template &lt;tier&gt; --force</code> dans le dossier.</li>
+<li>Lance <code>veaf-tools mission prepare --template &lt;tier&gt; --force</code> dans le dossier.</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;target_folder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-vide&quot;</span><span class="p">,</span>
@@ -3453,7 +3453,7 @@ confirmer visuellement ; les lieux nommés marchent, le terrain vague non.</p>
 </code></pre></div>
 <h2 id="build--validation-vague-11">Build &amp; validation (vague 11)<a class="headerlink" href="#build--validation-vague-11" title="Permanent link">&para;</a></h2>
 <p>Les actions précédentes créent, orientent et éditent un <strong>dossier de mission</strong>, mais rien ne
-produisait le <code>.miz</code> jouable — le maker lançait <code>veaf-tools build</code> à la main. La vague 11 rend le
+produisait le <code>.miz</code> jouable — le maker lançait <code>veaf-tools mission build</code> à la main. La vague 11 rend le
 serveur <strong>autonome de bout en bout</strong> : dossier vide → scaffold → blank théâtre → composites/placement
 → <strong>validation → build → <code>.miz</code> jouable</strong>, sans quitter l'assistant.</p>
 <h3 id="validate_mission"><code>validate_mission</code><a class="headerlink" href="#validate_mission" title="Permanent link">&para;</a></h3>
@@ -3463,7 +3463,7 @@ process. Renvoie <code>{ok, errors[], warnings[]}</code> (<code>ok = false</code
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="build_mission"><code>build_mission</code><a class="headerlink" href="#build_mission" title="Permanent link">&para;</a></h3>
-<p>Écriture. Construit le dossier en <code>.miz</code> jouable en pilotant <strong><code>veaf-tools build</code></strong> dans le dossier
+<p>Écriture. Construit le dossier en <code>.miz</code> jouable en pilotant <strong><code>veaf-tools mission build</code></strong> dans le dossier
 (le binaire installé par <code>scaffold_mission</code>, ou <code>veaf-tools</code> du PATH). L'orchestration du build vit
 dans la commande CLI, on la réexécute telle quelle. Un échec de build est remonté (<code>RuntimeError</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">}</span>

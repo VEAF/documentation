@@ -3372,7 +3372,7 @@
 <li>Create a folder for your mission project (this is your Git repository)</li>
 <li>Copy your existing <code>.miz</code> file there</li>
 <li>Run <code>veaf-tools-updater.exe</code> to fetch all VEAF scripts</li>
-<li>Extract your mission: <code>veaf-tools.exe extract my-mission.miz</code></li>
+<li>Extract your mission: <code>veaf-tools.exe mission extract my-mission.miz</code></li>
 <li>Configure modules in <code>mission.yaml</code> and optionally <code>src/scripts/mission-script.lua</code></li>
 </ol>
 <p>Recommended project layout:</p>
@@ -3420,7 +3420,7 @@ injection, and the <code>scripts/*.lua</code> files by script loading.</p>
         SRC[src/mission + src/scripts]
         LUA[VEAF Lua scripts]
     end
-    YAML --&gt; BUILD[veaf-tools build]
+    YAML --&gt; BUILD[veaf-tools mission build]
     SRC --&gt; BUILD
     LUA --&gt; BUILD
     BUILD --&gt; GEN[Generate veaf-config.lua from mission.yaml]
@@ -3539,7 +3539,7 @@ text. Without the hook there are no pilot levels, so everything falls back to pa
 </code></pre></div>
 <hr />
 <h2 id="configuring-pipeline">Configuring the build pipeline<a class="headerlink" href="#configuring-pipeline" title="Permanent link">&para;</a></h2>
-<p>Beyond the Lua modules that run inside DCS, <code>veaf-tools build</code> can chain <strong>pipeline steps</strong> at build time: they inject data into the <code>.miz</code> (radio presets, waypoints, aircraft groups, weather variants) from separate YAML files placed in <code>src/</code>. Each step is <strong>auto-detected</strong> (it runs when its config file exists) and is controlled from the <code>pipeline:</code> section of <code>mission.yaml</code>.</p>
+<p>Beyond the Lua modules that run inside DCS, <code>veaf-tools mission build</code> can chain <strong>pipeline steps</strong> at build time: they inject data into the <code>.miz</code> (radio presets, waypoints, aircraft groups, weather variants) from separate YAML files placed in <code>src/</code>. Each step is <strong>auto-detected</strong> (it runs when its config file exists) and is controlled from the <code>pipeline:</code> section of <code>mission.yaml</code>.</p>
 <table>
 <thead>
 <tr>
@@ -3581,6 +3581,15 @@ text. Without the hook there are no pilot levels, so everything falls back to pa
 <hr />
 <h2 id="design-time-tools">Design-Time Tools<a class="headerlink" href="#design-time-tools" title="Permanent link">&para;</a></h2>
 <p><code>veaf-tools.exe</code> manipulates <code>.miz</code> files at build time — before loading them in DCS.</p>
+<blockquote>
+<p><strong>Commands are filed by theme.</strong> <code>veaf-tools mission build</code>, <code>veaf-tools content
+inject-presets</code>, <code>veaf-tools convert convert-v5</code>… <code>veaf-tools --help</code> lists the groups, and
+<code>veaf-tools &lt;group&gt; --help</code> shows what is in one. The <code>dcs</code> group is what <strong>needs DCS running</strong>.
+The groups are: <code>mission</code>, <code>convert</code>, <code>content</code>, <code>cockpit</code> and <code>dcs</code>.</p>
+<p><strong>The old short names still work</strong>: <code>veaf-tools build</code> does exactly what <code>veaf-tools mission
+build</code> does. They are no longer shown in the help and count as deprecated — a script or forum
+post written before this change keeps working.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3641,6 +3650,54 @@ text. Without the hook there are no pilot levels, so everything falls back to pa
 <td><code>user-config</code></td>
 <td>Shows or edits the global user config (<code>~/veafmct.yaml</code>)</td>
 </tr>
+<tr>
+<td><code>about</code></td>
+<td>Show information about VEAF Mission Creation Tools.</td>
+</tr>
+<tr>
+<td><code>ask</code></td>
+<td>Ask a question about the VEAF documentation (AI assistant). With no question, starts an interactive session.</td>
+</tr>
+<tr>
+<td><code>capture-map</code></td>
+<td>Capture a theatre's airbases from a running bridge mission (via dcs-serve) into <theatre>.json.</td>
+</tr>
+<tr>
+<td><code>convert-other</code></td>
+<td>Adopt a third-party (non-VEAF) .miz mission onto the v6 toolchain.</td>
+</tr>
+<tr>
+<td><code>explore-cockpit</code></td>
+<td>Explore a live cockpit: name a control to see it, or move one to name it.</td>
+</tr>
+<tr>
+<td><code>generate-config</code></td>
+<td>Generate a documented mission.yaml template for a mission folder.</td>
+</tr>
+<tr>
+<td><code>inject-bridge</code></td>
+<td>Embed the dcs-bridge + a start trigger into a .miz, turning it into a bridge mission.</td>
+</tr>
+<tr>
+<td><code>mcp</code></td>
+<td>Start the LLM-assisted mission-editing MCP server (stdio). Used by the veaf-mission-editor Claude plugin.</td>
+</tr>
+<tr>
+<td><code>migrate-config</code></td>
+<td>Migrate a missionConfig.lua to v6 format (mission-script.lua).</td>
+</tr>
+<tr>
+<td><code>resolve-checklist</code></td>
+<td>Fill in the technical fields of a guided checklist written in plain words.</td>
+</tr>
+<tr>
+<td><code>smoke-test</code></td>
+<td>Assert VEAF runtime behaviour inside a running DCS, over the dcs-fiddle hook.</td>
+</tr>
+<tr>
+<td><code>verify-checklist</code></td>
+<td>Check a resolved checklist against a real cockpit (needs DCS running here).</td>
+</tr>
 </tbody>
 </table>
 <p>Full reference: <a href="../../TOOLS_REFERENCE/">Tools Reference</a></p>
@@ -3648,16 +3705,16 @@ text. Without the hook there are no pilot levels, so everything falls back to pa
 <p>In an interactive terminal, <code>veaf-tools.exe</code> opens a guided wizard (TUI) instead of failing on a missing option:</p>
 <ul>
 <li><code>veaf-tools.exe</code> (no arguments) → command-selection menu, then prompts.</li>
-<li><code>veaf-tools.exe prepare</code> → the wizard asks for the target folder <strong>and</strong> the module template.</li>
-<li><code>veaf-tools.exe prepare c:\my-mission</code> → the folder is already supplied, so the wizard only asks for the template.</li>
-<li><code>--tui</code> appended to any command → opens the wizard even when nothing is missing (e.g. <code>veaf-tools.exe build --tui</code>).</li>
+<li><code>veaf-tools.exe mission prepare</code> → the wizard asks for the target folder <strong>and</strong> the module template.</li>
+<li><code>veaf-tools.exe mission prepare c:\my-mission</code> → the folder is already supplied, so the wizard only asks for the template.</li>
+<li><code>--tui</code> appended to any command → opens the wizard even when nothing is missing (e.g. <code>veaf-tools.exe mission build --tui</code>).</li>
 </ul>
 <p>Options already passed on the command line are pre-filled; unknown options (e.g. <code>--verbose</code>) are preserved as-is. Outside an interactive terminal (CI, redirected output), the wizard never triggers and the command runs normally.</p>
 <p><strong>Navigation</strong>: <strong>Ctrl-B</strong> (or <strong>Escape</strong> pressed twice) steps back to the previous prompt; from the main menu (or a command's first prompt) it quits the wizard. A reminder is shown at the bottom of each prompt.</p>
 <hr />
 <h2 id="typical-build-workflow">Typical Build Workflow<a class="headerlink" href="#typical-build-workflow" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c"># Build the mission — the integrated pipeline runs all enabled steps automatically</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <p>The <code>build</code> command reads <code>mission.yaml</code> and runs every enabled pipeline step (presets, waypoints, aircraft groups, weather) in a single pass. Configure which steps are active under the <code>pipeline:</code> key in <code>mission.yaml</code>.</p>
 <details>
@@ -3666,19 +3723,19 @@ text. Without the hook there are no pilot levels, so everything falls back to pa
 If you need to run a single step in isolation (e.g. inject weather only, without a full rebuild):
 
 <div class="highlight"><pre><span></span><code><span class="c"># Inject radio presets only</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">inject-presets</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-presets</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-presets</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-presets</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span>
 
 <span class="c"># Inject bullseye and nav waypoints only</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">inject-waypoints</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-waypoints</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">waypoints</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-waypoints</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-waypoints</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">waypoints</span><span class="p">.</span><span class="n">yaml</span>
 
 <span class="c"># Create weather/time variants only</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">inject-weather</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span><span class="o">-file</span> <span class="n">versions</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-weather</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span><span class="o">-file</span> <span class="n">versions</span><span class="p">.</span><span class="n">yaml</span>
 </code></pre></div>
 
 </details>
 
 <p>Commit the contents of <code>src/</code> to Git — not the built <code>.miz</code>. Use <code>extract</code> once to bootstrap the source folder from an existing mission:</p>
-<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">extract</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span>
 </code></pre></div>
 <hr />
 <h2 id="build-profiles">Build Profiles<a class="headerlink" href="#build-profiles" title="Permanent link">&para;</a></h2>
@@ -3703,13 +3760,13 @@ If you need to run a single step in isolation (e.g. inject weather only, without
 <span class="w">      </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c"># Build for testing (no weather, security disabled, verbose logging)</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span>
 
 <span class="c"># Build for server deployment</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">SERVER</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">SERVER</span>
 
 <span class="c"># Build with no profile (base config)</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <p>Profile keys <strong>deep-merge</strong> onto the base config: only the keys you specify are overridden, everything else stays as defined at the top of <code>mission.yaml</code>. Passing an unknown profile name emits a warning and falls back to the base config.</p>
 <p>See <a href="../../MISSION_YAML_REFERENCE/#profiles"><code>profiles:</code> in the YAML Reference</a> for the full field description.</p>
@@ -3785,7 +3842,7 @@ If you need to run a single step in isolation (e.g. inject weather only, without
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>Everything else — distances, timers, crates, troop groups, zones, per-aircraft capabilities — lives in a <strong><code>ctld-config.yaml</code></strong> file next to <code>mission.yaml</code> in your mission folder. You edit it with <strong><code>ctld-tools.exe</code></strong>, shipped with CTLD: double-click it and the tool opens in your browser, locally, with nothing to install. It validates as you type and shows plain-language labels rather than raw setting names.</p>
-<p><code>veaf-tools prepare</code> creates the file for you when the chosen template enables CTLD, pre-filled with the engine's own defaults. It is never overwritten afterwards: it is your configuration.</p>
+<p><code>veaf-tools mission prepare</code> creates the file for you when the chosen template enables CTLD, pre-filled with the engine's own defaults. It is never overwritten afterwards: it is your configuration.</p>
 <p>At build time VEAF injects it into the mission as a <code>CTLD_userConfig.lua</code> loaded immediately before <code>CTLD.lua</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Do not use ctld-tools' own \"inject into mission\" button</p>
@@ -3897,7 +3954,7 @@ DO SCRIPT FILE → mission-script.lua  (your custom code)
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">   </span><span class="c1"># overrides the global default for this module only</span>
 </code></pre></div>
-<p><code>veaf-tools.exe build</code> regenerates <code>veaf-config.lua</code> from <code>mission.yaml</code>. For a quick change without rebuilding, edit <code>veaf-config.lua</code> directly — it is a generated file so your changes will be overwritten on the next build.</p>
+<p><code>veaf-tools.exe mission build</code> regenerates <code>veaf-config.lua</code> from <code>mission.yaml</code>. For a quick change without rebuilding, edit <code>veaf-config.lua</code> directly — it is a generated file so your changes will be overwritten on the next build.</p>
 <h3 id="reading-the-log">Reading the log<a class="headerlink" href="#reading-the-log" title="Permanent link">&para;</a></h3>
 <p>We recommend <a href="https://klogg.filimonov.dev/">Klogg</a> — a fast log viewer with regex highlighting. Load <code>dcs.log</code> and filter on <code>VEAF</code> to see only VEAF messages.</p>
 <p>A ready-to-use Klogg highlight profile is included in the repository at <a href="../../tools/klogg/veaf.conf"><code>tools/klogg/veaf.conf</code></a>. It colour-codes log levels (errors in red, warnings in orange, VEAF info in green, debug in teal, trace in grey) and highlights MIST and CTLD entries. To install it: open Klogg → <em>File &gt; Import highlights…</em> and select the file.</p>

@@ -3367,7 +3367,7 @@ given — its enabled state. Each module's config keys live in its doc page.</p>
 <h2 id="composites--one-pass-both-worlds-wave-8">Composites — one pass, both worlds (wave 8)<a class="headerlink" href="#composites--one-pass-both-worlds-wave-8" title="Permanent link">&para;</a></h2>
 <p>High-level actions that lay down a <strong>complete feature</strong> in one call, on a <strong>mission folder</strong>: they
 edit the <strong>durable source</strong> (the exploded <code>src/mission/</code> — zones/groups — via <code>mission_folder</code>,
-<strong>and</strong> <code>mission.yaml</code>), without triggering a build (a later <code>veaf-tools build</code> produces the
+<strong>and</strong> <code>mission.yaml</code>), without triggering a build (a later <code>veaf-tools mission build</code> produces the
 <code>.miz</code>). They orchestrate the wave-1..7 primitives (<code>insert_trigger_zone</code>,
 <code>insert_group_into_content</code>, the <code>mission.yaml</code> editor). Implementation: <code>veaf_mission_mcp/composites.py</code>.</p>
 <h3 id="create_combat_zone"><code>create_combat_zone</code><a class="headerlink" href="#create_combat_zone" title="Permanent link">&para;</a></h3>
@@ -3391,7 +3391,7 @@ would on first install.</p>
    <code>veaf-tools-updater-&lt;os&gt;-&lt;arch&gt;</code> on Unix) and download it from the <strong>stable release-download
    URL</strong> (<code>…/releases/download/&lt;tag&gt;/&lt;asset&gt;</code> — no GitHub API, no rate limit).</li>
 <li>Run the updater in the folder (it fetches and installs the VEAF tools + <code>published/</code>).</li>
-<li>Run <code>veaf-tools prepare --template &lt;tier&gt; --force</code> in the folder.</li>
+<li>Run <code>veaf-tools mission prepare --template &lt;tier&gt; --force</code> in the folder.</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;target_folder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/empty-folder&quot;</span><span class="p">,</span>
@@ -3444,7 +3444,7 @@ named places work, vague terrain does not.</p>
 </code></pre></div>
 <h2 id="build--validate-wave-11">Build &amp; validate (wave 11)<a class="headerlink" href="#build--validate-wave-11" title="Permanent link">&para;</a></h2>
 <p>The earlier actions create, orient and edit a <strong>mission folder</strong>, but nothing produced the playable
-<code>.miz</code> — the maker still ran <code>veaf-tools build</code> by hand. Wave 11 makes the server <strong>self-sufficient
+<code>.miz</code> — the maker still ran <code>veaf-tools mission build</code> by hand. Wave 11 makes the server <strong>self-sufficient
 end-to-end</strong>: empty folder → scaffold → theatre blank → composites/placement → <strong>validate → build →
 playable <code>.miz</code></strong>, without leaving the assistant.</p>
 <h3 id="validate_mission"><code>validate_mission</code><a class="headerlink" href="#validate_mission" title="Permanent link">&para;</a></h3>
@@ -3453,7 +3453,7 @@ playable <code>.miz</code></strong>, without leaving the assistant.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission-folder&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="build_mission"><code>build_mission</code><a class="headerlink" href="#build_mission" title="Permanent link">&para;</a></h3>
-<p>Write. Builds the folder into a playable <code>.miz</code> by driving <strong><code>veaf-tools build</code></strong> in the folder (the
+<p>Write. Builds the folder into a playable <code>.miz</code> by driving <strong><code>veaf-tools mission build</code></strong> in the folder (the
 binary <code>scaffold_mission</code> installed, or <code>veaf-tools</code> on PATH). The build pipeline lives in the CLI
 command and is re-run as-is. A build failure is surfaced (<code>RuntimeError</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission-folder&quot;</span><span class="p">}</span>

@@ -2417,7 +2417,7 @@ strip, settings to override…) is carried by a <em>conversion profile</em> (com
 next). See ADR 0007.</p>
 </blockquote>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;mission.miz&gt;<span class="w"> </span>&lt;output-folder&gt;
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert<span class="w"> </span>convert-other<span class="w"> </span>&lt;mission.miz&gt;<span class="w"> </span>&lt;output-folder&gt;
 </code></pre></div>
 <p>With no argument (in an interactive terminal) the command opens the TUI wizard
 and asks for the source <code>.miz</code> then the output folder.</p>
@@ -2426,7 +2426,7 @@ and asks for the source <code>.miz</code> then the output folder.</p>
 <code>.miz</code> — Lekaa's Foothold assets bundle the mission with a config-manager executable, the
 manual and a shortcut. Pass the archive you downloaded and <code>convert-other</code> adopts the <code>.miz</code>
 inside it:</p>
-<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>Foothold_CA_4.4.1_Multi_Language_Coldwar-Modern-Vietnam.zip<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert<span class="w"> </span>convert-other<span class="w"> </span>Foothold_CA_4.4.1_Multi_Language_Coldwar-Modern-Vietnam.zip<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
 </code></pre></div>
 <p>Only the <code>.miz</code> member is read; nothing else in the archive is written anywhere (the bundled
 executable is never extracted, and never run). The archive must contain <strong>exactly one</strong>
@@ -2478,10 +2478,10 @@ mission-family-specific knowledge is applied — <strong>data, not code</strong>
 <li><strong>writes a marker</strong> <code>conversion_profile: foothold</code> into <code>mission.yaml</code>;</li>
 <li><strong>scaffolds a commented <code>config_override</code></strong> targeting <code>Foothold Config.lua</code>;</li>
 <li><strong>declares incompatible modules</strong> (<code>CTLD</code>: Foothold ships its own). Enabling an
-  incompatible module makes <strong><code>veaf-tools validate</code> and the build fail</strong> — including
+  incompatible module makes <strong><code>veaf-tools mission validate</code> and the build fail</strong> — including
   if you enable it by hand later.</li>
 </ul>
-<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;mission.miz&gt;<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert<span class="w"> </span>convert-other<span class="w"> </span>&lt;mission.miz&gt;<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold
 </code></pre></div>
 <h3 id="bundled-profiles">Bundled profiles<a class="headerlink" href="#bundled-profiles" title="Permanent link">&para;</a></h3>
 <table>
@@ -2543,7 +2543,7 @@ them; the mission validates its own values at runtime.</p>
 <p>Each override key is <strong>validated lexically</strong>: every dotted segment must appear as
 an identifier somewhere in the injected scripts (<code>src/scripts/*.lua</code>). A segment
 found nowhere — a typo or a global the upstream renamed/removed — <strong>fails
-<code>veaf-tools validate</code> and the build</strong>, so silent upstream drift becomes a
+<code>veaf-tools mission validate</code> and the build</strong>, so silent upstream drift becomes a
 build-time alert. (No Lua is executed: the check is a pure-Python whole-word
 search.)</p>
 <h2 id="after-conversion">After conversion<a class="headerlink" href="#after-conversion" title="Permanent link">&para;</a></h2>
@@ -2555,7 +2555,7 @@ search.)</p>
 <h2 id="updating-to-a-newer-upstream-miz---update">Updating to a newer upstream <code>.miz</code> (<code>--update</code>)<a class="headerlink" href="#updating-to-a-newer-upstream-miz---update" title="Permanent link">&para;</a></h2>
 <p>When the third-party author ships a new version (e.g. a Lekaa Foothold bump),
 re-import it into your already-adopted folder with <code>--update</code>:</p>
-<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert-other<span class="w"> </span>&lt;new-upstream.miz&gt;<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert<span class="w"> </span>convert-other<span class="w"> </span>&lt;new-upstream.miz&gt;<span class="w"> </span>&lt;output-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
 </code></pre></div>
 <p>The new upstream can be the release <code>.zip</code> here too — same rule, exactly one <code>.miz</code> inside.</p>
 <p>In update mode <code>convert-other</code>:</p>

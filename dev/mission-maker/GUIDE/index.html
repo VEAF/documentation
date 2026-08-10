@@ -3372,7 +3372,7 @@
 <li>Créez un dossier pour votre projet de mission (c'est votre dépôt Git)</li>
 <li>Copiez votre fichier <code>.miz</code> existant dedans</li>
 <li>Exécutez <code>veaf-tools-updater.exe</code> pour récupérer tous les scripts VEAF</li>
-<li>Extrayez votre mission : <code>veaf-tools.exe extract ma-mission.miz</code></li>
+<li>Extrayez votre mission : <code>veaf-tools.exe mission extract ma-mission.miz</code></li>
 <li>Configurez les modules dans <code>mission.yaml</code> et éventuellement <code>src/scripts/mission-script.lua</code></li>
 </ol>
 <p>Structure de projet recommandée :</p>
@@ -3420,7 +3420,7 @@ par injection dans le <code>.miz</code>, et les <code>scripts/*.lua</code> par l
         SRC[src/mission + src/scripts]
         LUA[Scripts Lua VEAF]
     end
-    YAML --&gt; BUILD[veaf-tools build]
+    YAML --&gt; BUILD[veaf-tools mission build]
     SRC --&gt; BUILD
     LUA --&gt; BUILD
     BUILD --&gt; GEN[Génère veaf-config.lua depuis mission.yaml]
@@ -3539,7 +3539,7 @@ Sans le hook, personne n'a de niveau et tout retombe sur les mots de passe.</p>
 </code></pre></div>
 <hr />
 <h2 id="configuring-pipeline">Configurer le pipeline de build<a class="headerlink" href="#configuring-pipeline" title="Permanent link">&para;</a></h2>
-<p>Au-delà des modules Lua exécutés dans DCS, <code>veaf-tools build</code> peut enchaîner des <strong>étapes de pipeline</strong> au moment du build : elles injectent des données dans le <code>.miz</code> (préréglages radio, points de cheminement, groupes d'aéronefs, variantes météo) à partir de fichiers YAML séparés placés dans <code>src/</code>. Chaque étape est <strong>auto-détectée</strong> (elle s'exécute si son fichier de config existe) et se pilote depuis la section <code>pipeline:</code> de <code>mission.yaml</code>.</p>
+<p>Au-delà des modules Lua exécutés dans DCS, <code>veaf-tools mission build</code> peut enchaîner des <strong>étapes de pipeline</strong> au moment du build : elles injectent des données dans le <code>.miz</code> (préréglages radio, points de cheminement, groupes d'aéronefs, variantes météo) à partir de fichiers YAML séparés placés dans <code>src/</code>. Chaque étape est <strong>auto-détectée</strong> (elle s'exécute si son fichier de config existe) et se pilote depuis la section <code>pipeline:</code> de <code>mission.yaml</code>.</p>
 <table>
 <thead>
 <tr>
@@ -3581,6 +3581,15 @@ Sans le hook, personne n'a de niveau et tout retombe sur les mots de passe.</p>
 <hr />
 <h2 id="outils-de-conception">Outils de conception<a class="headerlink" href="#outils-de-conception" title="Permanent link">&para;</a></h2>
 <p><code>veaf-tools.exe</code> manipule les fichiers <code>.miz</code> au moment du build — avant de les charger dans DCS.</p>
+<blockquote>
+<p><strong>Les commandes sont rangées par thème.</strong> <code>veaf-tools mission build</code>, <code>veaf-tools content
+inject-presets</code>, <code>veaf-tools convert convert-v5</code>… <code>veaf-tools --help</code> liste les groupes, et
+<code>veaf-tools &lt;groupe&gt; --help</code> leur contenu. Le groupe <code>dcs</code> regroupe ce qui <strong>exige DCS lancé</strong>.
+Les groupes sont : <code>mission</code>, <code>convert</code>, <code>content</code>, <code>cockpit</code> et <code>dcs</code>.</p>
+<p><strong>Les anciens noms courts fonctionnent toujours</strong> : <code>veaf-tools build</code> fait exactement la même
+chose que <code>veaf-tools mission build</code>. Ils ne sont plus affichés dans l'aide et sont considérés
+comme dépréciés — un script ou un message de forum écrit avant ce changement continue de marcher.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -3641,6 +3650,54 @@ Sans le hook, personne n'a de niveau et tout retombe sur les mots de passe.</p>
 <td><code>user-config</code></td>
 <td>Affiche ou modifie la configuration globale utilisateur (<code>~/veafmct.yaml</code>)</td>
 </tr>
+<tr>
+<td><code>about</code></td>
+<td>Affiche les informations sur VEAF Mission Creation Tools.</td>
+</tr>
+<tr>
+<td><code>ask</code></td>
+<td>Pose une question sur la documentation VEAF (assistant IA). Sans question, démarre une session interactive.</td>
+</tr>
+<tr>
+<td><code>capture-map</code></td>
+<td>Capture les aérodromes d'un théâtre depuis une mission-pont en cours (via dcs-serve) dans <théâtre>.json.</td>
+</tr>
+<tr>
+<td><code>convert-other</code></td>
+<td>Adopte une mission .miz tierce (non-VEAF) sur la chaîne d'outils v6.</td>
+</tr>
+<tr>
+<td><code>explore-cockpit</code></td>
+<td>Explorer un cockpit : nommez un contrôle pour le voir, ou bougez-en un pour le faire nommer.</td>
+</tr>
+<tr>
+<td><code>generate-config</code></td>
+<td>Génère un modèle mission.yaml documenté pour un dossier de mission.</td>
+</tr>
+<tr>
+<td><code>inject-bridge</code></td>
+<td>Injecte le dcs-bridge + un trigger de démarrage dans un .miz (mission-pont).</td>
+</tr>
+<tr>
+<td><code>mcp</code></td>
+<td>Démarre le serveur MCP d'édition de mission assistée par LLM (stdio). Utilisé par le plugin Claude veaf-mission-editor.</td>
+</tr>
+<tr>
+<td><code>migrate-config</code></td>
+<td>Migre un fichier missionConfig.lua au format v6 (mission-script.lua).</td>
+</tr>
+<tr>
+<td><code>resolve-checklist</code></td>
+<td>Complète les champs techniques d'une checklist guidée écrite en langage courant.</td>
+</tr>
+<tr>
+<td><code>smoke-test</code></td>
+<td>Vérifie le comportement runtime VEAF dans un DCS en cours d'exécution, via le hook dcs-fiddle.</td>
+</tr>
+<tr>
+<td><code>verify-checklist</code></td>
+<td>Vérifie une checklist résolue dans un vrai cockpit (DCS doit tourner ici).</td>
+</tr>
 </tbody>
 </table>
 <p>Référence complète : <a href="../../TOOLS_REFERENCE/">Référence des outils</a></p>
@@ -3648,16 +3705,16 @@ Sans le hook, personne n'a de niveau et tout retombe sur les mots de passe.</p>
 <p>Dans un terminal interactif, <code>veaf-tools.exe</code> ouvre un assistant guidé (TUI) plutôt que d'échouer sur une option manquante :</p>
 <ul>
 <li><code>veaf-tools.exe</code> (sans argument) → menu de sélection de commande, puis questions.</li>
-<li><code>veaf-tools.exe prepare</code> → l'assistant demande le dossier cible <strong>et</strong> le template de modules.</li>
-<li><code>veaf-tools.exe prepare c:\ma-mission</code> → le dossier est déjà fourni, l'assistant ne demande que le template.</li>
-<li><code>--tui</code> ajouté à n'importe quelle commande → ouvre l'assistant même si rien ne manque (ex. <code>veaf-tools.exe build --tui</code>).</li>
+<li><code>veaf-tools.exe mission prepare</code> → l'assistant demande le dossier cible <strong>et</strong> le template de modules.</li>
+<li><code>veaf-tools.exe mission prepare c:\ma-mission</code> → le dossier est déjà fourni, l'assistant ne demande que le template.</li>
+<li><code>--tui</code> ajouté à n'importe quelle commande → ouvre l'assistant même si rien ne manque (ex. <code>veaf-tools.exe mission build --tui</code>).</li>
 </ul>
 <p>Les options déjà passées sur la ligne de commande sont pré-remplies ; les options inconnues (ex. <code>--verbose</code>) sont conservées telles quelles. Hors terminal interactif (CI, sortie redirigée), l'assistant ne se déclenche jamais : la commande s'exécute normalement.</p>
 <p><strong>Navigation</strong> : <strong>Ctrl-B</strong> (ou <strong>Échap</strong> deux fois) revient au prompt précédent ; depuis le menu principal (ou le premier prompt d'une commande), il quitte l'assistant. Un rappel s'affiche en bas de chaque prompt.</p>
 <hr />
 <h2 id="workflow-de-build-typique">Workflow de build typique<a class="headerlink" href="#workflow-de-build-typique" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c"># Construire la mission — le pipeline intégré exécute toutes les étapes activées automatiquement</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <p>La commande <code>build</code> lit <code>mission.yaml</code> et exécute chaque étape activée du pipeline (presets, waypoints, groupes d'aéronefs, météo) en une seule passe. Configurez les étapes actives sous la clé <code>pipeline:</code> dans <code>mission.yaml</code>.</p>
 <details>
@@ -3666,19 +3723,19 @@ Sans le hook, personne n'a de niveau et tout retombe sur les mots de passe.</p>
 Si vous devez exécuter une seule étape en isolation (ex : injecter la météo uniquement, sans rebuild complet) :
 
 <div class="highlight"><pre><span></span><code><span class="c"># Injecter les préréglages radio uniquement</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">inject-presets</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-presets</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-presets</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-presets</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span>
 
 <span class="c"># Injecter les waypoints bullseye et de navigation uniquement</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">inject-waypoints</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-waypoints</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">waypoints</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-waypoints</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-waypoints</span><span class="o">-file</span> <span class="n">src</span><span class="p">/</span><span class="n">waypoints</span><span class="p">.</span><span class="n">yaml</span>
 
 <span class="c"># Créer des variantes météo/heure uniquement</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">inject-weather</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span><span class="o">-file</span> <span class="n">versions</span><span class="p">.</span><span class="n">yaml</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-weather</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span><span class="o">-file</span> <span class="n">versions</span><span class="p">.</span><span class="n">yaml</span>
 </code></pre></div>
 
 </details>
 
 <p>Commitez le contenu de <code>src/</code> dans Git — pas le <code>.miz</code> construit. Utilisez <code>extract</code> une fois pour initialiser le dossier source depuis une mission existante :</p>
-<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">extract</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span>
 </code></pre></div>
 <hr />
 <h2 id="build-profiles">Profils de build<a class="headerlink" href="#build-profiles" title="Permanent link">&para;</a></h2>
@@ -3703,13 +3760,13 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 <span class="w">      </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c"># Build pour les tests (pas de météo, sécurité désactivée, journalisation détaillée)</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span>
 
 <span class="c"># Build pour le déploiement serveur</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">SERVER</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">SERVER</span>
 
 <span class="c"># Build sans profil (config de base)</span>
-<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>
+<span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <p>Les clés du profil <strong>fusionnent en profondeur</strong> sur la config de base : seules les clés que vous spécifiez sont surchargées, tout le reste reste tel que défini en haut de <code>mission.yaml</code>. Passer un nom de profil inconnu émet un avertissement et revient à la config de base.</p>
 <p>Voir <a href="../../MISSION_YAML_REFERENCE/#profiles"><code>profiles:</code> dans la référence YAML</a> pour la description complète.</p>
@@ -3785,7 +3842,7 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>Tout le reste — distances, temporisations, caisses, groupes de troupes, zones, capacités par appareil — vit dans un fichier <strong><code>ctld-config.yaml</code></strong>, à côté de <code>mission.yaml</code> dans votre dossier mission. Vous l'éditez avec <strong><code>ctld-tools.exe</code></strong>, fourni avec CTLD : double-cliquez, l'outil s'ouvre dans votre navigateur, en local, sans installation. Il valide au fil de la saisie et affiche les libellés en clair plutôt que les noms de réglages.</p>
-<p><code>veaf-tools prepare</code> crée ce fichier pour vous quand le modèle choisi active CTLD, pré-rempli avec les valeurs par défaut du moteur. Il n'est jamais écrasé ensuite : c'est votre configuration.</p>
+<p><code>veaf-tools mission prepare</code> crée ce fichier pour vous quand le modèle choisi active CTLD, pré-rempli avec les valeurs par défaut du moteur. Il n'est jamais écrasé ensuite : c'est votre configuration.</p>
 <p>Au build, VEAF l'injecte dans la mission sous forme d'un <code>CTLD_userConfig.lua</code> chargé juste avant <code>CTLD.lua</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">N'utilisez pas le bouton « Injecter dans la mission » de ctld-tools</p>
@@ -3897,7 +3954,7 @@ DO SCRIPT FILE → mission-script.lua  (votre code personnalisé)
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">   </span><span class="c1"># surcharge le défaut global pour ce module uniquement</span>
 </code></pre></div>
-<p><code>veaf-tools.exe build</code> régénère <code>veaf-config.lua</code> depuis <code>mission.yaml</code>. Pour un changement rapide sans reconstruire, éditez directement <code>veaf-config.lua</code> — c'est un fichier généré, donc vos modifications seront écrasées au prochain build.</p>
+<p><code>veaf-tools.exe mission build</code> régénère <code>veaf-config.lua</code> depuis <code>mission.yaml</code>. Pour un changement rapide sans reconstruire, éditez directement <code>veaf-config.lua</code> — c'est un fichier généré, donc vos modifications seront écrasées au prochain build.</p>
 <h3 id="lire-le-journal">Lire le journal<a class="headerlink" href="#lire-le-journal" title="Permanent link">&para;</a></h3>
 <p>Nous recommandons <a href="https://klogg.filimonov.dev/">Klogg</a> — un visualiseur de logs rapide avec surligneur regex. Chargez <code>dcs.log</code> et filtrez sur <code>VEAF</code> pour ne voir que les messages VEAF.</p>
 <p>Un profil de surligneur Klogg prêt à l'emploi est inclus dans le dépôt : <a href="../../tools/klogg/veaf.conf"><code>tools/klogg/veaf.conf</code></a>. Il code les niveaux de log par couleur (erreurs en rouge, avertissements en orange, info VEAF en vert, debug en bleu-vert, trace en gris) et met en évidence les entrées MIST et CTLD. Pour l'installer : Klogg → <em>Fichier &gt; Importer les surligneurs…</em> et sélectionnez le fichier.</p>

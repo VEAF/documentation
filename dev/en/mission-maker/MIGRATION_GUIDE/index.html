@@ -3001,10 +3001,10 @@
 </ol>
 <p>In both cases the end result is a <strong>VEAF MCT v6 mission folder</strong> that you manage with <code>veaf-tools.exe</code>.</p>
 <pre class="mermaid"><code>flowchart TD
-    V5[VEAF MCT v5 mission] --&gt;|veaf-tools convert-v5| FOLDER[v6 mission folder]
-    VAN[Vanilla DCS .miz] --&gt;|veaf-tools extract| FOLDER
+    V5[VEAF MCT v5 mission] --&gt;|veaf-tools convert convert-v5| FOLDER[v6 mission folder]
+    VAN[Vanilla DCS .miz] --&gt;|veaf-tools mission extract| FOLDER
     FOLDER --&gt; CFG[Edit mission.yaml]
-    CFG --&gt; BUILD[veaf-tools build]
+    CFG --&gt; BUILD[veaf-tools mission build]
     BUILD --&gt; MIZ[v6 .miz ready to fly]</code></pre>
 <hr />
 <h2 id="before-you-start">Before You Start<a class="headerlink" href="#before-you-start" title="Permanent link">&para;</a></h2>
@@ -3068,22 +3068,22 @@
 <tr>
 <td><strong>DCS trigger</strong></td>
 <td>Manual <code>DO SCRIPT FILE</code> triggers pointing at each <code>.lua</code> file</td>
-<td>Single trigger injected automatically by <code>veaf-tools build</code>; no manual trigger work</td>
+<td>Single trigger injected automatically by <code>veaf-tools mission build</code>; no manual trigger work</td>
 </tr>
 <tr>
 <td><strong>Build toolchain</strong></td>
 <td>No build step — scripts loaded directly from disk at mission start</td>
-<td><code>veaf-tools.exe build</code> assembles the <code>.miz</code> from <code>src/mission/</code> + <code>src/scripts/</code></td>
+<td><code>veaf-tools.exe mission build</code> assembles the <code>.miz</code> from <code>src/mission/</code> + <code>src/scripts/</code></td>
 </tr>
 <tr>
 <td><strong>Build script</strong></td>
 <td>Complex <code>build.cmd</code> with one line per inject command</td>
-<td>No <code>build.cmd</code> — just run <code>veaf-tools-updater.exe</code> then <code>veaf-tools.exe build</code></td>
+<td>No <code>build.cmd</code> — just run <code>veaf-tools-updater.exe</code> then <code>veaf-tools.exe mission build</code></td>
 </tr>
 <tr>
 <td><strong>Auto-inject pipeline</strong></td>
 <td>Each inject command (<code>inject-presets</code>, <code>inject-waypoints</code>, etc.) had to be added manually to <code>build.cmd</code></td>
-<td><code>veaf-tools build</code> auto-detects and runs each step when the matching file is present in <code>src/</code></td>
+<td><code>veaf-tools mission build</code> auto-detects and runs each step when the matching file is present in <code>src/</code></td>
 </tr>
 <tr>
 <td><strong>Tool updates</strong></td>
@@ -3108,7 +3108,7 @@
 <tr>
 <td><strong>Module init pattern</strong></td>
 <td>Bare <code>veafXxx.initialize()</code> calls</td>
-<td>Auto-generated into <code>veaf-config.lua</code> by <code>veaf-tools build</code>; no manual <code>initialize()</code> calls needed</td>
+<td>Auto-generated into <code>veaf-config.lua</code> by <code>veaf-tools mission build</code>; no manual <code>initialize()</code> calls needed</td>
 </tr>
 <tr>
 <td><strong>Config location</strong></td>
@@ -3118,7 +3118,7 @@
 <tr>
 <td><strong>Config migration</strong></td>
 <td>Manual rewrite</td>
-<td><code>veaf-tools.exe convert-v5</code> — one command converts <code>missionConfig.lua</code>, pipeline files (presets, waypoints, weather, aircraft groups), and generates <code>mission.yaml</code> + <code>mission-script.lua</code>. Use <code>migrate-config</code> only to migrate <code>missionConfig.lua</code> alone.</td>
+<td><code>veaf-tools.exe convert convert-v5</code> — one command converts <code>missionConfig.lua</code>, pipeline files (presets, waypoints, weather, aircraft groups), and generates <code>mission.yaml</code> + <code>mission-script.lua</code>. Use <code>migrate-config</code> only to migrate <code>missionConfig.lua</code> alone.</td>
 </tr>
 <tr>
 <td><strong>Module log levels</strong></td>
@@ -3150,7 +3150,7 @@
 <p>This creates the <code>published/</code> directory with all scripts and tools. Your existing <code>src/</code> files are not touched.</p>
 <h4 id="3-convert-the-mission-folder-to-v6">3. Convert the mission folder to v6<a class="headerlink" href="#3-convert-the-mission-folder-to-v6" title="Permanent link">&para;</a></h4>
 <p>Run the all-in-one converter:</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="nb">convert-v5</span> <span class="p">.</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="nb">convert-v5</span> <span class="p">.</span>
 </code></pre></div>
 <p>This single command handles everything in one pass:</p>
 <ul>
@@ -3162,12 +3162,12 @@
 <li><strong>Conversion report</strong> — saves <code>convert-v5-report.md</code> with all actions taken and any items requiring manual review.</li>
 </ul>
 <p>If your pipeline contains <code>realweather</code> weather versions, supply the ICAO airport code via the <code>--icao</code> option to embed it in the generated config. If you omit it, the conversion still succeeds: the tool writes <code>airport_icao: TODO</code> into the generated config (<code>versions.yaml</code>) and prints a warning. Set it afterwards either by editing the <code>TODO</code> in <code>versions.yaml</code>, or by re-running <code>convert-v5 --icao UGGG --force</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="nb">convert-v5</span> <span class="p">.</span> <span class="p">-</span><span class="n">-icao</span> <span class="n">UGGG</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="nb">convert-v5</span> <span class="p">.</span> <span class="p">-</span><span class="n">-icao</span> <span class="n">UGGG</span>
 </code></pre></div>
-<p>Old DCS <code>DO SCRIPT FILE</code> triggers are removed automatically by <code>veaf-tools build</code> in the next step — no manual action needed.</p>
+<p>Old DCS <code>DO SCRIPT FILE</code> triggers are removed automatically by <code>veaf-tools mission build</code> in the next step — no manual action needed.</p>
 <blockquote>
 <p><strong><code>src/mission/</code> promotion to v6 (on by default)</strong>: <code>convert-v5</code> finishes by rewriting <code>src/mission/</code> to v6 (base build + extract), making the v6 switch definitive and avoiding a re-migration of the v5 triggers on every build. The original is backed up to <code>backup_v5/src/mission/</code>. If you'd rather review the generated configs and build yourself first, disable the step with <code>--no-promote</code>; you can re-run <code>convert-v5</code> later to promote.</p>
-<p><strong>If you only need to migrate <code>missionConfig.lua</code></strong> without converting pipeline files, use <code>veaf-tools.exe migrate-config src\scripts\missionConfig.lua</code> directly.</p>
+<p><strong>If you only need to migrate <code>missionConfig.lua</code></strong> without converting pipeline files, use <code>veaf-tools.exe convert migrate-config src\scripts\missionConfig.lua</code> directly.</p>
 </blockquote>
 <h4 id="4-check-removed-v5-patterns">4. Check removed v5 patterns<a class="headerlink" href="#4-check-removed-v5-patterns" title="Permanent link">&para;</a></h4>
 <p>Some v5 constructs no longer exist or have been renamed:</p>
@@ -3202,7 +3202,7 @@
 </tbody>
 </table>
 <h4 id="5-verify-with-a-test-build">5. Verify with a test build<a class="headerlink" href="#5-verify-with-a-test-build" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <p>Open the resulting <code>.miz</code> in DCS, load the mission, and confirm:
 - No duplicate <code>DO SCRIPT FILE</code> triggers in the trigger editor
@@ -3227,8 +3227,8 @@
 </code></pre></div>
 <h4 id="3-extract-the-vanilla-miz-then-build">3. Extract the vanilla .miz, then build<a class="headerlink" href="#3-extract-the-vanilla-miz-then-build" title="Permanent link">&para;</a></h4>
 <p>Extract your vanilla <code>.miz</code> into the source folder, then run the build, which injects the VEAF scripts and rebuilds a new <code>.miz</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="s2">&quot;C:\path\to\vanilla.miz&quot;</span> <span class="p">.</span>
-<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">extract</span> <span class="s2">&quot;C:\path\to\vanilla.miz&quot;</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <p>This:
 1. Extracts <code>vanilla.miz</code> into <code>src/mission/</code>
@@ -3237,11 +3237,11 @@
 4. Rebuilds a new <code>.miz</code> next to the folder</p>
 <h4 id="4-optionally-prepare-the-folder-with-defaults-only">4. Optionally: prepare the folder with defaults only<a class="headerlink" href="#4-optionally-prepare-the-folder-with-defaults-only" title="Permanent link">&para;</a></h4>
 <p>If you want to set up the folder structure without converting a mission yet, use <code>prepare</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">prepare</span> <span class="p">.</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">prepare</span> <span class="p">.</span>
 </code></pre></div>
 <p>Then copy your <code>.miz</code> as <code>mission.miz</code> and run:</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">.</span>
-<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="n">mission</span> <span class="p">.</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">extract</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="n">mission</span> <span class="p">.</span>
 </code></pre></div>
 <h4 id="5-configure-which-modules-to-enable">5. Configure which modules to enable<a class="headerlink" href="#5-configure-which-modules-to-enable" title="Permanent link">&para;</a></h4>
 <p>Edit <code>mission.yaml</code> to enable the modules you want. A set of common modules is active by default — radio, spawn, shortcuts, CAS, transport, weather… — adjust to taste:</p>
@@ -3270,7 +3270,7 @@
 <p>Your custom triggers, statics, and groups are untouched.</p>
 <h4 id="7-test-and-iterate">7. Test and iterate<a class="headerlink" href="#7-test-and-iterate" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="c"># Rebuild after every config change</span>
-<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="n">mission</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="n">mission</span> <span class="p">.</span>
 </code></pre></div>
 <p>Each build produces a dated <code>.miz</code> file (e.g. <code>mission_20260516.miz</code>). Open it in DCS and test.</p>
 <hr />
@@ -3339,7 +3339,7 @@ expected.</p>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>Rebuild with <code>veaf-tools.exe build</code> after any <code>mission.yaml</code> change.</p>
+<p>Rebuild with <code>veaf-tools.exe mission build</code> after any <code>mission.yaml</code> change.</p>
 <h3 id="marker-commands-dont-work">Marker commands don't work<a class="headerlink" href="#marker-commands-dont-work" title="Permanent link">&para;</a></h3>
 <p>Confirm <code>SPAWN</code> is enabled in <code>mission.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
