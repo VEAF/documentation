@@ -3001,7 +3001,7 @@
 </ol>
 <p>Dans les deux cas, le résultat final est un <strong>dossier de mission VEAF MCT v6</strong> que vous gérez avec <code>veaf-tools.exe</code>.</p>
 <pre class="mermaid"><code>flowchart TD
-    V5[Mission VEAF MCT v5] --&gt;|veaf-tools convert convert-v5| FOLDER[Dossier de mission v6]
+    V5[Mission VEAF MCT v5] --&gt;|veaf-tools convert v5| FOLDER[Dossier de mission v6]
     VAN[Mission DCS vanilla .miz] --&gt;|veaf-tools mission extract| FOLDER
     FOLDER --&gt; CFG[Éditer mission.yaml]
     CFG --&gt; BUILD[veaf-tools mission build]
@@ -3118,7 +3118,7 @@
 <tr>
 <td><strong>Migration de la config</strong></td>
 <td>Réécriture manuelle</td>
-<td><code>veaf-tools.exe convert convert-v5</code> — une seule commande migre <code>missionConfig.lua</code>, convertit les fichiers pipeline (préréglages, waypoints, météo, groupes d'aéronefs) et génère <code>mission.yaml</code> + <code>mission-script.lua</code>. Utilisez <code>migrate-config</code> uniquement pour migrer <code>missionConfig.lua</code> seul.</td>
+<td><code>veaf-tools.exe convert v5</code> — une seule commande migre <code>missionConfig.lua</code>, convertit les fichiers pipeline (préréglages, waypoints, météo, groupes d'aéronefs) et génère <code>mission.yaml</code> + <code>mission-script.lua</code>. Utilisez <code>migrate-config</code> uniquement pour migrer <code>missionConfig.lua</code> seul.</td>
 </tr>
 <tr>
 <td><strong>Niveaux de log des modules</strong></td>
@@ -3150,7 +3150,7 @@
 <p>Cela crée le répertoire <code>published/</code> avec tous les scripts et outils. Vos fichiers <code>src/</code> existants ne sont pas touchés.</p>
 <h4 id="3-convertir-le-dossier-de-mission-en-v6">3. Convertir le dossier de mission en v6<a class="headerlink" href="#3-convertir-le-dossier-de-mission-en-v6" title="Permanent link">&para;</a></h4>
 <p>Exécutez le convertisseur tout-en-un :</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="nb">convert-v5</span> <span class="p">.</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="n">v5</span> <span class="p">.</span>
 </code></pre></div>
 <p>Cette commande unique gère tout en une seule passe :</p>
 <ul>
@@ -3162,7 +3162,7 @@
 <li><strong>Rapport de conversion</strong> — sauvegarde <code>convert-v5-report.md</code> avec toutes les actions effectuées et les éléments nécessitant une révision manuelle.</li>
 </ul>
 <p>Si votre pipeline contient des versions météo <code>realweather</code>, fournissez le code ICAO de l'aéroport via l'option <code>--icao</code> pour l'intégrer dans la config générée. Si vous l'omettez, la conversion réussit quand même : l'outil écrit <code>airport_icao: TODO</code> dans la config générée (<code>versions.yaml</code>) et affiche un avertissement. Renseignez-le ensuite, au choix, en éditant le <code>TODO</code> dans <code>versions.yaml</code>, ou en relançant <code>convert-v5 --icao UGGG --force</code> :</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="nb">convert-v5</span> <span class="p">.</span> <span class="p">-</span><span class="n">-icao</span> <span class="n">UGGG</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="n">v5</span> <span class="p">.</span> <span class="p">-</span><span class="n">-icao</span> <span class="n">UGGG</span>
 </code></pre></div>
 <p>Les anciens triggers DCS <code>DO SCRIPT FILE</code> sont supprimés automatiquement par <code>veaf-tools mission build</code> à l'étape suivante — aucune action manuelle requise.</p>
 <blockquote>
