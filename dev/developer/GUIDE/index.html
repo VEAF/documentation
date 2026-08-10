@@ -1987,6 +1987,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#shared-test-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aides de test partagées
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3064,6 +3075,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#shared-test-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aides de test partagées
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3697,6 +3719,25 @@ VEAF et n'en sont pas.</p>
 <li>Enregistrer la commande dans <code>veaf-tools.py</code> avec <code>typer</code></li>
 <li>Ajouter le schéma de configuration YAML dans <code>models.py</code></li>
 </ol>
+<h3 id="shared-test-helpers">Aides de test partagées<a class="headerlink" href="#shared-test-helpers" title="Permanent link">&para;</a></h3>
+<p><code>test/python/testlib/</code> contient les aides utilisées par plusieurs fichiers de test. Le dossier est
+sur le <code>pythonpath</code> de pytest, donc ses modules s'importent par leur nom :</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mission_builder_factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_worker</span>
+</code></pre></div>
+<p><code>make_worker(**overrides)</code> construit un <code>MissionBuilderWorker</code> <strong>sans exécuter <code>__init__</code></strong> — celui-ci
+lit <code>mission.yaml</code>, résout le chemin des scripts et vérifie la présence du chargeur sur le disque,
+ce qu'un test unitaire d'une seule méthode veut éviter. Tous les attributs que <code>__init__</code> affecte
+sont présents avec une valeur neutre ; le test ne nomme que ce qui l'intéresse :</p>
+<div class="highlight"><pre><span></span><code><span class="n">worker</span> <span class="o">=</span> <span class="n">make_worker</span><span class="p">(</span><span class="n">mission_yaml</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;dcs_bridge&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}},</span> <span class="n">dev_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>Aucun accès disque : <code>mission_folder</code> vaut <code>None</code> par défaut. Quand un dossier est fourni,
+<code>output_mission</code> en dérive (<code>&lt;mission_folder&gt;/out.miz</code>). Une clé inconnue est refusée
+(<code>TypeError</code>) plutôt que de créer en silence un attribut que personne ne lit ; les remplacements de
+<strong>méthode</strong> s'affectent sur le worker retourné, pas via <code>make_worker</code>.</p>
+<p>Ajouter un champ à <code>MissionBuilderWorker.__init__</code> impose d'ajouter une entrée dans
+<code>init_field_defaults()</code>. Ce n'est pas à retenir :
+<code>test/python/mission_builder/test_mission_builder_factory_contract.py</code> lit les affectations
+<code>self.&lt;champ&gt;</code> de <code>__init__</code> et échoue en nommant le champ manquant et le fichier à corriger.</p>
 <hr />
 <h2 id="build-et-publication">Build et publication<a class="headerlink" href="#build-et-publication" title="Permanent link">&para;</a></h2>
 <h3 id="build-local">Build local<a class="headerlink" href="#build-local" title="Permanent link">&para;</a></h3>
