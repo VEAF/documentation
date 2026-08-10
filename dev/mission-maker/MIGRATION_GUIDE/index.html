@@ -1065,6 +1065,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        « impossible de charger le fichier de préréglages » après une conversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#le-trigger-veaf-scripts-loader-apparaît-deux-fois" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2881,6 +2892,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        « impossible de charger le fichier de préréglages » après une conversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#le-trigger-veaf-scripts-loader-apparaît-deux-fois" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3297,6 +3319,19 @@ __pycache__/
 <p>L'activation/désactivation des modules se configure dans <code>mission.yaml</code> → <code>modules:</code> — pas dans ce fichier. Consultez la <a href="../../MISSION_YAML_REFERENCE/">référence YAML</a> pour la syntaxe complète de <code>mission.yaml</code>.</p>
 <hr />
 <h2 id="problèmes-courants">Problèmes courants<a class="headerlink" href="#problèmes-courants" title="Permanent link">&para;</a></h2>
+<h3 id="-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion">« impossible de charger le fichier de préréglages » après une conversion<a class="headerlink" href="#-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion" title="Permanent link">&para;</a></h3>
+<p>Un <code>src/presets.yaml</code> déjà présent avant la conversion pouvait être écrit selon le <strong>schéma v5</strong> :
+même nom, même format de fichier, mais une structure interne différente (<code>presets_definition:</code> au
+lieu de <code>presets_collection:</code>, un niveau <code>coalitions:</code> en trop, les radios définies en ligne dans
+chaque préréglage). <code>convert-v5</code> le laissait alors en place — il était au bon endroit — et le build
+échouait à l'étape suivante.</p>
+<p><code>convert-v5</code> détecte désormais ce cas <strong>par la structure du fichier</strong> et le réécrit sur place, en
+conservant l'original dans <code>backup_v5/src/presets.yaml</code>. Le rapport de conversion le signale, avec
+un avertissement pour chaque point qu'il n'a pas pu trancher seul (une radio dont les canaux
+couvrent plusieurs bandes, par exemple).</p>
+<p>Si vous éditez ce fichier à la main, sachez que le lecteur refuse maintenant une section qu'il ne
+connaît pas au lieu de l'ignorer en silence, et qu'il nomme la clé fautive, ce qu'il y a trouvé et
+ce qu'il attendait.</p>
 <h3 id="le-trigger-veaf-scripts-loader-apparaît-deux-fois">Le trigger "VEAF scripts loader" apparaît deux fois<a class="headerlink" href="#le-trigger-veaf-scripts-loader-apparaît-deux-fois" title="Permanent link">&para;</a></h3>
 <p>Vous avez à la fois un ancien trigger <code>DO SCRIPT FILE</code> manuel et le nouveau trigger auto-injecté v6. Supprimez le trigger manuel de l'éditeur de missions DCS (ouvrez le <code>.miz</code>, éditez les triggers, supprimez l'ancien, enregistrez), puis ré-extrayez et rebuildez.</p>
 <p>Alternativement, utilisez <code>--migrate-from-v5</code> sur le build pour que les anciens triggers soient supprimés automatiquement (c'est le comportement par défaut).</p>
