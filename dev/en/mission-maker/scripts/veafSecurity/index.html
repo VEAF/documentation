@@ -2407,7 +2407,7 @@
 <p><strong>Module ID:</strong> <code>SECURITY</code> | <strong>Version:</strong> 1.3.x | <strong>File:</strong> <code>veafSecurity.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
-<p>Provides a password-based permission system for VEAF marker commands and radio menu actions. Restricts sensitive commands (spawning, teleporting, destroying) to authorised players. Three permission levels with SHA-1 hashed passwords.</p>
+<p>Provides a permission system for VEAF marker commands and radio menu actions. Restricts sensitive commands (spawning, teleporting, destroying) to authorised players, either from the pilot's level as declared on the server or through a SHA-1 hashed password.</p>
 <hr />
 <h2 id="enable">Enable<a class="headerlink" href="#enable" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">veafSecurity</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
@@ -2415,47 +2415,76 @@
 <p>Call before other modules so that security checks are active when they initialise.</p>
 <hr />
 <h2 id="permission-levels">Permission Levels<a class="headerlink" href="#permission-levels" title="Permanent link">&para;</a></h2>
+<p><strong>A bigger number is a tighter tier.</strong> A check passes when the pilot's level is <em>at least</em> the
+constant, or when they supply that tier's password.</p>
 <table>
 <thead>
 <tr>
-<th>Level</th>
+<th>Tier</th>
 <th>Constant</th>
-<th>Who can use</th>
+<th>Passes without a password when the pilot's level is</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0 (public)</td>
-<td><code>veafSecurity.LEVEL_L0</code></td>
-<td>All players — no password required</td>
+<td><code>KNOWN_PILOT</code></td>
+<td><code>veafSecurity.LEVEL_KNOWN_PILOT</code> = 1</td>
+<td><strong>≥ 1</strong> — any pilot listed in the server's <code>veaf-pilots.txt</code></td>
 </tr>
 <tr>
-<td>1 (pilots)</td>
-<td><code>veafSecurity.LEVEL_L1</code></td>
-<td>Pilots with L1 password</td>
+<td><code>SENIOR_PILOT</code></td>
+<td><code>veafSecurity.LEVEL_SENIOR_PILOT</code> = 10</td>
+<td><strong>≥ 10</strong> — a trusted member</td>
 </tr>
 <tr>
-<td>9 (admin)</td>
-<td><code>veafSecurity.LEVEL_L9</code></td>
-<td>Administrators with L9 password</td>
+<td><code>ADMIN</code></td>
+<td><code>veafSecurity.LEVEL_ADMIN</code> = 90</td>
+<td><strong>≥ 90</strong> — a server administrator</td>
+</tr>
+<tr>
+<td><code>MM</code></td>
+<td>(no level)</td>
+<td>never — the Mission Master password is the only way in</td>
+</tr>
+<tr>
+<td><code>OPEN</code></td>
+<td>(no check)</td>
+<td>always — the command is deliberately available to everyone</td>
 </tr>
 </tbody>
 </table>
-<p>The default security level for spawn commands can be set per-module.</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>L0</code>, <code>L1</code> and <code>L9</code> are deprecated aliases, and they read backwards</p>
+<p>This page announced "0 (public)" for <code>LEVEL_L0</code> until 6.13.70. That was wrong: <code>LEVEL_L0</code>
+is <strong>90</strong>, the tightest tier. Writing <code>L0</code> believing it opened a command to everyone in
+fact restricted it to administrators.</p>
+<p><code>L0</code> → <code>ADMIN</code>, <code>L1</code> → <code>SENIOR_PILOT</code>, <code>L9</code> → <code>KNOWN_PILOT</code>. The values are unchanged, so
+renaming changes no mission's behaviour.</p>
+</div>
+<p>Passwords are hierarchical: the <code>ADMIN</code> one also opens <code>SENIOR_PILOT</code> and <code>KNOWN_PILOT</code>, and the
+<code>SENIOR_PILOT</code> one opens <code>KNOWN_PILOT</code>. The Mission Master password sits outside that hierarchy — it
+opens only the commands declared <code>MM</code>.</p>
+<p>The default security level for spawn commands can be set per-module. See also the
+<a href="../../GUIDE/#security-tiers">Mission Maker Guide</a>.</p>
 <hr />
 <h2 id="setting-passwords">Setting Passwords<a class="headerlink" href="#setting-passwords" title="Permanent link">&para;</a></h2>
 <p>Passwords are stored as SHA-1 hashes for security. Use the built-in <code>sha1</code> function:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- In mission-script.lua (after veafSecurity is loaded)</span>
 
-<span class="c1">-- Clear default passwords and set your own</span>
+<span class="c1">-- Clear the shipped defaults and set your own. The tables keep the old names:</span>
+<span class="c1">-- password_L0 = ADMIN, password_L1 = SENIOR_PILOT, password_L9 = KNOWN_PILOT.</span>
+<span class="nv">veafSecurity</span><span class="p">.</span><span class="py">password_L0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 <span class="nv">veafSecurity</span><span class="p">.</span><span class="py">password_L1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 <span class="nv">veafSecurity</span><span class="p">.</span><span class="py">password_L9</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
 
-<span class="c1">-- Add hashed passwords (multiple passwords supported per level)</span>
-<span class="nv">veafSecurity</span><span class="p">.</span><span class="py">password_L1</span><span class="p">[</span><span class="nv">sha1</span><span class="p">.</span><span class="nf">hex</span><span class="p">(</span><span class="s2">&quot;myL1password&quot;</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-<span class="nv">veafSecurity</span><span class="p">.</span><span class="py">password_L9</span><span class="p">[</span><span class="nv">sha1</span><span class="p">.</span><span class="nf">hex</span><span class="p">(</span><span class="s2">&quot;myAdminPassword&quot;</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="c1">-- Add hashed passwords (several are accepted per tier)</span>
+<span class="nv">veafSecurity</span><span class="p">.</span><span class="py">password_L0</span><span class="p">[</span><span class="nv">sha1</span><span class="p">.</span><span class="nf">hex</span><span class="p">(</span><span class="s2">&quot;myAdminPassword&quot;</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="nv">veafSecurity</span><span class="p">.</span><span class="py">password_L1</span><span class="p">[</span><span class="nv">sha1</span><span class="p">.</span><span class="nf">hex</span><span class="p">(</span><span class="s2">&quot;myTrustedMemberPassword&quot;</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 </code></pre></div>
 <blockquote>
+<p><strong>Clear before adding.</strong> Without the <code>= {}</code>, your password is <em>added</em> to the one shipped with
+VEAF, which is published in a public repository — the mission would stay open to the default
+password.</p>
 <p>Do not commit plain-text passwords in your mission files. Use hashes only.</p>
 </blockquote>
 <hr />
@@ -2480,19 +2509,19 @@
 <td>Marker command for authentication</td>
 </tr>
 <tr>
-<td><code>veafSecurity.LEVEL_L0</code></td>
+<td><code>veafSecurity.LEVEL_ADMIN</code></td>
 <td><code>90</code></td>
-<td>Internal weight for public level</td>
+<td>Administrator tier (deprecated alias: <code>LEVEL_L0</code>)</td>
 </tr>
 <tr>
-<td><code>veafSecurity.LEVEL_L1</code></td>
+<td><code>veafSecurity.LEVEL_SENIOR_PILOT</code></td>
 <td><code>10</code></td>
-<td>Internal weight for pilots level</td>
+<td>Trusted-member tier (deprecated alias: <code>LEVEL_L1</code>)</td>
 </tr>
 <tr>
-<td><code>veafSecurity.LEVEL_L9</code></td>
+<td><code>veafSecurity.LEVEL_KNOWN_PILOT</code></td>
 <td><code>1</code></td>
-<td>Internal weight for admin level</td>
+<td>Listed-pilot tier (deprecated alias: <code>LEVEL_L9</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -2511,8 +2540,8 @@
 <hr />
 <h2 id="module-level-security">Module-Level Security<a class="headerlink" href="#module-level-security" title="Permanent link">&para;</a></h2>
 <p>Each module can set the default security requirement for its commands. Example for spawn:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Require L1 (pilots) for all spawn commands</span>
-<span class="nv">veafSpawn</span><span class="p">.</span><span class="py">defaultSecurity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSecurity</span><span class="p">.</span><span class="py">LEVEL_L1</span>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Require the SENIOR_PILOT tier for all spawn commands</span>
+<span class="nv">veafSpawn</span><span class="p">.</span><span class="py">defaultSecurity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSecurity</span><span class="p">.</span><span class="py">LEVEL_SENIOR_PILOT</span>
 </code></pre></div>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

@@ -675,21 +675,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tankers" class="md-nav__link">
+  <a href="#tankers-awacs-and-ships" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tankers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#awacs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWACS
+        Tankers, AWACS and ships
       
     </span>
   </a>
@@ -2555,21 +2544,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tankers" class="md-nav__link">
+  <a href="#tankers-awacs-and-ships" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tankers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#awacs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWACS
+        Tankers, AWACS and ships
       
     </span>
   </a>
@@ -2799,14 +2777,14 @@
 <p>All VEAF MCT features are available from <strong>F10 → Other → VEAF</strong>. (The radio menu is the list that opens with the F10 key; "Other" groups the commands added by the mission.)</p>
 <pre class="mermaid"><code>graph TD
     F10[F10 Radio Menu] --&gt; Other[Other] --&gt; VEAF[VEAF]
-    VEAF --&gt; Res[Assets]
+    VEAF --&gt; Res[ASSETS]
     VEAF --&gt; CAS[CAS Mission]
     VEAF --&gt; CZ[Combat Zones]
     VEAF --&gt; Miss[Missions]
     VEAF --&gt; Help[Help]
-    Res --&gt; Tank[Tankers]
-    Res --&gt; AWACS[AWACS]
-    Res --&gt; Carrier[Carriers]</code></pre>
+    Res --&gt; A1["Arco 1-1 — tanker"]
+    Res --&gt; A2["Overlord — AWACS"]
+    F10 --&gt; Carrier["CARRIER OPS - BLUE / RED"]</code></pre>
 <blockquote>
 <p>📷 <em>Screenshot coming soon: VEAF submenu in the F10 radio menu.</em></p>
 </blockquote>
@@ -2982,17 +2960,20 @@ _spawn bomb, power 500, shells 3
 </code></pre></div>
 <hr />
 <h2 id="assets">Assets<a class="headerlink" href="#assets" title="Permanent link">&para;</a></h2>
-<p><strong>Assets</strong> are the mission's shared support aircraft and vessels: tankers, AWACS and carriers. You find them under <strong>F10 → VEAF → Assets</strong>.</p>
+<p><strong>Assets</strong> are the mission's shared support aircraft and vessels: tankers, AWACS and ships. You find them under <strong>F10 → VEAF → ASSETS</strong>.</p>
 <blockquote>
-<p>📷 <em>Screenshot coming soon: tankers and AWACS submenus.</em></p>
+<p>📷 <em>Screenshot coming soon: the ASSETS menu and one asset's submenu.</em></p>
 </blockquote>
-<h3 id="tankers">Tankers<a class="headerlink" href="#tankers" title="Permanent link">&para;</a></h3>
-<p><strong>F10 → VEAF → Assets → Tankers → [Name] → Info</strong></p>
-<p>Shows: position, TACAN channel (navigation beacon), radio frequency and refuelling type.</p>
-<p>If the tanker has been destroyed, the <strong>Respawn</strong> option brings it back (if the mission maker has allowed it).</p>
-<h3 id="awacs">AWACS<a class="headerlink" href="#awacs" title="Permanent link">&para;</a></h3>
-<p><strong>F10 → VEAF → Assets → AWACS → [Name] → Info</strong></p>
-<p>Shows: callsign, frequency and position.</p>
+<h3 id="tankers-awacs-and-ships">Tankers, AWACS and ships<a class="headerlink" href="#tankers-awacs-and-ships" title="Permanent link">&para;</a></h3>
+<p><strong>F10 → VEAF → ASSETS → [Asset name] → Get info on [Asset name]</strong></p>
+<p>The menu does not group assets by category: every tanker, AWACS or ship has its own submenu directly, named after the asset. There is no <em>Tankers</em> or <em>AWACS</em> step to go through.</p>
+<p>What the info shows depends on the asset: for a tanker, its position, TACAN channel (navigation beacon), radio frequency and refuelling type; for an AWACS, its callsign, frequency and position.</p>
+<p>Two more commands may appear in an asset's submenu:</p>
+<ul>
+<li><strong>Respawn [Name]</strong> — brings it back if it has been destroyed. Available to everyone.</li>
+<li><strong>Dispose of [Name]</strong> — removes it from the mission. Restricted to authenticated players.</li>
+</ul>
+<p>An asset the mission maker did not make consultable has no submenu at all: its <strong>Respawn [Name]</strong> sits directly in the ASSETS menu.</p>
 <h3 id="carriers">Carriers<a class="headerlink" href="#carriers" title="Permanent link">&para;</a></h3>
 <p>Carrier air operations have their own <strong>CARRIER OPS</strong> menu (not under <em>Assets</em>), with a submenu per coalition and then per carrier.</p>
 <table>
@@ -3160,32 +3141,40 @@ _spawn bomb, power 500, shells 3
 <hr />
 <h2 id="security-and-permissions">Security and Permissions<a class="headerlink" href="#security-and-permissions" title="Permanent link">&para;</a></h2>
 <p>On multiplayer servers, the mission maker may restrict certain commands according to your permission level:</p>
+<p>There are two ways to be allowed to run a command: <strong>being recognised by the server</strong>, or <strong>giving
+the password</strong>. VEAF servers keep a list of pilots, and your place on that list opens some commands
+without typing anything.</p>
 <table>
 <thead>
 <tr>
-<th>Level</th>
-<th>Who can use it</th>
+<th>Tier</th>
+<th>Who passes without a password</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Public</td>
-<td>All players — asset info, zone activation, smoke/flare</td>
+<td>Known pilot</td>
+<td>Any pilot on the server's list</td>
 </tr>
 <tr>
-<td>Pilots</td>
-<td>Non-spectator players</td>
+<td>Trusted member</td>
+<td>The pilots the server has singled out as such</td>
 </tr>
 <tr>
-<td>Admin</td>
-<td>Server administrators</td>
+<td>Administrator</td>
+<td>The server's administrators</td>
 </tr>
 </tbody>
 </table>
-<p>To authenticate, place a marker containing:</p>
+<p>Some commands are open to everyone, listed or not: asset info, smoke, signal flares, naming a point.
+Others — spawning a group, destroying a unit — need one of the tiers above.</p>
+<p>If you are not recognised, place a marker containing:</p>
 <div class="highlight"><pre><span></span><code>_auth [PASSWORD]
 </code></pre></div>
-<p>The password is set by the mission maker or server administrator. Authentication stays valid for a configured duration (10 minutes by default), after which your rights return automatically to the public level.</p>
+<p>The password is set by the mission maker or server administrator, and there is one per tier — the
+administrator's also opens everything below it. Authentication stays valid for a configured duration
+(10 minutes by default), after which your rights return automatically to whatever the server's list
+grants you.</p>
 <hr />
 <h2 id="tips-for-your-aircraft">Tips for Your Aircraft<a class="headerlink" href="#tips-for-your-aircraft" title="Permanent link">&para;</a></h2>
 <h3 id="fighters-f-16c-fa-18c-f-15c-su-27">Fighters (F-16C, F/A-18C, F-15C, Su-27…)<a class="headerlink" href="#fighters-f-16c-fa-18c-f-15c-su-27" title="Permanent link">&para;</a></h3>
