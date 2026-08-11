@@ -1246,6 +1246,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dev-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iterating on a checklist without redoing the whole start-up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#switch-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2558,6 +2569,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dev-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iterating on a checklist without redoing the whole start-up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#switch-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2912,6 +2934,32 @@ checklist <strong>overrides</strong> it.</p>
   give your own <code>tolerance</code>, or a <code>range</code>.
 - A mistake in the file <strong>fails the build</strong> with a message naming the offending file, rather than
   producing a Lua error in game.</p>
+<h3 id="dev-condition">Iterating on a checklist without redoing the whole start-up<a class="headerlink" href="#dev-condition" title="Permanent link">&para;</a></h3>
+<p>Checking step 30 of an engine start normally means performing the 29 before it, in a cockpit. That is
+what makes iterating on a checklist tedious enough to discourage fixing small things.</p>
+<p>Hence <code>dev_condition</code>, a <strong>development hatch</strong>: the step passes without the cockpit ever being in the
+required state.</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAIN PWR to BATT</span>
+<span class="w">  </span><span class="nt">element</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PTR-ELEC-TMB-MPWR-510</span>
+<span class="w">  </span><span class="nt">argument</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">510</span>
+<span class="w">  </span><span class="nt">equals</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">  </span><span class="nt">dev_condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># absent from a shipped checklist</span>
+</code></pre></div>
+<p>Put it on the steps you want to skip — typically 1 to 29 — and leave the one you are testing alone: when
+the session opens, the assistance ticks the hatched steps and stops on yours.</p>
+<p><strong>It is not a validation mode</strong>: the step keeps its <code>argument</code>/<code>param</code>/<code>confirm</code>. The hatch
+short-circuits the evaluation rather than replacing the measurement, so you can remove it without
+rewriting anything.</p>
+<p>Three guards, because a hatched checklist reaching production would tell a pilot they did something they
+did not:</p>
+<ul>
+<li><strong>Absent means today's behaviour</strong>, exactly. And <code>dev_condition: yes</code> or <code>dev_condition: 1</code> are
+  <strong>refused</strong>: only <code>true</code> and <code>false</code> are accepted, so a typo cannot open the hatch.</li>
+<li><strong>The build warns you</strong>, naming the checklist and the number of every step involved. It does not
+  refuse: otherwise you could not build the mission you wanted to try in the first place.</li>
+<li><strong>The pilot sees it on screen</strong> when the checklist starts: "⚠ N step(s) tick themselves". That is the
+  guard which depends on nobody reading a log.</li>
+</ul>
 <h3 id="switch-reading">Reading a switch position: <code>argument</code><a class="headerlink" href="#switch-reading" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAIN PWR switch to MAIN PWR</span>
 <span class="w">    </span><span class="nt">element</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PTR-ELEC-TMB-MPWR-510</span>

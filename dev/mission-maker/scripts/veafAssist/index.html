@@ -1246,6 +1246,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dev-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mettre au point une checklist sans refaire tout le démarrage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#switch-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2558,6 +2569,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dev-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mettre au point une checklist sans refaire tout le démarrage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#switch-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2917,6 +2939,34 @@ celui d'une checklist livrée <strong>remplace</strong> cette dernière.</p>
   une vitesse, donnez votre propre <code>tolerance</code>, ou un <code>range</code>.
 - Une erreur dans le fichier <strong>fait échouer la construction</strong> avec un message qui nomme le fichier
   fautif, plutôt que de produire une erreur Lua en jeu.</p>
+<h3 id="dev-condition">Mettre au point une checklist sans refaire tout le démarrage<a class="headerlink" href="#dev-condition" title="Permanent link">&para;</a></h3>
+<p>Vérifier l'étape 30 d'un démarrage moteur suppose normalement d'avoir fait les 29 précédentes, dans le
+cockpit. C'est ce qui rend l'itération sur une checklist assez pénible pour décourager de corriger un
+détail.</p>
+<p>D'où <code>dev_condition</code>, une <strong>trappe de mise au point</strong> : l'étape se valide d'office, sans que le cockpit
+soit dans l'état demandé.</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAIN PWR sur BATT</span>
+<span class="w">  </span><span class="nt">element</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PTR-ELEC-TMB-MPWR-510</span>
+<span class="w">  </span><span class="nt">argument</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">510</span>
+<span class="w">  </span><span class="nt">equals</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">  </span><span class="nt">dev_condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># absente d&#39;une checklist livrée</span>
+</code></pre></div>
+<p>Mettez-la sur les étapes que vous voulez sauter — typiquement 1 à 29 — et laissez celle que vous testez
+telle quelle : à l'ouverture de la session, l'assistance cochera les étapes truquées et s'arrêtera sur
+la vôtre.</p>
+<p><strong>Ce n'est pas un mode de validation</strong> : l'étape garde son <code>argument</code>/<code>param</code>/<code>confirm</code>. La trappe
+court-circuite l'évaluation, elle ne remplace pas la mesure — vous pouvez donc la retirer sans rien
+réécrire.</p>
+<p>Trois garde-fous, parce qu'une checklist truquée qui partirait en production dirait à un pilote qu'il a
+fait une action qu'il n'a pas faite :</p>
+<ul>
+<li><strong>Absente = comportement normal</strong>, exactement. Et <code>dev_condition: yes</code> ou <code>dev_condition: 1</code> sont
+  <strong>refusés</strong> : seuls <code>true</code> et <code>false</code> sont acceptés, pour qu'une faute de frappe n'ouvre pas la trappe.</li>
+<li><strong>La construction vous avertit</strong>, en nommant la checklist et le numéro de chaque étape concernée. Elle
+  ne refuse pas : sinon vous ne pourriez pas construire la mission que vous voulez justement essayer.</li>
+<li><strong>Le pilote le voit à l'écran</strong> au démarrage de la checklist : « ⚠ N étape(s) se valident d'office ».
+  C'est le garde-fou qui ne dépend de la lecture d'aucun journal.</li>
+</ul>
 <h3 id="switch-reading">Lire la position d'un interrupteur : <code>argument</code><a class="headerlink" href="#switch-reading" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAIN PWR sur MAIN PWR</span>
 <span class="w">    </span><span class="nt">element</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PTR-ELEC-TMB-MPWR-510</span>
