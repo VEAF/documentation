@@ -2531,6 +2531,24 @@ par défaut.</p>
 <div class="highlight"><pre><span></span><code>_auth [MOT_DE_PASSE]
 </code></pre></div>
 <p>En cas de succès : l'accès est accordé pour <code>authDuration</code> minutes. Aucun message n'est affiché aux autres joueurs.</p>
+<div class="admonition danger">
+<p class="admonition-title">Changement de comportement — l'authentification n'est plus globale</p>
+<p><strong>Avant</strong> : un seul <code>_auth</code> réussi ouvrait toutes les commandes sécurisées à <strong>tous les joueurs
+du serveur</strong> pendant <code>authDuration</code> minutes. Tant que quelqu'un était authentifié, le niveau
+réel des pilotes n'était même plus consulté : le mécanisme grossier désactivait le précis.</p>
+<p><strong>Maintenant</strong> : chaque commande sécurisée vérifie qui demande.</p>
+<ul>
+<li><strong>Pour un pilote listé dans <code>veaf-pilots.txt</code>, rien ne change</strong> : son niveau suffit, et il n'a
+  jamais eu besoin du mot de passe.</li>
+<li><strong>Un pilote non listé</strong> doit fournir le mot de passe <strong>à chaque commande</strong> : il n'y a plus de
+  session ouverte de dix minutes.</li>
+<li>Pour le <strong>menu radio F10</strong>, DCS ne permet pas de savoir <em>quel</em> occupant d'un groupe a cliqué.
+  Le groupe agit donc au niveau du <strong>moins gradé</strong> de ses occupants. <code>_auth</code> ou <code>/login</code> depuis
+  un canal identifié (marqueur ou tchat) élève le groupe au niveau <strong>du demandeur</strong> pendant
+  2 minutes — ce qui résout le cas de l'instructeur volant avec un élève.</li>
+</ul>
+<p>Prévenez vos pilotes : c'est un changement qui se remarque en pleine mission.</p>
+</div>
 <hr />
 <h2 id="désactiver-la-sécurité-développement--solo">Désactiver la sécurité (développement / solo)<a class="headerlink" href="#désactiver-la-sécurité-développement--solo" title="Permanent link">&para;</a></h2>
 <p>Pour les tests ou les missions solo où la sécurité n'est pas nécessaire :</p>

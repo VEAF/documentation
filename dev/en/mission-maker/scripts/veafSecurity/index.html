@@ -2531,6 +2531,24 @@ password.</p>
 <div class="highlight"><pre><span></span><code>_auth [PASSWORD]
 </code></pre></div>
 <p>On success: access is granted for <code>authDuration</code> minutes. No message is displayed to other players.</p>
+<div class="admonition danger">
+<p class="admonition-title">Behaviour change — authentication is no longer global</p>
+<p><strong>Before</strong>: one successful <code>_auth</code> opened every secured command to <strong>every player on the server</strong>
+for <code>authDuration</code> minutes. While anyone was authenticated the pilots' real levels were not even
+consulted: the blunt mechanism disabled the precise one.</p>
+<p><strong>Now</strong>: every secured command checks who is asking.</p>
+<ul>
+<li><strong>A pilot listed in <code>veaf-pilots.txt</code> notices nothing</strong>: their own level suffices, and they
+  never needed the password.</li>
+<li><strong>A pilot who is not listed</strong> must supply the password <strong>on every command</strong>: there is no
+  ten-minute session any more.</li>
+<li>For the <strong>F10 radio menu</strong>, DCS cannot tell <em>which</em> occupant of a group clicked. The group
+  therefore acts at the level of its <strong>lowest-graded</strong> occupant. <code>_auth</code> or <code>/login</code> from an
+  identified channel (marker or chat) raises the group to the <strong>requester's</strong> level for
+  2 minutes — which is what solves the instructor-flying-with-a-student case.</li>
+</ul>
+<p>Tell your pilots: this is a change they will notice mid-mission.</p>
+</div>
 <hr />
 <h2 id="disabling-security-development--solo">Disabling Security (Development / Solo)<a class="headerlink" href="#disabling-security-development--solo" title="Permanent link">&para;</a></h2>
 <p>For testing or solo missions where security is not needed:</p>
