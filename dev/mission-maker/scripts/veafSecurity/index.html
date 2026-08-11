@@ -2537,6 +2537,19 @@ par défaut.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="py">SecurityDisabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 </code></pre></div>
 <p>Cela contourne toutes les vérifications de sécurité globalement.</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>veafSecurity.SecurityDisabled</code> : ancienne orthographe, encore honorée</p>
+<p>Les missions écrites avant juin 2026 utilisent <code>veafSecurity.SecurityDisabled</code> (avec le préfixe
+du module). Ce nom a été retiré par erreur : il était considéré comme jamais assigné, alors
+qu'il s'agit d'un réglage <strong>de mission</strong> — les seuls endroits qui l'assignent sont donc les
+configurations de mission, hors du dépôt.</p>
+<p>Conséquence pendant trois ans : une mission demandant la sécurité <strong>désactivée</strong> l'obtenait
+<strong>activée</strong>. Le sens de la panne est rassurant — personne n'a eu trop de droits — mais toutes
+les commandes sécurisées refusaient pour tout le monde, ce qui ressemble à « la couche de
+sécurité est cassée » plutôt qu'à « votre réglage a été retiré ».</p>
+<p>Les deux orthographes fonctionnent à nouveau. L'ancienne écrit un avertissement dans le log,
+une seule fois par mission, et <strong>sera retirée en v7</strong> : migrez vers <code>veaf.SecurityDisabled</code>.</p>
+</div>
 <hr />
 <h2 id="sécurité-au-niveau-du-module">Sécurité au niveau du module<a class="headerlink" href="#sécurité-au-niveau-du-module" title="Permanent link">&para;</a></h2>
 <p>Chaque module peut définir l'exigence de sécurité par défaut pour ses commandes. Exemple pour spawn :</p>

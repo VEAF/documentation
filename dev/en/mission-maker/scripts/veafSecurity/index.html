@@ -2537,6 +2537,19 @@ password.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="py">SecurityDisabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 </code></pre></div>
 <p>This bypasses all security checks globally.</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>veafSecurity.SecurityDisabled</code>: the old spelling, still honoured</p>
+<p>Missions written before June 2026 use <code>veafSecurity.SecurityDisabled</code> (with the module prefix).
+That name was retired by mistake: it was believed never to be assigned, when it is in fact a
+<strong>mission-facing</strong> setting — so the only places that assign it are mission configs, outside this
+repository.</p>
+<p>The consequence, for three years: a mission asking for security <strong>off</strong> got it <strong>on</strong>. The
+direction is reassuring — nobody was over-privileged — but every secured command then refused
+for everyone, which reads as "the security layer is broken" rather than "your setting was
+retired".</p>
+<p>Both spellings work again. The old one logs a warning, once per mission, and <strong>will be removed
+in v7</strong>: migrate to <code>veaf.SecurityDisabled</code>.</p>
+</div>
 <hr />
 <h2 id="module-level-security">Module-Level Security<a class="headerlink" href="#module-level-security" title="Permanent link">&para;</a></h2>
 <p>Each module can set the default security requirement for its commands. Example for spawn:</p>
