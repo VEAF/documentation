@@ -867,6 +867,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. Initialiser (adopter)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi l'étalement compte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2410,6 +2427,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. Initialiser (adopter)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi l'étalement compte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2646,7 +2680,11 @@ Nouvelle version Lekaa ──► convert-other --update ──► (re)validate �
 les triggers natifs (dans l'ordre), et génère un <code>mission.yaml</code> avec :</p>
 <ul>
 <li>un bloc <strong><code>custom_scripts:</code> ordonné</strong> (Moose, zoneCommander, Foothold Config,
-  setup, CTLD Foothold, Splash, AIEN, EWRS… — l'ordre de chargement d'origine) ;</li>
+  setup, CTLD Foothold, Splash, AIEN, EWRS… — l'ordre de chargement d'origine),
+  <strong>délais compris</strong> : Lekaa ne charge pas tout d'un bloc — 5 scripts arrivent 3 secondes
+  après les premiers, et AIEN 12 secondes après. <code>convert-other</code> lit ces délais dans les
+  triggers d'origine et écrit <code>delay_seconds:</code> en face des scripts concernés, ce qui
+  reproduit l'étalement (voir <a href="../../MISSION_YAML_REFERENCE/#custom-scripts"><code>delay_seconds</code></a>) ;</li>
 <li>un <strong><code>strip_native_triggers:</code></strong> listant les triggers de chargement natifs (le
   build les supprime pour éviter un double chargement) ;</li>
 <li>les <strong>modules VEAF</strong> du profil (RADIO, SPAWN, WEATHER, SHORTCUTS, SECURITY,
@@ -2655,6 +2693,15 @@ les triggers natifs (dans l'ordre), et génère un <code>mission.yaml</code> ave
   incompatible — Foothold embarque sa propre CTLD, donc la CTLD VEAF reste OFF) ;</li>
 <li>un scaffold <strong><code>config_override:</code></strong> commenté ciblant <code>Foothold Config.lua</code>.</li>
 </ul>
+<h3 id="staging">Pourquoi l'étalement compte<a class="headerlink" href="#staging" title="Permanent link">&para;</a></h3>
+<p>Ce n'est pas de la coquetterie de fidélité. <strong>AIEN inventorie les groupes terrestres une seule
+fois</strong>, au chargement (son propre commentaire dit « launched once at mission start and collect
+everything relevant that is already there »). Or Foothold crée une partie de ses groupes après
+coup, depuis des tâches planifiées qui démarrent à partir de 2 secondes.</p>
+<p>Charger AIEN à l'instant zéro lui présente donc un monde que ces tâches n'ont pas encore peuplé —
+et le symptôme est <strong>silencieux</strong> : aucune erreur dans le journal, simplement une IA terrestre qui
+ne gère jamais les groupes créés par Foothold. C'est la raison des 12 secondes de Lekaa, et la
+raison pour laquelle un <code>delay_seconds:</code> détecté ne doit pas être retiré à la légère.</p>
 <h2 id="2-régler-le-missionyaml">2. Régler le <code>mission.yaml</code><a class="headerlink" href="#2-régler-le-missionyaml" title="Permanent link">&para;</a></h2>
 <p>Trois ajustements, tous <strong>config-only</strong> (on ne touche jamais aux scripts upstream) :</p>
 <h3 id="a-community-scripts-veaf-déjà-coupés-par-le-profil">a. Community scripts VEAF (déjà coupés par le profil)<a class="headerlink" href="#a-community-scripts-veaf-déjà-coupés-par-le-profil" title="Permanent link">&para;</a></h3>

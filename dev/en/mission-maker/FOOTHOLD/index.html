@@ -867,6 +867,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. Initialise (adopt)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the staging matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2410,6 +2427,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. Initialise (adopt)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the staging matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2644,7 +2678,11 @@ New Lekaa version ──► convert-other --update ──► (re)validate ──
 loaded by its native triggers (in order), and generates a <code>mission.yaml</code> with:</p>
 <ul>
 <li>an <strong>ordered <code>custom_scripts:</code></strong> block (Moose, zoneCommander, Foothold Config,
-  setup, Foothold CTLD, Splash, AIEN, EWRS… — the original load order);</li>
+  setup, Foothold CTLD, Splash, AIEN, EWRS… — the original load order), <strong>delays
+  included</strong>: Lekaa does not load everything at once — 5 scripts arrive 3 seconds after the
+  first ones, and AIEN 12 seconds later. <code>convert-other</code> reads those delays out of the source
+  triggers and writes <code>delay_seconds:</code> on the scripts concerned, reproducing the staging
+  (see <a href="../../MISSION_YAML_REFERENCE/#custom-scripts"><code>delay_seconds</code></a>);</li>
 <li>a <strong><code>strip_native_triggers:</code></strong> list of the native loader triggers (the build
   removes them so nothing is loaded twice);</li>
 <li>the profile's <strong>VEAF modules</strong> (RADIO, SPAWN, WEATHER, SHORTCUTS, SECURITY,
@@ -2653,6 +2691,15 @@ loaded by its native triggers (in order), and generates a <code>mission.yaml</co
   module — Foothold ships its own CTLD, so the VEAF CTLD stays OFF);</li>
 <li>a commented <strong><code>config_override:</code></strong> scaffold targeting <code>Foothold Config.lua</code>.</li>
 </ul>
+<h3 id="staging">Why the staging matters<a class="headerlink" href="#staging" title="Permanent link">&para;</a></h3>
+<p>This is not fidelity for its own sake. <strong>AIEN inventories ground groups exactly once</strong>, at load
+time (its own comment: "launched once at mission start and collect everything relevant that is
+already there"). Foothold, meanwhile, creates part of its groups afterwards, from scheduled tasks
+starting at around 2 seconds.</p>
+<p>Loading AIEN at time zero therefore hands it a world those tasks have not populated yet — and the
+symptom is <strong>silent</strong>: no log error, just ground AI that never manages the groups Foothold created.
+That is what Lekaa's 12 seconds are for, and why a detected <code>delay_seconds:</code> should not be removed
+casually.</p>
 <h2 id="2-tune-missionyaml">2. Tune <code>mission.yaml</code><a class="headerlink" href="#2-tune-missionyaml" title="Permanent link">&para;</a></h2>
 <p>Three adjustments, all <strong>config-only</strong> (the upstream scripts are never touched):</p>
 <h3 id="a-veaf-community-scripts-already-turned-off-by-the-profile">a. VEAF community scripts (already turned off by the profile)<a class="headerlink" href="#a-veaf-community-scripts-already-turned-off-by-the-profile" title="Permanent link">&para;</a></h3>

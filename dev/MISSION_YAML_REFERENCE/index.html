@@ -2240,7 +2240,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#custom_scripts" class="md-nav__link">
+  <a href="#custom-scripts" class="md-nav__link">
     <span class="md-ellipsis">
       
         custom_scripts:
@@ -2793,7 +2793,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#custom_scripts" class="md-nav__link">
+  <a href="#custom-scripts" class="md-nav__link">
     <span class="md-ellipsis">
       
         custom_scripts:
@@ -3679,7 +3679,7 @@ SHA-256 jusqu'à sa correction — vérifiez toute mission dont le mot de passe 
 <p><strong>Déprécié.</strong> Les scripts communautaires se configurent désormais dans le bloc unifié <a href="#modules"><code>modules:</code></a> via leurs IDs en majuscules (ex. <code>CTLD: true</code>). La section séparée <code>community_scripts:</code> fonctionne toujours mais émet un avertissement de dépréciation. Voir <a href="#modules"><code>modules:</code></a> pour la syntaxe actuelle et la liste des IDs communautaires.</p>
 </blockquote>
 <hr />
-<h3 id="custom_scripts"><code>custom_scripts:</code><a class="headerlink" href="#custom_scripts" title="Permanent link">&para;</a></h3>
+<h3 id="custom-scripts"><code>custom_scripts:</code><a class="headerlink" href="#custom-scripts" title="Permanent link">&para;</a></h3>
 <p>Déclare les scripts Lua custom présents dans <code>src/scripts/</code> qui ne font pas partie du jeu standard VEAF v6.<br />
 Un script déclaré ici est inclus dans le <code>.miz</code> <strong>sans</strong> déclencher de warning. Par défaut, un trigger DCS de chargement est généré automatiquement pour lui ; positionner <code>generate_load_trigger: false</code> désactive ce trigger (utile quand le script est chargé manuellement depuis <code>mission-script.lua</code>).</p>
 <table>
@@ -3710,6 +3710,12 @@ Un script déclaré ici est inclus dans le <code>.miz</code> <strong>sans</stron
 <td><em>(défaut global)</em></td>
 <td>Override par script ; si absent, le défaut global s'applique</td>
 </tr>
+<tr>
+<td><code>scripts[].delay_seconds</code></td>
+<td><code>number</code></td>
+<td><em>(aucun)</em></td>
+<td>Charge ce script <strong>après</strong> ce délai (en secondes) au lieu du chargement groupé. Voir ci-dessous</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Comportement de chargement</strong></p>
@@ -3728,6 +3734,38 @@ Un script déclaré ici est inclus dans le <code>.miz</code> <strong>sans</stron
 <blockquote>
 <p>Tout fichier <code>.lua</code> présent dans <code>src/scripts/</code> mais <strong>absent</strong> de cette section (et ne faisant pas partie des fichiers standards) déclenche un warning au build avec un rappel pour le déclarer ici.</p>
 </blockquote>
+<p><strong>Charger un script après un délai : <code>delay_seconds</code></strong></p>
+<p>Par défaut, tous les scripts de mission sont chargés d'un bloc au démarrage. Certains scripts ont besoin
+qu'un délai s'écoule avant de démarrer — typiquement parce qu'ils <strong>inventorient le monde une seule
+fois</strong> et doivent laisser aux scripts précédents le temps de créer leurs unités. C'est le cas d'AIEN dans
+Foothold, chargé 12 secondes après les autres.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/Moose.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/zoneCommander.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/AIEN.lua</span>
+<span class="w">      </span><span class="nt">delay_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span><span class="w">          </span><span class="c1"># son propre déclencheur, 12 s après le début</span>
+</code></pre></div>
+<ul>
+<li><strong>Absent</strong> (le défaut) → chargement groupé, exactement comme avant.</li>
+<li><strong>Présent</strong> → le script quitte le déclencheur commun pour un déclencheur <code>triggerOnce</code> qui lui est
+  propre, conditionné à <code>c_time_after</code>. Les scripts partageant le <strong>même</strong> délai partagent un
+  déclencheur, dans leur ordre de déclaration.</li>
+<li>Le délai doit être <strong>strictement positif</strong>. Une valeur nulle, négative ou non numérique est refusée
+  avec un avertissement au build, et le script est alors chargé dans le déclencheur commun — il n'est
+  jamais perdu.</li>
+</ul>
+<blockquote>
+<p><strong>C'est le délai qui décide de l'ordre, pas la position dans la liste.</strong> Un script à <code>delay_seconds: 12</code>
+se charge après <strong>tous</strong> les scripts sans délai, où qu'il soit écrit. Si un script différé est déclaré
+avant un script non différé, le build vous avertit — la liste se lit alors dans un ordre différent de
+celui d'exécution.</p>
+</blockquote>
+<p>Le comportement est <strong>le même en build dynamique</strong> : <code>veafDynamicConfig.lua</code> planifie le chargement au
+lieu de le faire immédiatement. <code>generate_load_trigger</code> pilotant les deux modes, un délai ne pouvait pas
+n'exister que dans l'un des deux.</p>
+<p><code>convert-other</code> <strong>détecte</strong> ces délais dans la mission d'origine et écrit <code>delay_seconds:</code> tout seul :
+une mission adoptée reproduit donc l'étalement de l'amont sans que vous ayez à le remarquer.</p>
 <p><strong>Un script dans une seule variante (ex. un script de debug dynamique-seul)</strong></p>
 <p><code>generate_load_trigger</code> est un flag unique — il ne distingue pas statique et dynamique. Pour charger un script dans une seule variante (un utilitaire de debug que vous voulez <strong>uniquement</strong> dans votre build dynamique local de dev, jamais dans la distribution statique), utilisez un <a href="#profiles">profil de build</a> plutôt qu'un flag par script :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>

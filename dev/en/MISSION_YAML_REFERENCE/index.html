@@ -2240,7 +2240,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#custom_scripts" class="md-nav__link">
+  <a href="#custom-scripts" class="md-nav__link">
     <span class="md-ellipsis">
       
         custom_scripts:
@@ -2826,7 +2826,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#custom_scripts" class="md-nav__link">
+  <a href="#custom-scripts" class="md-nav__link">
     <span class="md-ellipsis">
       
         custom_scripts:
@@ -3743,7 +3743,7 @@ existing mission whose password appears to be ignored.</p>
 <p><strong>Deprecated.</strong> Community scripts are now configured in the unified <a href="#modules"><code>modules:</code></a> block using their uppercase IDs (e.g. <code>CTLD: true</code>). The separate <code>community_scripts:</code> section still works but emits a deprecation warning. See <a href="#modules"><code>modules:</code></a> for the current syntax and the list of community IDs.</p>
 </blockquote>
 <hr />
-<h3 id="custom_scripts"><code>custom_scripts:</code><a class="headerlink" href="#custom_scripts" title="Permanent link">&para;</a></h3>
+<h3 id="custom-scripts"><code>custom_scripts:</code><a class="headerlink" href="#custom-scripts" title="Permanent link">&para;</a></h3>
 <p>Declares custom Lua scripts present in <code>src/scripts/</code> that are not part of the standard VEAF v6 set.<br />
 A declared script is included in the <code>.miz</code> <strong>without</strong> triggering a warning. By default a DCS load trigger is generated for it automatically; setting <code>generate_load_trigger: false</code> disables that trigger (useful when the script is loaded manually from <code>mission-script.lua</code>).</p>
 <table>
@@ -3774,6 +3774,12 @@ A declared script is included in the <code>.miz</code> <strong>without</strong> 
 <td><em>(global default)</em></td>
 <td>Per-script override; if absent, the global default applies</td>
 </tr>
+<tr>
+<td><code>scripts[].delay_seconds</code></td>
+<td><code>number</code></td>
+<td><em>(none)</em></td>
+<td>Load this script <strong>after</strong> this delay (seconds) instead of with the rest. See below</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Loading behaviour</strong></p>
@@ -3792,6 +3798,33 @@ A declared script is included in the <code>.miz</code> <strong>without</strong> 
 <blockquote>
 <p>Any <code>.lua</code> file present in <code>src/scripts/</code> but <strong>absent</strong> from this section (and not one of the standard files) triggers a build warning with a reminder to declare it here.</p>
 </blockquote>
+<p><strong>Loading a script after a delay: <code>delay_seconds</code></strong></p>
+<p>By default every mission script is loaded in one go at start-up. Some scripts need time to pass before
+they start — typically because they <strong>inventory the world once</strong> and must let the scripts before them
+create their units first. AIEN in Foothold is exactly that: loaded 12 seconds after the rest.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/Moose.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/zoneCommander.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/AIEN.lua</span>
+<span class="w">      </span><span class="nt">delay_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span><span class="w">          </span><span class="c1"># its own trigger, 12 s in</span>
+</code></pre></div>
+<ul>
+<li><strong>Absent</strong> (the default) → loaded in the shared trigger, exactly as before.</li>
+<li><strong>Present</strong> → the script leaves the shared trigger for a <code>triggerOnce</code> of its own, gated on
+  <code>c_time_after</code>. Scripts sharing the <strong>same</strong> delay share one trigger, in declaration order.</li>
+<li>The delay must be <strong>greater than zero</strong>. A zero, negative or non-numeric value is refused with a build
+  warning and the script loads in the shared trigger instead — it is never lost.</li>
+</ul>
+<blockquote>
+<p><strong>The delay decides the order, not the position in the list.</strong> A script at <code>delay_seconds: 12</code> loads
+after <strong>every</strong> undelayed one, wherever it is written. If a delayed script is declared before an
+undelayed one, the build warns you — the list then reads in a different order from the one it runs in.</p>
+</blockquote>
+<p><strong>Dynamic builds behave the same way</strong>: <code>veafDynamicConfig.lua</code> schedules the load instead of doing it
+inline. Since <code>generate_load_trigger</code> governs both modes, a delay could not exist in only one of them.</p>
+<p><code>convert-other</code> <strong>detects</strong> these delays in the source mission and writes <code>delay_seconds:</code> for you, so an
+adopted mission reproduces the upstream staging without you having to notice it.</p>
 <p><strong>A script only in one variant (e.g. a dynamic-only debug script)</strong></p>
 <p><code>generate_load_trigger</code> is a single flag — it does not distinguish static from dynamic. To load a script in only one variant (a debug helper you want <strong>only</strong> in your local dynamic dev build, never in the static distribution), use a <a href="#profiles">build profile</a> instead of a per-script flag:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
