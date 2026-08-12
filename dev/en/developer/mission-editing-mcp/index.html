@@ -1856,6 +1856,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#set_unit_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_unit_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_group_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_group_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2683,6 +2705,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#set_unit_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_unit_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_group_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_group_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3187,6 +3231,86 @@ armed units):</p>
 <p>Booleans come back as booleans: DCS <strong>omits</strong> a key that is false, and a caller reading <code>null</code> cannot
 tell "off" from "the reader did not look".</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;include_route&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="set_unit_properties"><code>set_unit_properties</code><a class="headerlink" href="#set_unit_properties" title="Permanent link">&para;</a></h3>
+<p>Write. The <strong>first</strong> action that changes an object the mission already contains: every <code>set_*</code>
+shipped before it acts on <em>configuration</em> (modules, security, logging, an airbase's coalition).
+Timestamped backup before the write, like its siblings.</p>
+<p>It addresses the unit by <strong>exact</strong> group name and <strong>exact</strong> unit name — not by fragment, unlike
+<code>describe_units</code>: a fragment makes the edit land on whichever group matched first, which is not
+recoverable. A name that misses lists what exists, so a caller can retry without re-reading the
+whole mission.</p>
+<p>Three shapes were <strong>measured</strong> on real missions rather than inferred, and two contradict the ticket
+that asked for them:</p>
+<ul>
+<li><strong><code>skill</code> has seven values, not four.</strong> <code>Average</code>, <code>Good</code>, <code>High</code>, <code>Excellent</code> and <code>Random</code> are AI
+  levels; <code>Client</code> and <code>Player</code> are <strong>human slots</strong>. Crossing that line one way adds a place to the
+  multiplayer list, the other way removes one — the bug <code>FIX-TEMPLATE-SLOTS-VISIBLE</code> was opened for.
+  Both directions are therefore refused naming the reason, instead of being honoured as a skill
+  setting.</li>
+<li><strong>An aircraft's callsign is not a plain field.</strong> It is a table
+  <code>{1: family, 2: flight, 3: number, name: "Colt11"}</code> where <code>name</code> is the family's word followed by
+  the two indices (<code>{1:1, 2:1, 3:2}</code> reads <code>Enfield12</code>). Writing <code>name</code> alone desynchronises what DCS
+  says on the radio from what the editor shows, so the action edits the indices and <strong>rebuilds</strong>
+  <code>name</code> from the prefix already there. Changing the <em>family</em> requires DCS's family→word table, which
+  this repository does not ship: that is refused unless the caller supplies the resulting <code>name</code>.</li>
+<li><strong><code>heading</code> is radians</strong> while a mission maker speaks degrees — the trap <code>resolve_coordinates</code>
+  hides elsewhere. The parameter is named <code>heading_deg</code> so the unit cannot be mistaken, and the value
+  is normalised onto one turn (−90 is 270).</li>
+</ul>
+<p>What the action does <strong>not</strong> validate, for want of the data to do it: a weapon's CLSID against the
+airframe carrying it, and a livery against the skins installed. DCS silently drops an impossible
+weapon and silently shows the default skin, so both limits are returned as <code>warnings</code> rather than
+implied by their absence.</p>
+<p><code>pylons</code> is keyed <strong>by station number</strong>, never positional, for the reason measured in
+<code>describe_units</code>. No <code>pylons</code> means "leave the loadout alone"; <code>{}</code> in <code>replace</code> mode means "carry
+nothing"; in <code>merge</code> mode an empty CLSID empties that station.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;unit_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1-1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;skill&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Excellent&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;heading_deg&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">270</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pylons&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;4&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;pylons_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;merge&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The result carries <code>changed</code>, giving each touched field its <strong>previous</strong> value and the new one: a
+caller that cannot say what it replaced cannot undo it.</p>
+<h3 id="set_group_properties"><code>set_group_properties</code><a class="headerlink" href="#set_group_properties" title="Permanent link">&para;</a></h3>
+<p>Write. Acts on the whole group: move, rename, frequency, modulation, and the three booleans
+(<code>lateActivation</code>, <code>hidden</code>, <code>uncontrolled</code>). Timestamped backup before the write.</p>
+<p><strong>The move carries the whole design of this module, and it is not "write x and y".</strong> A group is units
+<strong>in a formation</strong> plus possibly a <strong>route</strong>. The translation therefore applies to <em>every</em> unit,
+<em>every</em> waypoint <strong>and</strong> the group's own <code>x</code>/<code>y</code> anchor, by a single vector: otherwise the formation
+shears, or the route detaches from the units it belongs to — and neither shows before somebody flies
+the mission. The shear test (move the units, leave the waypoints) is written to fail on any
+implementation that forgets it, and that was verified by deliberately breaking the translation.</p>
+<p>The vector comes from the <strong>geodesic offset</strong> of <code>FEAT-GEO-PLACEMENT</code>
+(<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0015-coordinate-projection-port.md">ADR 0015</a>), not from adding metres to <code>x</code>: a DCS theatre is the
+real world projected, so "5 km east" is a lat/lon question. A theatre with no projection makes the
+bearing + distance form <strong>refuse</strong>, pointing at <code>move_to</code> instead.</p>
+<p><code>frequency_mhz</code> is checked against the airframe's <code>HumanRadio</code>, reusing the presets injector's
+validator rather than re-deriving it: <code>FIX-PRIMARY-FREQ-HUMANRADIO</code> established that the DCS editor
+<strong>refuses to save</strong> a mission whose primary frequency falls outside that range. <strong>Every</strong> unit type in
+the group is checked, not just the first — a mixed group would otherwise pass on its first member and
+be refused by the editor because of another.</p>
+<p>The rename runs the reserved-convention check (<code>validate_group_name</code>) and <strong>refuses by default</strong>: a
+group renamed onto a combat zone's trigger-zone name is <em>despawned at start</em>, silently. Renaming
+<em>into</em> a convention is a legitimate intent, hence <code>acknowledge_conventions</code> — what matters is that it
+be deliberate. <strong>Unit</strong> names never follow: they carry markers of their own (<code>#command=</code>,
+<code>#veafInterpreter[...]</code>) that a cascade would rewrite blind.</p>
+<p>What the action <strong>cannot</strong> do, measured rather than overlooked: check the surface at the destination.
+There is no terrain data on the Python side — <code>land.getSurfaceType</code> is a runtime API and only its
+schema ships here — which is exactly why <code>FEAT-SCENERY-AWARE-SPAWN</code> solved the problem at runtime. So
+a move <strong>warns</strong> that it could not look, instead of validating and lying.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Red SAM Battery&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;move_bearing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;move_distance_m&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;late_activation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="add_group"><code>add_group</code><a class="headerlink" href="#add_group" title="Permanent link">&para;</a></h3>
 <p>Write. Inserts a ground/vehicle group into the source <code>.miz</code>, <strong>in place</strong>, with a systematic

@@ -1856,6 +1856,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#set_unit_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_unit_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_group_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_group_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2683,6 +2705,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#set_unit_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_unit_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_group_properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_group_properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3189,6 +3233,89 @@ leurres/canon), leur <strong>emport</strong> et la <strong>route</strong> du gro
 <p>Les booléens sont rendus comme des booléens : DCS <strong>omet</strong> une clé qui vaut faux, et un appelant
 qui lit <code>null</code> ne peut pas distinguer « désactivé » de « le lecteur n'a pas regardé ».</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;include_route&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="set_unit_properties"><code>set_unit_properties</code><a class="headerlink" href="#set_unit_properties" title="Permanent link">&para;</a></h3>
+<p>Écriture. La <strong>première</strong> action qui modifie un objet déjà présent dans la mission : toutes les
+<code>set_*</code> livrées avant elle agissent sur la <em>configuration</em> (modules, sécurité, logs, coalition d'une
+base). Sauvegarde horodatée avant écriture, comme ses sœurs.</p>
+<p>Adresse l'unité par <strong>nom exact</strong> de groupe et <strong>nom exact</strong> d'unité — pas par fragment, contrairement
+à <code>describe_units</code> : un fragment fait porter la modification au premier groupe qui correspond, ce qui
+n'est pas rattrapable. Un nom introuvable liste ce qui existe, pour qu'un appelant réessaie sans
+relire toute la mission.</p>
+<p>Trois formes ont été <strong>mesurées</strong> sur de vraies missions plutôt que déduites, et deux contredisent le
+ticket qui les demandait :</p>
+<ul>
+<li><strong><code>skill</code> a sept valeurs, pas quatre.</strong> <code>Average</code>, <code>Good</code>, <code>High</code>, <code>Excellent</code> et <code>Random</code> sont des
+  niveaux d'IA ; <code>Client</code> et <code>Player</code> sont des <strong>slots humains</strong>. Franchir cette limite dans un sens
+  ajoute une place à la liste multijoueur, dans l'autre la supprime — le bug pour lequel
+  <code>FIX-TEMPLATE-SLOTS-VISIBLE</code> a été ouvert. Les deux sens sont donc refusés en nommant la raison,
+  au lieu d'être honorés comme un réglage de compétence.</li>
+<li><strong>L'indicatif d'un appareil n'est pas un champ simple.</strong> C'est une table
+  <code>{1: famille, 2: vol, 3: numéro, name: "Colt11"}</code> où <code>name</code> est le mot de la famille suivi des deux
+  indices (<code>{1:1, 2:1, 3:2}</code> se lit <code>Enfield12</code>). Écrire <code>name</code> seul désynchronise ce que DCS annonce
+  à la radio de ce que montre l'éditeur : l'action modifie donc les indices et <strong>reconstruit</strong> <code>name</code>
+  à partir du préfixe déjà présent. Changer la <em>famille</em> exige la table famille→mot de DCS, que ce
+  dépôt n'embarque pas : c'est refusé sauf si l'appelant fournit lui-même le <code>name</code> résultant.</li>
+<li><strong><code>heading</code> est en radians</strong> alors qu'un créateur de mission parle en degrés — le piège que
+  <code>resolve_coordinates</code> masque ailleurs. Le paramètre s'appelle <code>heading_deg</code> pour que l'unité soit
+  impossible à confondre, et la valeur est normalisée sur un tour (−90 vaut 270).</li>
+</ul>
+<p>Ce que l'action <strong>ne valide pas</strong>, faute des données pour le faire : le CLSID d'une arme face à
+l'appareil qui la porte, et une livrée face aux peintures installées. DCS retire silencieusement une
+arme impossible et affiche silencieusement la peinture par défaut, donc les deux limites sont
+renvoyées comme <code>warnings</code> plutôt que sous-entendues par leur absence.</p>
+<p><code>pylons</code> est indexé <strong>par numéro de station</strong>, jamais positionnel, pour la raison mesurée dans
+<code>describe_units</code>. <code>pylons</code> absent = « ne touche pas à l'emport » ; <code>{}</code> en mode <code>replace</code> = « ne porte
+rien » ; en mode <code>merge</code>, un CLSID vide vide cette station.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;unit_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1-1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;skill&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Excellent&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;heading_deg&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">270</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pylons&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;4&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;pylons_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;merge&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>La réponse porte <code>changed</code>, qui donne pour chaque champ touché sa valeur <strong>précédente</strong> et la
+nouvelle : un appelant qui ne peut pas dire ce qu'il a remplacé ne peut pas le défaire.</p>
+<h3 id="set_group_properties"><code>set_group_properties</code><a class="headerlink" href="#set_group_properties" title="Permanent link">&para;</a></h3>
+<p>Écriture. Agit sur le groupe entier : déplacement, renommage, fréquence, modulation, et les trois
+booléens (<code>lateActivation</code>, <code>hidden</code>, <code>uncontrolled</code>). Sauvegarde horodatée avant écriture.</p>
+<p><strong>Le déplacement porte toute la conception de ce module, et ce n'est pas « écrire x et y ».</strong> Un
+groupe, ce sont des unités <strong>en formation</strong> plus éventuellement une <strong>route</strong>. La translation
+s'applique donc à <em>toutes</em> les unités, <em>tous</em> les points de passage <strong>et</strong> l'ancre <code>x</code>/<code>y</code> du groupe,
+d'un seul vecteur : autrement la formation se déforme, ou la route se détache des unités auxquelles
+elle appartient — et aucun des deux ne se voit avant qu'on vole la mission. Le test du cisaillement
+(déplacer les unités en laissant les points de passage) est écrit pour tomber sur toute
+implémentation qui l'oublierait, et ça a été vérifié en cassant volontairement la translation.</p>
+<p>Le vecteur vient de <strong>l'offset géodésique</strong> de <code>FEAT-GEO-PLACEMENT</code>
+(<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0015-coordinate-projection-port.md">ADR 0015</a>), pas d'une addition de mètres sur <code>x</code> : un théâtre
+DCS est le monde réel projeté, donc « 5 km à l'est » est une question de latitude/longitude. Un
+théâtre sans projection fait <strong>refuser</strong> la forme cap + distance, en invitant à passer <code>move_to</code>.</p>
+<p><code>frequency_mhz</code> est contrôlée face au <code>HumanRadio</code> de l'appareil, en réutilisant le validateur de
+l'injecteur de presets plutôt qu'en le redérivant : <code>FIX-PRIMARY-FREQ-HUMANRADIO</code> a établi que
+l'éditeur DCS <strong>refuse d'enregistrer</strong> une mission dont la fréquence primaire sort de cette plage.
+<strong>Tous</strong> les types d'unités du groupe sont vérifiés, pas seulement le premier — un groupe hétérogène
+passerait sinon sur son premier membre pour être refusé par l'éditeur à cause d'un autre.</p>
+<p>Le renommage lance la vérification des conventions VEAF réservées (<code>validate_group_name</code>) et
+<strong>refuse par défaut</strong> : un groupe renommé avec le nom de la zone de déclenchement d'une combat zone
+est <em>despawné au démarrage</em>, en silence. Renommer <em>vers</em> une convention est une intention légitime,
+d'où <code>acknowledge_conventions</code> — l'important est que ce soit délibéré. Les noms d'<strong>unités</strong> ne
+suivent jamais : ils portent leurs propres marqueurs (<code>#command=</code>, <code>#veafInterpreter[...]</code>), qu'une
+cascade réécrirait à l'aveugle.</p>
+<p>Ce que l'action <strong>ne peut pas</strong> faire, mesuré et non oublié : vérifier la nature du sol à l'arrivée.
+Il n'y a aucune donnée de terrain côté Python — <code>land.getSurfaceType</code> est une API d'exécution, seul
+son schéma est livré ici — et c'est exactement pour cette raison que <code>FEAT-SCENERY-AWARE-SPAWN</code> a
+résolu le problème à l'exécution. Le déplacement <strong>avertit</strong> donc qu'il n'a pas pu regarder, au lieu
+de valider et de mentir.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Red SAM Battery&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;move_bearing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;move_distance_m&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;late_activation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="add_group"><code>add_group</code><a class="headerlink" href="#add_group" title="Permanent link">&para;</a></h3>
 <p>Écriture. Insère un groupe terrestre/véhicule dans le <code>.miz</code> source, <strong>en place</strong>, avec une
