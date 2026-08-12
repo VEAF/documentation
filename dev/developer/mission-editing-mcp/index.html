@@ -1845,6 +1845,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_units
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2661,6 +2672,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_units
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3139,6 +3161,34 @@ avant d'écrire, comme un humain consulterait l'arborescence de l'éditeur avant
 chose. Réutilise le parseur pur-Python existant (<code>mission_tools.miz_tools.read_miz</code>) — aucun
 nouveau parsing.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="describe_units"><code>describe_units</code><a class="headerlink" href="#describe_units" title="Permanent link">&para;</a></h3>
+<p>Lecture seule. Le niveau de détail que <code>describe_mission</code> ne donne pas : les <strong>unités</strong> de chaque
+groupe (type, <code>skill</code>, livrée, indicatif, numéro de flanc, position, cap, altitude, carburant,
+leurres/canon), leur <strong>emport</strong> et la <strong>route</strong> du groupe avec les tâches de chaque point.</p>
+<p>Trois choix de forme, chacun pour une raison mesurée sur une mission réelle (Foothold Caucasus
+4.4.1, 357 unités armées) :</p>
+<ul>
+<li><strong><code>pylons</code> est indexé par numéro de pylône, jamais positionnel.</strong> DCS numérote les stations et
+  les numéros ne sont <strong>pas contigus</strong> : un FA-18C réel porte les pylônes 1, 4, 5, 6 et 9. Dans
+  cette mission, 170 unités sur 357 ont une disposition à trous, et le parseur Lua rend celles-ci
+  en <code>dict</code> alors qu'il aplatit les contiguës en <code>list</code>. Un lecteur qui traiterait les pylônes
+  comme une liste ordonnée aurait donc raison une fois sur deux et tort en silence le reste du
+  temps — c'est ainsi qu'un futur <em>setter</em> accrocherait une arme sur la mauvaise station.</li>
+<li><strong>Les tâches automatiques de l'éditeur sont signalées et allégées.</strong> Une tâche de point de
+  passage est un <code>ComboTask</code> qui mélange la tâche voulue par l'auteur et les options que l'éditeur
+  écrit tout seul (ROE, usage du radar, formation), toutes marquées <code>auto = true</code> : 1093 entrées
+  automatiques contre 189 voulues sur cette mission. Les deux sont rapportées — les masquer
+  fausserait la description — mais seules les tâches voulues portent leurs <code>params</code>.</li>
+<li><strong>Un plafond dont l'appelant est informé.</strong> La mission entière fait 1,9 Mo de JSON, et un seul
+  groupe de 62 points de passage en fait 18 ko. D'où les filtres (<code>group_name</code> par fragment,
+  <code>coalition</code>, <code>category</code>), la limite par défaut de 50 groupes avec <code>truncated</code>/<code>matched</code> dans la
+  réponse, et <code>include_route: false</code> qui <strong>omet la clé</strong> au lieu de renvoyer une liste vide (« pas
+  demandé » n'est pas « ce groupe n'a pas de route »).</li>
+</ul>
+<p>Les booléens sont rendus comme des booléens : DCS <strong>omet</strong> une clé qui vaut faux, et un appelant
+qui lit <code>null</code> ne peut pas distinguer « désactivé » de « le lecteur n'a pas regardé ».</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;include_route&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="add_group"><code>add_group</code><a class="headerlink" href="#add_group" title="Permanent link">&para;</a></h3>
 <p>Écriture. Insère un groupe terrestre/véhicule dans le <code>.miz</code> source, <strong>en place</strong>, avec une

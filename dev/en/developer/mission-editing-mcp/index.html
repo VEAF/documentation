@@ -1845,6 +1845,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_units
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2661,6 +2672,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_units
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3137,6 +3159,34 @@ position, radius) already present in the <code>.miz</code> — so the caller can
 writing, the same way a human would check the editor's outliner before adding something. Reuses
 the existing pure-Python parser (<code>mission_tools.miz_tools.read_miz</code>) — no new parsing.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="describe_units"><code>describe_units</code><a class="headerlink" href="#describe_units" title="Permanent link">&para;</a></h3>
+<p>Read-only. The level of detail <code>describe_mission</code> does not give: each group's <strong>units</strong> (type,
+<code>skill</code>, livery, callsign, side number, position, heading, altitude, fuel, counters/gun), their
+<strong>loadout</strong>, and the group's <strong>route</strong> with the tasks at each waypoint.</p>
+<p>Three shape decisions, each for a reason measured on a real mission (Foothold Caucasus 4.4.1, 357
+armed units):</p>
+<ul>
+<li><strong><code>pylons</code> is keyed by pylon number, never positional.</strong> DCS numbers stations and the numbers are
+  <strong>not contiguous</strong>: a real FA-18C carries pylons 1, 4, 5, 6 and 9. In that mission 170 of 357
+  units have a gapped layout, and the Lua parser hands those back as a <code>dict</code> while it flattens the
+  contiguous ones into a <code>list</code>. A reader treating pylons as an ordered list would therefore be
+  right about half the time and silently wrong the rest — which is how a future setter comes to hang
+  a weapon on the wrong station.</li>
+<li><strong>The editor's automatic tasks are flagged and stripped.</strong> A waypoint task is a <code>ComboTask</code> mixing
+  the task the author added with the options the editor writes by itself (ROE, radar usage,
+  formation), all marked <code>auto = true</code>: 1093 automatic entries against 189 authored ones in that
+  mission. Both are reported — hiding them would misrepresent the mission — but only authored tasks
+  carry their <code>params</code>.</li>
+<li><strong>A cap the caller is told about.</strong> The whole mission is 1.9 MB of JSON and a single 62-waypoint
+  group is 18 KB. Hence the filters (<code>group_name</code> by fragment, <code>coalition</code>, <code>category</code>), the default
+  limit of 50 groups with <code>truncated</code>/<code>matched</code> in the answer, and <code>include_route: false</code>, which
+  <strong>omits the key</strong> rather than returning an empty list ("not asked for" is not "this group has no
+  route").</li>
+</ul>
+<p>Booleans come back as booleans: DCS <strong>omits</strong> a key that is false, and a caller reading <code>null</code> cannot
+tell "off" from "the reader did not look".</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;include_route&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="add_group"><code>add_group</code><a class="headerlink" href="#add_group" title="Permanent link">&para;</a></h3>
 <p>Write. Inserts a ground/vehicle group into the source <code>.miz</code>, <strong>in place</strong>, with a systematic
