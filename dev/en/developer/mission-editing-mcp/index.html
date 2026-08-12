@@ -1878,6 +1878,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#edit_route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_route
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit_zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_map_drawing--edit_map_drawing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_map_drawing / edit_map_drawing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2727,6 +2760,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#edit_route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_route
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit_zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_map_drawing--edit_map_drawing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_map_drawing / edit_map_drawing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3310,6 +3376,111 @@ a move <strong>warns</strong> that it could not look, instead of validating and 
 <span class="w">  </span><span class="nt">&quot;move_bearing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;move_distance_m&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;late_activation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="edit_route"><code>edit_route</code><a class="headerlink" href="#edit_route" title="Permanent link">&para;</a></h3>
+<p>Write. Two layers: the <strong>route</strong> (<code>add</code>, <code>insert</code>, <code>remove</code>, <code>reorder</code>, <code>set</code>) is mostly a list
+operation on <code>route.points</code>; a waypoint's <strong>tasks</strong> (<code>add_task</code>, <code>clear_tasks</code>) are what makes a flight
+do something.</p>
+<p><strong>The invariant that makes this surgery rather than list editing.</strong> <code>FIX-WAYPOINTS-ETA-LOCKED</code>
+established that DCS <strong>refuses to save</strong> a mission whose route has no waypoint with a locked time
+("Route has no waypoints with locked time!"), and that its own repair is to lock the first. Removing or
+reordering can therefore produce a mission the editor rejects, far from the edit that caused it. Every
+operation restores the invariant and <strong>says so</strong> when it had to.</p>
+<p><strong>Units.</strong> The mission table holds metres and metres per second; a mission maker speaks feet and knots.
+As with <code>set_unit_properties</code>' <code>heading_deg</code>, the parameters carry their unit in their name
+(<code>altitude_ft</code>, <code>speed_kt</code>) and the result reports both, so a caller never converts back.</p>
+<p><strong>Tasks are a named set with validated signatures, not a free-form table</strong> — a deliberate choice from
+the ticket: a generic "write this task table" action is a foot-gun, because an agent produces a
+plausible table, DCS ignores it silently, and the mission maker finds out an hour later. The escape
+hatch starts <strong>closed</strong>.</p>
+<p>Every signature was read out of a real mission, and three are traps:</p>
+<ul>
+<li><strong><code>SetFrequency</code> takes hertz</strong> (<code>31000000</code> for 31 MHz) while a <em>group's</em> frequency —
+  <code>set_group_properties</code> — is in MHz. Two units for the same notion, in the same file. The action takes
+  MHz and converts.</li>
+<li><strong><code>EngageTargetsInZone</code> duplicates its target list</strong> into a serialised <code>value</code> string
+  (<code>"Air;Cruise missiles;"</code>) beside the <code>targetTypes</code> array; writing only the array leaves the mission
+  carrying two versions of the same decision.</li>
+<li><strong><code>SetFrequency</code> and <code>SwitchWaypoint</code> are not tasks</strong> but <em>actions</em>, carried inside a <code>WrappedAction</code>
+  envelope. Written as a bare task, DCS ignores it.</li>
+</ul>
+<p>Two measured details the ticket did not mention: a waypoint's <code>type</code> and <code>action</code> are a <strong>pair</strong>
+("Land" goes with "Landing"), and an added waypoint <strong>inherits</strong> its neighbour's altitude and speed —
+otherwise it is written at altitude 0 and the flight dives into the ground to reach it.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_task&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;task&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orbit&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;task_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Race-Track&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;altitude_ft&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;speed_kt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="edit_zone"><code>edit_zone</code><a class="headerlink" href="#edit_zone" title="Permanent link">&para;</a></h3>
+<p>Write. <code>add_trigger_zone</code> only creates <strong>circular</strong> zones and nothing edited one afterwards, so
+adjusting a VEAF combat zone — which <em>is</em> a trigger zone — meant deleting it and building it again.</p>
+<p><strong>Two measurements before any code</strong>, as the ticket required:</p>
+<ul>
+<li><strong>A polygon zone's real shape</strong>, read out of <code>veaf-demo-mission.miz</code> (<code>czBatumi</code>): <code>type: 2</code> plus a
+  <code>verticies</code> list — DCS's own spelling, kept verbatim because correcting the typo would write a field
+  DCS ignores — while <code>x</code>, <code>y</code> and <code>radius</code> <strong>stay present</strong>. A polygon is therefore not a circle with
+  extra fields.</li>
+<li><strong>What the VEAF runtime handles.</strong> <code>veafCombatZone.lua</code> branches on exactly two types: <code>0</code> →
+  <code>mist.getUnitsInZones</code>, <code>2</code> → <code>mist.getUnitsInPolygon(triggerZone.verticies)</code>. There is <strong>no
+  <code>else</code></strong>, so a zone of any other type would contain no units, in silence — worse than not offering
+  the shape. The action therefore writes only 0 and 2.</li>
+</ul>
+<p><strong>David's call on the vertex count (2026-08-12)</strong>: accept three or more, since "follow the ridge line"
+is the real use case and mist handles an arbitrary polygon — but <strong>warn</strong> whenever the count is not
+four, the DCS editor only drawing quads. Whether it preserves more is an in-game question no unit test
+settles.</p>
+<p>Two refusals the ticket left open, decided here: a <strong>link to a unit that does not exist</strong> is refused
+rather than warned (a zone linked to nothing simply never follows anything, silently), and a <strong>name
+collision</strong> is refused (zones are referenced by name from <code>mission.yaml</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;zone_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;czBatumi&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;vertices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-359753.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">614918.0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-355602.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">622688.0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-352849.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">617192.0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-358731.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">614282.0</span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="add_map_drawing--edit_map_drawing"><code>add_map_drawing</code> / <code>edit_map_drawing</code><a class="headerlink" href="#add_map_drawing--edit_map_drawing" title="Permanent link">&para;</a></h3>
+<p>Write. Nothing in VMCT touched F10 map drawings, so a briefing line, an ingress corridor or a no-fly
+box was drawn by hand in the editor — <strong>and vanished the moment the mission was rebuilt from its
+folder</strong>. That is the whole argument: a drawing an agent places is part of the recipe, a hand-drawn one
+is not.</p>
+<p><strong>The measurement that governs the design</strong>, read out of this repository's fixtures:</p>
+<blockquote>
+<p><code>points</code> are <strong>relative to the drawing's <code>mapX</code>/<code>mapY</code> anchor</strong>, the first one being <code>{0, 0}</code>.</p>
+</blockquote>
+<p>A drawing written in absolute coordinates lands hundreds of kilometres away and <strong>nothing errors</strong> —
+the same class of silent failure as confusing the mission table's <code>{x=north, y=east}</code> with a runtime
+vec3 (see <code>docs/agents/dcs-coordinates.md</code>). So the actions take the absolute coordinates a caller
+actually has and do the anchoring themselves. The payoff shows in <code>edit_map_drawing</code>: moving a drawing
+is moving its anchor, and the shape follows for free.</p>
+<p><strong>Three shapes ship because three shapes were measured</strong>: <code>Line</code> (with <code>lineMode</code> <code>segment</code> or
+<code>segments</code>, and <code>closed</code> for a shape that joins up — that is how a free-form area is outlined),
+<code>Polygon</code> in <code>rect</code> mode (<code>width</code>/<code>height</code>/<code>angle</code>, <strong>no</strong> points), and <code>TextBox</code> (<code>text</code>/<code>font</code>/
+<code>fontSize</code>, no points either; the font is taken from a real drawing, one DCS lacks rendering as
+nothing).</p>
+<p>The other <code>polygonMode</code> values (<code>circle</code>, <code>oval</code>, <code>free</code>, <code>arrow</code>) and <code>primitiveType: "Icon"</code> are
+<strong>absent from every fixture</strong> here, so their structure is unknown, and the ticket's rule is to read a
+real <code>.miz</code> rather than assume. They are refused by name — inventing a layout would produce a drawing
+the editor silently drops, exactly what <code>FIX-MAPRESOURCE-KEY</code> and <code>FIX-COMMUNITY-SOUNDS-PRUNED</code> already
+cost. The measurement is listed in <code>DCS-SESSION-TODO.md</code>.</p>
+<p>The <strong>layer</strong> is a first-class parameter, never a default: a drawing on the wrong layer is invisible to
+the pilots who need it and visible to the ones who should not see it.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;layer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Blue&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;shape&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FSCL&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;points&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-300000.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">600000.0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-290000.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">610000.0</span><span class="p">}]</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="add_group"><code>add_group</code><a class="headerlink" href="#add_group" title="Permanent link">&para;</a></h3>

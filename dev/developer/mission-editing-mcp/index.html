@@ -1878,6 +1878,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#edit_route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_route
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit_zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_map_drawing--edit_map_drawing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_map_drawing / edit_map_drawing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2727,6 +2760,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#edit_route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_route
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit_zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_map_drawing--edit_map_drawing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_map_drawing / edit_map_drawing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add_group" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3315,6 +3381,115 @@ de valider et de mentir.</p>
 <span class="w">  </span><span class="nt">&quot;move_bearing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;move_distance_m&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;late_activation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="edit_route"><code>edit_route</code><a class="headerlink" href="#edit_route" title="Permanent link">&para;</a></h3>
+<p>Écriture. Deux couches : la <strong>route</strong> (<code>add</code>, <code>insert</code>, <code>remove</code>, <code>reorder</code>, <code>set</code>) est pour l'essentiel
+une opération de liste sur <code>route.points</code> ; les <strong>tâches</strong> d'un point de passage (<code>add_task</code>,
+<code>clear_tasks</code>) sont ce qui fait qu'un vol fait quelque chose.</p>
+<p><strong>L'invariant qui en fait de la chirurgie et pas de l'édition de liste.</strong>
+<code>FIX-WAYPOINTS-ETA-LOCKED</code> a établi que DCS <strong>refuse d'enregistrer</strong> une mission dont une route n'a
+aucun point de passage à heure verrouillée (« Route has no waypoints with locked time! »), et que sa
+propre réparation consiste à verrouiller le premier. Supprimer ou réordonner peut donc produire une
+mission que l'éditeur rejette, loin de l'édition qui l'a causée. Chaque opération rétablit l'invariant
+et <strong>le signale</strong> quand elle a dû le faire.</p>
+<p><strong>Unités.</strong> La table de mission contient des mètres et des mètres par seconde ; un créateur de mission
+parle en pieds et en nœuds. Comme pour le <code>heading_deg</code> de <code>set_unit_properties</code>, les paramètres portent
+leur unité dans leur nom (<code>altitude_ft</code>, <code>speed_kt</code>) et la réponse donne les deux, pour que l'appelant
+n'ait jamais à reconvertir.</p>
+<p><strong>Les tâches sont un jeu nommé à signatures vérifiées, pas une table libre</strong> — choix explicite du
+ticket : une action générique « écris cette table de tâche » est un piège, parce qu'un agent produit une
+table plausible, DCS l'ignore en silence, et le créateur de mission le découvre une heure plus tard.
+L'échappatoire démarre <strong>fermée</strong>.</p>
+<p>Chaque signature a été lue dans une vraie mission, et trois sont des pièges :</p>
+<ul>
+<li><strong><code>SetFrequency</code> prend des hertz</strong> (<code>31000000</code> pour 31 MHz) alors que la fréquence d'un <em>groupe</em> —
+  <code>set_group_properties</code> — est en MHz. Deux unités pour la même notion, dans le même fichier. L'action
+  prend des MHz et convertit.</li>
+<li><strong><code>EngageTargetsInZone</code> duplique sa liste de cibles</strong> dans une chaîne sérialisée <code>value</code>
+  (<code>"Air;Cruise missiles;"</code>) à côté du tableau <code>targetTypes</code> ; n'écrire que le tableau laisse la mission
+  porter deux versions de la même décision.</li>
+<li><strong><code>SetFrequency</code> et <code>SwitchWaypoint</code> ne sont pas des tâches</strong> mais des <em>actions</em>, portées dans une
+  enveloppe <code>WrappedAction</code>. Écrite comme une tâche nue, DCS l'ignore.</li>
+</ul>
+<p>Deux détails mesurés qui n'étaient pas dans le ticket : <code>type</code> et <code>action</code> d'un point de passage sont
+une <strong>paire</strong> (« Land » va avec « Landing »), et un point ajouté <strong>hérite</strong> de l'altitude et de la
+vitesse de son voisin — sinon il s'écrit à l'altitude 0 et le vol plonge au sol pour l'atteindre.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_task&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;task&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orbit&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;task_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Race-Track&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;altitude_ft&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;speed_kt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="edit_zone"><code>edit_zone</code><a class="headerlink" href="#edit_zone" title="Permanent link">&para;</a></h3>
+<p>Écriture. <code>add_trigger_zone</code> ne crée que des zones <strong>circulaires</strong> et rien n'en modifiait une ensuite,
+donc ajuster une combat zone VEAF — qui <em>est</em> une zone de déclenchement — imposait de la supprimer et
+de la refaire.</p>
+<p><strong>Deux mesures avant toute ligne de code</strong>, comme le ticket l'exigeait :</p>
+<ul>
+<li><strong>La forme réelle d'une zone polygonale</strong>, lue dans <code>veaf-demo-mission.miz</code> (<code>czBatumi</code>) : <code>type: 2</code>
+  plus une liste <code>verticies</code> — l'orthographe de DCS, conservée telle quelle parce que corriger la
+  coquille écrirait un champ que DCS ignore — tandis que <code>x</code>, <code>y</code> et <code>radius</code> <strong>restent présents</strong>. Un
+  polygone n'est donc pas un cercle avec des champs en plus.</li>
+<li><strong>Ce que le runtime VEAF gère.</strong> <code>veafCombatZone.lua</code> ne teste que deux types : <code>0</code> →
+  <code>mist.getUnitsInZones</code>, <code>2</code> → <code>mist.getUnitsInPolygon(triggerZone.verticies)</code>. Il n'y a <strong>pas de
+  <code>else</code></strong>, donc une zone d'un autre type ne contiendrait aucune unité, en silence — pire que de ne pas
+  proposer la forme. L'action n'écrit donc que 0 et 2.</li>
+</ul>
+<p><strong>Décision de David sur le nombre de sommets (2026-08-12)</strong> : accepter trois ou plus, puisque « suivre
+la ligne de crête » est le cas d'usage réel et que mist gère un polygone quelconque — mais <strong>avertir</strong>
+dès que le compte n'est pas quatre, l'éditeur DCS ne dessinant que des quadrilatères. Savoir s'il
+préserve davantage est une question de jeu, qu'aucun test unitaire ne tranche.</p>
+<p>Deux refus que le ticket laissait ouverts, décidés ici : un <strong>lien vers une unité inexistante</strong> est
+refusé plutôt qu'averti (une zone liée à rien ne suit simplement jamais rien, sans bruit), et une
+<strong>collision de nom</strong> est refusée (les zones sont référencées par nom depuis <code>mission.yaml</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;zone_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;czBatumi&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;vertices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-359753.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">614918.0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-355602.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">622688.0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-352849.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">617192.0</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-358731.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">614282.0</span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="add_map_drawing--edit_map_drawing"><code>add_map_drawing</code> / <code>edit_map_drawing</code><a class="headerlink" href="#add_map_drawing--edit_map_drawing" title="Permanent link">&para;</a></h3>
+<p>Écriture. Rien dans VMCT ne touchait aux dessins de la carte F10, donc une ligne de briefing, un couloir
+d'entrée ou une boîte interdite se dessinait à la main dans l'éditeur — <strong>et disparaissait dès que la
+mission était reconstruite depuis son dossier</strong>. C'est tout l'argument : un dessin posé par un agent
+fait partie de la recette, un dessin fait à la main non.</p>
+<p><strong>La mesure qui gouverne la conception</strong>, lue dans les fixtures du dépôt :</p>
+<blockquote>
+<p>Les <code>points</code> sont <strong>relatifs à l'ancre <code>mapX</code>/<code>mapY</code></strong> du dessin, le premier valant <code>{0, 0}</code>.</p>
+</blockquote>
+<p>Un dessin écrit en coordonnées absolues atterrit à des centaines de kilomètres et <strong>rien ne lève
+d'erreur</strong> — la même classe de panne silencieuse que confondre le <code>{x=nord, y=est}</code> de la table de
+mission avec un vec3 d'exécution (voir <code>docs/agents/dcs-coordinates.md</code>). Les actions prennent donc les
+coordonnées <strong>absolues</strong> dont l'appelant dispose et font l'ancrage elles-mêmes. Le bénéfice apparaît
+dans <code>edit_map_drawing</code> : déplacer un dessin, c'est déplacer son ancre, et la forme suit gratuitement.</p>
+<p><strong>Trois formes sont livrées parce que trois formes ont été mesurées</strong> : <code>Line</code> (avec <code>lineMode</code>
+<code>segment</code> ou <code>segments</code>, et <code>closed</code> pour une forme qui se referme — c'est ainsi qu'on délimite une
+zone libre), <code>Polygon</code> en mode <code>rect</code> (<code>width</code>/<code>height</code>/<code>angle</code>, <strong>aucun</strong> point), et <code>TextBox</code>
+(<code>text</code>/<code>font</code>/<code>fontSize</code>, pas de points non plus ; la police est reprise d'un vrai dessin, une police
+absente de DCS ne s'affichant pas du tout).</p>
+<p>Les autres <code>polygonMode</code> (<code>circle</code>, <code>oval</code>, <code>free</code>, <code>arrow</code>) et <code>primitiveType: "Icon"</code> sont <strong>absents
+de toutes les fixtures</strong> du dépôt : leur structure est donc inconnue, et la règle du ticket est de lire
+un vrai <code>.miz</code> plutôt que de supposer. Ils sont refusés en le disant — inventer une structure ici
+produirait un dessin que l'éditeur supprime en silence, exactement ce que <code>FIX-MAPRESOURCE-KEY</code> et
+<code>FIX-COMMUNITY-SOUNDS-PRUNED</code> ont déjà coûté. La mesure est inscrite dans <code>DCS-SESSION-TODO.md</code>.</p>
+<p>La <strong>couche</strong> est un paramètre de première classe, jamais une valeur par défaut : un dessin sur la
+mauvaise couche est invisible pour les pilotes qui en ont besoin et visible pour ceux qui ne devraient
+pas le voir.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;layer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Blue&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;shape&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FSCL&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;points&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-300000.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">600000.0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-290000.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">610000.0</span><span class="p">}]</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="add_group"><code>add_group</code><a class="headerlink" href="#add_group" title="Permanent link">&para;</a></h3>
