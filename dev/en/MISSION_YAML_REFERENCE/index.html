@@ -1031,7 +1031,7 @@
   <span class="md-ellipsis">
     
   
-    veafAssist
+    Guided checklists (veafAssist)
   
 
     
@@ -1367,7 +1367,7 @@
   <span class="md-ellipsis">
     
   
-    veafSecurity
+    Security & permissions (veafSecurity)
   
 
     
@@ -2135,7 +2135,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#third-party-modules-skynet--ctld--csar-under-modules" class="md-nav__link">
+  <a href="#third-party-modules" class="md-nav__link">
     <span class="md-ellipsis">
       
         Third-party modules: SKYNET / CTLD / CSAR (under modules:)
@@ -2229,7 +2229,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#community_scripts-legacy" class="md-nav__link">
+  <a href="#community-scripts" class="md-nav__link">
     <span class="md-ellipsis">
       
         community_scripts: (legacy)
@@ -2284,7 +2284,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#build_variants" class="md-nav__link">
+  <a href="#build-variants" class="md-nav__link">
     <span class="md-ellipsis">
       
         build_variants:
@@ -2296,6 +2296,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys-documented-elsewhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys documented elsewhere
+      
+    </span>
+  </a>
   
 </li>
       
@@ -2504,6 +2515,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../TOOLS_REFERENCE/" class="md-nav__link">
         
   
@@ -2511,7 +2550,7 @@
   <span class="md-ellipsis">
     
   
-    Tools CLI Reference
+    Updater & release tools
   
 
     
@@ -2721,7 +2760,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#third-party-modules-skynet--ctld--csar-under-modules" class="md-nav__link">
+  <a href="#third-party-modules" class="md-nav__link">
     <span class="md-ellipsis">
       
         Third-party modules: SKYNET / CTLD / CSAR (under modules:)
@@ -2815,7 +2854,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#community_scripts-legacy" class="md-nav__link">
+  <a href="#community-scripts" class="md-nav__link">
     <span class="md-ellipsis">
       
         community_scripts: (legacy)
@@ -2870,7 +2909,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#build_variants" class="md-nav__link">
+  <a href="#build-variants" class="md-nav__link">
     <span class="md-ellipsis">
       
         build_variants:
@@ -2882,6 +2921,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys-documented-elsewhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys documented elsewhere
+      
+    </span>
+  </a>
   
 </li>
       
@@ -3053,6 +3103,11 @@
 <td>Dynamic-Slot warehouses: <code>dynamicSpawn</code>, stock, fuel, template links</td>
 </tr>
 <tr>
+<td><code>spawn-groups.yaml</code></td>
+<td><code>spawn_data</code></td>
+<td>Spawn database for <code>_spawn unit</code> / <code>_spawn group</code> — <strong>optional</strong>: the step always runs, the framework data being embedded, and this file only adds to it</td>
+</tr>
+<tr>
 <td><code>versions.yaml</code></td>
 <td><code>weather</code></td>
 <td>Generates one <code>.miz</code> variant per weather preset</td>
@@ -3071,12 +3126,15 @@
 │       ├── spawnable_aircrafts: true     ──► src/spawnables.yaml
 │       ├── dynamic_slot_templates: true  ──► src/dynamic-slot-templates.yaml
 │       ├── warehouses: true  ──► src/warehouses.yaml
+│       ├── spawn_data: true  ──► src/spawn-groups.yaml  (optional)
 │       └── weather:  true   ──► src/versions.yaml
 └── src/
     ├── waypoints.yaml
     ├── presets.yaml
     ├── spawnables.yaml
     ├── dynamic-slot-templates.yaml
+    ├── warehouses.yaml
+    ├── spawn-groups.yaml
     └── versions.yaml
 </code></pre></div>
 <hr />
@@ -3215,9 +3273,9 @@
 <tr>
 <td><code>era</code></td>
 <td>string</td>
-<td><code>MODERN</code></td>
+<td><em>inferred</em></td>
 <td>No</td>
-<td><code>MODERN</code> | <code>COLD_WAR</code> | <code>WW2</code> — affects available spawn groups</td>
+<td><code>MODERN</code> | <code>COLD_WAR</code> | <code>WW2</code> — affects available spawn groups. <strong>When absent it is inferred at every build</strong> from the base mission's content: a WW2 unit type or a year ≤ 1945 gives <code>WW2</code>, a year ≤ 1991 <code>COLD_WAR</code>, otherwise <code>MODERN</code> (<code>era_detector.py</code>). The inferred value is <strong>not</strong> written back into your <code>mission.yaml</code> — it is recomputed; set the key to pin it.</td>
 </tr>
 <tr>
 <td><code>silence_atc_on_all_airbases</code></td>
@@ -3244,7 +3302,7 @@
 </table>
 <h4 id="icao-naming">The <code>.miz</code> file name is an interface — <code>_ICAO_&lt;code&gt;</code> and real weather<a class="headerlink" href="#icao-naming" title="Permanent link">&para;</a></h4>
 <p><code>mission.name</code> becomes the built file name: <code>&lt;name&gt;_&lt;YYYYMMDD&gt;.miz</code>, plus a <code>_&lt;VARIANT&gt;</code> suffix
-when <a href="#build_variants"><code>build_variants:</code></a> is used. Give a name ending in <code>.miz</code> instead and the
+when <a href="#build-variants"><code>build_variants:</code></a> is used. Give a name ending in <code>.miz</code> instead and the
 name is taken <strong>verbatim</strong>, with no date.</p>
 <p>That matters because <strong>server-side tooling reads the file name</strong>. On the VEAF servers, the
 RealWeather extension of <a href="https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot">DCSServerBot</a>
@@ -3330,7 +3388,7 @@ password silently never works.</p>
 </code></pre></div>
 <p>Each key becomes <code>veaf.config.MY_MISSION_FLAG = 42</code> in the generated <code>veaf-config.lua</code>.</p>
 <hr />
-<h3 id="third-party-modules-skynet--ctld--csar-under-modules">Third-party modules: <code>SKYNET</code> / <code>CTLD</code> / <code>CSAR</code> (under <code>modules:</code>)<a class="headerlink" href="#third-party-modules-skynet--ctld--csar-under-modules" title="Permanent link">&para;</a></h3>
+<h3 id="third-party-modules">Third-party modules: <code>SKYNET</code> / <code>CTLD</code> / <code>CSAR</code> (under <code>modules:</code>)<a class="headerlink" href="#third-party-modules" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>v6 change (hard break)</strong>: the <code>external_modules:</code> and <code>qra:</code> sections no longer exist. All of their configuration now lives under the <code>modules:</code> block, the single source of truth. See <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0001-modules-single-source-of-truth.md">ADR 0001</a>.</p>
 </blockquote>
@@ -3767,7 +3825,7 @@ password silently never works.</p>
 <p><strong>Radio menu shortcut (QRA / AirWaves).</strong> A QRA definition (<code>modules.QRA.definitions[]</code>) or an AirWave zone (<code>modules.AIRWAVES.airwave_zones[]</code>) accepts <code>radio_menu: true</code> (and the optional <code>radio_menu_restrict_to_group: "&lt;DCS group&gt;"</code>) to automatically generate an F10 control submenu (start/stop, plus reset for AirWaves). See <a href="../mission-maker/scripts/veafQraManager/#configuration-missionyaml">veafQraManager</a> and <a href="../mission-maker/scripts/veafAirWaves/#configuration-missionyaml">veafAirWaves</a>.</p>
 </blockquote>
 <hr />
-<h3 id="community_scripts-legacy"><code>community_scripts:</code> <em>(legacy)</em><a class="headerlink" href="#community_scripts-legacy" title="Permanent link">&para;</a></h3>
+<h3 id="community-scripts"><code>community_scripts:</code> <em>(legacy)</em><a class="headerlink" href="#community-scripts" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>Deprecated.</strong> Community scripts are now configured in the unified <a href="#modules"><code>modules:</code></a> block using their uppercase IDs (e.g. <code>CTLD: true</code>). The separate <code>community_scripts:</code> section still works but emits a deprecation warning. See <a href="#modules"><code>modules:</code></a> for the current syntax and the list of community IDs.</p>
 </blockquote>
@@ -3991,7 +4049,7 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <p>If the named profile does not exist in <code>mission.yaml</code>, a warning is emitted and the base config is used unchanged.</p>
 </blockquote>
 <hr />
-<h3 id="build_variants"><code>build_variants:</code><a class="headerlink" href="#build_variants" title="Permanent link">&para;</a></h3>
+<h3 id="build-variants"><code>build_variants:</code><a class="headerlink" href="#build-variants" title="Permanent link">&para;</a></h3>
 <p>A list of build profiles to <strong>emit together</strong>: a single <code>veaf-tools mission build</code> then produces <strong>one <code>.miz</code> per variant</strong> (the "moulinette" goal — typically Modern and Cold-War from one mission folder, the variant being only a <strong>config</strong> difference). Each variant builds the full pipeline with its merged profile (see <a href="#profiles"><code>profiles:</code></a>) and its <code>.miz</code> is suffixed with the variant name (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
 <table>
 <thead>
@@ -4029,7 +4087,44 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># produces only the MODERN variant (unsuffixed)</span>
 </code></pre></div>
 <hr />
+<h2 id="keys-documented-elsewhere">Keys documented elsewhere<a class="headerlink" href="#keys-documented-elsewhere" title="Permanent link">&para;</a></h2>
+<p>Four top-level keys are read by the build but explained on the page that introduced them. They are
+listed here so that reading this reference does not miss them.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>What it does</th>
+<th>Page that documents it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>conversion_profile</code></td>
+<td>Names the adoption profile applied to a third-party mission (imposed modules, incompatibilities refused at validation)</td>
+<td><a href="../mission-maker/CONVERT_OTHER/"><code>convert-other</code></a></td>
+</tr>
+<tr>
+<td><code>config_override</code></td>
+<td>Injects raw configuration values over the ones the profile decided</td>
+<td><a href="../mission-maker/CONVERT_OTHER/"><code>convert-other</code></a></td>
+</tr>
+<tr>
+<td><code>strip_native_triggers</code></td>
+<td>Lists the original mission's load triggers to remove, so the VEAF scripts are not loaded twice</td>
+<td><a href="../mission-maker/CONVERT_OTHER/"><code>convert-other</code></a></td>
+</tr>
+<tr>
+<td><code>dcs_bridge</code></td>
+<td>Injects the <code>dcs-bridge.lua</code> bridge into the <code>.miz</code> (<code>enabled</code>, <code>lua_path</code>) — this is what makes data capture from a running DCS possible</td>
+<td><a href="../mission-maker/GUIDE/">Mission maker's guide</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
 <h2 id="index-by-category">Index by category<a class="headerlink" href="#index-by-category" title="Permanent link">&para;</a></h2>
+<p>The six domains match the French version, and every top-level section of this page appears in
+exactly one of them.</p>
 <h3 id="core">Core<a class="headerlink" href="#core" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4054,6 +4149,14 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <tr>
 <td><a href="#veaf_tools"><code>veaf_tools:</code></a></td>
 <td>Version compatibility constraint</td>
+</tr>
+<tr>
+<td><a href="#modules"><code>modules:</code></a></td>
+<td>Enable, disable and configure each Lua module</td>
+</tr>
+<tr>
+<td><a href="#keys-documented-elsewhere">Keys documented elsewhere</a></td>
+<td><code>conversion_profile</code>, <code>config_override</code>, <code>strip_native_triggers</code>, <code>dcs_bridge</code></td>
 </tr>
 </tbody>
 </table>
@@ -4121,7 +4224,7 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 </thead>
 <tbody>
 <tr>
-<td><code>modules.SKYNET</code></td>
+<td><a href="#third-party-modules"><code>modules.SKYNET</code></a></td>
 <td>Skynet IADS integration</td>
 </tr>
 <tr>
@@ -4131,10 +4234,6 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <tr>
 <td><code>modules.MISSILEGUARDIAN</code></td>
 <td><a href="../mission-maker/scripts/veafMissileGuardian/">veafMissileGuardian</a></td>
-</tr>
-<tr>
-<td><code>modules.QRA</code></td>
-<td><a href="../mission-maker/scripts/veafQraManager/">veafQraManager</a></td>
 </tr>
 </tbody>
 </table>
@@ -4170,6 +4269,14 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <tr>
 <td><code>modules.SHORTCUTS</code></td>
 <td><a href="../mission-maker/scripts/veafShortcuts/">veafShortcuts</a></td>
+</tr>
+<tr>
+<td><code>modules.ASSIST</code></td>
+<td><a href="../mission-maker/scripts/veafAssist/">veafAssist</a></td>
+</tr>
+<tr>
+<td><a href="#third-party-modules"><code>modules.CTLD</code> / <code>modules.CSAR</code></a></td>
+<td>Cargo transport and pilot recovery (third-party sidecars)</td>
 </tr>
 </tbody>
 </table>
@@ -4207,6 +4314,10 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <td>Custom Lua scripts to include in the mission</td>
 </tr>
 <tr>
+<td><a href="#community-scripts"><code>community_scripts:</code></a></td>
+<td>Bundled community scripts <em>(legacy form)</em></td>
+</tr>
+<tr>
 <td><a href="#build"><code>build:</code></a></td>
 <td>Developer mode and scripts path override</td>
 </tr>
@@ -4221,6 +4332,10 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <tr>
 <td><a href="#profiles"><code>profiles:</code></a></td>
 <td>Named build profiles (deep-merge overrides for <code>--profile</code>)</td>
+</tr>
+<tr>
+<td><a href="#build-variants"><code>build_variants:</code></a></td>
+<td>Produce one <code>.miz</code> variant per named profile</td>
 </tr>
 </tbody>
 </table>

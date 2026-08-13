@@ -1031,7 +1031,7 @@
   <span class="md-ellipsis">
     
   
-    veafAssist
+    Guided checklists (veafAssist)
   
 
     
@@ -1367,7 +1367,7 @@
   <span class="md-ellipsis">
     
   
-    veafSecurity
+    Security & permissions (veafSecurity)
   
 
     
@@ -1855,6 +1855,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#parking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parking spots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-airfield-frequency-table" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2250,6 +2261,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../TOOLS_REFERENCE/" class="md-nav__link">
         
   
@@ -2257,7 +2296,7 @@
   <span class="md-ellipsis">
     
   
-    Tools CLI Reference
+    Updater & release tools
   
 
     
@@ -2437,6 +2476,17 @@
     <span class="md-ellipsis">
       
         The airdrome table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parking spots
       
     </span>
   </a>
@@ -2712,6 +2762,25 @@ Full procedure for helpers: <a href="../capture-airbases/">capture-airbases</a>.
 <p><code>veaf_libs.dcs_airdromes.airdrome_id_for_name(theatre, name)</code> reads it. Coverage: <strong>all 14 DCS theatres</strong> are dumped (810 airbases). Residual caveat:
 the table only covers <strong>already-dumped</strong> theatres; an un-dumped theatre yields no
 entries — callers fall back to ids. Resolution is case-insensitive.</p>
+<h2 id="parking">Parking spots<a class="headerlink" href="#parking" title="Permanent link">&para;</a></h2>
+<p><code>parking/&lt;theatre&gt;.json</code> lists, <strong>per theatre</strong>, the spots an aircraft can park on. Kept separate
+from the airbase dumps rather than merged into them: the 15 theatres already captured need no
+redoing, and the airbase capture stays the useful half if the second one fails.</p>
+<p>Captured in game with the <strong>VEAF dcs-bridge</strong>, <code>Airbase:getParking(false)</code> per airbase:</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>dcs<span class="w"> </span>capture-map<span class="w"> </span>--parking
+</code></pre></div>
+<p><strong>A parked aircraft carries two distinct numbers, and confusing them puts the aircraft somewhere
+else</strong>: <code>parking</code> and <code>parking_id</code>, which are 28 and 24 on the same F-14A in this repository's own
+fixtures. They are the runtime's <code>Term_Index</code> and <code>Term_Index_0</code>. That pair is what turned
+<code>add_air_group</code> on a ramp into a data capture (ticket 08) and then a write (ticket 09) rather than
+one task: no data shipped here carried those numbers — the 15 airbase dumps hold only
+<code>{id, name, lat, lon, coalition}</code>.</p>
+<p>The dump keeps <strong>every</strong> key each spot carries, flattened one level and kept as strings: the API
+schema shipped here declares four fields where a mission file already proves there are more, so the
+shape comes from the runtime rather than from the schema. A test pins that an unknown future field
+survives the read. A theatre reporting no spots is data, not a failure.</p>
+<p>Not guarded by CI, like the other runtime-dependent tables. The operator's procedure is in
+<a href="../capture-airbases/">Capture a map's airbases</a>.</p>
 <h2 id="the-airfield-frequency-table">The airfield-frequency table<a class="headerlink" href="#the-airfield-frequency-table" title="Permanent link">&para;</a></h2>
 <p><code>src/python/veaf-tools/veaf_libs/data/airfield-frequencies.yaml</code> maps, <strong>per theatre</strong>,
 an airfield name to its <strong>ATC frequencies</strong> (<code>uhf</code>, <code>vhf</code>, <code>fm</code>, in MHz). It lets

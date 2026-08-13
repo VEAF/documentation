@@ -1031,7 +1031,7 @@
   <span class="md-ellipsis">
     
   
-    veafAssist
+    Guided checklists (veafAssist)
   
 
     
@@ -1367,7 +1367,7 @@
   <span class="md-ellipsis">
     
   
-    veafSecurity
+    Security & permissions (veafSecurity)
   
 
     
@@ -2079,6 +2079,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kneeboard-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flaming Cliffs aircraft: kneeboard only (kneeboard_only)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#primary-frequency" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2155,6 +2166,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../TOOLS_REFERENCE/" class="md-nav__link">
         
   
@@ -2162,7 +2201,7 @@
   <span class="md-ellipsis">
     
   
-    Tools CLI Reference
+    Updater & release tools
   
 
     
@@ -2253,6 +2292,17 @@
     <span class="md-ellipsis">
       
         Critical aircraft (dcs_rejects_on_load)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kneeboard-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flaming Cliffs aircraft: kneeboard only (kneeboard_only)
       
     </span>
   </a>
@@ -2377,6 +2427,71 @@ reported in the <code>presets-validation-report.md</code> generated after each b
 its entry in <code>src/python/veaf-tools/presets_injector/data/dcs-radio-specs-overrides.yaml</code> and open
 a pull request. Do not edit <code>dcs-radio-specs.yaml</code>: it is regenerated from the datamine, and any
 correction written there is lost on the next run.</p>
+<hr />
+<h2 id="kneeboard-only">Flaming Cliffs aircraft: kneeboard only (<code>kneeboard_only</code>)<a class="headerlink" href="#kneeboard-only" title="Permanent link">&para;</a></h2>
+<p><strong>If you fly FC3 and your radio presets are empty, that is expected.</strong> Ten Flaming Cliffs aircraft
+have <strong>no settable radio at all</strong>: DCS gives them no <code>Radio</code> table, so there is nothing for a channel
+list to be written into. This is not a VEAF MCT limitation, it is the airframe.</p>
+<p>The measurement that settled it: across 40 real missions, the 110 player slots of these types carry
+<strong>no</strong> <code>Radio</code> table, against 2105 non-FC3 slots that do. Inventing hardware specifications for them
+would have produced frequencies DCS ignores.</p>
+<p>What the build does instead: it <strong>renders the kneeboard</strong>
+(<code>KNEEBOARD/&lt;type&gt;/IMAGES/presets.png</code>) with all three bands, and writes <strong>nothing</strong> into the
+mission. You set your frequencies by hand in the cockpit, or use them in SRS, reading them off the
+kneeboard.</p>
+<table>
+<thead>
+<tr>
+<th>Aircraft</th>
+<th>DCS ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A-10A</td>
+<td><code>A-10A</code></td>
+</tr>
+<tr>
+<td>F-15C</td>
+<td><code>F-15C</code></td>
+</tr>
+<tr>
+<td>J-11A</td>
+<td><code>J-11A</code></td>
+</tr>
+<tr>
+<td>MiG-29A</td>
+<td><code>MiG-29A</code></td>
+</tr>
+<tr>
+<td>MiG-29G</td>
+<td><code>MiG-29G</code></td>
+</tr>
+<tr>
+<td>MiG-29S</td>
+<td><code>MiG-29S</code></td>
+</tr>
+<tr>
+<td>Su-25</td>
+<td><code>Su-25</code></td>
+</tr>
+<tr>
+<td>Su-25T</td>
+<td><code>Su-25T</code></td>
+</tr>
+<tr>
+<td>Su-27</td>
+<td><code>Su-27</code></td>
+</tr>
+<tr>
+<td>Su-33</td>
+<td><code>Su-33</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>For the mission maker</strong>: these types are declared <code>kneeboard_only: true</code> in
+<code>dcs-radio-specs-overrides.yaml</code>. A preset targeting one of them is not an error — it produces a
+kneeboard and nothing else, with no warning, because that is the intended behaviour.</p>
 <hr />
 <h2 id="primary-frequency">The group's primary frequency (<code>human_radio</code>)<a class="headerlink" href="#primary-frequency" title="Permanent link">&para;</a></h2>
 <p>A DCS aircraft enforces <strong>two</strong> different frequency constraints, and they are easy to confuse:</p>

@@ -1031,7 +1031,7 @@
   <span class="md-ellipsis">
     
   
-    veafAssist
+    Checklists guidées (veafAssist)
   
 
     
@@ -1367,7 +1367,7 @@
   <span class="md-ellipsis">
     
   
-    veafSecurity
+    Sécurité & permissions (veafSecurity)
   
 
     
@@ -1855,6 +1855,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#parking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les places de parking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#la-table-des-fréquences-daérodrome" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2250,6 +2261,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../TOOLS_REFERENCE/" class="md-nav__link">
         
   
@@ -2257,7 +2296,7 @@
   <span class="md-ellipsis">
     
   
-    Référence CLI des outils
+    Mise à jour & publication
   
 
     
@@ -2437,6 +2476,17 @@
     <span class="md-ellipsis">
       
         La table des aérodromes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les places de parking
       
     </span>
   </a>
@@ -2717,6 +2767,26 @@ le <a href="https://github.com/VEAF/VEAF-dcs-bridge">dépôt VEAF-dcs-bridge</a>
 table ne couvre que les théâtres <strong>déjà dumpés</strong> ; un théâtre non dumpé ne donne
 aucune entrée — l'appelant retombe alors sur les ids. La résolution est insensible
 à la casse.</p>
+<h2 id="parking">Les places de parking<a class="headerlink" href="#parking" title="Permanent link">&para;</a></h2>
+<p><code>parking/&lt;theatre&gt;.json</code> liste, <strong>par théâtre</strong>, les emplacements où un appareil peut se garer.
+Séparé des dumps d'aérodromes plutôt que fusionné avec eux : les 15 théâtres déjà capturés n'ont pas
+besoin d'être refaits, et la capture des aérodromes reste la moitié utile si la seconde échoue.</p>
+<p>Capturé en jeu avec le <strong>VEAF dcs-bridge</strong>, <code>Airbase:getParking(false)</code> par aérodrome :</p>
+<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>dcs<span class="w"> </span>capture-map<span class="w"> </span>--parking
+</code></pre></div>
+<p><strong>Un appareil garé porte deux numéros distincts, et confondre les deux met l'avion ailleurs</strong> :
+<code>parking</code> et <code>parking_id</code>, qui valent par exemple 28 et 24 sur le même F-14A dans les fixtures de ce
+dépôt. Ce sont les <code>Term_Index</code> et <code>Term_Index_0</code> du runtime. C'est cette paire qui a fait de
+<code>add_air_group</code> sur un tarmac une capture de données (ticket 08) puis une écriture (ticket 09) au
+lieu d'une seule tâche : aucune donnée livrée ici ne portait ces numéros — les 15 dumps d'aérodromes
+ne contiennent que <code>{id, name, lat, lon, coalition}</code>.</p>
+<p>Le dump garde <strong>toutes</strong> les clés que chaque emplacement porte, aplaties d'un niveau et en chaînes de
+caractères : le schéma de l'API livré ici déclare quatre champs alors qu'un fichier de mission en
+prouve davantage, donc la forme vient du runtime et non du schéma. Un test épingle qu'un champ futur
+inconnu survit à la lecture. Un théâtre qui ne renvoie aucun emplacement est une donnée, pas un
+échec.</p>
+<p>Pas gardé par la CI, comme les autres tables dépendantes du runtime. Le mode opératoire côté
+opérateur est dans <a href="../capture-airbases/">Récupérer les aérodromes d'une carte</a>.</p>
 <h2 id="la-table-des-fréquences-daérodrome">La table des fréquences d'aérodrome<a class="headerlink" href="#la-table-des-fréquences-daérodrome" title="Permanent link">&para;</a></h2>
 <p><code>src/python/veaf-tools/veaf_libs/data/airfield-frequencies.yaml</code> associe, <strong>par
 théâtre</strong>, un nom d'aérodrome à ses <strong>fréquences ATC</strong> (<code>uhf</code>, <code>vhf</code>, <code>fm</code>, en MHz).
