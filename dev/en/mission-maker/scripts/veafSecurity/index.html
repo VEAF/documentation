@@ -2404,7 +2404,7 @@
 
 
 <h1 id="veafsecurity--role-based-permissions">veafSecurity — Role-Based Permissions<a class="headerlink" href="#veafsecurity--role-based-permissions" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>SECURITY</code> | <strong>Version:</strong> 1.3.x | <strong>File:</strong> <code>veafSecurity.lua</code></p>
+<p><strong>Module ID:</strong> <code>SECURITY</code> | <strong>File:</strong> <code>veafSecurity.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Provides a permission system for VEAF marker commands and radio menu actions. Restricts sensitive commands (spawning, teleporting, destroying) to authorised players, either from the pilot's level as declared on the server or through a SHA-1 hashed password.</p>
@@ -2464,7 +2464,8 @@ renaming changes no mission's behaviour.</p>
 <p>Passwords are hierarchical: the <code>ADMIN</code> one also opens <code>SENIOR_PILOT</code> and <code>KNOWN_PILOT</code>, and the
 <code>SENIOR_PILOT</code> one opens <code>KNOWN_PILOT</code>. The Mission Master password sits outside that hierarchy — it
 opens only the commands declared <code>MM</code>.</p>
-<p>The default security level for spawn commands can be set per-module. See also the
+<p>Every secured command declares its tier as a literal when it is registered (see
+"Module-Level Security" below). See also the
 <a href="../../GUIDE/#security-tiers">Mission Maker Guide</a>.</p>
 <hr />
 <h2 id="setting-passwords">Setting Passwords<a class="headerlink" href="#setting-passwords" title="Permanent link">&para;</a></h2>
@@ -2527,10 +2528,14 @@ password.</p>
 </table>
 <hr />
 <h2 id="player-authentication">Player Authentication<a class="headerlink" href="#player-authentication" title="Permanent link">&para;</a></h2>
-<p>Players authenticate via a map marker command:</p>
-<div class="highlight"><pre><span></span><code>_auth [PASSWORD]
+<p>The <code>_auth</code> marker command carries three verbs:</p>
+<div class="highlight"><pre><span></span><code>_auth [PASSWORD]   -- checks the given password
+_auth elevate      -- raises the author&#39;s group to their own level for 2 minutes
+_auth logout       -- locks the mission again
 </code></pre></div>
-<p>On success: access is granted for <code>authDuration</code> minutes. No message is displayed to other players.</p>
+<p>An accepted password opens <strong>no session</strong>: secured commands check the password command by command
+(<code>password</code> keyword). In chat, the same verbs exist as <code>/secu login|elevate|logout</code> (see
+<a href="../veafServerHook/">veafServerHook</a>); the hidden <code>-login</code> alias is equivalent to <code>_auth</code>.</p>
 <div class="admonition danger">
 <p class="admonition-title">Behaviour change — authentication is no longer global</p>
 <p><strong>Before</strong>: one successful <code>_auth</code> opened every secured command to <strong>every player on the server</strong>
@@ -2538,14 +2543,16 @@ for <code>authDuration</code> minutes. While anyone was authenticated the pilots
 consulted: the blunt mechanism disabled the precise one.</p>
 <p><strong>Now</strong>: every secured command checks who is asking.</p>
 <ul>
-<li><strong>A pilot listed in <code>veaf-pilots.txt</code> notices nothing</strong>: their own level suffices, and they
-  never needed the password.</li>
+<li><strong>A pilot listed in <code>veaf-pilots.txt</code> notices almost nothing</strong>: their own level suffices, and
+  they never needed the password. Known exception: <code>_transport</code> still demands the password from
+  everyone, whatever their level — a bug, pending its fix.</li>
 <li><strong>A pilot who is not listed</strong> must supply the password <strong>on every command</strong>: there is no
   ten-minute session any more.</li>
 <li>For the <strong>F10 radio menu</strong>, DCS cannot tell <em>which</em> occupant of a group clicked. The group
-  therefore acts at the level of its <strong>lowest-graded</strong> occupant. <code>_auth</code> or <code>/login</code> from an
-  identified channel (marker or chat) raises the group to the <strong>requester's</strong> level for
-  2 minutes — which is what solves the instructor-flying-with-a-student case.</li>
+  therefore acts at the level of its <strong>lowest-graded</strong> occupant. The explicit verb
+  <code>_auth elevate</code> (marker) or <code>/secu elevate</code> (chat) raises the group to the <strong>requester's</strong>
+  level for 2 minutes — a plain <code>_auth [PASSWORD]</code> elevates nothing. That is what solves the
+  instructor-flying-with-a-student case.</li>
 </ul>
 <p>Tell your pilots: this is a change they will notice mid-mission.</p>
 </div>
@@ -2570,9 +2577,12 @@ in v7</strong>: migrate to <code>veaf.SecurityDisabled</code>.</p>
 </div>
 <hr />
 <h2 id="module-level-security">Module-Level Security<a class="headerlink" href="#module-level-security" title="Permanent link">&para;</a></h2>
-<p>Each module can set the default security requirement for its commands. Example for spawn:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Require the SENIOR_PILOT tier for all spawn commands</span>
-<span class="nv">veafSpawn</span><span class="p">.</span><span class="py">defaultSecurity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSecurity</span><span class="p">.</span><span class="py">LEVEL_SENIOR_PILOT</span>
+<p>There is no per-module global setting: every command declares its tier as a literal when it is
+registered, and the dispatcher applies the check before running it. Example for spawn:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- The second argument is the required tier: &quot;L9&quot;, &quot;L1&quot;, &quot;MM&quot; or &quot;OPEN&quot;</span>
+<span class="nv">veafSpawn</span><span class="p">.</span><span class="nf">registerCommandHandler</span><span class="p">(</span><span class="s2">&quot;smoke&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;OPEN&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">eventPos</span><span class="p">,</span><span class="w"> </span><span class="nv">options</span><span class="p">,</span><span class="w"> </span><span class="nv">coalition</span><span class="p">,</span><span class="w"> </span><span class="nv">markId</span><span class="p">,</span><span class="w"> </span><span class="nv">bypassSecurity</span><span class="p">)</span>
+<span class="w">  </span><span class="c1">-- ...</span>
+<span class="kr">end</span><span class="p">)</span>
 </code></pre></div>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

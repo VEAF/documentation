@@ -3451,11 +3451,11 @@
 <ol>
 <li><a href="#vue-densemble-de-larchitecture">Vue d'ensemble de l'architecture</a></li>
 <li><a href="#structure-du-dépôt">Structure du dépôt</a></li>
-<li><a href="#environnement-de-développement">Environnement de développement</a></li>
-<li><a href="#scripts-lua-runtime">Scripts Lua runtime</a></li>
-<li><a href="#outils-python">Outils Python</a></li>
+<li><a href="#development-environment">Environnement de développement</a></li>
+<li><a href="#lua-runtime-scripts">Scripts Lua runtime</a></li>
+<li><a href="#python-tools">Outils Python</a></li>
 <li><a href="#build-et-publication">Build et publication</a></li>
-<li><a href="#mode-développeur">Mode développeur</a></li>
+<li><a href="#developer-mode">Mode développeur</a></li>
 <li><a href="#tests">Tests</a></li>
 <li><a href="#portes-de-qualité">Portes de qualité</a></li>
 <li><a href="#contribuer">Contribuer</a></li>
@@ -3496,9 +3496,10 @@
 ├── dist/                         # Sortie .exe PyInstaller
 ├── build/                        # Espace de travail de build temporaire
 ├── test/
-│   └── lua/                      # Tests unitaires Lua
+│   ├── lua/                      # Tests unitaires Lua
+│   └── python/                   # Tests unitaires Python
 ├── doc/                          # Documentation
-├── openspec/                     # Gestion des changements (workflow OpenSpec)
+├── .backlog/                     # Backlog des lots (PRD + tickets)
 └── .github/
     └── workflows/                # CI/CD GitHub Actions
 </code></pre></div>
@@ -3742,7 +3743,7 @@ sont présents avec une valeur neutre ; le test ne nomme que ce qui l'intéresse
 <h2 id="build-et-publication">Build et publication<a class="headerlink" href="#build-et-publication" title="Permanent link">&para;</a></h2>
 <h3 id="build-local">Build local<a class="headerlink" href="#build-local" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c"># Build (compile Lua + construit les .exe)</span>
-<span class="n">poetry</span> <span class="n">run</span> <span class="n">veaf-build</span> <span class="n">build</span> <span class="p">-</span><span class="n">-version</span> <span class="n">6</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">0</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="n">veaf-build</span> <span class="n">build</span> <span class="p">-</span><span class="n">-version</span> <span class="p">&lt;</span><span class="n">version</span><span class="p">&gt;</span>
 </code></pre></div>
 <p>Ce que cela fait :
 1. Valide les prérequis (Git, Python, PyInstaller)
@@ -3815,10 +3816,10 @@ poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"
 <h2 id="portes-de-qualité">Portes de qualité<a class="headerlink" href="#portes-de-qualité" title="Permanent link">&para;</a></h2>
 <h3 id="avant-chaque-commit-sur-des-fichiers-lua">Avant chaque commit sur des fichiers Lua<a class="headerlink" href="#avant-chaque-commit-sur-des-fichiers-lua" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c"># Vérifier le formatage (équivalent CI)</span>
-<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
+<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
 
 <span class="c"># Corriger automatiquement</span>
-<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
+<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
 
 <span class="c"># Analyse statique</span>
 <span class="n">luacheck</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="p">-</span><span class="n">-config</span> <span class="p">.</span><span class="n">luacheckrc</span>
@@ -3844,11 +3845,15 @@ Luacheck est imposé par le job CI <code>Luacheck</code>.</p>
 </tr>
 <tr>
 <td><code>StyLua Formatting</code></td>
-<td>Aucune violation de formatage dans <code>src/scripts/veaf/</code></td>
+<td>Aucune violation de formatage dans <code>src/scripts/veaf/</code> et <code>test/lua/</code></td>
+</tr>
+<tr>
+<td><code>Lua Coverage</code></td>
+<td>Couverture ligne (luacov) au-dessus du plancher de cliquet (<code>--cov-fail-under</code>) — bloquant</td>
 </tr>
 <tr>
 <td><code>python-quality</code></td>
-<td>ruff lint + format, mypy types, pytest</td>
+<td>ruff lint + format (<code>src/python/ test/python/ veaf_build/</code>), mypy (<code>src/python/veaf-tools</code>), pytest</td>
 </tr>
 <tr>
 <td><code>Docs Check</code></td>
@@ -3860,12 +3865,17 @@ Luacheck est imposé par le job CI <code>Luacheck</code>.</p>
 </tr>
 </tbody>
 </table>
-<p>Tous les jobs CI doivent être verts avant qu'une PR puisse être mergée.</p>
+<p>Tous les jobs CI doivent être verts avant qu'une PR puisse être mergée. Exception :
+<code>dcs-mock-coverage</code> est en <code>continue-on-error</code> — informatif, il ne bloque pas le merge.</p>
 <h3 id="docs-check">Avant un commit qui touche à la documentation<a class="headerlink" href="#docs-check" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>docs-check
 </code></pre></div>
-<p>Le job CI <code>Docs Check</code> lance exactement la même commande. Il refuse quatre dérives qui, avant son
-existence, s'étaient accumulées silencieusement (voir le lot <code>DOC-AUDIT-PASS</code>) :</p>
+<p>Le job CI <code>Docs Check</code> lance exactement la même commande, qui enchaîne <strong>trois passes</strong> : la passe
+principale sur <code>doc/</code> (le tableau ci-dessous), une passe de liens relatifs sur le reste du dépôt
+(<code>.backlog/</code>, <code>docs/</code>, les pages racine), et une passe de couverture documentaire (chaque capacité
+définie par le code doit être nommée par sa page de référence). La passe principale refuse quatre
+dérives qui, avant son existence, s'étaient accumulées silencieusement (voir le lot
+<code>DOC-AUDIT-PASS</code>) :</p>
 <table>
 <thead>
 <tr>
@@ -3934,8 +3944,8 @@ simplement l'alias <code>dev</code>.</p>
 <hr />
 <h3 id="publier-une-nouvelle-version">Publier une nouvelle version<a class="headerlink" href="#publier-une-nouvelle-version" title="Permanent link">&para;</a></h3>
 <p>Pousser un tag <code>published-v*</code> — le workflow CI <code>Release</code> fait tout automatiquement :</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v6.1.0
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-v6.1.0
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v&lt;version&gt;
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-v&lt;version&gt;
 </code></pre></div>
 <hr />
 <h2 id="developer-mode">Mode développeur<a class="headerlink" href="#developer-mode" title="Permanent link">&para;</a></h2>
@@ -4035,7 +4045,7 @@ plutôt que depuis le dossier <code>published/</code> livré avec veaf-tools.</p
 <li><strong>Développement de fonctionnalité :</strong> créer <code>feature/xxx</code> depuis <code>develop</code>, ouvrir PR → <code>develop</code></li>
 <li><strong>Corrections de bugs :</strong> créer <code>fix/xxx</code> depuis <code>develop</code>, ouvrir PR → <code>develop</code></li>
 <li><strong>Hotfixes en production :</strong> <code>fix/xxx</code> depuis <code>master</code>, PR → <code>master</code></li>
-<li><strong>Versions :</strong> <code>release/vX.Y.Z</code> depuis <code>develop</code>, PR → <code>master</code></li>
+<li><strong>Versions :</strong> <code>release/X.Y.Z</code> (sans <code>v</code>) depuis <code>develop</code>, PR → <code>master</code></li>
 </ul>
 <h3 id="convention-de-commit">Convention de commit<a class="headerlink" href="#convention-de-commit" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>type(scope): courte description

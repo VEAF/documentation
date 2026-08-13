@@ -2007,10 +2007,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#prérequis_1" class="md-nav__link">
+  <a href="#prérequis-couverture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prérequis
+        Prérequis (couverture)
       
     </span>
   </a>
@@ -2572,10 +2572,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#prérequis_1" class="md-nav__link">
+  <a href="#prérequis-couverture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prérequis
+        Prérequis (couverture)
       
     </span>
   </a>
@@ -2796,7 +2796,7 @@
 <ul>
 <li><a href="#vue-densemble">Vue d'ensemble</a></li>
 <li><a href="#exécuter-les-tests">Exécuter les tests</a></li>
-<li><a href="#couverture">Couverture</a></li>
+<li><a href="#coverage">Couverture</a></li>
 <li><a href="#infrastructure">Infrastructure</a></li>
 <li><a href="#suite-de-tests">Suite de tests</a></li>
 <li><a href="#écrire-des-tests">Écrire des tests</a></li>
@@ -2804,7 +2804,7 @@
 </ul>
 <hr />
 <h2 id="vue-densemble">Vue d'ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
-<p>Le projet couvre tous les modules runtime par des suites de tests Lua. Les tests s'exécutent en <strong>Lua 5.1</strong> standard avec le framework <a href="https://github.com/bluebird75/luaunit">luaunit</a>. Aucune installation de DCS n'est requise — l'API DCS est simulée par <code>dcs_mocks.lua</code>.</p>
+<p>Le projet couvre les modules runtime par 36 suites de tests Lua (les exceptions sont listées en fin de section « Suite de tests »). Les tests s'exécutent en <strong>Lua 5.1</strong> standard avec le framework <a href="https://github.com/bluebird75/luaunit">luaunit</a>. Aucune installation de DCS n'est requise — l'API DCS est simulée par <code>dcs_mocks.lua</code>.</p>
 <hr />
 <h2 id="exécuter-les-tests">Exécuter les tests<a class="headerlink" href="#exécuter-les-tests" title="Permanent link">&para;</a></h2>
 <h3 id="tous-les-tests">Tous les tests<a class="headerlink" href="#tous-les-tests" title="Permanent link">&para;</a></h3>
@@ -2832,13 +2832,13 @@ produit des dizaines d'échecs qui ressemblent à des régressions et n'en sont 
 d'une autre version de Lua déjà installée par scoop ; le shim <code>lua51</code> permet de garder les deux.</p>
 <hr />
 <h2 id="coverage">Couverture<a class="headerlink" href="#coverage" title="Permanent link">&para;</a></h2>
-<p>Générez un rapport de couverture ligne par ligne avec <a href="https://github.com/lunarmodules/luacov">luacov</a> :</p>
+<p>Générez un rapport de couverture par fichier avec <a href="https://github.com/lunarmodules/luacov">luacov</a> :</p>
 <div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"> </span>--coverage
 <span class="c1"># ou forme courte :</span>
 poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"> </span>-c
 </code></pre></div>
 <p>Après l'exécution, un tableau est affiché avec le nombre de lignes couvertes, manquées et le pourcentage de couverture par module. Le rapport est également écrit dans <code>luacov.report.out</code> à la racine du dépôt.</p>
-<h3 id="prérequis_1">Prérequis<a class="headerlink" href="#prérequis_1" title="Permanent link">&para;</a></h3>
+<h3 id="prérequis-couverture">Prérequis (couverture)<a class="headerlink" href="#prérequis-couverture" title="Permanent link">&para;</a></h3>
 <p>luacov doit être installé via luarocks :</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Linux / DevContainer (luarocks est pré-installé)</span>
 luarocks<span class="w"> </span>install<span class="w"> </span>luacov
@@ -2856,7 +2856,7 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 ├── luaunit.lua         # Framework de test (embarqué)
 ├── dcs_mocks.lua       # Stubs de l&#39;API DCS
 ├── veaf_loader.lua     # Chargeur de modules pour src/scripts/veaf/
-└── test_*.lua          # Un fichier par module (34 fichiers)
+└── test_*.lua          # Un fichier par module (36 fichiers)
 </code></pre></div>
 <h3 id="dcs_mockslua">dcs_mocks.lua<a class="headerlink" href="#dcs_mockslua" title="Permanent link">&para;</a></h3>
 <p>Fournit des stubs minimaux pour l'API globale DCS afin que les modules puissent être chargés via <code>require</code> sans instance DCS active. Espaces de noms simulés :</p>
@@ -2895,7 +2895,7 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 <tbody>
 <tr>
 <td><code>test_veaf.lua</code></td>
-<td>93</td>
+<td>346</td>
 <td>Utilitaires de base, helpers string/table/vecteur, logging</td>
 </tr>
 <tr>
@@ -2905,7 +2905,7 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 </tr>
 <tr>
 <td><code>test_veafInterpreter.lua</code></td>
-<td>9</td>
+<td>12</td>
 <td>Tokeniseur de texte marqueur</td>
 </tr>
 <tr>
@@ -2915,8 +2915,13 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 </tr>
 <tr>
 <td><code>test_veafSecurity.lua</code></td>
-<td>24</td>
+<td>79</td>
 <td>Niveaux de sécurité, gestion des admins</td>
+</tr>
+<tr>
+<td><code>test_veafServerHook.lua</code></td>
+<td>9</td>
+<td>Hook serveur : parsing et dispatch des commandes chat</td>
 </tr>
 <tr>
 <td><code>test_veafNamedPoints.lua</code></td>
@@ -2925,12 +2930,12 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 </tr>
 <tr>
 <td><code>test_veafShortcuts.lua</code></td>
-<td>39</td>
+<td>74</td>
 <td>Enregistrement et résolution des raccourcis</td>
 </tr>
 <tr>
 <td><code>test_veafWeather.lua</code></td>
-<td>65</td>
+<td>107</td>
 <td>Parsing météo, calculs QNH/vent</td>
 </tr>
 <tr>
@@ -2940,37 +2945,42 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 </tr>
 <tr>
 <td><code>test_veafCombatMission.lua</code></td>
-<td>59</td>
+<td>116</td>
 <td>Cycle de vie d'une mission de combat</td>
 </tr>
 <tr>
 <td><code>test_veafAirbases.lua</code></td>
-<td>13</td>
+<td>31</td>
 <td>Recherche de données aérodromes</td>
 </tr>
 <tr>
 <td><code>test_veafCombatZone.lua</code></td>
-<td>51</td>
+<td>138</td>
 <td>Activation de zone, scoring, machine à états</td>
 </tr>
 <tr>
 <td><code>test_veafUnits.lua</code></td>
-<td>34</td>
+<td>67</td>
 <td>Recherche de templates d'unités, filtrage par catégorie</td>
 </tr>
 <tr>
 <td><code>test_veafAssets.lua</code></td>
-<td>19</td>
+<td>26</td>
 <td>Enregistrement d'assets, suivi d'état</td>
 </tr>
 <tr>
+<td><code>test_veafAssist.lua</code></td>
+<td>67</td>
+<td>Assistance pilote : checklists, progression, menus</td>
+</tr>
+<tr>
 <td><code>test_veafRemote.lua</code></td>
-<td>25</td>
+<td>23</td>
 <td>Parsing de commandes distantes</td>
 </tr>
 <tr>
 <td><code>test_veafMarkers.lua</code></td>
-<td>17</td>
+<td>18</td>
 <td>Gestion des événements marqueur</td>
 </tr>
 <tr>
@@ -2980,82 +2990,82 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 </tr>
 <tr>
 <td><code>test_veafSkynetIadsHelper.lua</code></td>
-<td>18</td>
+<td>68</td>
 <td>Helpers d'intégration Skynet IADS</td>
 </tr>
 <tr>
 <td><code>test_veafSkynetIadsMonitor.lua</code></td>
-<td>18</td>
+<td>41</td>
 <td>État du moniteur Skynet</td>
 </tr>
 <tr>
 <td><code>test_veafGroundAI.lua</code></td>
-<td>26</td>
+<td>83</td>
 <td>Flags de comportement IA sol</td>
 </tr>
 <tr>
 <td><code>test_veafRadio.lua</code></td>
-<td>24</td>
+<td>127</td>
 <td>Construction de l'arbre de menus radio</td>
 </tr>
 <tr>
 <td><code>test_veafQraManager.lua</code></td>
-<td>28</td>
+<td>99</td>
 <td>Machine à états QRA, gestion de zones</td>
 </tr>
 <tr>
 <td><code>test_veafAirWaves.lua</code></td>
-<td>30</td>
+<td>135</td>
 <td>Planification de waves, assignation de groupes</td>
 </tr>
 <tr>
 <td><code>test_veafSanctuary.lua</code></td>
-<td>19</td>
+<td>49</td>
 <td>Détection de zone sanctuaire</td>
 </tr>
 <tr>
 <td><code>test_veafMissileGuardian.lua</code></td>
-<td>16</td>
+<td>38</td>
 <td>Logique d'interception de missiles</td>
 </tr>
 <tr>
 <td><code>test_veafCasMission.lua</code></td>
-<td>14</td>
+<td>51</td>
 <td>Génération de packages de menaces CAS</td>
 </tr>
 <tr>
 <td><code>test_veafTransportMission.lua</code></td>
-<td>14</td>
+<td>52</td>
 <td>Setup de mission de transport</td>
 </tr>
 <tr>
 <td><code>test_veafCarrierOperations.lua</code></td>
-<td>16</td>
+<td>47</td>
 <td>Séquence de recovery porte-avions</td>
 </tr>
 <tr>
 <td><code>test_veafMove.lua</code></td>
-<td>19</td>
+<td>78</td>
 <td>Parsing de commandes de déplacement/téléportation</td>
 </tr>
 <tr>
 <td><code>test_veafGrass.lua</code></td>
-<td>12</td>
+<td>16</td>
 <td>Initialisation de pistes en herbe</td>
 </tr>
 <tr>
 <td><code>test_veafSpawn.lua</code></td>
-<td>55</td>
+<td>184</td>
 <td>Commandes spawn, analyse de texte marqueur, conversion fréquence laser</td>
 </tr>
 <tr>
 <td><code>test_veafSpawnParser.lua</code></td>
-<td>45</td>
+<td>70</td>
 <td>Parsing déterministe du texte marqueur de spawn (<code>markTextAnalysis</code>)</td>
 </tr>
 <tr>
 <td><code>test_veafCommands.lua</code></td>
-<td>8</td>
+<td>17</td>
 <td>Registre de commandes : ordonnancement par priorité et dispatch</td>
 </tr>
 <tr>
@@ -3065,7 +3075,7 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 </tr>
 </tbody>
 </table>
-<p><strong>Modules non couverts</strong> (design-time ou externes uniquement) :</p>
+<p><strong>Module non couvert</strong> :</p>
 <table>
 <thead>
 <tr>
@@ -3075,36 +3085,8 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 </thead>
 <tbody>
 <tr>
-<td><code>veafMissionEditor.lua</code></td>
-<td>Opère sur des fichiers ZIP <code>.miz</code> ; testé via les tests d'intégration Python</td>
-</tr>
-<tr>
-<td><code>veafMissionFlightPlanEditor.lua</code></td>
-<td>idem</td>
-</tr>
-<tr>
-<td><code>veafMissionNormalizer.lua</code></td>
-<td>idem</td>
-</tr>
-<tr>
-<td><code>veafMissionRadioPresetsEditor.lua</code></td>
-<td>idem</td>
-</tr>
-<tr>
-<td><code>veafMissionTriggerInjector.lua</code></td>
-<td>idem</td>
-</tr>
-<tr>
-<td><code>veafSpawnableAircraftsEditor.lua</code></td>
-<td>idem</td>
-</tr>
-<tr>
 <td><code>dcsUnits.lua</code></td>
 <td>Fichier de données pur ; exercé indirectement via <code>test_veafUnits.lua</code></td>
-</tr>
-<tr>
-<td><code>veaf-scripts-trace.lua</code></td>
-<td>Wrapper config/include sans logique testable</td>
 </tr>
 </tbody>
 </table>
@@ -3164,20 +3146,20 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 4. Échec si une violation est détectée</p>
 <p><strong><code>stylua-check</code></strong> — Ubuntu latest
 1. Checkout du dépôt
-2. Exécution de <code>JohnnyMorganz/stylua-action@v4</code> avec la version <code>2.4.0</code>
-3. Vérification de <code>src/scripts/veaf/</code> contre <code>.stylua.toml</code>
+2. Exécution de <code>JohnnyMorganz/stylua-action@v5</code> avec la version <code>2.4.0</code>
+3. Vérification de <code>src/scripts/veaf/</code> <strong>et</strong> <code>test/lua/</code> contre <code>.stylua.toml</code>
 4. Échec si un fichier n'est pas formaté</p>
 <p><strong><code>lua-coverage</code></strong> — Ubuntu latest
 1. Checkout du dépôt
 2. Installation de <code>lua5.1</code> + <code>luacov</code> via LuaRocks, puis de Poetry et des dépendances
-3. Exécution de <code>poetry run test-lua --cov-fail-under 67</code> (couverture ligne via luacov)
-4. Échec si la couverture passe sous le plancher de cliquet (le nombre ne fait que monter)</p>
+3. Exécution de <code>poetry run test-lua --cov-fail-under 72</code> (couverture ligne via luacov)
+4. Échec si la couverture passe sous le plancher à cliquet (le nombre ne fait que monter)</p>
 <h3 id="exécuter-stylua-localement">Exécuter StyLua localement<a class="headerlink" href="#exécuter-stylua-localement" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c"># Vérification seule (pas d&#39;écriture)</span>
-<span class="n">stylua</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
+<span class="n">stylua</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
 
 <span class="c"># Auto-formatage</span>
-<span class="n">stylua</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
+<span class="n">stylua</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
 </code></pre></div>
 <h3 id="exécuter-luacheck-localement">Exécuter Luacheck localement<a class="headerlink" href="#exécuter-luacheck-localement" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">luacheck</span> <span class="p">-</span><span class="n">-config</span> <span class="p">.</span><span class="n">luacheckrc</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>

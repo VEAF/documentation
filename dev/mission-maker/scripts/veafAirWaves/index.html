@@ -2726,7 +2726,7 @@
 
 
 <h1 id="veafairwaves--attaques-aériennes-par-vagues">veafAirWaves — Attaques aériennes par vagues<a class="headerlink" href="#veafairwaves--attaques-aériennes-par-vagues" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>AIRWAVES</code> | <strong>Version:</strong> 1.8.x | <strong>Fichier:</strong> <code>veafAirWaves.lua</code></p>
+<p><strong>Module ID:</strong> <code>AIRWAVES</code> | <strong>Fichier:</strong> <code>veafAirWaves.lua</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
 <p>Définit des zones qui font apparaître des vagues récurrentes d'aéronefs IA. Quand le nombre requis de joueurs humains entre dans la zone, la première vague est lancée. À chaque vague détruite, la suivante apparaît (avec des délais optionnels). Supporte la mise à l'échelle selon le nombre de joueurs, la réinitialisation à la mort d'un joueur et des messages radio personnalisés.</p>
@@ -2769,10 +2769,10 @@
 <span class="w">        </span><span class="nt">delay_between_waves</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w">         </span><span class="c1"># délai fixe entre les vagues (ignoré si min/max définis)</span>
 <span class="w">        </span><span class="nt">min_seconds_between_waves</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">    </span><span class="c1"># délai inter-vague aléatoire minimum</span>
 <span class="w">        </span><span class="nt">max_seconds_between_waves</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w">   </span><span class="c1"># délai inter-vague aléatoire maximum</span>
-<span class="w">        </span><span class="nt">max_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">          </span><span class="c1"># altitude maximale en pieds — les unités IA au-dessus sont supprimées</span>
-<span class="w">        </span><span class="nt">min_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">           </span><span class="c1"># altitude minimale en pieds</span>
+<span class="w">        </span><span class="nt">max_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">          </span><span class="c1"># plafond de détection des joueurs en pieds — un joueur au-dessus n&#39;est pas compté dans la zone</span>
+<span class="w">        </span><span class="nt">min_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">           </span><span class="c1"># plancher de détection des joueurs en pieds</span>
 <span class="w">        </span><span class="nt">max_seconds_outside_ia</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">     </span><span class="c1"># secondes avant de considérer une unité IA hors zone comme perdue</span>
-<span class="w">        </span><span class="nt">minimum_life_percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w">       </span><span class="c1"># supprimer l&#39;unité IA en dessous de cette fraction de vie (0–1)</span>
+<span class="w">        </span><span class="nt">minimum_life_percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1"># pourcentage de vie (0–100) sous lequel une unité IA est considérée comme détruite (défaut : 0)</span>
 <span class="w">        </span><span class="nt">reset_when_dying</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># réinitialiser toutes les vagues quand un joueur meurt</span>
 <span class="w">        </span><span class="nt">message_start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zone</span><span class="nv"> </span><span class="s">active</span><span class="nv"> </span><span class="s">!&quot;</span><span class="w">  </span><span class="c1"># message personnalisé de début de zone (optionnel)</span>
 <span class="w">        </span><span class="nt">message_wait_for_humans</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;En</span><span class="nv"> </span><span class="s">attente</span><span class="nv"> </span><span class="s">des</span><span class="nv"> </span><span class="s">joueurs...&quot;</span>
@@ -2895,13 +2895,13 @@
 <td><code>max_altitude_ft</code></td>
 <td>entier</td>
 <td>—</td>
-<td>Supprimer les unités IA au-dessus de cette altitude</td>
+<td>Plafond de détection des joueurs : un joueur au-dessus n'est pas compté dans la zone</td>
 </tr>
 <tr>
 <td><code>min_altitude_ft</code></td>
 <td>entier</td>
 <td>—</td>
-<td>Supprimer les unités IA en dessous de cette altitude</td>
+<td>Plancher de détection des joueurs : un joueur en dessous n'est pas compté dans la zone</td>
 </tr>
 <tr>
 <td><code>max_seconds_outside_ia</code></td>
@@ -2912,8 +2912,8 @@
 <tr>
 <td><code>minimum_life_percent</code></td>
 <td>nombre</td>
-<td>—</td>
-<td>Supprimer l'unité IA quand sa vie passe sous cette fraction</td>
+<td><code>0</code></td>
+<td>Pourcentage de vie (0–100, comparé à <code>100 × vie / vie initiale</code>) sous lequel une unité IA est considérée comme détruite</td>
 </tr>
 </tbody>
 </table>
@@ -3089,6 +3089,10 @@
 <tr>
 <td><code>:setMaximumAltitudeInFeet(n)</code></td>
 <td>Plafond de détection des joueurs (en pieds)</td>
+</tr>
+<tr>
+<td><code>:setMinimumLifeForAiInPercent(n)</code></td>
+<td>Pourcentage de vie (0–100) sous lequel une unité IA est considérée comme détruite (défaut : 0)</td>
 </tr>
 <tr>
 <td><code>:setResetWhenDying(bool)</code></td>

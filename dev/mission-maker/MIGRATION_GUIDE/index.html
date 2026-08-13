@@ -3137,7 +3137,7 @@
 <p>Créez un nouveau dossier vide pour votre projet de mission v6, puis copiez le dossier <code>src/</code> de votre mission v5 dedans. Partir d'un dossier neuf évite les interférences avec les anciens fichiers v5 et conserve une seule copie propre de vos sources :</p>
 <div class="highlight"><pre><span></span><code><span class="c"># Adaptez ces chemins à votre configuration</span>
 <span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="s2">&quot;C:\chemin\vers\ma-nouvelle-mission-v6&quot;</span>
-<span class="nb">Copy-Item</span> <span class="n">-Recurse</span> <span class="s2">&quot;C:\chemin\vers\mission-v5\src&quot;</span> <span class="s2">&quot;C:\chemin\vers\ma-nouvelle-mission-v6\\&quot;</span>
+<span class="nb">Copy-Item</span> <span class="n">-Recurse</span> <span class="s2">&quot;C:\chemin\vers\mission-v5\src&quot;</span> <span class="s2">&quot;C:\chemin\vers\ma-nouvelle-mission-v6&quot;</span>
 <span class="nb">Set-Location</span> <span class="s2">&quot;C:\chemin\vers\ma-nouvelle-mission-v6&quot;</span>
 </code></pre></div>
 <blockquote>
@@ -3170,7 +3170,7 @@
 <p><strong>Si vous n'avez besoin de migrer que <code>missionConfig.lua</code></strong> sans convertir les fichiers pipeline, utilisez <code>veaf-tools.exe convert migrate-config src\scripts\missionConfig.lua</code> directement.</p>
 </blockquote>
 <h4 id="4-vérifier-les-patterns-v5-supprimés">4. Vérifier les patterns v5 supprimés<a class="headerlink" href="#4-vérifier-les-patterns-v5-supprimés" title="Permanent link">&para;</a></h4>
-<p>Certaines constructions v5 n'existent plus ou ont été renommées :</p>
+<p>Ce que devient chaque construction v5 — certaines ont été renommées, d'autres sont inchangées et n'ont donc rien à migrer :</p>
 <table>
 <thead>
 <tr>
@@ -3181,7 +3181,7 @@
 <tbody>
 <tr>
 <td><code>veaf.SecurityDisabled = true</code></td>
-<td><code>veafSecurity.SecurityDisabled = true</code></td>
+<td>Les <strong>deux</strong> orthographes fonctionnent : <code>veafSecurity.SecurityDisabled</code> est le nom recommandé, <code>veaf.SecurityDisabled</code> reste honoré. Rien à changer dans l'urgence</td>
 </tr>
 <tr>
 <td><code>veafSpawn.Keyphrase</code> défini au niveau global</td>
@@ -3241,7 +3241,7 @@
 </code></pre></div>
 <p>Puis copiez votre <code>.miz</code> sous <code>mission.miz</code> et exécutez :</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">extract</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">.</span>
-<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="n">mission</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <h4 id="5-configurer-les-modules-à-activer">5. Configurer les modules à activer<a class="headerlink" href="#5-configurer-les-modules-à-activer" title="Permanent link">&para;</a></h4>
 <p>Éditez <code>mission.yaml</code> pour activer les modules souhaités. Un ensemble de modules courants est actif par défaut — radio, spawn, raccourcis, CAS, transport, météo… — à ajuster selon vos besoins :</p>
@@ -3260,7 +3260,7 @@
 <span class="w">  </span><span class="c1"># CARRIER:</span>
 <span class="w">  </span><span class="c1">#   enabled: true</span>
 </code></pre></div>
-<p>Pour du Lua personnalisé (appels de modules avancés, aliases, etc.), éditez <code>src/scripts/mission-script.lua</code>.</p>
+<p>Pour du Lua personnalisé (appels de modules avancés, alias, etc.), éditez <code>src/scripts/mission-script.lua</code>.</p>
 <p>Consultez la <a href="../../MISSION_YAML_REFERENCE/">référence YAML</a> et les guides de scripts individuels dans <a href="../scripts/">scripts/</a> pour toutes les options.</p>
 <h4 id="6-conserver-votre-contenu-de-mission-existant">6. Conserver votre contenu de mission existant<a class="headerlink" href="#6-conserver-votre-contenu-de-mission-existant" title="Permanent link">&para;</a></h4>
 <p>Tout ce que vous avez construit dans l'éditeur de missions DCS (unités, triggers, waypoints, zones) est préservé. VEAF ne supprime ni n'écrase le contenu de la mission — il se contente de :
@@ -3270,7 +3270,7 @@
 <p>Vos triggers personnalisés, statiques et groupes sont intacts.</p>
 <h4 id="7-tester-et-itérer">7. Tester et itérer<a class="headerlink" href="#7-tester-et-itérer" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="c"># Rebuilder après chaque changement de config</span>
-<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="n">mission</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
 </code></pre></div>
 <p>Chaque build produit un fichier <code>.miz</code> daté (ex. <code>mission_20260516.miz</code>). Ouvrez-le dans DCS et testez.</p>
 <hr />
@@ -3284,9 +3284,9 @@
 │   │   └── warehouses
 │   ├── scripts/
 │   │   ├── mission-script.lua  ← code Lua personnalisé (à commiter)
-│   │   └── veafDynamicConfig.lua   ← config de slots dynamiques (optionnel)
+│   │   └── veafDynamicConfig.lua   ← config du chargement dynamique des scripts (dev, optionnel)
 │   ├── presets.yaml            ← config des préréglages radio (optionnel)
-│   ├── spawnables.yaml         ← groupes spawnable personnalisés (optionnel)
+│   ├── spawnables.yaml         ← groupes spawnables personnalisés (optionnel)
 │   └── waypoints.yaml          ← waypoints personnalisés (optionnel)
 ├── mission.yaml                ← config des modules et du pipeline (à commiter)
 ├── published/                  ← installé par veaf-tools-updater (NE PAS commiter)
@@ -3304,7 +3304,7 @@ __pycache__/
 </code></pre></div>
 <hr />
 <h2 id="référence-mission-scriptlua">Référence mission-script.lua<a class="headerlink" href="#référence-mission-scriptlua" title="Permanent link">&para;</a></h2>
-<p><code>mission-script.lua</code> est un fichier optionnel pour du code Lua personnalisé exécuté après l'initialisation de tous les modules VEAF. Utilisez-le pour la configuration avancée qui ne peut pas encore s'exprimer dans <code>mission.yaml</code> — aliases personnalisés, surcharges de paramètres de modules, assets, etc.</p>
+<p><code>mission-script.lua</code> est un fichier optionnel pour du code Lua personnalisé exécuté après l'initialisation de tous les modules VEAF. Utilisez-le pour la configuration avancée qui ne peut pas encore s'exprimer dans <code>mission.yaml</code> — alias personnalisés, surcharges de paramètres de modules, assets, etc.</p>
 <p>Exemple minimal :</p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- Optionnel : surcharger un paramètre de module</span>
 <span class="nv">veafSpawn</span><span class="p">.</span><span class="py">SpawnKeyphrase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;_spawn&quot;</span>
@@ -3333,8 +3333,7 @@ couvrent plusieurs bandes, par exemple).</p>
 connaît pas au lieu de l'ignorer en silence, et qu'il nomme la clé fautive, ce qu'il y a trouvé et
 ce qu'il attendait.</p>
 <h3 id="le-trigger-veaf-scripts-loader-apparaît-deux-fois">Le trigger "VEAF scripts loader" apparaît deux fois<a class="headerlink" href="#le-trigger-veaf-scripts-loader-apparaît-deux-fois" title="Permanent link">&para;</a></h3>
-<p>Vous avez à la fois un ancien trigger <code>DO SCRIPT FILE</code> manuel et le nouveau trigger auto-injecté v6. Supprimez le trigger manuel de l'éditeur de missions DCS (ouvrez le <code>.miz</code>, éditez les triggers, supprimez l'ancien, enregistrez), puis ré-extrayez et rebuildez.</p>
-<p>Alternativement, utilisez <code>--migrate-from-v5</code> sur le build pour que les anciens triggers soient supprimés automatiquement (c'est le comportement par défaut).</p>
+<p>Un ancien trigger <code>DO SCRIPT FILE</code> manuel coexiste avec le trigger auto-injecté v6. <code>veaf-tools mission build</code> supprime les anciens triggers v5 automatiquement (option <code>--migrate-from-v5</code>, active par défaut) — relancer le build suffit. Une suppression manuelle dans l'éditeur DCS n'est nécessaire que si vous avez explicitement désactivé cette migration (<code>--no-migrate-from-v5</code>).</p>
 <h3 id="les-menus-radio-napparaissent-pas">Les menus radio n'apparaissent pas<a class="headerlink" href="#les-menus-radio-napparaissent-pas" title="Permanent link">&para;</a></h3>
 <p>Vérifiez que <code>RADIO</code> est activé dans <code>mission.yaml</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -3352,7 +3351,7 @@ ce qu'il attendait.</p>
 <h3 id="lire-les-journaux">Lire les journaux<a class="headerlink" href="#lire-les-journaux" title="Permanent link">&para;</a></h3>
 <p>Tous les messages VEAF sont écrits dans <code>Saved Games\DCS\Logs\dcs.log</code>. Pour les trouver rapidement :</p>
 <ul>
-<li><strong><a href="https://klogg.filimonov.dev/">Klogg</a></strong> (recommandé) : ouvrez <code>dcs.log</code>, utilisez la barre de recherche pour filtrer sur <code>VEAF</code>. Un profil de coloration VEAF est livré avec le dépôt, dans <code>tools/klogg/veaf.conf</code> — chargez-le via Fichier → Highlighters.</li>
+<li><strong><a href="https://klogg.filimonov.dev/">Klogg</a></strong> (recommandé) : ouvrez <code>dcs.log</code>, utilisez la barre de recherche pour filtrer sur <code>VEAF</code>. Un profil de coloration VEAF est livré avec le dépôt, dans <code>tools/klogg/veaf.conf</code> — chargez-le via <em>Fichier &gt; Importer les surligneurs…</em>.</li>
 <li><strong>Notepad++</strong> : ouvrez <code>dcs.log</code> → Recherche → Rechercher (<code>Ctrl+F</code>) → cherchez <code>VEAF</code>.</li>
 </ul>
 <h3 id="le-build-échoue-avec-veaf-scripts-file-not-found">Le build échoue avec "VEAF scripts file not found"<a class="headerlink" href="#le-build-échoue-avec-veaf-scripts-file-not-found" title="Permanent link">&para;</a></h3>

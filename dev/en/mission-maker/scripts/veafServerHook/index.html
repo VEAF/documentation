@@ -2316,13 +2316,14 @@
 
 
 <h1 id="veafserverhook--veaf-server-hook">veafServerHook — VEAF server hook<a class="headerlink" href="#veafserverhook--veaf-server-hook" title="Permanent link">&para;</a></h1>
-<p><strong>File:</strong> <code>VEAF-Server-hook.lua</code> | <strong>Version:</strong> 2.7.x | <strong>Location:</strong> <code>Saved Games/&lt;server&gt;/Scripts/Hooks/</code></p>
+<p><strong>File:</strong> <code>VEAF-Server-hook.lua</code> | <strong>Location:</strong> <code>Saved Games/&lt;server&gt;/Scripts/Hooks/</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>A DCS hook (GameGUI environment) running on a dedicated server. It:</p>
 <ul>
-<li>listens to chat and runs VEAF server commands (<code>/secu login</code>, <code>/send</code>, <code>/pause</code>…), relayed to
-  the mission through <code>veafRemote</code> / <code>veafSecurity</code>;</li>
+<li>listens to chat, runs its own server commands (<code>/send</code>, <code>/pause</code>, <code>/restart</code>…) and relays any
+  other <code>/module</code> command (<code>/secu elevate</code>, <code>/alias</code>…) to the mission through
+  <code>veafRemote</code> / <code>veafSecurity</code>;</li>
 <li>loads the pilots list (permission level per UCID);</li>
 <li>optionally restarts the server when idle (opt-in);</li>
 <li>optionally pushes telemetry to an API server (opt-in).</li>
@@ -2389,11 +2390,11 @@ goes into <code>VEAF-specific-server-hook.lua</code>:</p>
 </tr>
 <tr>
 <td style="text-align: right;">1</td>
-<td>unlock commands (<code>/secu login</code>), spawn, missions/zones</td>
+<td>relay VEAF commands to the mission (<code>/alias</code>, <code>/atis</code>, <code>/secu elevate</code>… — each module then applies its own check)</td>
 </tr>
 <tr>
 <td style="text-align: right;">10</td>
-<td><code>/restart</code>, <code>/halt</code> (if <code>enableAutoRestart</code>)</td>
+<td><code>/secu login</code>, <code>/secu logout</code>, <code>/pause</code>, and <code>/restart</code>, <code>/halt</code> (if <code>enableAutoRestart</code>)</td>
 </tr>
 <tr>
 <td style="text-align: right;">30</td>

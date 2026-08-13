@@ -2482,7 +2482,7 @@
 
 
 <h1 id="veafcasmission--cas-training-generator">veafCasMission — CAS Training Generator<a class="headerlink" href="#veafcasmission--cas-training-generator" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>CASMISSION</code> | <strong>Version:</strong> 1.15.x | <strong>File:</strong> <code>veafCasMission.lua</code></p>
+<p><strong>Module ID:</strong> <code>CASMISSION</code> | <strong>File:</strong> <code>veafCasMission.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Generates on-demand Close Air Support training zones with configurable size, armour, and air defence threat packages. Players can create, mark, skip, and clean up CAS targets from the F10 menu or via map marker commands.</p>
@@ -2522,7 +2522,7 @@
 <span class="nt">combat_missions</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Strike-Alpha&quot;</span><span class="w">          </span><span class="c1"># REQUIRED — internal identifier</span>
 <span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Strike</span><span class="nv"> </span><span class="s">Alpha&quot;</span><span class="w"> </span><span class="c1"># label in the F10 menu</span>
-<span class="w">    </span><span class="nt">secured</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                </span><span class="c1"># true = requires /secu to activate</span>
+<span class="w">    </span><span class="nt">secured</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                </span><span class="c1"># true = activation restricted to authorised pilots (see veafSecurity)</span>
 <span class="w">    </span><span class="nt">radio_menu_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># show in F10 menu</span>
 <span class="w">    </span><span class="nt">briefing</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <span class="w">      </span><span class="no">Destroy the armoured column in grid BQ-123.</span>
@@ -2614,7 +2614,7 @@
 <td>boolean</td>
 <td><code>false</code></td>
 <td>No</td>
-<td>Requires <code>/secu</code> security token to activate</td>
+<td>Activation is restricted to authorised pilots — on the F10 menu the group acts at the level of its lowest-graded occupant (see <a href="../veafSecurity/">veafSecurity</a>)</td>
 </tr>
 <tr>
 <td><code>radio_menu_enabled</code></td>
@@ -2735,6 +2735,7 @@ _cas, side blue
 <tr>
 <th>Option</th>
 <th>Range</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -2742,28 +2743,50 @@ _cas, side blue
 <tr>
 <td><code>size</code></td>
 <td>1–5</td>
+<td>1</td>
 <td>Number of target units</td>
 </tr>
 <tr>
 <td><code>defense</code></td>
 <td>0–5</td>
+<td>1</td>
 <td>AA defence level (0=none, 5=heavy SAM)</td>
 </tr>
 <tr>
 <td><code>armor</code></td>
 <td>0–5</td>
+<td>1</td>
 <td>Armour level (0=infantry, 5=heavy MBT)</td>
+</tr>
+<tr>
+<td><code>spacing</code></td>
+<td>1–5</td>
+<td>1</td>
+<td>Spacing between the group's units</td>
 </tr>
 <tr>
 <td><code>side</code></td>
 <td>blue/red</td>
+<td><em>(marker coalition)</em></td>
 <td>Coalition of targets</td>
+</tr>
+<tr>
+<td><code>disperse</code></td>
+<td>seconds</td>
+<td>—</td>
+<td>Targets disperse when attacked; a bare <code>disperse</code> = 15 seconds</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>text</td>
+<td>—</td>
+<td>Security password (see <a href="../veafSecurity/">veafSecurity</a>)</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
-<p>The <strong>CAS MISSION</strong> submenu only appears once a mission has been generated (via the <code>_cas</code> marker). It then exposes:</p>
+<p>The <strong>CAS MISSION</strong> submenu is created as soon as the module initialises, with a <strong>HELP</strong> entry. Once a mission has been generated (via the <code>_cas</code> marker), it additionally exposes:</p>
 <ul>
 <li><strong>Target information</strong> — display target position, composition, and status</li>
 <li><strong>Skip current objective</strong> — abandon the current zone and generate a new one (secured command)</li>

@@ -2726,7 +2726,7 @@
 
 
 <h1 id="veafairwaves--wave-based-air-attacks">veafAirWaves — Wave-Based Air Attacks<a class="headerlink" href="#veafairwaves--wave-based-air-attacks" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>AIRWAVES</code> | <strong>Version:</strong> 1.8.x | <strong>File:</strong> <code>veafAirWaves.lua</code></p>
+<p><strong>Module ID:</strong> <code>AIRWAVES</code> | <strong>File:</strong> <code>veafAirWaves.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Defines zones that spawn recurring waves of AI aircraft. When the required number of human players enters the zone, the first wave is launched. As each wave is destroyed, the next wave spawns (with optional delays). Supports player-count scaling, reset on player death, and custom radio messages.</p>
@@ -2769,10 +2769,10 @@
 <span class="w">        </span><span class="nt">delay_between_waves</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w">         </span><span class="c1"># fixed delay between waves (ignored if min/max set)</span>
 <span class="w">        </span><span class="nt">min_seconds_between_waves</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">    </span><span class="c1"># minimum inter-wave delay (random range)</span>
 <span class="w">        </span><span class="nt">max_seconds_between_waves</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w">   </span><span class="c1"># maximum inter-wave delay (random range)</span>
-<span class="w">        </span><span class="nt">max_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">          </span><span class="c1"># AI units above this altitude are removed</span>
-<span class="w">        </span><span class="nt">min_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">           </span><span class="c1"># AI units below this altitude are removed</span>
+<span class="w">        </span><span class="nt">max_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">          </span><span class="c1"># player detection ceiling in feet — a player above it is not counted in the zone</span>
+<span class="w">        </span><span class="nt">min_altitude_ft</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">           </span><span class="c1"># player detection floor in feet</span>
 <span class="w">        </span><span class="nt">max_seconds_outside_ia</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">     </span><span class="c1"># seconds before an AI group is considered lost outside zone</span>
-<span class="w">        </span><span class="nt">minimum_life_percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w">       </span><span class="c1"># AI unit removed when below this life fraction (0–1)</span>
+<span class="w">        </span><span class="nt">minimum_life_percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1"># life percentage (0–100) below which an AI unit counts as destroyed (default: 0)</span>
 <span class="w">        </span><span class="nt">reset_when_dying</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># reset all waves when a player dies</span>
 <span class="w">        </span><span class="nt">message_start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zone</span><span class="nv"> </span><span class="s">active!&quot;</span><span class="w">   </span><span class="c1"># custom zone-start message (optional)</span>
 <span class="w">        </span><span class="nt">message_wait_for_humans</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Waiting</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">players...&quot;</span>
@@ -2895,13 +2895,13 @@
 <td><code>max_altitude_ft</code></td>
 <td>integer</td>
 <td>—</td>
-<td>Remove AI units above this altitude</td>
+<td>Player detection ceiling: a player above it is not counted in the zone</td>
 </tr>
 <tr>
 <td><code>min_altitude_ft</code></td>
 <td>integer</td>
 <td>—</td>
-<td>Remove AI units below this altitude</td>
+<td>Player detection floor: a player below it is not counted in the zone</td>
 </tr>
 <tr>
 <td><code>max_seconds_outside_ia</code></td>
@@ -2912,8 +2912,8 @@
 <tr>
 <td><code>minimum_life_percent</code></td>
 <td>number</td>
-<td>—</td>
-<td>Remove AI unit when life drops below this fraction</td>
+<td><code>0</code></td>
+<td>Life percentage (0–100, compared to <code>100 × life / initial life</code>) below which an AI unit counts as destroyed</td>
 </tr>
 </tbody>
 </table>
@@ -3089,6 +3089,10 @@
 <tr>
 <td><code>:setMaximumAltitudeInFeet(n)</code></td>
 <td>Player detection ceiling (in feet)</td>
+</tr>
+<tr>
+<td><code>:setMinimumLifeForAiInPercent(n)</code></td>
+<td>Life percentage (0–100) below which an AI unit counts as destroyed (default: 0)</td>
 </tr>
 <tr>
 <td><code>:setResetWhenDying(bool)</code></td>

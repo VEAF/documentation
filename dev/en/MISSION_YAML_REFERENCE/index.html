@@ -3062,7 +3062,7 @@
 <p>These files are <strong>not</strong> loaded at DCS runtime — they are consumed by <code>veaf-tools mission build</code> and then compiled into the <code>.miz</code>.</p>
 <h3 id="category-b--runtime-module-configuration-this-file">Category B — Runtime module configuration (this file)<a class="headerlink" href="#category-b--runtime-module-configuration-this-file" title="Permanent link">&para;</a></h3>
 <p><code>mission.yaml</code> itself configures <strong>how VEAF Lua modules behave at DCS runtime</strong>. It is translated at build time into <code>veaf-config.lua</code>, which is injected into the mission and executed when DCS loads the mission.</p>
-<p>Sections such as <code>modules:</code>, <code>qra:</code>, <code>assets:</code>, and <code>shortcuts:</code> all describe runtime module behaviour.</p>
+<p>The <code>modules:</code> section describes runtime module behaviour (QRA, assets or shortcuts configuration lives under the relevant module, e.g. <code>modules.QRA</code>).</p>
 <div class="highlight"><pre><span></span><code>mission folder/
 ├── mission.yaml          ← runtime module config (THIS FILE)
 │   └── pipeline:
@@ -3271,7 +3271,7 @@ and know what you are getting. The VEAF Foothold Afghanistan uses <code>OAIX</co
 behind) — a deliberate choice, not an oversight.</p>
 <hr />
 <h3 id="security"><code>security:</code><a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
-<p>Controls the VEAF security system. By default, security is disabled (all players have full access).</p>
+<p>Controls the VEAF security system. <strong>Security is active by default</strong> (<code>veaf.SecurityDisabled = false</code> in <code>veaf.lua</code>): with no <code>security:</code> block nothing is emitted and the sensitive commands require a pilot level or a password. <code>disabled: true</code> turns it off for the whole mission.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                   </span><span class="c1"># false = a password is required</span>
 <span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span><span class="w">                  </span><span class="c1"># SHA-1 hashes granting player/JTF access</span>
@@ -3293,7 +3293,7 @@ behind) — a deliberate choice, not an oversight.</p>
 <tr>
 <td><code>disabled</code></td>
 <td>boolean</td>
-<td><code>true</code></td>
+<td><code>false</code></td>
 <td>No</td>
 <td><code>true</code> = no password required</td>
 </tr>
@@ -3316,8 +3316,7 @@ behind) — a deliberate choice, not an oversight.</p>
 <blockquote>
 <p><strong>SHA-1, not SHA-256.</strong> <code>veafSecurity._checkPassword</code> hashes what the player types with
 <code>sha1.hex(password)</code> and looks it up in the table, so a SHA-256 hash never matches and the
-password silently never works. This page said SHA-256 until it was corrected — check any
-existing mission whose password appears to be ignored.</p>
+password silently never works.</p>
 <p>To generate one: <code>echo -n "yourpassword" | sha1sum</code> (Linux/macOS), or
 <code>python -c "import hashlib,sys; print(hashlib.sha1(sys.argv[1].encode()).hexdigest())" yourpassword</code>.</p>
 </blockquote>
@@ -3549,7 +3548,7 @@ existing mission whose password appears to be ignored.</p>
 <span class="w">    </span><span class="nt">init</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">create_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># no VEAF radio menu; commands via markers only</span>
 </code></pre></div>
-<p><strong>Community scripts</strong> are listed in the same block, using their uppercase IDs. When a script is absent from <code>modules:</code>, it keeps its default state (included). Set it to <code>false</code> to exclude it:</p>
+<p><strong>Community scripts</strong> are listed in the same block, using their IDs (case does not matter: <code>CTLD:</code> and <code>ctld:</code> are equivalent). When a script is absent from <code>modules:</code>, it keeps its default state (included). Set it to <code>false</code> to exclude it — except <code>MIST</code>, a hard dependency of the VEAF scripts: an explicit <code>MIST: false</code> is overridden with a build warning and the script is injected anyway:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -3565,7 +3564,7 @@ existing mission whose password appears to be ignored.</p>
 <tbody>
 <tr>
 <td><code>MIST</code></td>
-<td>MIST (Mission Scripting Tools)</td>
+<td>MIST (Mission Scripting Tools) — <strong>mandatory, cannot be disabled</strong></td>
 </tr>
 <tr>
 <td><code>STTS</code></td>
@@ -3598,7 +3597,7 @@ existing mission whose password appears to be ignored.</p>
 </tbody>
 </table>
 <blockquote>
-<p>An unknown identifier triggers a build warning and is ignored.</p>
+<p>An unknown identifier in <code>modules:</code> is a <strong>blocking error</strong>: the build stops with a message naming the offending key.</p>
 <p><strong><code>TUM</code> (The Universal Mission) — mission prerequisite.</strong> TUM is a self-contained PvE mission generator (third-party community script) that takes over the whole map at start-up: it makes every airbase neutral, then assigns zones and airfields to the coalitions based on the <strong>trigger zones</strong> defined in the mission editor. If you enable <code>TUM: true</code> on a mission that was not authored for TUM, the script aborts at start-up with an error such as:</p>
 <p><code>Coalition red has no territory zones and/or controls no airfields. Please add zone with a name starting with REDFOR…</code></p>
 <p>This is <strong>not a VEAF bug</strong>: it is a TUM design prerequisite. To use it, create in the mission editor a trigger zone whose name starts with <code>BLUFOR</code> and another starting with <code>REDFOR</code>, each containing <strong>at least one airbase</strong>, plus at least one other mission zone. Only enable <code>TUM</code> for a TUM-style mission.</p>
@@ -3708,6 +3707,36 @@ existing mission whose password appears to be ignored.</p>
 <td><code>MISSILEGUARDIAN</code></td>
 <td>veafMissileGuardian</td>
 <td><a href="../mission-maker/scripts/veafMissileGuardian/">veafMissileGuardian</a></td>
+</tr>
+<tr>
+<td><code>TRANSPORTMISSION</code></td>
+<td>veafTransportMission</td>
+<td><a href="../mission-maker/scripts/veafTransportMission/">veafTransportMission</a></td>
+</tr>
+<tr>
+<td><code>AIRBASES</code></td>
+<td>veafAirbases</td>
+<td><a href="../mission-maker/scripts/veafAirbases/">veafAirbases</a></td>
+</tr>
+<tr>
+<td><code>GROUNDAI</code></td>
+<td>veafGroundAI</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>REMOTE</code></td>
+<td>veafRemote</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SKYNET_MONITOR</code></td>
+<td>veafSkynetMonitor</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>I18N</code></td>
+<td>veafI18n</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
@@ -3859,7 +3888,7 @@ adopted mission reproduces the upstream staging without you having to notice it.
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">presets</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># default true — inject radio presets; false = disable the whole step</span>
-<span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># default true — when false, no kneeboard PNG (KNEEBOARD/IMAGES/presets-*.png) is generated</span>
+<span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># default true — when false, no kneeboard PNG (KNEEBOARD/&lt;type&gt;/IMAGES/presets[-&lt;coalition&gt;].png) is generated</span>
 </code></pre></div>
 <hr />
 <h3 id="build"><code>build:</code><a class="headerlink" href="#build" title="Permanent link">&para;</a></h3>

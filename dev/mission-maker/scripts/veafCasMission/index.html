@@ -2482,7 +2482,7 @@
 
 
 <h1 id="veafcasmission--générateur-dentraînement-cas">veafCasMission — Générateur d'entraînement CAS<a class="headerlink" href="#veafcasmission--générateur-dentraînement-cas" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>CASMISSION</code> | <strong>Version:</strong> 1.15.x | <strong>Fichier:</strong> <code>veafCasMission.lua</code></p>
+<p><strong>Module ID:</strong> <code>CASMISSION</code> | <strong>Fichier:</strong> <code>veafCasMission.lua</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
 <p>Génère à la demande des zones d'entraînement Close Air Support (CAS) avec des packages de taille, blindage et défense aérienne configurables. Les joueurs peuvent créer, marquer, passer et nettoyer les cibles CAS depuis le menu F10 ou via des commandes de marqueur.</p>
@@ -2522,7 +2522,7 @@
 <span class="nt">combat_missions</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Frappe-Alpha&quot;</span><span class="w">          </span><span class="c1"># REQUIS — identifiant interne</span>
 <span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Frappe</span><span class="nv"> </span><span class="s">Alpha&quot;</span><span class="w"> </span><span class="c1"># libellé dans le menu F10</span>
-<span class="w">    </span><span class="nt">secured</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                </span><span class="c1"># true = nécessite /secu pour activer</span>
+<span class="w">    </span><span class="nt">secured</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                </span><span class="c1"># true = activation réservée aux pilotes autorisés (voir veafSecurity)</span>
 <span class="w">    </span><span class="nt">radio_menu_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># afficher dans le menu F10</span>
 <span class="w">    </span><span class="nt">briefing</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <span class="w">      </span><span class="no">Détruire la colonne blindée dans le carré BQ-123.</span>
@@ -2614,7 +2614,7 @@
 <td>booléen</td>
 <td><code>false</code></td>
 <td>Non</td>
-<td>Nécessite le token de sécurité <code>/secu</code> pour activer</td>
+<td>L'activation est réservée aux pilotes autorisés — au menu F10, le groupe agit au niveau de son occupant le moins gradé (voir <a href="../veafSecurity/">veafSecurity</a>)</td>
 </tr>
 <tr>
 <td><code>radio_menu_enabled</code></td>
@@ -2735,6 +2735,7 @@ _cas, side blue
 <tr>
 <th>Option</th>
 <th>Plage</th>
+<th>Défaut</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -2742,28 +2743,50 @@ _cas, side blue
 <tr>
 <td><code>size</code></td>
 <td>1–5</td>
+<td>1</td>
 <td>Nombre d'unités cibles</td>
 </tr>
 <tr>
 <td><code>defense</code></td>
 <td>0–5</td>
+<td>1</td>
 <td>Niveau de défense AA (0=aucune, 5=SAM lourd)</td>
 </tr>
 <tr>
 <td><code>armor</code></td>
 <td>0–5</td>
+<td>1</td>
 <td>Niveau de blindage (0=infanterie, 5=MBT lourd)</td>
+</tr>
+<tr>
+<td><code>spacing</code></td>
+<td>1–5</td>
+<td>1</td>
+<td>Espacement entre les unités du groupe</td>
 </tr>
 <tr>
 <td><code>side</code></td>
 <td>blue/red</td>
+<td><em>(coalition du marqueur)</em></td>
 <td>Coalition des cibles</td>
+</tr>
+<tr>
+<td><code>disperse</code></td>
+<td>secondes</td>
+<td>—</td>
+<td>Les cibles se dispersent quand elles sont attaquées ; un <code>disperse</code> sans valeur = 15 secondes</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>texte</td>
+<td>—</td>
+<td>Mot de passe de sécurité (voir <a href="../veafSecurity/">veafSecurity</a>)</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="menu-radio-f10">Menu radio F10<a class="headerlink" href="#menu-radio-f10" title="Permanent link">&para;</a></h2>
-<p>Le sous-menu <strong>CAS MISSION</strong> n'apparaît qu'une fois une mission générée (via le marqueur <code>_cas</code>). Il propose alors :</p>
+<p>Le sous-menu <strong>CAS MISSION</strong> est créé dès l'initialisation du module, avec une entrée <strong>HELP</strong>. Une fois une mission générée (via le marqueur <code>_cas</code>), il propose en plus :</p>
 <ul>
 <li><strong>Target information</strong> — afficher position, composition et statut des cibles</li>
 <li><strong>Skip current objective</strong> — abandonner la zone courante et en générer une nouvelle (commande sécurisée)</li>

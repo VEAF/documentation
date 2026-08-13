@@ -10609,9 +10609,9 @@
 
 
 <h1 id="veaf-lua-modules---complete-api-reference">VEAF Lua Modules - Complete API Reference<a class="headerlink" href="#veaf-lua-modules---complete-api-reference" title="Permanent link">&para;</a></h1>
-<p><strong>Version:</strong> generated for 6.13.94
-<strong>Last Updated:</strong> August 2026
-<strong>Project:</strong> VEAF Mission Creation Tools</p>
+<p><strong>Version:</strong> generated for 6.13.95</p>
+<p><strong>Last Updated:</strong> August 2026</p>
+<p><strong>Project:</strong> VEAF Mission Creation Tools</p>
 <hr />
 <h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
 <ol>
@@ -10675,13 +10675,11 @@
 <li><code>coalition</code> - Coalition ID: 0=neutral, <strong>1=red, 2=blue</strong> (<code>coalition.side.RED</code> is 1 — see the note below)</li>
 </ul>
 <div class="admonition danger">
-<p class="admonition-title"><code>coalition.side</code> is RED=1, BLUE=2 — and this page said the opposite until 6.13.38</p>
+<p class="admonition-title"><code>coalition.side</code> is RED=1, BLUE=2</p>
 <div class="highlight"><pre><span></span><code><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">NEUTRAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">RED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">BLUE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-<p>The inversion matters because nothing catches it: code written from the wrong mapping
-compiles, runs, and quietly targets <strong>the other side</strong>. It was found by the 2026-07-01
-security review (VMR-014) and fixed on 2026-08-08; the repository's own Lua never used
-the wrong values, so nothing had to be corrected beyond this page and its French twin.</p>
+<p>An inversion of these values is caught by nothing: code written from a wrong mapping
+compiles, runs, and quietly targets <strong>the other side</strong>.</p>
 </div>
 <p><strong>Return Values:</strong></p>
 <ul>
@@ -10759,9 +10757,8 @@ the wrong values, so nothing had to be corrected beyond this page and its French
 <hr />
 <h2 id="core-infrastructure">Core Infrastructure<a class="headerlink" href="#core-infrastructure" title="Permanent link">&para;</a></h2>
 <h3 id="veaflua">veaf.lua<a class="headerlink" href="#veaflua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>VEAF</code>
-<strong>Version:</strong> 1.56.2
-<strong>Purpose:</strong> Root library providing core utilities, constants, and logger system</p>
+<p><strong>Module ID:</strong> <code>VEAF</code></p>
+<p><strong>Purpose:</strong> Root library providing core utilities, constants, and logger system</p>
 <h4 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="py">BuildVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;6.7.x+&lt;sha&gt;&quot;</span><span class="w">  </span><span class="c1">-- build stamp (package version + git sha) injected at build time; &quot;dev&quot; when unbuilt</span>
 <span class="nv">veaf</span><span class="p">.</span><span class="py">Development</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">  </span><span class="c1">-- Enable development features</span>
@@ -10773,7 +10770,7 @@ the wrong values, so nothing had to be corrected beyond this page and its French
 <span class="nv">veaf</span><span class="p">.</span><span class="py">MIST_MARKER_ID_INITIAL_VALUE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50000</span>
 </code></pre></div>
 <h4 id="localization-i18n--pilot-feedback">Localization (i18n) &amp; pilot feedback<a class="headerlink" href="#localization-i18n--pilot-feedback" title="Permanent link">&para;</a></h4>
-<p>In-game pilot-facing messages are localized (FR/EN). The active language is <code>veaf.config.language</code> (set from <code>mission.language</code>, else the tools' language, default <code>fr</code>); logs always stay in English.</p>
+<p>In-game pilot-facing messages are localized (FR/EN). The active language is <code>veaf.config.language</code> (set from <code>mission.language</code>, else the tools' resolved language at build time, whose final fallback is <code>en</code>); logs always stay in English.</p>
 <h5 id="veaftkey-"><code>veaf.t(key, ...)</code><a class="headerlink" href="#veaftkey-" title="Permanent link">&para;</a></h5>
 <p>Returns the localized string for <code>key</code> from <code>veaf.i18nCatalog</code> (populated by <code>veafI18n.lua</code>), with <code>string.format</code> interpolation. Fallback: requested language → French → the key itself (a missing entry never crashes).</p>
 <div class="highlight"><pre><span></span><code><span class="nv">trigger</span><span class="p">.</span><span class="py">action</span><span class="p">.</span><span class="nf">outText</span><span class="p">(</span><span class="nv">veaf</span><span class="p">.</span><span class="nf">t</span><span class="p">(</span><span class="s2">&quot;spawn.group_spawned&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">group</span><span class="p">.</span><span class="py">description</span><span class="p">,</span><span class="w"> </span><span class="nv">country</span><span class="p">),</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
@@ -11630,9 +11627,8 @@ mission maker who types an absurd value gets the bound, not a dead module.</p>
 </ul>
 <hr />
 <h3 id="veafeventhandlerlua">veafEventHandler.lua<a class="headerlink" href="#veafeventhandlerlua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>EVENTS</code>
-<strong>Version:</strong> 1.5.3
-<strong>Purpose:</strong> DCS World event handling and callback management</p>
+<p><strong>Module ID:</strong> <code>EVENTS</code></p>
+<p><strong>Purpose:</strong> DCS World event handling and callback management</p>
 <h4 id="constants_1">Constants<a class="headerlink" href="#constants_1" title="Permanent link">&para;</a></h4>
 <h5 id="event-types">Event Types<a class="headerlink" href="#event-types" title="Permanent link">&para;</a></h5>
 <div class="highlight"><pre><span></span><code><span class="nv">veafEventHandler</span><span class="p">.</span><span class="py">EVENTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
@@ -11877,9 +11873,8 @@ mission maker who types an absurd value gets the bound, not a dead module.</p>
 </code></pre></div></p>
 <hr />
 <h3 id="veafmarkerslua">veafMarkers.lua<a class="headerlink" href="#veafmarkerslua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>MARKERS</code>
-<strong>Version:</strong> 1.1.1
-<strong>Purpose:</strong> Listen to map marker events and execute handlers</p>
+<p><strong>Module ID:</strong> <code>MARKERS</code></p>
+<p><strong>Purpose:</strong> Listen to map marker events and execute handlers</p>
 <h4 id="constants_2">Constants<a class="headerlink" href="#constants_2" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veafMarkers</span><span class="p">.</span><span class="py">MarkerAdd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">       </span><span class="c1">-- Marker added event</span>
 <span class="nv">veafMarkers</span><span class="p">.</span><span class="py">MarkerChange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w">    </span><span class="c1">-- Marker changed event</span>
@@ -11975,9 +11970,9 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 </code></pre></div></p>
 <hr />
 <h3 id="veafcommandslua">veafCommands.lua<a class="headerlink" href="#veafcommandslua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>COMMANDS</code>
-<strong>Init order:</strong> 15 (after veafMarkers, before all command modules)
-<strong>Purpose:</strong> Central registry and dispatcher for all text commands (F10 markers and interpreter)</p>
+<p><strong>Module ID:</strong> <code>COMMANDS</code></p>
+<p><strong>Init order:</strong> 15 (after veafMarkers, before all command modules)</p>
+<p><strong>Purpose:</strong> Central registry and dispatcher for all text commands (F10 markers and interpreter)</p>
 <h4 id="constants_3">Constants<a class="headerlink" href="#constants_3" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veafCommands</span><span class="p">.</span><span class="py">PRIORITY_SHORTCUTS</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
 <span class="nv">veafCommands</span><span class="p">.</span><span class="py">PRIORITY_SPAWN</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
@@ -12016,9 +12011,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 </ul>
 <hr />
 <h3 id="veafinterpreterlua">veafInterpreter.lua<a class="headerlink" href="#veafinterpreterlua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>INTERPRETER</code>
-<strong>Version:</strong> 1.6.3
-<strong>Purpose:</strong> Interpret and execute commands from unit names and markers</p>
+<p><strong>Module ID:</strong> <code>INTERPRETER</code></p>
+<p><strong>Purpose:</strong> Interpret and execute commands from unit names and markers</p>
 <h4 id="constants_4">Constants<a class="headerlink" href="#constants_4" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veafInterpreter</span><span class="p">.</span><span class="py">Starter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;#veafInterpreter[</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="w">  </span><span class="c1">-- Unit name command prefix</span>
 <span class="nv">veafInterpreter</span><span class="p">.</span><span class="py">Trailer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">]&quot;</span><span class="w">                   </span><span class="c1">-- Unit name command suffix</span>
@@ -12139,9 +12133,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 <p><strong>Returns:</strong> <code>string</code> — frequency label, or nil if not found</p>
 <hr />
 <h3 id="veafspawnlua">veafSpawn.lua<a class="headerlink" href="#veafspawnlua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>SPAWN</code>
-<strong>Version:</strong> 1.59.3
-<strong>Purpose:</strong> Dynamic spawning system for units, groups, convoys, and effects</p>
+<p><strong>Module ID:</strong> <code>SPAWN</code></p>
+<p><strong>Purpose:</strong> Dynamic spawning system for units, groups, convoys, and effects</p>
 <h4 id="constants_5">Constants<a class="headerlink" href="#constants_5" title="Permanent link">&para;</a></h4>
 <h5 id="keyphrases">Keyphrases<a class="headerlink" href="#keyphrases" title="Permanent link">&para;</a></h5>
 <div class="highlight"><pre><span></span><code><span class="nv">veafSpawn</span><span class="p">.</span><span class="py">SpawnKeyphrase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;_spawn&quot;</span>
@@ -12734,9 +12727,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 <p><strong>Returns:</strong> None</p>
 <hr />
 <h3 id="veafunitslua">veafUnits.lua<a class="headerlink" href="#veafunitslua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>UNITS</code>
-<strong>Version:</strong> 1.15.0
-<strong>Purpose:</strong> Unit/group definitions and utilities</p>
+<p><strong>Module ID:</strong> <code>UNITS</code></p>
+<p><strong>Purpose:</strong> Unit/group definitions and utilities</p>
 <h4 id="constants_6">Constants<a class="headerlink" href="#constants_6" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veafUnits</span><span class="p">.</span><span class="py">DefaultCellWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w">        </span><span class="c1">-- meters</span>
 <span class="nv">veafUnits</span><span class="p">.</span><span class="py">DefaultCellHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w">       </span><span class="c1">-- meters</span>
@@ -12774,9 +12766,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 <p><strong>Description:</strong> Handles unit positioning, spacing, formation.</p>
 <hr />
 <h3 id="veafassetslua">veafAssets.lua<a class="headerlink" href="#veafassetslua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>ASSETS</code>
-<strong>Version:</strong> 1.8.3
-<strong>Purpose:</strong> Manage and track mission assets (tankers, AWACS, carriers)</p>
+<p><strong>Module ID:</strong> <code>ASSETS</code></p>
+<p><strong>Purpose:</strong> Manage and track mission assets (tankers, AWACS, carriers)</p>
 <h4 id="data-structures">Data Structures<a class="headerlink" href="#data-structures" title="Permanent link">&para;</a></h4>
 <h5 id="asset-definition">Asset Definition<a class="headerlink" href="#asset-definition" title="Permanent link">&para;</a></h5>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -12858,9 +12849,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 <hr />
 <h2 id="mission-systems">Mission Systems<a class="headerlink" href="#mission-systems" title="Permanent link">&para;</a></h2>
 <h3 id="veafcombatmissionlua">veafCombatMission.lua<a class="headerlink" href="#veafcombatmissionlua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>COMBATMISSION</code>
-<strong>Version:</strong> 2.2.1
-<strong>Purpose:</strong> Create and manage combat missions with objectives</p>
+<p><strong>Module ID:</strong> <code>COMBATMISSION</code></p>
+<p><strong>Purpose:</strong> Create and manage combat missions with objectives</p>
 <h4 id="constants_7">Constants<a class="headerlink" href="#constants_7" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veafCombatMission</span><span class="p">.</span><span class="py">SecondsBetweenWatchdogChecks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span>
 <span class="nv">veafCombatMission</span><span class="p">.</span><span class="py">RadioMenuName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MISSIONS&quot;</span>
@@ -13138,9 +13128,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 <p><strong>Returns:</strong> None</p>
 <hr />
 <h3 id="veafcasmissionlua">veafCasMission.lua<a class="headerlink" href="#veafcasmissionlua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>CASMISSION</code>
-<strong>Version:</strong> 1.15.3
-<strong>Purpose:</strong> Create close air support training missions</p>
+<p><strong>Module ID:</strong> <code>CASMISSION</code></p>
+<p><strong>Purpose:</strong> Create close air support training missions</p>
 <h4 id="constants_8">Constants<a class="headerlink" href="#constants_8" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veafCasMission</span><span class="p">.</span><span class="py">Keyphrase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;_cas&quot;</span>
 <span class="nv">veafCasMission</span><span class="p">.</span><span class="py">SecondsBetweenWatchdogChecks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span>
@@ -13156,9 +13145,9 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 <span class="nv">ARMOR_TYPES</span><span class="p">[</span><span class="nv">coalition</span><span class="p">][</span><span class="nv">era</span><span class="p">][</span><span class="nv">defense</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nv">unit_types</span><span class="p">}</span>
 <span class="nv">DEFENSE_TYPES</span><span class="p">[</span><span class="nv">coalition</span><span class="p">][</span><span class="nv">era</span><span class="p">][</span><span class="nv">defense</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nv">unit_types</span><span class="p">}</span>
 </code></pre></div>
-<p><strong>Coalition:</strong> <code>"blue"</code>, <code>"red"</code>
-<strong>Era:</strong> <code>"cold"</code>, <code>"modern"</code>
-<strong>Defense:</strong> <code>0-5</code> (0=none, 5=heavy)</p>
+<p><strong>Coalition:</strong> <code>"blue"</code>, <code>"red"</code></p>
+<p><strong>Era:</strong> <code>"cold"</code>, <code>"modern"</code></p>
+<p><strong>Defense:</strong> <code>0-5</code> (0=none, 5=heavy)</p>
 <h4 id="functions_8">Functions<a class="headerlink" href="#functions_8" title="Permanent link">&para;</a></h4>
 <h5 id="veafcasmissionexecutecommandeventpos-eventtext-coalition-markid-bypasssecurity"><code>veafCasMission.executeCommand(eventPos, eventText, coalition, markId, bypassSecurity)</code><a class="headerlink" href="#veafcasmissionexecutecommandeventpos-eventtext-coalition-markid-bypasssecurity" title="Permanent link">&para;</a></h5>
 <p>Execute CAS mission command.</p>
@@ -13251,9 +13240,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 <hr />
 <h2 id="infrastructure--services">Infrastructure &amp; Services<a class="headerlink" href="#infrastructure--services" title="Permanent link">&para;</a></h2>
 <h3 id="veafairbaseslua">veafAirbases.lua<a class="headerlink" href="#veafairbaseslua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>AIRBASES</code>
-<strong>Version:</strong> 1.1.1
-<strong>Purpose:</strong> Normalized airbase and runway information</p>
+<p><strong>Module ID:</strong> <code>AIRBASES</code></p>
+<p><strong>Purpose:</strong> Normalized airbase and runway information</p>
 <h4 id="classes_1">Classes<a class="headerlink" href="#classes_1" title="Permanent link">&para;</a></h4>
 <h5 id="veafairbase">veafAirbase<a class="headerlink" href="#veafairbase" title="Permanent link">&para;</a></h5>
 <p>Airbase descriptor holding normalized information about a DCS airbase.</p>
@@ -13343,9 +13331,8 @@ The central dispatcher (<code>veafCommands.dispatchMarker</code>) handles the ma
 </code></pre></div></p>
 <hr />
 <h3 id="veafcarrieroperationslua">veafCarrierOperations.lua<a class="headerlink" href="#veafcarrieroperationslua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>CARRIER</code>
-<strong>Version:</strong> 1.12.3
-<strong>Purpose:</strong> Manage aircraft carrier operations</p>
+<p><strong>Module ID:</strong> <code>CARRIER</code></p>
+<p><strong>Purpose:</strong> Manage aircraft carrier operations</p>
 <h4 id="functions_10">Functions<a class="headerlink" href="#functions_10" title="Permanent link">&para;</a></h4>
 <h5 id="veafcarrieroperationsstartcarrieroperationsparameters"><code>veafCarrierOperations.startCarrierOperations(parameters)</code><a class="headerlink" href="#veafcarrieroperationsstartcarrieroperationsparameters" title="Permanent link">&para;</a></h5>
 <p>Start carrier recovery operations.</p>
@@ -13433,9 +13420,8 @@ ICLS: 13
 <hr />
 <h2 id="communication--control">Communication &amp; Control<a class="headerlink" href="#communication--control" title="Permanent link">&para;</a></h2>
 <h3 id="veafradiolua">veafRadio.lua<a class="headerlink" href="#veafradiolua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>RADIO</code>
-<strong>Version:</strong> 1.4.1
-<strong>Purpose:</strong> Manage F10 radio menus and communications</p>
+<p><strong>Module ID:</strong> <code>RADIO</code></p>
+<p><strong>Purpose:</strong> Manage F10 radio menus and communications</p>
 <h4 id="constants_9">Constants<a class="headerlink" href="#constants_9" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="py">RadioMenuName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;VEAF&quot;</span>
 <span class="nv">veafRadio</span><span class="p">.</span><span class="py">Keyphrase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;_radio&quot;</span>
@@ -13595,9 +13581,9 @@ ICLS: 13
 <hr />
 <h2 id="support-systems">Support Systems<a class="headerlink" href="#support-systems" title="Permanent link">&para;</a></h2>
 <h3 id="veafweatherlua">veafWeather.lua<a class="headerlink" href="#veafweatherlua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>WEATHER</code>
-<strong>Version:</strong> (varies)
-<strong>Purpose:</strong> Dynamic weather system</p>
+<p><strong>Module ID:</strong> <code>WEATHER</code></p>
+<p><strong>Version:</strong> (varies)</p>
+<p><strong>Purpose:</strong> Dynamic weather system</p>
 <h4 id="functions_12">Functions<a class="headerlink" href="#functions_12" title="Permanent link">&para;</a></h4>
 <h5 id="veafweatherdatagetweatherstringvec3-dcselementname-unitsystem-isurfacealtitudemeters_1"><code>veafWeatherData.getWeatherString(vec3, dcsElementName, unitSystem, iSurfaceAltitudeMeters)</code><a class="headerlink" href="#veafweatherdatagetweatherstringvec3-dcselementname-unitsystem-isurfacealtitudemeters_1" title="Permanent link">&para;</a></h5>
 <p>Builds the full textual weather report at a given position.</p>
@@ -13677,9 +13663,9 @@ ICLS: 13
 <p><strong>Predefined fog constants:</strong> <code>veafWeather.FOG_DYNAMIC_HEAVY</code>, <code>FOG_DYNAMIC_MEDIUM</code>, <code>FOG_DYNAMIC_SPARSE</code>, <code>FOG_STATIC_HEAVY</code>, <code>FOG_STATIC_MEDIUM</code>, <code>FOG_STATIC_MEDIUM_LOW</code>, <code>FOG_STATIC_SPARSE</code>, <code>FOG_STATIC_SPARSE_LOW</code>, <code>FOG_STATIC_NO</code>.</p>
 <hr />
 <h3 id="veaftimelua">veafTime.lua<a class="headerlink" href="#veaftimelua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>TIME</code>
-<strong>Version:</strong> (varies)
-<strong>Purpose:</strong> Mission time management</p>
+<p><strong>Module ID:</strong> <code>TIME</code></p>
+<p><strong>Version:</strong> (varies)</p>
+<p><strong>Purpose:</strong> Mission time management</p>
 <blockquote>
 <p>Read-only module: it <strong>computes</strong> date and time information from the mission
 time, it never sets the mission time or date.</p>
@@ -13734,9 +13720,9 @@ and year rollover).</p>
 <hr />
 <h2 id="data--database">Data &amp; Database<a class="headerlink" href="#data--database" title="Permanent link">&para;</a></h2>
 <h3 id="dcsunitslua">dcsUnits.lua<a class="headerlink" href="#dcsunitslua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>DCSUNITS</code>
-<strong>Version:</strong> datamine-dc7d15e8
-<strong>Purpose:</strong> Complete DCS unit database</p>
+<p><strong>Module ID:</strong> <code>DCSUNITS</code></p>
+<p><strong>Version:</strong> datamine-dc7d15e8</p>
+<p><strong>Purpose:</strong> Complete DCS unit database</p>
 <blockquote>
 <p>This module exposes no functions: it only provides data tables.</p>
 </blockquote>
@@ -13770,8 +13756,8 @@ and year rollover).</p>
 </blockquote>
 <hr />
 <h3 id="dcsdataexportlua">dcsDataExport.lua<a class="headerlink" href="#dcsdataexportlua" title="Permanent link">&para;</a></h3>
-<p><strong>Module ID:</strong> <code>DCSEXPORT</code>
-<strong>Purpose:</strong> DCS data export script, to be run in the mission editor</p>
+<p><strong>Module ID:</strong> <code>DCSEXPORT</code></p>
+<p><strong>Purpose:</strong> DCS data export script, to be run in the mission editor</p>
 <h4 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h4>
 <p>This is not a library: the script exposes <strong>no public function</strong>. It is meant to
 be loaded (<code>dofile</code>) at the end of <code>DCS World\MissionEditor\modules\me_mission.lua</code>.
@@ -13876,14 +13862,14 @@ the current directory).</p>
 </ul>
 <hr />
 <h2 id="credits">Credits<a class="headerlink" href="#credits" title="Permanent link">&para;</a></h2>
-<p><strong>VEAF Project:</strong> https://www.veaf.org
-<strong>Repository:</strong> https://github.com/VEAF/VEAF-Mission-Creation-Tools
-<strong>Documentation:</strong> https://veaf.github.io/documentation/
-<strong>Lead Developer:</strong> Zip (davidp57)</p>
+<p><strong>VEAF Project:</strong> https://www.veaf.org</p>
+<p><strong>Repository:</strong> https://github.com/VEAF/VEAF-Mission-Creation-Tools</p>
+<p><strong>Documentation:</strong> https://veaf.github.io/documentation/</p>
+<p><strong>Lead Developer:</strong> Zip (davidp57)</p>
 <hr />
-<p><strong>Document Version:</strong> 1.0
-<strong>Last Updated:</strong> August 2026
-<strong>Generated for:</strong> VEAF Mission Creation Tools v6.13.94</p>
+<p><strong>Document Version:</strong> 1.0</p>
+<p><strong>Last Updated:</strong> August 2026</p>
+<p><strong>Generated for:</strong> VEAF Mission Creation Tools v6.13.95</p>
 
 
 

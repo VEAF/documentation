@@ -3259,8 +3259,8 @@
 <ul>
 <li><strong>Commandes via marqueurs</strong> — les joueurs tapent des commandes sur la carte F10 (faire apparaître des unités, créer des zones CAS, déplacer des groupes…)</li>
 <li><strong>Menus radio F10</strong> — menus dynamiques pour chaque fonctionnalité activée</li>
-<li><strong>Types de missions préconstruits</strong> — CAS, transport, opérations carrier, QRA, vagues aériennes, zones de combat</li>
-<li><strong>Gestion des actifs</strong> — tankers, AWACS, carriers avec suivi d'état automatique et menus radio</li>
+<li><strong>Types de missions préconstruits</strong> — CAS, transport, opérations porte-avions, QRA, vagues aériennes, zones de combat</li>
+<li><strong>Gestion des ressources</strong> — ravitailleurs, AWACS, porte-avions avec suivi d'état automatique et menus radio</li>
 <li><strong>Points nommés</strong> — positions cartographiques réutilisables avec services ATC/TACAN optionnels</li>
 <li><strong>Intégrations</strong> — Skynet IADS, CTLD/CSAR</li>
 </ul>
@@ -3519,10 +3519,9 @@ par injection dans le <code>.miz</code>, et les <code>scripts/*.lua</code> par l
 </tbody>
 </table>
 <div class="admonition info">
-<p class="admonition-title">Ces paliers s'appelaient <code>L9</code>, <code>L1</code> et <code>L0</code> jusqu'à la 6.13.37</p>
-<p>Les anciens noms se lisaient à l'envers — <code>L0</code> était le palier le plus <strong>strict</strong>, pas
-le plus permissif — et cette page affirmait l'inverse jusqu'au 2026-08-06, ce qui a
-failli faire verrouiller aux administrateurs une commande délibérément publique.</p>
+<p class="admonition-title"><code>L9</code>, <code>L1</code> et <code>L0</code> sont des alias dépréciés — et ils se lisent à l'envers</p>
+<p>Les anciens noms se lisent à l'envers de ce qu'ils suggèrent : <code>L0</code> est le palier le plus
+<strong>strict</strong> (<code>ADMIN</code>), pas le plus permissif ; <code>L9</code> est le plus ouvert (<code>KNOWN_PILOT</code>).</p>
 <p><code>L9</code>, <code>L1</code> et <code>L0</code> restent acceptés comme <strong>alias dépréciés</strong> et disparaîtront dans une
 version ultérieure. <strong>Les valeurs sont inchangées</strong> (1, 10, 90) : renommer ne change le
 comportement d'aucune mission, seulement ce que vous écrivez.</p>
@@ -3606,7 +3605,7 @@ comme dépréciés — un script ou un message de forum écrit avant ce changeme
 </tr>
 <tr>
 <td><code>build</code></td>
-<td>Construit la mission depuis <code>src/</code> — injecte les triggers VEAF, produit un <code>.miz</code>. Valide au passage les références de <code>mission.yaml</code> vers le Mission Editor (zones de déclenchement, groupes, unités, aérodromes) et affiche un <strong>récapitulatif bien visible en fin de build</strong> pour les références absentes — <strong>sans bloquer</strong> (le <code>.miz</code> est généré quand même, pour que tu puisses corriger dans le Mission Editor et itérer). Le <code>zone_name</code> d'une <strong>opération</strong> COMBATZONE n'est pas vérifié (ce n'est qu'un libellé, pas une trigger zone requise)</td>
+<td>Construit la mission depuis <code>src/</code> — injecte les triggers VEAF, produit un <code>.miz</code>. Valide au passage les références de <code>mission.yaml</code> vers le Mission Editor (zones de déclenchement, groupes, unités, aérodromes) et affiche un <strong>récapitulatif bien visible en fin de build</strong> pour les références absentes — <strong>sans bloquer</strong> (le <code>.miz</code> est généré quand même, pour que vous puissiez corriger dans le Mission Editor et itérer). Le <code>zone_name</code> d'une <strong>opération</strong> COMBATZONE n'est pas vérifié (ce n'est qu'un libellé, pas une trigger zone requise)</td>
 </tr>
 <tr>
 <td><code>validate</code></td>
@@ -3793,7 +3792,7 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 <td><a href="../scripts/veafCasMission/">veafCasMission</a>, <a href="../scripts/veafCombatZone/">veafCombatZone</a>, <a href="../scripts/veafTransportMission/">veafTransportMission</a>, <a href="../scripts/veafQraManager/">veafQraManager</a>, <a href="../scripts/veafAirWaves/">veafAirWaves</a></td>
 </tr>
 <tr>
-<td>Actifs</td>
+<td>Ressources</td>
 <td><a href="../scripts/veafAssets/">veafAssets</a>, <a href="../scripts/veafCarrierOperations/">veafCarrierOperations</a>, <a href="../scripts/veafGrass/">veafGrass</a>, <a href="../scripts/veafWeather/">veafWeather</a></td>
 </tr>
 <tr>
@@ -3882,7 +3881,7 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 </tr>
 </tbody>
 </table>
-<p>Pour attacher une zone logistique à un objet mobile — un porte-avions, par exemple —, liez la zone à l'unité dans l'éditeur de mission (<em>Moving Zone</em>) : la zone suit son unité.</p>
+<p>Pour attacher une zone logistique à un objet mobile (un porte-avions, par exemple), liez la zone à l'unité dans l'éditeur de mission (<em>Moving Zone</em>) : la zone suit son unité.</p>
 <h3 id="configurer-csar-via-missionyaml-yaml-first">Configurer CSAR via mission.yaml (YAML-first)<a class="headerlink" href="#configurer-csar-via-missionyaml-yaml-first" title="Permanent link">&para;</a></h3>
 <p>CSAR se configure de la même façon :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -3956,10 +3955,10 @@ DO SCRIPT FILE → mission-script.lua  (votre code personnalisé)
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">   </span><span class="c1"># surcharge le défaut global pour ce module uniquement</span>
 </code></pre></div>
-<p><code>veaf-tools.exe mission build</code> régénère <code>veaf-config.lua</code> depuis <code>mission.yaml</code>. Pour un changement rapide sans reconstruire, éditez directement <code>veaf-config.lua</code> — c'est un fichier généré, donc vos modifications seront écrasées au prochain build.</p>
+<p><code>veaf-tools.exe mission build</code> régénère <code>veaf-config.lua</code> depuis <code>mission.yaml</code>. <strong>N'éditez pas <code>veaf-config.lua</code> directement</strong> : il est généré, donc toute modification disparaît au prochain build. Pour essayer un réglage sans reconstruire, éditez-le en sachant que le changement est jetable — puis reportez-le dans <code>mission.yaml</code> pour qu'il survive.</p>
 <h3 id="lire-le-journal">Lire le journal<a class="headerlink" href="#lire-le-journal" title="Permanent link">&para;</a></h3>
 <p>Nous recommandons <a href="https://klogg.filimonov.dev/">Klogg</a> — un visualiseur de logs rapide avec surligneur regex. Chargez <code>dcs.log</code> et filtrez sur <code>VEAF</code> pour ne voir que les messages VEAF.</p>
-<p>Un profil de surligneur Klogg prêt à l'emploi est inclus dans le dépôt : <a href="../../tools/klogg/veaf.conf"><code>tools/klogg/veaf.conf</code></a>. Il code les niveaux de log par couleur (erreurs en rouge, avertissements en orange, info VEAF en vert, debug en bleu-vert, trace en gris) et met en évidence les entrées MIST et CTLD. Pour l'installer : Klogg → <em>Fichier &gt; Importer les surligneurs…</em> et sélectionnez le fichier.</p>
+<p>Un profil de surligneur Klogg prêt à l'emploi est inclus dans le dépôt : <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/tools/klogg/veaf.conf"><code>tools/klogg/veaf.conf</code></a>. Il code les niveaux de log par couleur (erreurs en rouge, avertissements en orange, info VEAF en vert, debug en bleu-vert, trace en gris) et met en évidence les entrées MIST et CTLD. Pour l'installer : Klogg → <em>Fichier &gt; Importer les surligneurs…</em> et sélectionnez le fichier.</p>
 <hr />
 <h2 id="ressources">Ressources<a class="headerlink" href="#ressources" title="Permanent link">&para;</a></h2>
 <ul>

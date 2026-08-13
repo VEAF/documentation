@@ -2450,15 +2450,14 @@
 
 
 <h1 id="veafassets--ravitailleurs-awacs-et-porte-avions">veafAssets — Ravitailleurs, AWACS et porte-avions<a class="headerlink" href="#veafassets--ravitailleurs-awacs-et-porte-avions" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>ASSETS</code> | <strong>Version:</strong> 1.8.x | <strong>Fichier:</strong> <code>veafAssets.lua</code></p>
+<p><strong>Module ID:</strong> <code>ASSETS</code> | <strong>Fichier:</strong> <code>veafAssets.lua</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
-<p>Gère les ressources persistantes d'une mission — ravitailleurs, AWACS et porte-avions. Fournit des entrées dans le menu radio F10 pour chaque ressource : informations (position, TACAN, fréquence), réapparition après perte, et désactivation optionnelle.</p>
+<p>Gère les ressources persistantes d'une mission — ravitailleurs, AWACS, JTAC. Fournit des entrées dans le menu radio F10 pour chaque ressource : informations (position, TACAN, fréquence), réapparition après perte, et désactivation optionnelle.</p>
 <hr />
 <h2 id="dépendances">Dépendances<a class="headerlink" href="#dépendances" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>veafRadio</code> — menu F10</li>
-<li><code>veafCarrierOperations</code> — pour les porte-avions (optionnel, intégration automatique)</li>
 <li><strong>MiST</strong> — obligatoire : la réapparition (<code>veafAssets.respawn</code>) utilise <code>mist.respawnGroup</code>.</li>
 </ul>
 <blockquote>
@@ -2481,7 +2480,7 @@
 <span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Texaco</span><span class="nv"> </span><span class="s">(KC-135)&quot;</span><span class="w"> </span><span class="c1"># libellé affiché dans le menu F10</span>
 <span class="w">        </span><span class="nt">information</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Tacan</span><span class="nv"> </span><span class="s">51Y\nU251.00</span><span class="nv"> </span><span class="s">(21)&#39;</span><span class="w">  </span><span class="c1"># guillemets simples : \n est conservé tel quel → échappement Lua valide</span>
 <span class="w">        </span><span class="nt">linked</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">                    </span><span class="c1"># nom d&#39;une ressource liée (optionnel)</span>
-<span class="w">        </span><span class="nt">jtac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># true = la ressource est un JTAC (optionnel)</span>
+<span class="w">        </span><span class="nt">jtac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1688</span><span class="w">                      </span><span class="c1"># code laser — la ressource est un JTAC qui illumine avec ce code (optionnel)</span>
 <span class="w">        </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">                      </span><span class="c1"># fréquence de remplacement pour l&#39;affichage infos (optionnel)</span>
 <span class="w">        </span><span class="nt">mod</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">                       </span><span class="c1"># modulation radio (AM | FM, optionnel)</span>
 </code></pre></div>
@@ -2497,7 +2496,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>enable</code></td>
+<td><code>enabled</code></td>
 <td>booléen</td>
 <td><code>true</code></td>
 <td>Non</td>
@@ -2554,10 +2553,10 @@
 </tr>
 <tr>
 <td><code>assets[].jtac</code></td>
-<td>booléen</td>
-<td><code>false</code></td>
+<td>nombre</td>
+<td><code>null</code></td>
 <td>Non</td>
-<td>Marque cette ressource comme JTAC</td>
+<td>Code laser : la ressource est un JTAC qui illumine automatiquement avec ce code (nécessite CTLD)</td>
 </tr>
 <tr>
 <td><code>assets[].freq</code></td>
@@ -2576,7 +2575,7 @@
 </tbody>
 </table>
 <blockquote>
-<p>Le groupe DCS référencé par <code>name</code> doit exister dans l'éditeur de mission. Les ressources porte-avions nécessitent également le module <code>CARRIER</code> activé.</p>
+<p>Le groupe DCS référencé par <code>name</code> doit exister dans l'éditeur de mission.</p>
 </blockquote>
 <h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -2658,18 +2657,17 @@
 </blockquote>
 <hr />
 <h2 id="menu-radio-f10">Menu radio F10<a class="headerlink" href="#menu-radio-f10" title="Permanent link">&para;</a></h2>
-<p>Pour chaque ressource, un sous-menu est créé sous <strong>F10 → Ressources</strong> :</p>
+<p>Les ressources apparaissent sous <strong>F10 → ASSETS</strong> (les libellés sont en anglais). Une ressource sans <code>information</code> ni <code>disposable</code> est une simple commande <strong>Respawn [description]</strong> ; sinon un sous-menu est créé avec :</p>
 <ul>
-<li><strong>Réapparition [nom]</strong> — fait réapparaître le groupe à sa position d'origine</li>
-<li><strong>Infos sur [nom]</strong> — affiche la position, le canal TACAN, la fréquence radio (si <code>information = true</code>)</li>
-<li><strong>Désactiver [nom]</strong> — désactive la ressource (si <code>disposable = true</code>, commande sécurisée)</li>
+<li><strong>Respawn [description]</strong> — fait réapparaître le groupe à sa position d'origine</li>
+<li><strong>Get info on [description]</strong> — affiche le texte d'information (si <code>information</code> est renseigné)</li>
+<li><strong>Dispose of [description]</strong> — désactive la ressource (si <code>disposable = true</code>, commande sécurisée)</li>
 </ul>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Le groupe DCS doit exister dans l'éditeur de mission avec exactement le nom utilisé dans <code>name</code></li>
 <li>Les informations du ravitailleur (TACAN, fréquence) sont lues depuis les paramètres de route/waypoint du groupe DCS</li>
-<li>Les informations du porte-avions nécessitent que <code>veafCarrierOperations</code> soit initialisé</li>
 </ul>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>

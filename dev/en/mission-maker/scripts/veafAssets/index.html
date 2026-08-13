@@ -2450,15 +2450,14 @@
 
 
 <h1 id="veafassets--tankers-awacs-and-carriers">veafAssets — Tankers, AWACS, and Carriers<a class="headerlink" href="#veafassets--tankers-awacs-and-carriers" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>ASSETS</code> | <strong>Version:</strong> 1.8.x | <strong>File:</strong> <code>veafAssets.lua</code></p>
+<p><strong>Module ID:</strong> <code>ASSETS</code> | <strong>File:</strong> <code>veafAssets.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
-<p>Manages the persistent assets in a mission — tankers, AWACS, and carriers. Provides F10 radio menu entries for each asset: information (position, TACAN, frequency), respawn after loss, and optional disposal.</p>
+<p>Manages the persistent assets in a mission — tankers, AWACS, JTACs. Provides F10 radio menu entries for each asset: information (position, TACAN, frequency), respawn after loss, and optional disposal.</p>
 <hr />
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>veafRadio</code> — F10 menu</li>
-<li><code>veafCarrierOperations</code> — for carrier assets (optional, auto-integrated)</li>
 <li><strong>MiST</strong> — mandatory: respawn (<code>veafAssets.respawn</code>) uses <code>mist.respawnGroup</code>.</li>
 </ul>
 <blockquote>
@@ -2481,7 +2480,7 @@
 <span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Texaco</span><span class="nv"> </span><span class="s">(KC-135)&quot;</span><span class="w"> </span><span class="c1"># label shown in F10 menu</span>
 <span class="w">        </span><span class="nt">information</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Tacan</span><span class="nv"> </span><span class="s">51Y\nU251.00</span><span class="nv"> </span><span class="s">(21)&#39;</span><span class="w">  </span><span class="c1"># single-quoted: \n is preserved as-is → valid Lua escape</span>
 <span class="w">        </span><span class="nt">linked</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">                    </span><span class="c1"># linked asset name (optional)</span>
-<span class="w">        </span><span class="nt">jtac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># true = asset is a JTAC (optional)</span>
+<span class="w">        </span><span class="nt">jtac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1688</span><span class="w">                      </span><span class="c1"># laser code — the asset is a JTAC lasing with this code (optional)</span>
 <span class="w">        </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">                      </span><span class="c1"># override frequency for info display (optional)</span>
 <span class="w">        </span><span class="nt">mod</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">                       </span><span class="c1"># radio modulation (AM | FM, optional)</span>
 </code></pre></div>
@@ -2497,7 +2496,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>enable</code></td>
+<td><code>enabled</code></td>
 <td>boolean</td>
 <td><code>true</code></td>
 <td>No</td>
@@ -2554,10 +2553,10 @@
 </tr>
 <tr>
 <td><code>assets[].jtac</code></td>
-<td>boolean</td>
-<td><code>false</code></td>
+<td>number</td>
+<td><code>null</code></td>
 <td>No</td>
-<td>Marks this asset as a JTAC</td>
+<td>Laser code: the asset is a JTAC that automatically lases with this code (requires CTLD)</td>
 </tr>
 <tr>
 <td><code>assets[].freq</code></td>
@@ -2576,7 +2575,7 @@
 </tbody>
 </table>
 <blockquote>
-<p>The DCS group referenced by <code>name</code> must exist in the mission editor. Carrier assets also require <code>CARRIER</code> module enabled.</p>
+<p>The DCS group referenced by <code>name</code> must exist in the mission editor.</p>
 </blockquote>
 <h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -2658,18 +2657,17 @@
 </blockquote>
 <hr />
 <h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
-<p>For each asset, a submenu is created under <strong>F10 → Assets</strong>:</p>
+<p>Assets appear under <strong>F10 → ASSETS</strong>. An asset with neither <code>information</code> nor <code>disposable</code> is a plain <strong>Respawn [description]</strong> command; otherwise a submenu is created with:</p>
 <ul>
-<li><strong>Respawn [name]</strong> — respawns the group at its original position</li>
-<li><strong>Get info on [name]</strong> — displays position, TACAN channel, radio frequency (if <code>information = true</code>)</li>
-<li><strong>Dispose of [name]</strong> — despawns the asset (if <code>disposable = true</code>, secured command)</li>
+<li><strong>Respawn [description]</strong> — respawns the group at its original position</li>
+<li><strong>Get info on [description]</strong> — displays the information text (if <code>information</code> is set)</li>
+<li><strong>Dispose of [description]</strong> — despawns the asset (if <code>disposable = true</code>, secured command)</li>
 </ul>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li>The DCS group must exist in the mission editor with the exact name used in <code>name</code></li>
 <li>Tanker information (TACAN, frequency) is read from the DCS group's waypoint/route settings</li>
-<li>Carrier information requires <code>veafCarrierOperations</code> to be initialised</li>
 </ul>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

@@ -2316,13 +2316,14 @@
 
 
 <h1 id="veafserverhook--hook-serveur-veaf">veafServerHook — Hook serveur VEAF<a class="headerlink" href="#veafserverhook--hook-serveur-veaf" title="Permanent link">&para;</a></h1>
-<p><strong>Fichier:</strong> <code>VEAF-Server-hook.lua</code> | <strong>Version:</strong> 2.7.x | <strong>Emplacement:</strong> <code>Saved Games/&lt;serveur&gt;/Scripts/Hooks/</code></p>
+<p><strong>Fichier:</strong> <code>VEAF-Server-hook.lua</code> | <strong>Emplacement:</strong> <code>Saved Games/&lt;serveur&gt;/Scripts/Hooks/</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
 <p>Hook DCS (environnement GameGUI) tournant sur un serveur dédié. Il :</p>
 <ul>
-<li>écoute le chat et exécute les commandes serveur VEAF (<code>/secu login</code>, <code>/send</code>, <code>/pause</code>…),
-  relayées à la mission via <code>veafRemote</code> / <code>veafSecurity</code> ;</li>
+<li>écoute le chat, exécute ses propres commandes serveur (<code>/send</code>, <code>/pause</code>, <code>/restart</code>…) et
+  relaie toute autre commande <code>/module</code> (<code>/secu elevate</code>, <code>/alias</code>…) à la mission via
+  <code>veafRemote</code> / <code>veafSecurity</code> ;</li>
 <li>charge la liste des pilotes (niveaux de permission par UCID) ;</li>
 <li>redémarre optionnellement le serveur quand il est inactif (opt-in) ;</li>
 <li>pousse optionnellement de la télémétrie vers un serveur d'API (opt-in).</li>
@@ -2390,11 +2391,11 @@ simple. Tout ce qui est propre à un serveur va dans <code>VEAF-specific-server-
 </tr>
 <tr>
 <td style="text-align: right;">1</td>
-<td>déverrouiller les commandes (<code>/secu login</code>), spawn, missions/zones</td>
+<td>relayer des commandes VEAF vers la mission (<code>/alias</code>, <code>/atis</code>, <code>/secu elevate</code>… — chaque module applique ensuite son propre contrôle)</td>
 </tr>
 <tr>
 <td style="text-align: right;">10</td>
-<td><code>/restart</code>, <code>/halt</code> (si <code>enableAutoRestart</code>)</td>
+<td><code>/secu login</code>, <code>/secu logout</code>, <code>/pause</code>, et <code>/restart</code>, <code>/halt</code> (si <code>enableAutoRestart</code>)</td>
 </tr>
 <tr>
 <td style="text-align: right;">30</td>

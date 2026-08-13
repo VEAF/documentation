@@ -2742,7 +2742,7 @@
 <li><a href="#quest-ce-que-veaf-mct">Qu'est-ce que VEAF MCT ?</a></li>
 <li><a href="#reconnaître-une-mission-veaf">Reconnaître une mission VEAF</a></li>
 <li><a href="#le-menu-radio-f10">Le menu radio F10</a></li>
-<li><a href="#les-commandes-par-marqueur">Les commandes par marqueur</a></li>
+<li><a href="#marker-commands">Les commandes par marqueur</a></li>
 <li><a href="#ressources">Ressources : ravitailleurs, AWACS, porte-avions</a></li>
 <li><a href="#zones-et-missions-de-combat">Zones et missions de combat</a></li>
 <li><a href="#entraînement-cas">Entraînement CAS</a></li>
@@ -2833,11 +2833,11 @@
 </tr>
 <tr>
 <td><code>-sa15</code></td>
-<td>Véhicule SA-15 Gauntlet (Tor)</td>
+<td>Escouade SA-15 Gauntlet (Tor)</td>
 </tr>
 <tr>
 <td><code>-sa22</code></td>
-<td>Véhicule SA-22 Greyhound (Pantsir-S1)</td>
+<td>Escouade SA-22 Greyhound (Pantsir-S1)</td>
 </tr>
 <tr>
 <td><code>-shilka</code></td>
@@ -3022,7 +3022,7 @@ _spawn bomb, power 500, shells 3
 <hr />
 <h2 id="zones-et-missions-de-combat">Zones et missions de combat<a class="headerlink" href="#zones-et-missions-de-combat" title="Permanent link">&para;</a></h2>
 <h3 id="zones-de-combat">Zones de combat<a class="headerlink" href="#zones-de-combat" title="Permanent link">&para;</a></h3>
-<p>Une <strong>zone de combat</strong> est une zone préparée par le créateur de la mission, que vous activez à la demande. À l'activation, des unités ennemies apparaissent ; une fois toutes détruites, la zone est terminée et peut être rejouée.</p>
+<p>Une <strong>zone de combat</strong> est une zone préparée par le créateur de la mission, que vous activez à la demande. À l'activation, des unités ennemies apparaissent ; une fois qu'elles sont toutes détruites, la zone est terminée et peut être rejouée.</p>
 <table>
 <thead>
 <tr>
@@ -3099,7 +3099,7 @@ _spawn bomb, power 500, shells 3
 <table>
 <thead>
 <tr>
-<th>Niveau</th>
+<th>Niveau (<code>defense</code> / <code>armor</code>)</th>
 <th>Composition typique</th>
 <th>Pour qui</th>
 </tr>
@@ -3140,10 +3140,11 @@ _spawn bomb, power 500, shells 3
 <p>Options de la commande <code>_cas</code> : <code>size [1-5]</code> (taille de la force), <code>defense [0-5]</code> (niveau de DCA), <code>armor [0-5]</code> (blindage), <code>side [blue/red]</code> (coalition).</p>
 <hr />
 <h2 id="sécurité-et-permissions">Sécurité et permissions<a class="headerlink" href="#sécurité-et-permissions" title="Permanent link">&para;</a></h2>
-<p>Sur les serveurs multijoueurs, le créateur de la mission peut restreindre certaines commandes selon votre niveau de permission :</p>
+<p>Sur les serveurs multijoueurs, le créateur de la mission peut restreindre certaines commandes selon votre niveau de permission.</p>
 <p>Il y a deux façons d'avoir le droit d'utiliser une commande : <strong>être reconnu par le serveur</strong>, ou
-<strong>donner le mot de passe</strong>. Les serveurs VEAF tiennent une liste de pilotes ; votre place dans cette
-liste vous ouvre certaines commandes sans rien taper.</p>
+<strong>donner le mot de passe</strong>. Les serveurs VEAF tiennent une liste de pilotes ; si vous y êtes inscrit,
+votre palier s'applique tout seul — aucun mot de passe ne vous est jamais demandé pour les commandes
+de votre palier ou en dessous.</p>
 <table>
 <thead>
 <tr>
@@ -3152,6 +3153,10 @@ liste vous ouvre certaines commandes sans rien taper.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Ouvert</td>
+<td>Tout le monde, inscrit ou pas</td>
+</tr>
 <tr>
 <td>Pilote connu</td>
 <td>Tout pilote inscrit sur la liste du serveur</td>
@@ -3164,18 +3169,23 @@ liste vous ouvre certaines commandes sans rien taper.</p>
 <td>Administrateur</td>
 <td>Les administrateurs du serveur</td>
 </tr>
+<tr>
+<td>Mission Master</td>
+<td>Personne : le mot de passe est exigé de tous, quel que soit le palier</td>
+</tr>
 </tbody>
 </table>
-<p>Certaines commandes sont ouvertes à tout le monde, inscrit ou pas : les infos sur les ressources, la
-fumée, les fusées éclairantes, le marquage d'un point. D'autres, comme faire apparaître un groupe ou
-détruire une unité, demandent un des paliers ci-dessus.</p>
-<p>Si vous n'êtes pas reconnu, placez un marqueur contenant :</p>
-<div class="highlight"><pre><span></span><code>_auth [MOT_DE_PASSE]
-</code></pre></div>
-<p>Le mot de passe est défini par le créateur de la mission ou l'administrateur du serveur, et il y en a
-un par palier — celui d'administrateur ouvre aussi tout ce qui est en dessous. L'authentification
-reste valide pendant une durée configurée (10 minutes par défaut), puis vos droits reviennent
-automatiquement à ce que la liste du serveur vous accorde.</p>
+<p>Les commandes ouvertes : infos sur les ressources, fumée, fusées éclairantes, marquage d'un point.
+D'autres, comme faire apparaître un groupe ou détruire une unité, demandent un palier plus élevé.</p>
+<p>Si vous n'êtes pas sur la liste, ajoutez le mot de passe du palier voulu à chaque commande protégée
+(mot-clé <code>password</code>, par exemple <code>_spawn group, name ..., password [MOT_DE_PASSE]</code>) : il est vérifié
+commande par commande. Il n'y a ni session ni durée — rien à ouvrir, rien qui expire. Le mot de passe
+est défini par le créateur de la mission ou l'administrateur du serveur, et il y en a un par palier —
+celui d'administrateur ouvre aussi tout ce qui est en dessous.</p>
+<p><strong>Menu F10</strong> : DCS ne sait pas dire quel occupant d'un groupe a cliqué sur une entrée du menu. Les
+commandes protégées du menu F10 fonctionnent donc au niveau du <strong>membre le moins gradé</strong> du groupe.
+Si cela vous bride (appareil multi-places partagé), posez un marqueur contenant <code>_auth elevate</code> : le
+groupe monte à votre propre niveau pendant 2 minutes, jamais plus haut.</p>
 <hr />
 <h2 id="conseils-selon-votre-appareil">Conseils selon votre appareil<a class="headerlink" href="#conseils-selon-votre-appareil" title="Permanent link">&para;</a></h2>
 <h3 id="chasseurs-f-16c-fa-18c-f-15c-su-27">Chasseurs (F-16C, F/A-18C, F-15C, Su-27…)<a class="headerlink" href="#chasseurs-f-16c-fa-18c-f-15c-su-27" title="Permanent link">&para;</a></h3>
@@ -3208,7 +3218,7 @@ automatiquement à ce que la liste du serveur vous accorde.</p>
 <p><strong>Comment savoir si une mission utilise VEAF ?</strong>
 Appuyez sur F10 : si un sous-menu « VEAF » apparaît sous « Autre », c'est une mission VEAF.</p>
 <p><strong>Mes commandes par marqueur ne fonctionnent pas. Pourquoi ?</strong>
-Vérifiez la syntaxe (les commandes brutes commencent par <code>_</code>, les alias par <code>-</code>). En multijoueur, vous devez peut-être vous authentifier d'abord avec <code>_auth [MOT_DE_PASSE]</code>. Vérifiez aussi que le serveur autorise les commandes par marqueur.</p>
+Vérifiez la syntaxe (les commandes brutes commencent par <code>_</code>, les alias par <code>-</code>). En multijoueur, si vous n'êtes pas sur la liste des pilotes du serveur, ajoutez <code>password [MOT_DE_PASSE]</code> à la commande. Pour le menu F10, rappelez-vous que le groupe agit au niveau de son membre le moins gradé : <code>_auth elevate</code> le monte à votre niveau pendant 2 minutes. Vérifiez aussi que le serveur autorise les commandes par marqueur.</p>
 <p><strong>Quels noms d'unités puis-je utiliser avec <code>_spawn unit</code> ?</strong>
 Les noms de types standard de DCS : <code>F-16C</code>, <code>Su-27</code>, <code>T-80</code>, <code>M1 Abrams</code>, <code>SA-6</code>, etc. Attention, ils sont sensibles à la casse (majuscules/minuscules).</p>
 <p><strong>Les unités que j'ai fait apparaître ont disparu. Est-ce normal ?</strong>

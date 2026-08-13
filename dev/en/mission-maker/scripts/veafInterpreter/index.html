@@ -2504,7 +2504,7 @@
 
 
 <h1 id="veafinterpreter--unit-embedded-commands">veafInterpreter — Unit-Embedded Commands<a class="headerlink" href="#veafinterpreter--unit-embedded-commands" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>INTERPRETER</code> | <strong>Version:</strong> 1.6.x | <strong>File:</strong> <code>veafInterpreter.lua</code></p>
+<p><strong>Module ID:</strong> <code>INTERPRETER</code> | <strong>File:</strong> <code>veafInterpreter.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>The VEAF Interpreter lets you embed VEAF commands directly in unit or static object names in the DCS Mission Editor, without writing a single line of Lua. When the mission starts, the interpreter scans all units, detects the embedded commands, executes them, and removes the trigger unit.</p>
@@ -2515,7 +2515,7 @@
 <li>Place a unit (or static object) in the DCS Mission Editor anywhere on the map.</li>
 <li>Name it with the <code>#veafInterpreter["command"]</code> tag — where <code>command</code> is any VEAF marker command.</li>
 <li>One second after the mission starts, the interpreter scans all units in the mission database.</li>
-<li>For each unit carrying a valid tag, it executes the command at that unit's position, then <strong>destroys the unit</strong> (and its group).</li>
+<li>For each unit carrying a valid tag, it executes the command at that unit's position, then <strong>destroys the unit</strong> (and its group) <strong>if the command succeeded</strong> — a refused command leaves its host unit in place.</li>
 </ol>
 <p>The unit's position becomes the command position — perfect for JTAC setups, convoy waypoints, or SAM battery locations that you want to position visually in the editor.</p>
 <p>If the hosting unit belongs to a group with <strong>waypoints</strong>, those waypoints are passed to the spawned groups. Convoys and patrols spawned this way will follow the route you drew in the editor.</p>
@@ -2524,45 +2524,53 @@
 <div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;&lt;command&gt;&quot;]
 </code></pre></div>
 <p>The tag can appear anywhere in the unit name. Text before and after is ignored — which is useful for making unit names unique when DCS requires it:</p>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-spawn sa-11, side red&quot;] #001
-#veafInterpreter[&quot;-spawn sa-11, side red&quot;] #002
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-sa11, side red&quot;] #001
+#veafInterpreter[&quot;-sa11, side red&quot;] #002
 </code></pre></div>
 <p>Both units carry the same command but have different names.</p>
 <hr />
 <h2 id="command-syntax">Command syntax<a class="headerlink" href="#command-syntax" title="Permanent link">&para;</a></h2>
 <p>The command inside the tag is the same syntax used for F10 map markers — the <code>-</code> prefix followed by a VEAF command and its options:</p>
-<div class="highlight"><pre><span></span><code>-spawn sa-11, side red
--jtac, laserCode 1688
--convoy from ZONE-A to ZONE-B
--arty, rounds 10
+<div class="highlight"><pre><span></span><code>-sa11, side red
+-jtac, laser 1688
+-convoy, dest ZONE-B
+-arty, side red
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">An unknown key aborts the command</p>
+<p>Since the marker parsers were unified, a keyword the command does not know <strong>stops</strong> execution
+instead of being ignored, with a message suggesting the closest key. A misspelled
+<code>#veafInterpreter</code> tag therefore does nothing at mission start — check your keys against the
+<a href="../../../ALIASES/">alias reference</a>.</p>
+</div>
 <p>All commands understood by the VEAF marker system work here. See the <a href="../../../LUA_API_REFERENCE/">VEAF command reference</a> for the full list.</p>
 <hr />
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="jtac-at-a-fixed-position">JTAC at a fixed position<a class="headerlink" href="#jtac-at-a-fixed-position" title="Permanent link">&para;</a></h3>
 <p>Place a dummy infantry unit named:
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-jtac, laserCode 1688, smoke red&quot;]
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-jtac, laser 1688&quot;]
 </code></pre></div></p>
-<p>At mission start the interpreter creates a JTAC at that position with laser code 1688 and pops red smoke. The dummy infantry disappears.</p>
+<p>At mission start the interpreter creates a JTAC at that position, designating its targets with laser code 1688. The dummy infantry disappears.</p>
 <h3 id="sa-11-battery">SA-11 battery<a class="headerlink" href="#sa-11-battery" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-spawn sa-11, side red, defense 2, size 2&quot;]
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-sa11, side red&quot;]
 </code></pre></div>
-<p>A full SA-11 battery spawns at the unit's editor position. Adjust <code>defense</code> and <code>size</code> to taste.</p>
+<p>A full SA-11 battery spawns at the unit's editor position. The alias already carries its Skynet integration and spacing; <code>side</code> picks the coalition.</p>
 <h3 id="convoy-following-an-editor-route">Convoy following an editor route<a class="headerlink" href="#convoy-following-an-editor-route" title="Permanent link">&para;</a></h3>
 <ol>
 <li>In the DCS editor, create a ground group and draw <strong>waypoints</strong> from A to B.</li>
 <li>Name the group (or one unit in it):
-   <div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-convoy, defense 1, size 8, patrol&quot;]
+   <div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-convoy, dest ZONE-B, size 8, defense 1, patrol&quot;]
 </code></pre></div></li>
 <li>At mission start the interpreter creates a convoy at the group's position, following the drawn route. The original group is destroyed.</li>
 </ol>
+<p><code>dest</code> is <strong>mandatory</strong> for a convoy: it is the named point it drives to. <code>size</code> is the number of vehicles (default 10).</p>
 <h3 id="multiple-sam-sites-with-unique-names">Multiple SAM sites with unique names<a class="headerlink" href="#multiple-sam-sites-with-unique-names" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-spawn sa-10, side red&quot;] NORTH-01
-#veafInterpreter[&quot;-spawn sa-10, side red&quot;] NORTH-02
-#veafInterpreter[&quot;-spawn sa-6, side red&quot;]  SOUTH-01
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-sa10, side red&quot;] NORTH-01
+#veafInterpreter[&quot;-sa10, side red&quot;] NORTH-02
+#veafInterpreter[&quot;-sa6, side red&quot;]  SOUTH-01
 </code></pre></div>
 <h3 id="artillery-in-a-defensive-position">Artillery in a defensive position<a class="headerlink" href="#artillery-in-a-defensive-position" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-arty, rounds 20, defense 2&quot;]
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-arty, side red, spacing 2&quot;]
 </code></pre></div>
 <hr />
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>

@@ -2516,7 +2516,7 @@
 
 
 <h1 id="veafweather--dynamic-weather-and-atc-conditions">veafWeather — Dynamic Weather and ATC Conditions<a class="headerlink" href="#veafweather--dynamic-weather-and-atc-conditions" title="Permanent link">&para;</a></h1>
-<p><strong>Module ID:</strong> <code>WEATHER</code> | <strong>Version:</strong> — | <strong>File:</strong> <code>veafWeather.lua</code></p>
+<p><strong>Module ID:</strong> <code>WEATHER</code> | <strong>File:</strong> <code>veafWeather.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Two distinct roles:</p>
@@ -2654,7 +2654,9 @@
 </code></pre></div>
 <hr />
 <h2 id="chat--remote-commands">Chat / Remote Commands<a class="headerlink" href="#chat--remote-commands" title="Permanent link">&para;</a></h2>
-<p>Players or administrators can change fog via the chat window (requires <code>veafRemote</code>):</p>
+<p>These commands go through the chat window (requires <code>veafRemote</code> and the
+<a href="../veafServerHook/">server hook</a>) — this module has no marker command. The three aliases
+<code>/weather</code>, <code>/atc</code> and <code>/atis</code> are interchangeable; the word that follows picks the action:</p>
 <table>
 <thead>
 <tr>
@@ -2664,19 +2666,23 @@
 </thead>
 <tbody>
 <tr>
-<td><code>_weather</code></td>
-<td>Weather report at current position</td>
+<td><code>/atis</code> (or <code>/weather</code>, <code>/atc</code>, with no argument)</td>
+<td>ATC + weather report at current position</td>
 </tr>
 <tr>
-<td><code>_atc</code></td>
-<td>ATC report at nearest airbase</td>
+<td><code>/weather weather</code></td>
+<td>Weather report only</td>
 </tr>
 <tr>
-<td><code>_weather fog FOG_STATIC_MEDIUM</code></td>
+<td><code>/atc atc</code></td>
+<td>ATIS of the nearest airbase only</td>
+</tr>
+<tr>
+<td><code>/weather fog FOG_STATIC_MEDIUM</code></td>
 <td>Activate a named fog constant</td>
 </tr>
 <tr>
-<td><code>_weather fog FOG_ANIMATED_10M_NO</code></td>
+<td><code>/weather fog FOG_ANIMATED_10M_NO</code></td>
 <td>Animated fog clear over 10 minutes</td>
 </tr>
 </tbody>

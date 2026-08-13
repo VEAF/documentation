@@ -2996,7 +2996,7 @@
 <p>Ces fichiers <strong>ne sont pas</strong> chargés à l'exécution dans DCS — ils sont consommés par <code>veaf-tools mission build</code> puis compilés dans le <code>.miz</code>.</p>
 <h3 id="catégorie-b--configuration-des-modules-runtime-ce-fichier">Catégorie B — Configuration des modules runtime (ce fichier)<a class="headerlink" href="#catégorie-b--configuration-des-modules-runtime-ce-fichier" title="Permanent link">&para;</a></h3>
 <p><code>mission.yaml</code> lui-même configure <strong>le comportement des modules Lua VEAF lors de l'exécution dans DCS</strong>. Il est traduit au moment du build en <code>veaf-config.lua</code>, injecté dans la mission et exécuté au chargement par DCS.</p>
-<p>Les sections <code>modules:</code>, <code>qra:</code>, <code>assets:</code>, <code>shortcuts:</code> décrivent toutes le comportement des modules à l'exécution.</p>
+<p>La section <code>modules:</code> décrit le comportement des modules à l'exécution (la configuration QRA, assets ou shortcuts vit sous le module concerné, ex. <code>modules.QRA</code>).</p>
 <div class="highlight"><pre><span></span><code>dossier mission/
 ├── mission.yaml          ← config des modules runtime (CE FICHIER)
 │   └── pipeline:
@@ -3178,7 +3178,7 @@
 </table>
 <h4 id="icao-naming">Le nom du <code>.miz</code> est une interface — <code>_ICAO_&lt;code&gt;</code> et la météo réelle<a class="headerlink" href="#icao-naming" title="Permanent link">&para;</a></h4>
 <p><code>mission.name</code> devient le nom du fichier construit : <code>&lt;nom&gt;_&lt;AAAAMMJJ&gt;.miz</code>, plus un suffixe
-<code>_&lt;VARIANTE&gt;</code> si <a href="#build_variants"><code>build_variants:</code></a> est utilisé. Donnez au contraire un nom
+<code>_&lt;VARIANTE&gt;</code> si <a href="#build_variants"><code>build_variants:</code></a> est utilisé. Donnez plutôt un nom
 terminé par <code>.miz</code> et il est repris <strong>tel quel</strong>, sans date.</p>
 <p>C'est important parce que <strong>l'outillage serveur lit le nom du fichier</strong>. Sur les serveurs VEAF,
 l'extension RealWeather de <a href="https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot">DCSServerBot</a>
@@ -3207,7 +3207,7 @@ mauvaise</strong> en sachant ce qu'on obtient. Le Foothold Afghanistan de VEAF u
 environ un jour de retard) — un choix assumé, pas un oubli.</p>
 <hr />
 <h3 id="security"><code>security:</code><a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
-<p>Contrôle le système de sécurité VEAF. Par défaut, la sécurité est désactivée (tous les joueurs ont accès complet).</p>
+<p>Contrôle le système de sécurité VEAF. <strong>La sécurité est active par défaut</strong> (<code>veaf.SecurityDisabled = false</code> dans <code>veaf.lua</code>) : sans bloc <code>security:</code>, rien n'est émis et les commandes sensibles exigent un niveau de pilote ou un mot de passe. <code>disabled: true</code> la coupe pour toute la mission.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                   </span><span class="c1"># false = un mot de passe est requis</span>
 <span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span><span class="w">                  </span><span class="c1"># hashes SHA-1 donnant l&#39;accès joueur/JTF</span>
@@ -3229,7 +3229,7 @@ environ un jour de retard) — un choix assumé, pas un oubli.</p>
 <tr>
 <td><code>disabled</code></td>
 <td>booléen</td>
-<td><code>true</code></td>
+<td><code>false</code></td>
 <td>Non</td>
 <td><code>true</code> = aucun mot de passe requis</td>
 </tr>
@@ -3252,8 +3252,7 @@ environ un jour de retard) — un choix assumé, pas un oubli.</p>
 <blockquote>
 <p><strong>SHA-1, pas SHA-256.</strong> <code>veafSecurity._checkPassword</code> hashe ce que tape le joueur avec
 <code>sha1.hex(password)</code> puis cherche le résultat dans la table : un hash SHA-256 ne correspondra
-donc jamais et le mot de passe ne fonctionnera <strong>jamais</strong>, en silence. Cette page indiquait
-SHA-256 jusqu'à sa correction — vérifiez toute mission dont le mot de passe semble ignoré.</p>
+donc jamais et le mot de passe ne fonctionnera <strong>jamais</strong>, en silence.</p>
 <p>Pour en générer un : <code>echo -n "votremotdepasse" | sha1sum</code> (Linux/macOS), ou
 <code>python -c "import hashlib,sys; print(hashlib.sha1(sys.argv[1].encode()).hexdigest())" votremotdepasse</code>.</p>
 </blockquote>
@@ -3485,7 +3484,7 @@ SHA-256 jusqu'à sa correction — vérifiez toute mission dont le mot de passe 
 <span class="w">    </span><span class="nt">init</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">create_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># pas de menu radio VEAF ; commandes via marqueurs</span>
 </code></pre></div>
-<p><strong>Les scripts communautaires</strong> se déclarent dans le même bloc, via leurs IDs en majuscules. Lorsqu'un script est absent de <code>modules:</code>, il garde son état par défaut (inclus). Mettez-le à <code>false</code> pour l'exclure :</p>
+<p><strong>Les scripts communautaires</strong> se déclarent dans le même bloc, via leurs IDs (la casse est indifférente : <code>CTLD:</code> et <code>ctld:</code> sont équivalents). Lorsqu'un script est absent de <code>modules:</code>, il garde son état par défaut (inclus). Mettez-le à <code>false</code> pour l'exclure — sauf <code>MIST</code>, dépendance obligatoire des scripts VEAF : un <code>MIST: false</code> explicite est ignoré avec un avertissement au build, le script est injecté quand même.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -3501,7 +3500,7 @@ SHA-256 jusqu'à sa correction — vérifiez toute mission dont le mot de passe 
 <tbody>
 <tr>
 <td><code>MIST</code></td>
-<td>MIST (Mission Scripting Tools)</td>
+<td>MIST (Mission Scripting Tools) — <strong>obligatoire, non désactivable</strong></td>
 </tr>
 <tr>
 <td><code>STTS</code></td>
@@ -3534,7 +3533,7 @@ SHA-256 jusqu'à sa correction — vérifiez toute mission dont le mot de passe 
 </tbody>
 </table>
 <blockquote>
-<p>Un identifiant inconnu déclenche un avertissement au build et est ignoré.</p>
+<p>Un identifiant inconnu dans <code>modules:</code> est une <strong>erreur bloquante</strong> : le build s'arrête avec un message indiquant la clé fautive.</p>
 <p><strong><code>TUM</code> (The Universal Mission) — prérequis de mission.</strong> TUM est un générateur de mission PvE autonome (script communautaire tiers) qui prend le contrôle de toute la carte à l'initialisation : il rend tous les aérodromes neutres, puis attribue les zones et aérodromes aux camps d'après les <strong>zones de déclencheur</strong> (<em>trigger zones</em>) de l'éditeur de mission. Si vous activez <code>TUM: true</code> sur une mission qui n'a pas été conçue pour TUM, le script s'interrompt au démarrage avec une erreur du type :</p>
 <p><code>Coalition red has no territory zones and/or controls no airfields. Please add zone with a name starting with REDFOR…</code></p>
 <p>Ce n'est <strong>pas un bug VEAF</strong> : c'est un prérequis de design de TUM. Pour l'utiliser, créez dans l'éditeur de mission une zone dont le nom commence par <code>BLUFOR</code> et une autre commençant par <code>REDFOR</code>, chacune contenant <strong>au moins un aérodrome</strong>, plus au moins une autre zone de mission. N'activez <code>TUM</code> que pour une mission de type TUM.</p>
@@ -3644,6 +3643,36 @@ SHA-256 jusqu'à sa correction — vérifiez toute mission dont le mot de passe 
 <td><code>MISSILEGUARDIAN</code></td>
 <td>veafMissileGuardian</td>
 <td><a href="../mission-maker/scripts/veafMissileGuardian/">veafMissileGuardian</a></td>
+</tr>
+<tr>
+<td><code>TRANSPORTMISSION</code></td>
+<td>veafTransportMission</td>
+<td><a href="../mission-maker/scripts/veafTransportMission/">veafTransportMission</a></td>
+</tr>
+<tr>
+<td><code>AIRBASES</code></td>
+<td>veafAirbases</td>
+<td><a href="../mission-maker/scripts/veafAirbases/">veafAirbases</a></td>
+</tr>
+<tr>
+<td><code>GROUNDAI</code></td>
+<td>veafGroundAI</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>REMOTE</code></td>
+<td>veafRemote</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SKYNET_MONITOR</code></td>
+<td>veafSkynetMonitor</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>I18N</code></td>
+<td>veafI18n</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
@@ -3800,7 +3829,7 @@ une mission adoptée reproduit donc l'étalement de l'amont sans que vous ayez �
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">presets</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># défaut true — injecte les préréglages radio ; false = désactive toute l&#39;étape</span>
-<span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># défaut true — si false, aucune planchette PNG (KNEEBOARD/IMAGES/presets-*.png) n&#39;est générée</span>
+<span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># défaut true — si false, aucune planchette PNG (KNEEBOARD/&lt;type&gt;/IMAGES/presets[-&lt;coalition&gt;].png) n&#39;est générée</span>
 </code></pre></div>
 <hr />
 <h3 id="build"><code>build:</code><a class="headerlink" href="#build" title="Permanent link">&para;</a></h3>

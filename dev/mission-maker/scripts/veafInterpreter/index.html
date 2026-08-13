@@ -2504,7 +2504,7 @@
 
 
 <h1 id="veafinterpreter--commandes-embarquées-dans-les-unités">veafInterpreter — Commandes embarquées dans les unités<a class="headerlink" href="#veafinterpreter--commandes-embarquées-dans-les-unités" title="Permanent link">&para;</a></h1>
-<p><strong>ID du module :</strong> <code>INTERPRETER</code> | <strong>Version :</strong> 1.6.x | <strong>Fichier :</strong> <code>veafInterpreter.lua</code></p>
+<p><strong>ID du module :</strong> <code>INTERPRETER</code> | <strong>Fichier :</strong> <code>veafInterpreter.lua</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
 <p>L'interpréteur VEAF permet d'embarquer des commandes VEAF directement dans le nom des unités ou objets statiques de l'éditeur de mission DCS, sans écrire la moindre ligne de Lua. Au démarrage de la mission, l'interpréteur parcourt toutes les unités, détecte les commandes embarquées, les exécute, puis supprime l'unité déclencheuse.</p>
@@ -2515,7 +2515,7 @@
 <li>Placez une unité (ou un objet statique) dans l'éditeur de mission DCS, n'importe où sur la carte.</li>
 <li>Nommez-la avec la balise <code>#veafInterpreter["command"]</code> — où <code>command</code> est n'importe quelle commande de marqueur VEAF.</li>
 <li>Une seconde après le démarrage de la mission, l'interpréteur parcourt toutes les unités de la base de données de la mission.</li>
-<li>Pour chaque unité portant une balise valide, il exécute la commande à la position de cette unité, puis <strong>détruit l'unité</strong> (et son groupe).</li>
+<li>Pour chaque unité portant une balise valide, il exécute la commande à la position de cette unité, puis <strong>détruit l'unité</strong> (et son groupe) <strong>si la commande a réussi</strong> — une commande refusée laisse son unité hôte en place.</li>
 </ol>
 <p>La position de l'unité devient la position de la commande — parfait pour des configurations de JTAC, des points de passage de convois, ou des emplacements de batteries SAM que vous voulez positionner visuellement dans l'éditeur.</p>
 <p>Si l'unité hôte appartient à un groupe doté de <strong>points de passage</strong>, ces points de passage sont transmis aux groupes générés. Les convois et patrouilles générés ainsi suivront la route que vous avez tracée dans l'éditeur.</p>
@@ -2524,45 +2524,53 @@
 <div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;&lt;command&gt;&quot;]
 </code></pre></div>
 <p>La balise peut apparaître n'importe où dans le nom de l'unité. Le texte avant et après est ignoré — ce qui est utile pour rendre les noms d'unités uniques quand DCS l'exige :</p>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-spawn sa-11, side red&quot;] #001
-#veafInterpreter[&quot;-spawn sa-11, side red&quot;] #002
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-sa11, side red&quot;] #001
+#veafInterpreter[&quot;-sa11, side red&quot;] #002
 </code></pre></div>
 <p>Les deux unités portent la même commande mais ont des noms différents.</p>
 <hr />
 <h2 id="syntaxe-des-commandes">Syntaxe des commandes<a class="headerlink" href="#syntaxe-des-commandes" title="Permanent link">&para;</a></h2>
 <p>La commande à l'intérieur de la balise utilise la même syntaxe que les marqueurs de la carte F10 — le préfixe <code>-</code> suivi d'une commande VEAF et de ses options :</p>
-<div class="highlight"><pre><span></span><code>-spawn sa-11, side red
--jtac, laserCode 1688
--convoy from ZONE-A to ZONE-B
--arty, rounds 10
+<div class="highlight"><pre><span></span><code>-sa11, side red
+-jtac, laser 1688
+-convoy, dest ZONE-B
+-arty, side red
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Une clé inconnue interrompt la commande</p>
+<p>Depuis l'unification des analyseurs de marqueurs, un mot-clé que la commande ne connaît pas
+<strong>arrête</strong> l'exécution au lieu d'être ignoré, avec un message proposant la clé la plus proche.
+Une balise <code>#veafInterpreter</code> mal orthographiée ne produit donc rien au démarrage — vérifiez
+vos clés dans la <a href="../../../ALIASES/">référence des alias</a>.</p>
+</div>
 <p>Toutes les commandes comprises par le système de marqueurs VEAF fonctionnent ici. Voir la <a href="../../../LUA_API_REFERENCE/">référence des commandes VEAF</a> pour la liste complète.</p>
 <hr />
 <h2 id="exemples">Exemples<a class="headerlink" href="#exemples" title="Permanent link">&para;</a></h2>
 <h3 id="jtac-à-une-position-fixe">JTAC à une position fixe<a class="headerlink" href="#jtac-à-une-position-fixe" title="Permanent link">&para;</a></h3>
 <p>Placez une unité d'infanterie factice nommée :
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-jtac, laserCode 1688, smoke red&quot;]
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-jtac, laser 1688&quot;]
 </code></pre></div></p>
-<p>Au démarrage de la mission, l'interpréteur crée un JTAC à cette position avec le code laser 1688 et déclenche une fumée rouge. L'infanterie factice disparaît.</p>
+<p>Au démarrage de la mission, l'interpréteur crée un JTAC à cette position, désignant ses cibles avec le code laser 1688. L'infanterie factice disparaît.</p>
 <h3 id="batterie-sa-11">Batterie SA-11<a class="headerlink" href="#batterie-sa-11" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-spawn sa-11, side red, defense 2, size 2&quot;]
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-sa11, side red&quot;]
 </code></pre></div>
-<p>Une batterie SA-11 complète apparaît à la position de l'unité dans l'éditeur. Ajustez <code>defense</code> et <code>size</code> selon vos besoins.</p>
+<p>Une batterie SA-11 complète apparaît à la position de l'unité dans l'éditeur. L'alias intègre déjà son intégration Skynet et son espacement ; <code>side</code> choisit la coalition.</p>
 <h3 id="convoi-suivant-une-route-tracée-dans-léditeur">Convoi suivant une route tracée dans l'éditeur<a class="headerlink" href="#convoi-suivant-une-route-tracée-dans-léditeur" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Dans l'éditeur DCS, créez un groupe terrestre et tracez des <strong>points de passage</strong> de A vers B.</li>
 <li>Nommez le groupe (ou une unité du groupe) :
-   <div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-convoy, defense 1, size 8, patrol&quot;]
+   <div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-convoy, dest ZONE-B, size 8, defense 1, patrol&quot;]
 </code></pre></div></li>
 <li>Au démarrage de la mission, l'interpréteur crée un convoi à la position du groupe, suivant la route tracée. Le groupe d'origine est détruit.</li>
 </ol>
+<p><code>dest</code> est <strong>obligatoire</strong> pour un convoi : c'est le point nommé vers lequel il roule. <code>size</code> est le nombre de véhicules (défaut 10).</p>
 <h3 id="plusieurs-sites-sam-avec-des-noms-uniques">Plusieurs sites SAM avec des noms uniques<a class="headerlink" href="#plusieurs-sites-sam-avec-des-noms-uniques" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-spawn sa-10, side red&quot;] NORTH-01
-#veafInterpreter[&quot;-spawn sa-10, side red&quot;] NORTH-02
-#veafInterpreter[&quot;-spawn sa-6, side red&quot;]  SOUTH-01
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-sa10, side red&quot;] NORTH-01
+#veafInterpreter[&quot;-sa10, side red&quot;] NORTH-02
+#veafInterpreter[&quot;-sa6, side red&quot;]  SOUTH-01
 </code></pre></div>
 <h3 id="artillerie-en-position-défensive">Artillerie en position défensive<a class="headerlink" href="#artillerie-en-position-défensive" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-arty, rounds 20, defense 2&quot;]
+<div class="highlight"><pre><span></span><code>#veafInterpreter[&quot;-arty, side red, spacing 2&quot;]
 </code></pre></div>
 <hr />
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>

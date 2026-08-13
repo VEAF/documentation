@@ -2753,7 +2753,7 @@
 </ol>
 <hr />
 <h2 id="what-is-veaf-mct">What is VEAF MCT?<a class="headerlink" href="#what-is-veaf-mct" title="Permanent link">&para;</a></h2>
-<p>VEAF Mission Creation Tools (VEAF MCT) makes DCS World missions alive and interactive. In a regular mission, everything is fixed in advance. With VEAF MCT, you can act while flying:</p>
+<p>VEAF Mission Creation Tools (VEAF MCT) brings DCS World missions to life and makes them interactive. In a regular mission, everything is fixed in advance. With VEAF MCT, you can act while flying:</p>
 <ul>
 <li>spawn enemy units on demand;</li>
 <li>request a tanker, an AWACS or a carrier;</li>
@@ -2833,11 +2833,11 @@
 </tr>
 <tr>
 <td><code>-sa15</code></td>
-<td>SA-15 Gauntlet (Tor) vehicle</td>
+<td>SA-15 Gauntlet (Tor) squad</td>
 </tr>
 <tr>
 <td><code>-sa22</code></td>
-<td>SA-22 Greyhound (Pantsir-S1) vehicle</td>
+<td>SA-22 Greyhound (Pantsir-S1) squad</td>
 </tr>
 <tr>
 <td><code>-shilka</code></td>
@@ -3099,7 +3099,7 @@ _spawn bomb, power 500, shells 3
 <table>
 <thead>
 <tr>
-<th>Level</th>
+<th>Level (<code>defense</code> / <code>armor</code>)</th>
 <th>Typical composition</th>
 <th>For whom</th>
 </tr>
@@ -3140,10 +3140,10 @@ _spawn bomb, power 500, shells 3
 <p>Options for the <code>_cas</code> command: <code>size [1-5]</code> (force size), <code>defense [0-5]</code> (AA level), <code>armor [0-5]</code> (armour), <code>side [blue/red]</code> (coalition).</p>
 <hr />
 <h2 id="security-and-permissions">Security and Permissions<a class="headerlink" href="#security-and-permissions" title="Permanent link">&para;</a></h2>
-<p>On multiplayer servers, the mission maker may restrict certain commands according to your permission level:</p>
+<p>On multiplayer servers, the mission maker may restrict certain commands according to your permission level.</p>
 <p>There are two ways to be allowed to run a command: <strong>being recognised by the server</strong>, or <strong>giving
-the password</strong>. VEAF servers keep a list of pilots, and your place on that list opens some commands
-without typing anything.</p>
+the password</strong>. VEAF servers keep a list of pilots; if you are on it, your tier applies by itself —
+you are never asked for a password for commands at or below your tier.</p>
 <table>
 <thead>
 <tr>
@@ -3152,6 +3152,10 @@ without typing anything.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Open</td>
+<td>Everyone, listed or not</td>
+</tr>
 <tr>
 <td>Known pilot</td>
 <td>Any pilot on the server's list</td>
@@ -3164,17 +3168,23 @@ without typing anything.</p>
 <td>Administrator</td>
 <td>The server's administrators</td>
 </tr>
+<tr>
+<td>Mission Master</td>
+<td>Nobody: the password is required from everyone, whatever their tier</td>
+</tr>
 </tbody>
 </table>
-<p>Some commands are open to everyone, listed or not: asset info, smoke, signal flares, naming a point.
-Others — spawning a group, destroying a unit — need one of the tiers above.</p>
-<p>If you are not recognised, place a marker containing:</p>
-<div class="highlight"><pre><span></span><code>_auth [PASSWORD]
-</code></pre></div>
-<p>The password is set by the mission maker or server administrator, and there is one per tier — the
-administrator's also opens everything below it. Authentication stays valid for a configured duration
-(10 minutes by default), after which your rights return automatically to whatever the server's list
-grants you.</p>
+<p>The open commands: asset info, smoke, signal flares, naming a point. Others — spawning a group,
+destroying a unit — need a higher tier.</p>
+<p>If you are not on the list, add the password of the required tier to each protected command
+(<code>password</code> keyword, e.g. <code>_spawn group, name ..., password [PASSWORD]</code>): it is checked command by
+command. There is no session and no duration — nothing to open, nothing that expires. The password is
+set by the mission maker or server administrator, and there is one per tier — the administrator's
+also opens everything below it.</p>
+<p><strong>F10 menu</strong>: DCS cannot tell which occupant of a group clicked a menu entry. Protected F10 menu
+commands therefore work at the level of the group's <strong>lowest-graded occupant</strong>. If that holds you
+back (shared multi-crew aircraft), place a marker containing <code>_auth elevate</code>: the group rises to your
+own level for 2 minutes, never higher.</p>
 <hr />
 <h2 id="tips-for-your-aircraft">Tips for Your Aircraft<a class="headerlink" href="#tips-for-your-aircraft" title="Permanent link">&para;</a></h2>
 <h3 id="fighters-f-16c-fa-18c-f-15c-su-27">Fighters (F-16C, F/A-18C, F-15C, Su-27…)<a class="headerlink" href="#fighters-f-16c-fa-18c-f-15c-su-27" title="Permanent link">&para;</a></h3>
@@ -3207,7 +3217,7 @@ grants you.</p>
 <p><strong>How do I know if a mission uses VEAF?</strong>
 Press F10: if a "VEAF" submenu appears under "Other", it is a VEAF mission.</p>
 <p><strong>My marker commands don't work. Why?</strong>
-Check the syntax (raw commands start with <code>_</code>, aliases with <code>-</code>). In multiplayer you may need to authenticate first with <code>_auth [PASSWORD]</code>. Also check that the server allows marker commands.</p>
+Check the syntax (raw commands start with <code>_</code>, aliases with <code>-</code>). In multiplayer, if you are not on the server's pilot list, add <code>password [PASSWORD]</code> to the command. For the F10 menu, remember the group acts at the level of its lowest-graded occupant: <code>_auth elevate</code> raises it to your own level for 2 minutes. Also check that the server allows marker commands.</p>
 <p><strong>What unit names can I use with <code>_spawn unit</code>?</strong>
 Standard DCS type names: <code>F-16C</code>, <code>Su-27</code>, <code>T-80</code>, <code>M1 Abrams</code>, <code>SA-6</code>, etc. Note that they are case-sensitive.</p>
 <p><strong>The units I spawned disappeared. Is that normal?</strong>

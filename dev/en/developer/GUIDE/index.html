@@ -3496,9 +3496,10 @@
 ├── dist/                         # PyInstaller .exe output
 ├── build/                        # Temporary build workspace
 ├── test/
-│   └── lua/                      # Lua unit tests
+│   ├── lua/                      # Lua unit tests
+│   └── python/                   # Python unit tests
 ├── doc/                          # Documentation
-├── openspec/                     # Change management (OpenSpec workflow)
+├── .backlog/                     # Lot backlog (PRDs + tickets)
 └── .github/
     └── workflows/                # CI/CD GitHub Actions
 </code></pre></div>
@@ -3741,7 +3742,7 @@ assignments out of <code>__init__</code> and fails naming the missing field and 
 <h2 id="build-and-release">Build and Release<a class="headerlink" href="#build-and-release" title="Permanent link">&para;</a></h2>
 <h3 id="local-build">Local Build<a class="headerlink" href="#local-build" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c"># Build (compiles Lua + builds .exe)</span>
-<span class="n">poetry</span> <span class="n">run</span> <span class="n">veaf-build</span> <span class="n">build</span> <span class="p">-</span><span class="n">-version</span> <span class="n">6</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">0</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="n">veaf-build</span> <span class="n">build</span> <span class="p">-</span><span class="n">-version</span> <span class="p">&lt;</span><span class="n">version</span><span class="p">&gt;</span>
 </code></pre></div>
 <p>What it does:
 1. Validates prerequisites (Git, Python, PyInstaller)
@@ -3814,10 +3815,10 @@ poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"
 <h2 id="quality-gates">Quality Gates<a class="headerlink" href="#quality-gates" title="Permanent link">&para;</a></h2>
 <h3 id="before-every-commit-to-lua-files">Before Every Commit to Lua Files<a class="headerlink" href="#before-every-commit-to-lua-files" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c"># Check formatting (same as CI)</span>
-<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
+<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
 
 <span class="c"># Auto-fix</span>
-<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span>
+<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
 
 <span class="c"># Static analysis</span>
 <span class="n">luacheck</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="p">-</span><span class="n">-config</span> <span class="p">.</span><span class="n">luacheckrc</span>
@@ -3843,11 +3844,15 @@ Luacheck is enforced by the <code>Luacheck</code> CI job.</p>
 </tr>
 <tr>
 <td><code>StyLua Formatting</code></td>
-<td>No formatting violations in <code>src/scripts/veaf/</code></td>
+<td>No formatting violations in <code>src/scripts/veaf/</code> and <code>test/lua/</code></td>
+</tr>
+<tr>
+<td><code>Lua Coverage</code></td>
+<td>Line coverage (luacov) above the ratchet floor (<code>--cov-fail-under</code>) — blocking</td>
 </tr>
 <tr>
 <td><code>python-quality</code></td>
-<td>ruff lint + format, mypy types, pytest</td>
+<td>ruff lint + format (<code>src/python/ test/python/ veaf_build/</code>), mypy (<code>src/python/veaf-tools</code>), pytest</td>
 </tr>
 <tr>
 <td><code>Docs Check</code></td>
@@ -3859,11 +3864,15 @@ Luacheck is enforced by the <code>Luacheck</code> CI job.</p>
 </tr>
 </tbody>
 </table>
-<p>All CI jobs must be green before a PR can be merged.</p>
+<p>All CI jobs must be green before a PR can be merged. Exception: <code>dcs-mock-coverage</code> is
+<code>continue-on-error</code> — informative, it does not block the merge.</p>
 <h3 id="docs-check">Before a commit touching the documentation<a class="headerlink" href="#docs-check" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>docs-check
 </code></pre></div>
-<p>The <code>Docs Check</code> CI job runs exactly that command. It refuses four kinds of rot that had quietly
+<p>The <code>Docs Check</code> CI job runs exactly that command, which chains <strong>three passes</strong>: the main pass
+over <code>doc/</code> (the table below), a relative-link pass over the rest of the repository (<code>.backlog/</code>,
+<code>docs/</code>, the root pages), and a documentation-coverage pass (every capability the code defines
+must be named by its reference page). The main pass refuses four kinds of rot that had quietly
 accumulated before it existed (see the <code>DOC-AUDIT-PASS</code> lot):</p>
 <table>
 <thead>
@@ -3931,8 +3940,8 @@ landed after the tag would never reach the pages. Use the <code>Deploy Docs</cod
 6.12.1 tree would stamp 6.12.1 onto them. Leaving <code>version</code> empty simply redeploys the <code>dev</code> alias.</p>
 <h3 id="releasing-a-new-version">Releasing a new version<a class="headerlink" href="#releasing-a-new-version" title="Permanent link">&para;</a></h3>
 <p>Push a <code>published-v*</code> tag — the <code>Release</code> CI workflow does everything automatically:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v6.1.0
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-v6.1.0
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v&lt;version&gt;
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-v&lt;version&gt;
 </code></pre></div>
 <hr />
 <h2 id="developer-mode">Developer Mode<a class="headerlink" href="#developer-mode" title="Permanent link">&para;</a></h2>
@@ -4032,7 +4041,7 @@ instead of the <code>published/</code> folder shipped with veaf-tools.</p>
 <li><strong>Feature work:</strong> create <code>feature/xxx</code> from <code>develop</code>, open PR → <code>develop</code></li>
 <li><strong>Bug fixes:</strong> create <code>fix/xxx</code> from <code>develop</code>, open PR → <code>develop</code></li>
 <li><strong>Hotfixes to production:</strong> <code>fix/xxx</code> from <code>master</code>, PR → <code>master</code></li>
-<li><strong>Releases:</strong> <code>release/vX.Y.Z</code> from <code>develop</code>, PR → <code>master</code></li>
+<li><strong>Releases:</strong> <code>release/X.Y.Z</code> (no <code>v</code>) from <code>develop</code>, PR → <code>master</code></li>
 </ul>
 <h3 id="commit-convention">Commit Convention<a class="headerlink" href="#commit-convention" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>type(scope): short description

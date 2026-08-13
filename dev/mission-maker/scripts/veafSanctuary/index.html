@@ -2397,7 +2397,7 @@
 <p><strong>Module ID:</strong> <code>SANCTUARY</code> | <strong>Fichier:</strong> <code>veafSanctuary.lua</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
-<p>Définit des zones qui détruisent automatiquement toute unité de la coalition spécifiée qui y entre. Utile pour protéger les zones d'opération des porte-avions, les bases aériennes amies ou les zones arrière sécurisées contre les intrusions ennemies.</p>
+<p>Définit des zones qui protègent une coalition : toute unité d'une autre coalition qui y entre est avertie, puis traitée. Utile pour protéger les zones d'opération des porte-avions, les bases aériennes amies ou les zones arrière sécurisées contre les intrusions ennemies.</p>
 <hr />
 <h2 id="dépendances">Dépendances<a class="headerlink" href="#dépendances" title="Permanent link">&para;</a></h2>
 <hr />
@@ -2407,7 +2407,7 @@
 <p>Puis définir les zones :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">zone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafSanctuaryZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;Carrier Zone&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span><span class="w">  </span><span class="c1">-- protéger contre les unités rouges qui entrent</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">BLUE</span><span class="p">)</span><span class="w"> </span><span class="c1">-- coalition protégée : les unités des autres coalitions sont traitées</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setPolygonFromUnits</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;SANCT-NO&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SANCT-NE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SANCT-SE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SANCT-SO&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDelayWarning</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w">               </span><span class="c1">-- secondes avant l&#39;avertissement</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDelaySpawn</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- secondes avant le déploiement des défenses</span>
@@ -2428,10 +2428,10 @@
 <span class="w">        </span><span class="nt">polygon_units</span><span class="p">:</span><span class="w">                  </span><span class="c1"># noms d&#39;unités DCS définissant le périmètre du polygone</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Sanctuary-Unit-1&quot;</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Sanctuary-Unit-2&quot;</span>
-<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span><span class="w">                  </span><span class="c1"># BLUE | RED — coalition dont les unités sont détruites à l&#39;entrée</span>
-<span class="w">        </span><span class="nt">delay_warning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">              </span><span class="c1"># secondes avant l&#39;envoi du message d&#39;avertissement (défaut : 0)</span>
-<span class="w">        </span><span class="nt">delay_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">                </span><span class="c1"># secondes avant que la zone devient active après le démarrage</span>
-<span class="w">        </span><span class="nt">delay_instant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">               </span><span class="c1"># secondes entre les contrôles de destruction répétés (défaut : 0)</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span><span class="w">                 </span><span class="c1"># BLUE | RED — coalition protégée ; les unités des autres coalitions sont traitées</span>
+<span class="w">        </span><span class="nt">delay_warning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">              </span><span class="c1"># secondes de présence dans la zone avant le message d&#39;avertissement (défaut : 0)</span>
+<span class="w">        </span><span class="nt">delay_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">                </span><span class="c1"># secondes de présence dans la zone avant le déploiement des défenses (-1 = désactivé, défaut)</span>
+<span class="w">        </span><span class="nt">delay_instant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span><span class="w">              </span><span class="c1"># secondes de présence dans la zone avant la destruction instantanée (-1 = désactivé, défaut)</span>
 <span class="w">        </span><span class="nt">protect_from_missiles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># true = détruire aussi les missiles tirés sur les unités présentes dans la zone</span>
 </code></pre></div>
 <table>
@@ -2446,7 +2446,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>enable</code></td>
+<td><code>enabled</code></td>
 <td>booléen</td>
 <td><code>true</code></td>
 <td>Non</td>
@@ -2485,28 +2485,28 @@
 <td>string</td>
 <td>—</td>
 <td>Non</td>
-<td><code>BLUE</code> ou <code>RED</code> — les unités de cette coalition sont détruites à l'entrée</td>
+<td><code>BLUE</code> ou <code>RED</code> — coalition protégée ; les unités des autres coalitions sont traitées à l'entrée</td>
 </tr>
 <tr>
 <td><code>sanctuary_zones[].delay_warning</code></td>
 <td>entier</td>
 <td><code>0</code></td>
 <td>Non</td>
-<td>Secondes avant l'envoi du message d'avertissement</td>
+<td>Secondes de présence dans la zone avant l'envoi du message d'avertissement</td>
 </tr>
 <tr>
 <td><code>sanctuary_zones[].delay_spawn</code></td>
 <td>entier</td>
-<td><code>0</code></td>
+<td><code>-1</code></td>
 <td>Non</td>
-<td>Secondes avant que la zone s'active après le démarrage de la mission</td>
+<td>Secondes de présence dans la zone avant le déploiement des défenses (-1 = désactivé)</td>
 </tr>
 <tr>
 <td><code>sanctuary_zones[].delay_instant</code></td>
 <td>entier</td>
-<td><code>0</code></td>
+<td><code>-1</code></td>
 <td>Non</td>
-<td>Secondes entre les contrôles de destruction répétés</td>
+<td>Secondes de présence dans la zone avant la destruction instantanée de l'intrus (-1 = désactivé)</td>
 </tr>
 <tr>
 <td><code>sanctuary_zones[].protect_from_missiles</code></td>
@@ -2528,7 +2528,7 @@
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;SANCT-NE&quot;</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;SANCT-SE&quot;</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;SANCT-SO&quot;</span>
-<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span>
 </code></pre></div>
 <hr />
 <h2 id="méthodes-du-builder">Méthodes du builder<a class="headerlink" href="#méthodes-du-builder" title="Permanent link">&para;</a></h2>
@@ -2610,8 +2610,8 @@
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>La zone utilise la zone de trigger DCS définie dans l'éditeur de mission</li>
-<li>Les unités sont détruites immédiatement à l'entrée dans la zone</li>
+<li>Une zone se définit par polygone, par cercle (position + rayon) ou depuis une zone de trigger DCS (<code>addZoneFromTriggerZone</code>)</li>
+<li>Par défaut, aucune destruction instantanée : <code>delay_instant</code> vaut -1 (désactivé) ; l'escalade avertissement → défenses → destruction suit les délais configurés</li>
 <li>Fonctionne pour les aéronefs et les unités terrestres</li>
 <li>N'affecte pas la coalition qui possède le sanctuary</li>
 </ul>
