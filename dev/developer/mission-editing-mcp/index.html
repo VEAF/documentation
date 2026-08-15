@@ -2073,6 +2073,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add_air_group-lot-feat-mcp-mutation-actions-ticket-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_air_group (lot FEAT-MCP-MUTATION-ACTIONS, ticket 09)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#validate_group_name-vague-6" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2994,6 +3005,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add_air_group-lot-feat-mcp-mutation-actions-ticket-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_air_group (lot FEAT-MCP-MUTATION-ACTIONS, ticket 09)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#validate_group_name-vague-6" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3780,6 +3802,40 @@ pas produire et sans laquelle une mission bâtie de zéro n'est pas jouable. Sau
   est écrite selon le mode.</li>
 <li><strong><code>frequency_mhz</code></strong> est écrite (radio de groupe active) plutôt qu'héritée d'un <code>communication: false</code>.</li>
 <li>Assigne le pays à son camp dans <code>coalitions</code> (voir <code>add_group</code>), donc la mission reste chargeable.</li>
+</ul>
+<h3 id="add_air_group-lot-feat-mcp-mutation-actions-ticket-09"><code>add_air_group</code> (lot FEAT-MCP-MUTATION-ACTIONS, ticket 09)<a class="headerlink" href="#add_air_group-lot-feat-mcp-mutation-actions-ticket-09" title="Permanent link">&para;</a></h3>
+<p>Écriture. Pose un <strong>vol</strong> (un ou plusieurs appareils) au parking en <strong>résolvant lui-même les places</strong>
+depuis un <strong>nom</strong> d'aérodrome — le cas <em>« un deux-ship de F-16 à Incirlik »</em> que <code>add_player_slot</code> (un
+appareil, place fournie) ne couvre pas. Sauvegarde horodatée avant écriture. Cible un dossier (durable)
+ou un <code>.miz</code> (transitoire).</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;coalition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;country_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;country_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;USA&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Viper&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;unit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F-16C_50&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;parking-cold&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;airfield&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kobuleti&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Résolution des places.</strong> Le nom d'aérodrome est résolu en id (<code>veaf_libs.dcs_airdromes</code>), puis en
+  places libres via la capture allégée bundlée (<code>veaf_libs.dcs_parking</code>, générée par
+  <code>veaf-build update-dcs-data --parking</code>). L'action prend <code>count</code> places libres, <strong>les plus proches de
+  la piste d'abord</strong>, et pose chaque appareil à la <strong>position exacte</strong> du stand.</li>
+<li><strong><code>parking_id</code> = <code>parking</code>.</strong> Établi en jeu le 2026-08-15 : <code>parking</code> est le <code>Term_Index</code> de la
+  capture, l'appareil se cale sur la position exacte, et le <code>parking_id</code> propre à l'éditeur — absent de
+  la capture — n'est <strong>pas</strong> porteur. Il est donc écrit égal à <code>parking</code>.</li>
+<li><strong>Seuls les types de terminal 104 et 68</strong> sont proposés comme parking (mesuré : les avions parkés des
+  vraies missions Caucasus n'occupent qu'eux). Un aérodrome sans place de ce type est <strong>refusé</strong> plutôt
+  que de poser un appareil sur un seuil de piste.</li>
+<li><strong>Collision refusée.</strong> Une place déjà occupée dans la mission (un groupe avion dont le premier
+  waypoint vise cet aérodrome et dont une unité déclare cette place) est refusée <strong>en nommant</strong> le
+  groupe qui la tient ; la sélection automatique <strong>saute</strong> les places occupées.</li>
+<li><strong>Départs.</strong> <code>parking-cold</code> / <code>parking-hot</code> (exigent <code>airfield</code>), <code>runway</code> (exige <code>airfield</code>, ancré
+  sur le terrain, pas de place consommée), <code>air</code> (exige <code>position</code>). La paire <code>type</code>/<code>action</code> et le
+  verrou <code>ETA_locked</code> du premier waypoint sont écrits pour l'appelant.</li>
+<li><strong><code>skill</code></strong> vaut un niveau d'IA par défaut (<code>High</code>) — un vol au parking est IA sauf demande de
+  <code>Client</code>/<code>Player</code>. <code>parking</code> accepte une liste explicite de places qui court-circuite la sélection.</li>
+<li>Un théâtre sans capture, un aérodrome inconnu, ou trop peu de places libres sont refusés en nommant
+  la cause. Assigne le pays à son camp dans <code>coalitions</code>.</li>
 </ul>
 <h3 id="validate_group_name-vague-6"><code>validate_group_name</code> (vague 6)<a class="headerlink" href="#validate_group_name-vague-6" title="Permanent link">&para;</a></h3>
 <p>Lecture seule. Contrôle un nom proposé contre les motifs réservés (préfixes
