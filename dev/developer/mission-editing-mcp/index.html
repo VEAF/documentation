@@ -3514,7 +3514,12 @@ ticket qui les demandait :</p>
   dépôt n'embarque pas : c'est refusé sauf si l'appelant fournit lui-même le <code>name</code> résultant.</li>
 <li><strong><code>heading</code> est en radians</strong> alors qu'un créateur de mission parle en degrés — le piège que
   <code>resolve_coordinates</code> masque ailleurs. Le paramètre s'appelle <code>heading_deg</code> pour que l'unité soit
-  impossible à confondre, et la valeur est normalisée sur un tour (−90 vaut 270).</li>
+  impossible à confondre, et la valeur est normalisée sur un tour (−90 vaut 270). <strong>Sur un appareil en
+  vol</strong> (catégorie avion/hélico, route de 2+ points, premier waypoint en l'air), l'action <strong>avertit</strong> :
+  DCS recalcule le cap depuis le premier segment de la route à la sauvegarde, donc le cap posé a une
+  durée de vie d'une sauvegarde (<code>FIX-MCP-EDITOR-ROUNDTRIP</code>, mesuré 2026-08-15). Pour orienter un
+  appareil en vol, on règle la route, pas le cap. Le cap est <strong>quand même écrit</strong> — l'avertissement
+  informe, il ne refuse pas ; un appareil parké ou une unité au sol ne déclenchent pas l'avertissement.</li>
 </ul>
 <p>Ce que l'action <strong>ne valide pas</strong>, faute des données pour le faire : le CLSID d'une arme face à
 l'appareil qui la porte, et une livrée face aux peintures installées. DCS retire silencieusement une
@@ -3604,7 +3609,18 @@ L'échappatoire démarre <strong>fermée</strong>.</p>
 </ul>
 <p>Deux détails mesurés qui n'étaient pas dans le ticket : <code>type</code> et <code>action</code> d'un point de passage sont
 une <strong>paire</strong> (« Land » va avec « Landing »), et un point ajouté <strong>hérite</strong> de l'altitude et de la
-vitesse de son voisin — sinon il s'écrit à l'altitude 0 et le vol plonge au sol pour l'atteindre.</p>
+vitesse de son voisin — sinon il s'écrit à l'altitude 0 et le vol plonge au sol pour l'atteindre —
+<strong>sauf si <code>altitude_ft</code>/<code>speed_kt</code> sont fournis à <code>add</code>/<code>insert</code></strong>, auquel cas ils sont écrits
+(<code>FIX-MCP-EDITOR-ROUNDTRIP</code> : ils étaient acceptés puis silencieusement ignorés, l'héritage écrasant la
+valeur demandée).</p>
+<p><strong>Les tâches d'attaque doivent porter le jeu de champs complet que l'éditeur conserve.</strong>
+<code>FIX-MCP-EDITOR-ROUNDTRIP</code> a mesuré (2026-08-15) qu'un <code>Bombing</code> écrit sans <code>weaponType</code> est <strong>jeté par
+l'éditeur à la sauvegarde</strong> — un dispositif d'attaque qui ne largue rien. <code>Bombing</code> et <code>AttackGroup</code>
+portent donc désormais <code>weaponType</code> (défaut « Auto » mesuré : 2032 pour Bombing, 9659482112 pour
+AttackGroup, surchargeable via <code>weapon_type</code>), les paires <code>altitude</code>/<code>altitudeEnabled</code> et
+<code>direction</code>/<code>directionEnabled</code> <strong>présentes mais désactivées</strong> par défaut (activées si l'appelant passe
+<code>altitude_ft</code>/<code>direction_deg</code>), et l'ensemble <code>expend</code>/<code>attackQty</code>/<code>groupAttack</code>. <code>EngageTargetsInZone</code>
+porte aussi <code>noTargetTypes</code> (liste d'exclusion, vide par défaut).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1&quot;</span><span class="p">,</span>
@@ -3631,8 +3647,11 @@ de la refaire.</p>
 </ul>
 <p><strong>Décision de David sur le nombre de sommets (2026-08-12)</strong> : accepter trois ou plus, puisque « suivre
 la ligne de crête » est le cas d'usage réel et que mist gère un polygone quelconque — mais <strong>avertir</strong>
-dès que le compte n'est pas quatre, l'éditeur DCS ne dessinant que des quadrilatères. Savoir s'il
-préserve davantage est une question de jeu, qu'aucun test unitaire ne tranche.</p>
+dès que le compte n'est pas quatre, l'éditeur DCS n'ayant aucun outil pour dessiner ou remodeler une
+zone non quadrilatère. La question ouverte de savoir s'il <strong>préserve</strong> une telle zone a été tranchée en
+jeu le 2026-08-15 (<code>FIX-MCP-EDITOR-ROUNDTRIP</code>) : une zone à 6 sommets est revenue identique après
+sauvegarde. L'action <strong>ne refuse donc pas</strong> au-delà de quatre ; l'avertissement énonce une limite
+connue (on ne peut pas éditer la forme à la main dans l'éditeur), plus un risque inconnu.</p>
 <p>Deux refus que le ticket laissait ouverts, décidés ici : un <strong>lien vers une unité inexistante</strong> est
 refusé plutôt qu'averti (une zone liée à rien ne suit simplement jamais rien, sans bruit), et une
 <strong>collision de nom</strong> est refusée (les zones sont référencées par nom depuis <code>mission.yaml</code>).</p>

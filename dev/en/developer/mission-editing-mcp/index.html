@@ -3512,7 +3512,12 @@ that asked for them:</p>
   this repository does not ship: that is refused unless the caller supplies the resulting <code>name</code>.</li>
 <li><strong><code>heading</code> is radians</strong> while a mission maker speaks degrees — the trap <code>resolve_coordinates</code>
   hides elsewhere. The parameter is named <code>heading_deg</code> so the unit cannot be mistaken, and the value
-  is normalised onto one turn (−90 is 270).</li>
+  is normalised onto one turn (−90 is 270). <strong>On an airborne aircraft</strong> (plane/helicopter category, a
+  route of 2+ waypoints, an in-air first waypoint) the action <strong>warns</strong>: DCS recomputes the heading
+  from the route's first leg on save, so a set heading has a lifetime of one save
+  (<code>FIX-MCP-EDITOR-ROUNDTRIP</code>, measured 2026-08-15). To point an airborne aircraft, set the route, not
+  the heading. The heading is <strong>still written</strong> — the warning informs, it does not refuse; a parked
+  aircraft or a ground unit does not trigger it.</li>
 </ul>
 <p>What the action does <strong>not</strong> validate, for want of the data to do it: a weapon's CLSID against the
 airframe carrying it, and a livery against the skins installed. DCS silently drops an impossible
@@ -3597,7 +3602,18 @@ hatch starts <strong>closed</strong>.</p>
 </ul>
 <p>Two measured details the ticket did not mention: a waypoint's <code>type</code> and <code>action</code> are a <strong>pair</strong>
 ("Land" goes with "Landing"), and an added waypoint <strong>inherits</strong> its neighbour's altitude and speed —
-otherwise it is written at altitude 0 and the flight dives into the ground to reach it.</p>
+otherwise it is written at altitude 0 and the flight dives into the ground to reach it — <strong>unless
+<code>altitude_ft</code>/<code>speed_kt</code> are given to <code>add</code>/<code>insert</code></strong>, which are then written (<code>FIX-MCP-EDITOR-
+ROUNDTRIP</code>: they were accepted and then silently dropped, the inheritance overwriting the asked-for
+value).</p>
+<p><strong>Attack tasks must carry the full field set the editor keeps.</strong> <code>FIX-MCP-EDITOR-ROUNDTRIP</code> measured
+(2026-08-15) that a <code>Bombing</code> written without <code>weaponType</code> is <strong>discarded by the editor on save</strong> — a
+strike package that drops nothing. <code>Bombing</code> and <code>AttackGroup</code> therefore now carry <code>weaponType</code>
+(measured "Auto" default: 2032 for Bombing, 9659482112 for AttackGroup, overridable via <code>weapon_type</code>),
+the <code>altitude</code>/<code>altitudeEnabled</code> and <code>direction</code>/<code>directionEnabled</code> pairs <strong>present but disabled</strong> by
+default (enabled when the caller passes <code>altitude_ft</code>/<code>direction_deg</code>), and the
+<code>expend</code>/<code>attackQty</code>/<code>groupAttack</code> set. <code>EngageTargetsInZone</code> also carries <code>noTargetTypes</code> (its
+exclusion list, empty by default).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1&quot;</span><span class="p">,</span>
@@ -3623,8 +3639,10 @@ adjusting a VEAF combat zone — which <em>is</em> a trigger zone — meant dele
 </ul>
 <p><strong>David's call on the vertex count (2026-08-12)</strong>: accept three or more, since "follow the ridge line"
 is the real use case and mist handles an arbitrary polygon — but <strong>warn</strong> whenever the count is not
-four, the DCS editor only drawing quads. Whether it preserves more is an in-game question no unit test
-settles.</p>
+four, the DCS editor having no tool to draw or reshape a non-quad zone. The open question of whether it
+<em>preserves</em> one was settled in game on 2026-08-15 (<code>FIX-MCP-EDITOR-ROUNDTRIP</code>): a 6-vertex zone came
+back unchanged through a save, so the action <strong>does not refuse</strong> above four; the warning states a known
+limitation (you cannot edit the shape by hand there), not an unknown risk.</p>
 <p>Two refusals the ticket left open, decided here: a <strong>link to a unit that does not exist</strong> is refused
 rather than warned (a zone linked to nothing simply never follows anything, silently), and a <strong>name
 collision</strong> is refused (zones are referenced by name from <code>mission.yaml</code>).</p>
