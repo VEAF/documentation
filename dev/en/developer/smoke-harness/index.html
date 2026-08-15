@@ -2637,7 +2637,35 @@ sent the reader looking for a mission to load where loading one could not have h
 </code></pre></div>
 <p>Probes, then runs the checks. Exits 1 if any fails, 0 if all pass <strong>or the run was skipped</strong>.</p>
 <h2 id="how-it-talks-to-dcs">How it talks to DCS<a class="headerlink" href="#how-it-talks-to-dcs" title="Permanent link">&para;</a></h2>
-<p>One transport, the hook's, read out of <code>dcs-fiddle-server.lua</code> rather than assumed: the Lua travels
+<p><strong>Two transports, each for what it reaches</strong> (ticket 04). A check names its own via <code>Check.transport</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Transport</th>
+<th>What it sees</th>
+<th>Which checks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>hook</strong> (<code>dcs-fiddle-server.lua</code>)</td>
+<td>a <strong>bare</strong> scripting state: DCS's own globals (<code>Disposition</code>, <code>missionCommands</code>, <code>coalition</code>) are there, the mission's scripts are <strong>not</strong></td>
+<td>DCS-native checks, and driving (load/quit)</td>
+</tr>
+<tr>
+<td><strong>bridge</strong> (<code>dcs-serve</code> → <code>dcs-bridge.lua</code>, injected <strong>into</strong> the mission)</td>
+<td>the state the mission's scripts run in — where <code>veaf</code> lives</td>
+<td>every <strong>VEAF</strong> assertion (<code>veaf-loaded</code>, <code>findspawnpoint-exists</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Why the split: the hook reaches a state where <code>env</code> is a table but the mission's scripts never ran, so
+<code>veaf</code> is <code>nil</code> there. The probe now <strong>measures</strong> that (<code>type(veaf)</code> on the hook route) instead of
+inferring it from <code>env</code> — <code>env</code> exists in <em>every</em> scripting state, loaded or bare, which is what made
+"the scripts are here" look true. So a VEAF assertion goes through the bridge, or it reads <code>veaf-absent</code>
+forever. When the bridge is absent, the check <strong>fails naming <code>dcs-serve</code></strong>, never reporting
+<code>veaf-absent</code>: the bridge is a stated prerequisite, not "nothing to talk to".</p>
+<p>The hook's transport, read out of <code>dcs-fiddle-server.lua</code> rather than assumed: the Lua travels
 <strong>base64 in the URL path</strong>, the target environment in <code>?env=</code>, and the reply is JSON <code>{result=…}</code> or
 <code>{error=…}</code>.</p>
 <table>
@@ -2679,8 +2707,9 @@ which returns its values directly) then <code>net.dostring_in("scripting", …)<
 returns a Lua error, which this transport hands back as an ordinary string — "something came back"
 proves nothing.</p>
 </div>
-<p>This is <strong>not</strong> the bridge <code>capture-map</code> uses (<code>dcs-serve</code> + <code>dcs-bridge.lua</code>): that one lives <em>inside</em>
-the mission, so it cannot answer before the mission exists, and cannot be what loads it.</p>
+<p>It is the <strong>same</strong> bridge <code>capture-map</code> uses (<code>dcs-serve</code> + <code>dcs-bridge.lua</code>): it lives <em>inside</em> the
+mission, so it cannot load one and cannot answer before one exists — hence the hook for driving and the
+bridge for VEAF assertions, each where it actually answers.</p>
 <h2 id="the-test-mission-contract">The test-mission contract<a class="headerlink" href="#the-test-mission-contract" title="Permanent link">&para;</a></h2>
 <p>Borrowed from <a href="https://github.com/nielsvaes/dcs-sms">nielsvaes/dcs-sms</a>, and the <strong>counter-example</strong> is
 the part worth having:</p>

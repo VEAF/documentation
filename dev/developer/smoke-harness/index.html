@@ -2639,9 +2639,39 @@ pouvait rien changer.</p>
 <p>Sonde, puis exécute les vérifications. Sort en 1 si l'une échoue, en 0 si tout passe <strong>ou si le run a
 été sauté</strong>.</p>
 <h2 id="comment-ça-parle-à-dcs">Comment ça parle à DCS<a class="headerlink" href="#comment-ça-parle-à-dcs" title="Permanent link">&para;</a></h2>
-<p>Un seul transport, celui du hook, lu dans <code>dcs-fiddle-server.lua</code> plutôt que supposé : le Lua voyage
-<strong>en base64 dans le chemin de l'URL</strong>, l'environnement cible dans <code>?env=</code>, et la réponse est un JSON
-<code>{result=…}</code> ou <code>{error=…}</code>.</p>
+<p><strong>Deux transports, chacun pour ce qu'il atteint</strong> (ticket 04). Une vérification déclare le sien via
+<code>Check.transport</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Transport</th>
+<th>Ce qu'il voit</th>
+<th>Pour quelles vérifications</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>hook</strong> (<code>dcs-fiddle-server.lua</code>)</td>
+<td>un état de script <strong>nu</strong> : les globals de DCS (<code>Disposition</code>, <code>missionCommands</code>, <code>coalition</code>) y sont, <strong>pas</strong> les scripts de la mission</td>
+<td>les vérifications DCS natives, et le pilotage (charger/quitter)</td>
+</tr>
+<tr>
+<td><strong>bridge</strong> (<code>dcs-serve</code> → <code>dcs-bridge.lua</code>, injecté <strong>dans</strong> la mission)</td>
+<td>l'état où tournent les scripts de la mission — là où vit <code>veaf</code></td>
+<td>toute assertion <strong>VEAF</strong> (<code>veaf-loaded</code>, <code>findspawnpoint-exists</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Pourquoi le split : le hook atteint un état où <code>env</code> est une table mais où les scripts de la mission
+n'ont jamais tourné, donc <code>veaf</code> y est <code>nil</code>. La sonde le <strong>mesure</strong> désormais (<code>type(veaf)</code> sur la
+route du hook) au lieu de le déduire de <code>env</code> — car <code>env</code> existe dans <em>tout</em> état de script, chargé ou
+nu, et c'est ce qui faisait conclure à tort « les scripts sont là ». Une assertion VEAF passe donc par
+le bridge, ou elle lit <code>veaf-absent</code> pour toujours. Si le bridge est absent, la vérification <strong>échoue
+en nommant <code>dcs-serve</code></strong>, jamais en rapportant <code>veaf-absent</code> : le pont est un prérequis énoncé, pas
+« rien à qui parler ».</p>
+<p>Le transport du hook, lu dans <code>dcs-fiddle-server.lua</code> plutôt que supposé : le Lua voyage <strong>en base64
+dans le chemin de l'URL</strong>, l'environnement cible dans <code>?env=</code>, et la réponse est un JSON <code>{result=…}</code>
+ou <code>{error=…}</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2682,8 +2712,9 @@ passent maintenant par une <strong>route mesurée</strong>, que la sonde découv
 <strong>valoir</strong> <code>table</code> : une route qui exécute le chunk ailleurs renvoie une erreur Lua, que ce
 transport rend comme une chaîne ordinaire — « quelque chose est revenu » ne prouve rien.</p>
 </div>
-<p>Ce n'est <strong>pas</strong> le bridge que <code>capture-map</code> utilise (<code>dcs-serve</code> + <code>dcs-bridge.lua</code>) : celui-là vit
-<em>dans</em> la mission, il ne peut donc pas répondre avant que la mission existe, ni la charger.</p>
+<p>C'est le <strong>même</strong> bridge que <code>capture-map</code> (<code>dcs-serve</code> + <code>dcs-bridge.lua</code>) : il vit <em>dans</em> la mission,
+il ne peut donc ni la charger ni répondre avant qu'elle existe — d'où le hook pour le pilotage et le
+bridge pour les assertions VEAF, chacun là où il répond.</p>
 <h2 id="le-contrat-de-la-mission-de-test">Le contrat de la mission de test<a class="headerlink" href="#le-contrat-de-la-mission-de-test" title="Permanent link">&para;</a></h2>
 <p>Emprunté à <a href="https://github.com/nielsvaes/dcs-sms">nielsvaes/dcs-sms</a>, et c'est le <strong>contre-exemple</strong>
 qui vaut le détour :</p>
