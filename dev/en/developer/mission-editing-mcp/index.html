@@ -3693,16 +3693,17 @@ the same class of silent failure as confusing the mission table's <code>{x=north
 vec3 (see <code>docs/agents/dcs-coordinates.md</code>). So the actions take the absolute coordinates a caller
 actually has and do the anchoring themselves. The payoff shows in <code>edit_map_drawing</code>: moving a drawing
 is moving its anchor, and the shape follows for free.</p>
-<p><strong>Three shapes ship because three shapes were measured</strong>: <code>Line</code> (with <code>lineMode</code> <code>segment</code> or
-<code>segments</code>, and <code>closed</code> for a shape that joins up — that is how a free-form area is outlined),
-<code>Polygon</code> in <code>rect</code> mode (<code>width</code>/<code>height</code>/<code>angle</code>, <strong>no</strong> points), and <code>TextBox</code> (<code>text</code>/<code>font</code>/
-<code>fontSize</code>, no points either; the font is taken from a real drawing, one DCS lacks rendering as
-nothing).</p>
-<p>The other <code>polygonMode</code> values (<code>circle</code>, <code>oval</code>, <code>free</code>, <code>arrow</code>) and <code>primitiveType: "Icon"</code> are
-<strong>absent from every fixture</strong> here, so their structure is unknown, and the ticket's rule is to read a
-real <code>.miz</code> rather than assume. They are refused by name — inventing a layout would produce a drawing
-the editor silently drops, exactly what <code>FIX-MAPRESOURCE-KEY</code> and <code>FIX-COMMUNITY-SOUNDS-PRUNED</code> already
-cost. The measurement is listed in <code>DCS-SESSION-TODO.md</code>.</p>
+<p><strong>Six shapes ship because six shapes were measured</strong>: <code>Line</code> (with <code>lineMode</code> <code>segment</code> or <code>segments</code>,
+and <code>closed</code> for a shape that joins up), <code>Polygon</code> in <code>rect</code> mode (<code>width</code>/<code>height</code>/<code>angle</code>, <strong>no</strong>
+points), <code>TextBox</code> (<code>text</code>/<code>font</code>/<code>fontSize</code>; the font is taken from a real drawing — one absent from DCS
+renders as nothing), and — added 2026-08-15 from <code>bridge-Syria-editeur.miz</code> (ticket 10) — <code>Polygon</code>
+in <code>circle</code> mode (<code>radius</code>, no points or angle), <code>oval</code> (<code>r1</code>/<code>r2</code>/<code>angle</code>), and <code>free</code> (<code>points</code>
+relative to the anchor like a <code>Line</code>, a free-form filled area, three or more points).</p>
+<p><code>arrow</code> and <code>icon</code> were measured but stay <strong>refused, with a reason</strong> rather than a guess: an <code>arrow</code>
+stores a computed 8-point outline <strong>beside</strong> its <code>length</code>/<code>angle</code>, so writing the parameters alone
+needs an in-game round-trip to learn whether DCS recomputes the outline (its own ticket); an <code>icon</code>
+needs a <code>file</code> from the editor's icon set (e.g. <code>P91000007.png</code>), which nothing here enumerates, and an
+unvalidated name renders as nothing. <code>chevron</code> was removed — it is not a DCS editor tool.</p>
 <p>The <strong>layer</strong> is a first-class parameter, never a default: a drawing on the wrong layer is invisible to
 the pilots who need it and visible to the ones who should not see it.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>

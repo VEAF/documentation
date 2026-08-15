@@ -3702,16 +3702,19 @@ d'erreur</strong> — la même classe de panne silencieuse que confondre le <cod
 mission avec un vec3 d'exécution (voir <code>docs/agents/dcs-coordinates.md</code>). Les actions prennent donc les
 coordonnées <strong>absolues</strong> dont l'appelant dispose et font l'ancrage elles-mêmes. Le bénéfice apparaît
 dans <code>edit_map_drawing</code> : déplacer un dessin, c'est déplacer son ancre, et la forme suit gratuitement.</p>
-<p><strong>Trois formes sont livrées parce que trois formes ont été mesurées</strong> : <code>Line</code> (avec <code>lineMode</code>
-<code>segment</code> ou <code>segments</code>, et <code>closed</code> pour une forme qui se referme — c'est ainsi qu'on délimite une
-zone libre), <code>Polygon</code> en mode <code>rect</code> (<code>width</code>/<code>height</code>/<code>angle</code>, <strong>aucun</strong> point), et <code>TextBox</code>
-(<code>text</code>/<code>font</code>/<code>fontSize</code>, pas de points non plus ; la police est reprise d'un vrai dessin, une police
-absente de DCS ne s'affichant pas du tout).</p>
-<p>Les autres <code>polygonMode</code> (<code>circle</code>, <code>oval</code>, <code>free</code>, <code>arrow</code>) et <code>primitiveType: "Icon"</code> sont <strong>absents
-de toutes les fixtures</strong> du dépôt : leur structure est donc inconnue, et la règle du ticket est de lire
-un vrai <code>.miz</code> plutôt que de supposer. Ils sont refusés en le disant — inventer une structure ici
-produirait un dessin que l'éditeur supprime en silence, exactement ce que <code>FIX-MAPRESOURCE-KEY</code> et
-<code>FIX-COMMUNITY-SOUNDS-PRUNED</code> ont déjà coûté. La mesure est inscrite dans <code>DCS-SESSION-TODO.md</code>.</p>
+<p><strong>Six formes sont livrées parce que six formes ont été mesurées</strong> : <code>Line</code> (avec <code>lineMode</code>
+<code>segment</code> ou <code>segments</code>, et <code>closed</code> pour une forme qui se referme), <code>Polygon</code> en mode <code>rect</code>
+(<code>width</code>/<code>height</code>/<code>angle</code>, <strong>aucun</strong> point), <code>TextBox</code> (<code>text</code>/<code>font</code>/<code>fontSize</code> ; la police est reprise
+d'un vrai dessin, une police absente de DCS ne s'affichant pas du tout), et — ajoutés le 2026-08-15
+depuis <code>bridge-Syria-editeur.miz</code> (ticket 10) — <code>Polygon</code> en mode <code>circle</code> (<code>radius</code>, aucun point ni
+angle), <code>oval</code> (<code>r1</code>/<code>r2</code>/<code>angle</code>) et <code>free</code> (des <code>points</code> relatifs à l'ancre comme une <code>Line</code>, une
+zone libre remplie, au moins trois points).</p>
+<p><code>arrow</code> et <code>icon</code> ont été mesurés mais restent <strong>refusés, avec une raison</strong> plutôt qu'une supposition :
+un <code>arrow</code> stocke un contour calculé de 8 points <strong>en plus</strong> de ses <code>length</code>/<code>angle</code>, donc écrire les
+seuls paramètres demande un aller-retour en jeu pour savoir si DCS recalcule le contour (son propre
+ticket) ; un <code>icon</code> réclame un <code>file</code> du jeu d'icônes de l'éditeur (p. ex. <code>P91000007.png</code>), qu'aucune
+donnée du dépôt n'énumère, et un nom non validé ne s'affiche pas. <code>chevron</code> a été retiré : il n'existe
+pas dans l'éditeur DCS.</p>
 <p>La <strong>couche</strong> est un paramètre de première classe, jamais une valeur par défaut : un dessin sur la
 mauvaise couche est invisible pour les pilotes qui en ont besoin et visible pour ceux qui ne devraient
 pas le voir.</p>
