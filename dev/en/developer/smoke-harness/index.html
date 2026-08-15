@@ -2641,7 +2641,26 @@ then "no mission". The previous version reported the missing permission as "no m
 sent the reader looking for a mission to load where loading one could not have helped.</p>
 <div class="highlight"><pre><span></span><code>veaf-tools dcs smoke-test
 </code></pre></div>
-<p>Probes, then runs the checks. Exits 1 if any fails, 0 if all pass <strong>or the run was skipped</strong>.</p>
+<p>Probes, then runs the checks. Exits 1 if any fails, 0 if all pass <strong>or the run was skipped</strong>. Assumes
+DCS is already running with a mission loaded.</p>
+<div class="highlight"><pre><span></span><code>veaf-tools dcs smoke-test --full --mission &lt;path.miz&gt;
+</code></pre></div>
+<p>The <strong>full, unattended</strong> run: it locates <code>DCS.exe</code> (from the install dir the probe reports, or
+<code>--dcs-exe</code>), launches it, waits for the hook to answer, calls <code>net.load_mission</code>, waits for the mission
+to become active, runs the checks, then <strong>quits DCS</strong> — always, even on failure, or the next run
+inherits a running instance. Every wait is bounded and names the step that timed out. As a safeguard it
+<strong>refuses</strong> a DCS that is already running (loading a mission would overwrite the live session);
+<code>--allow-running</code> lifts that, and in that case it does not quit an instance it did not start.</p>
+<div class="admonition warning">
+<p class="admonition-title">Measured limitation: <code>net.load_mission</code> loads nothing in single-player</p>
+<p>Measured 2026-08-15: <code>net.load_mission</code> is <em>present</em> and <code>isServer()</code> is true in single-player, but
+calling it from the menu <strong>returns nil and no mission becomes active</strong> — ED documents it SERVER
+ONLY, and in practice it needs a running server (<code>net.start_server</code>), not just a local instance. So
+<code>--full</code> <strong>cannot load a mission in single-player</strong>: it fails cleanly at the timeout saying so,
+rather than lying. To check in single-player, load the mission by hand and run <code>smoke-test</code> (without
+<code>--full</code>). Unattended single-player load is unsolved — a mission on the command line is the next
+avenue (<code>FEAT-DCS-SMOKE-HARNESS</code> ticket 02).</p>
+</div>
 <h2 id="how-it-talks-to-dcs">How it talks to DCS<a class="headerlink" href="#how-it-talks-to-dcs" title="Permanent link">&para;</a></h2>
 <p><strong>Two transports, each for what it reaches</strong> (ticket 04). A check names its own via <code>Check.transport</code>:</p>
 <table>
@@ -2818,9 +2837,11 @@ and <code>Sim.getLogHistory(from)</code>, which makes <code>dcs.log</code> reada
 disk.</p>
 <h2 id="what-is-still-missing">What is still missing<a class="headerlink" href="#what-is-still-missing" title="Permanent link">&para;</a></h2>
 <p>The <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/.backlog/FEAT-DCS-SMOKE-HARNESS/PRD.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> lot carries the detail.
-In short: DCS has to be started <strong>by hand</strong> for now. Launching and quitting it automatically needs DCS
-calls this repository has never made — <code>--probe-only</code> reports whether they are available, which gives
-whoever picks it up facts instead of guesses.</p>
+The launch → load → assert → quit cycle is now <strong>written</strong> (the <code>--full</code> mode above), on the facts the
+probe established — <code>net.load_mission</code> present and <code>isServer=true</code> in single-player. The orchestration is
+covered by tests with fakes; the real behaviour of the DCS calls themselves is confirmed by an in-game
+run, which a unit test cannot replay. Still outstanding: the committed test mission (ticket 01) and its
+in-game anchor check.</p>
 
 
 

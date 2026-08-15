@@ -2643,7 +2643,26 @@ pouvait rien changer.</p>
 <div class="highlight"><pre><span></span><code>veaf-tools dcs smoke-test
 </code></pre></div>
 <p>Sonde, puis exécute les vérifications. Sort en 1 si l'une échoue, en 0 si tout passe <strong>ou si le run a
-été sauté</strong>.</p>
+été sauté</strong>. Suppose que DCS tourne déjà, avec une mission chargée.</p>
+<div class="highlight"><pre><span></span><code>veaf-tools dcs smoke-test --full --mission &lt;chemin.miz&gt;
+</code></pre></div>
+<p>Le run <strong>complet, sans surveillance</strong> : localise <code>DCS.exe</code> (via le dossier d'installation que la sonde
+rapporte, ou <code>--dcs-exe</code>), le lance, attend que le hook réponde, appelle <code>net.load_mission</code>, attend que
+la mission soit active, exécute les vérifications, puis <strong>quitte DCS</strong> — toujours, même en cas d'échec,
+sinon le run suivant hérite d'une instance restée ouverte. Chaque attente est bornée et nomme l'étape
+qui expire. Par sécurité, il <strong>refuse</strong> un DCS déjà lancé (charger une mission écraserait la session en
+cours) ; <code>--allow-running</code> lève ce garde-fou et, dans ce cas, ne quitte pas l'instance qu'il n'a pas
+démarrée.</p>
+<div class="admonition warning">
+<p class="admonition-title">Limite mesurée : <code>net.load_mission</code> ne charge rien en solo</p>
+<p>Mesuré le 2026-08-15 : <code>net.load_mission</code> est <em>présent</em> et <code>isServer()</code> est vrai en solo, mais
+l'appeler depuis le menu <strong>renvoie nil et aucune mission ne devient active</strong> — ED le documente
+SERVER ONLY, et en pratique il faut un serveur en cours (<code>net.start_server</code>), pas seulement une
+instance locale. Donc <code>--full</code> <strong>ne peut pas charger une mission en solo</strong> : il échoue proprement
+au bout du délai en le disant, plutôt que de mentir. Pour vérifier en solo, chargez la mission à la
+main et lancez <code>smoke-test</code> (sans <code>--full</code>). Charger sans surveillance en solo reste non résolu —
+piste : une mission en ligne de commande (<code>FEAT-DCS-SMOKE-HARNESS</code> ticket 02).</p>
+</div>
 <h2 id="comment-ça-parle-à-dcs">Comment ça parle à DCS<a class="headerlink" href="#comment-ça-parle-à-dcs" title="Permanent link">&para;</a></h2>
 <p><strong>Deux transports, chacun pour ce qu'il atteint</strong> (ticket 04). Une vérification déclare le sien via
 <code>Check.transport</code> :</p>
@@ -2824,10 +2843,12 @@ d'<strong>événement</strong> pour savoir qu'un chargement est terminé, bien m
 d'images qui gèle pendant le chargement ; et <code>Sim.getLogHistory(from)</code>, qui rend le <code>dcs.log</code> lisible à
 travers le hook au lieu d'être analysé sur disque.</p>
 <h2 id="ce-qui-reste-à-faire">Ce qui reste à faire<a class="headerlink" href="#ce-qui-reste-à-faire" title="Permanent link">&para;</a></h2>
-<p>Le lot <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/.backlog/FEAT-DCS-SMOKE-HARNESS/PRD.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> porte le détail. En
-résumé : DCS doit être lancé <strong>à la main</strong> pour l'instant. Le lancer, charger la mission et le quitter
-reste à écrire, et la sonde ci-dessus est ce qui donne les faits pour l'écrire — notamment le point
-<code>SERVER ONLY</code>, qui décide si une instance solo suffit ou s'il faut passer par le mode serveur.</p>
+<p>Le lot <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/.backlog/FEAT-DCS-SMOKE-HARNESS/PRD.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> porte le détail. Le
+cycle launch → load → assert → quit est désormais <strong>écrit</strong> (mode <code>--full</code> ci-dessus), sur les faits que
+la sonde a établis — <code>net.load_mission</code> présent et <code>isServer=true</code> en solo. L'orchestration est couverte
+par des tests avec des doublures ; le comportement réel des appels DCS eux-mêmes se valide par un run en
+jeu, qu'un test unitaire ne peut pas rejouer. Reste aussi la mission de test committée (ticket 01) et sa
+vérification d'ancre en jeu.</p>
 
 
 
