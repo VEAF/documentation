@@ -4074,10 +4074,20 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 </tr>
 <tr>
 <td><code>ctld.initialize(configurationCallback)</code> dans <code>mission-script.lua</code></td>
-<td>rien à écrire : le framework VEAF initialise CTLD</td>
+<td>rien à écrire : le build génère le démarrage de CTLD</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Missions construites avec veaf-tools 6.14.0 ou antérieur : reconstruisez-les</p>
+<p>Ces versions n'écrivaient pas la ligne qui démarre CTLD. Dans le jeu, cela se voit ainsi :
+<strong>pas de menu CTLD dans le menu radio</strong>, et le premier <code>-fob</code> provoque une erreur de script
+(<code>CTLD.lua: attempt to perform arithmetic on local 'interval'</code>) dans le journal DCS.
+Reconstruisez la mission avec une version à jour, ou, si vous ne pouvez pas reconstruire
+tout de suite, ajoutez cette ligne dans votre <code>src/scripts/mission-script.lua</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">ctld</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">ctld_initialize</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span>
+</code></pre></div>
+</div>
 <p>Pour attacher une zone logistique à un objet mobile (un porte-avions, par exemple), liez la zone à l'unité dans l'éditeur de mission (<em>Moving Zone</em>) : la zone suit son unité.</p>
 <h3 id="configurer-csar-via-missionyaml-yaml-first">Configurer CSAR via mission.yaml (YAML-first)<a class="headerlink" href="#configurer-csar-via-missionyaml-yaml-first" title="Permanent link">&para;</a></h3>
 <p>CSAR se configure de la même façon :</p>
