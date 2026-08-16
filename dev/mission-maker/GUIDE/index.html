@@ -3632,6 +3632,11 @@ par injection dans le <code>.miz</code>, et les <code>scripts/*.lua</code> par l
     P4 --&gt; OUT</code></pre>
 <blockquote>
 <p><strong>Note — templates et slots multijoueur</strong> : les groupes injectés depuis <code>spawnables.yaml</code> et <code>dynamic-slot-templates.yaml</code> sont des <strong>modèles</strong> réutilisables. Pour éviter qu'ils n'apparaissent comme slots sélectionnables dans le briefing multijoueur, le build les masque automatiquement de la liste des slots (<code>hiddenOnPlanner</code>/<code>hiddenOnMFD</code>) et les verrouille par un mot de passe. Le spawn dynamique (qui référence le template par son nom) reste pleinement fonctionnel.</p>
+<p><strong>Les modèles fournis sont un point de départ, pas un catalogue prêt à l'emploi.</strong> Quand un pilote prend un slot dynamique, DCS lui donne l'appareil <strong>tel qu'il est décrit dans le modèle</strong> : emport, livrée, fréquences. Or sur les 52 modèles livrés par défaut, <strong>9 seulement ont un emport</strong> — un A-10C II ou un F-14B sortent armés et peints, un UH-1H, un F/A-18C ou un M-2000C sortent <strong>nus</strong>. Ce n'est pas un défaut du build : le lien modèle → appareil fonctionne, c'est le modèle qui est vide.</p>
+<p>Pour donner à vos pilotes des appareils équipés, configurez-les <strong>une fois</strong> dans une mission (dans l'éditeur DCS, avec l'emport et la livrée que vous voulez), puis régénérez le fichier depuis cette mission :</p>
+<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">extract-aircraft-groups</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">dynamic-template</span>
+</code></pre></div>
+<p>Cela réécrit <code>src/dynamic-slot-templates.yaml</code> avec vos modèles. Le prochain build les injecte, et les slots dynamiques proposent des appareils prêts à décoller.</p>
 </blockquote>
 <hr />
 <h2 id="configuring-modules">Configurer les modules<a class="headerlink" href="#configuring-modules" title="Permanent link">&para;</a></h2>
