@@ -1,0 +1,3600 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.14.2/mission-maker/MIGRATION_GUIDE/">
+      
+      
+        <link rel="prev" href="../GUIDE/">
+      
+      
+        <link rel="next" href="../CONVERT_OTHER/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../en/mission-maker/MIGRATION_GUIDE/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Guide de Migration - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#migration-dune-mission-vers-veaf-mct-v6" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../.." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Guide de Migration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/mission-maker/MIGRATION_GUIDE/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../developer/" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#avant-de-commencer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant de commencer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Avant de commencer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terminologie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terminologie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prérequis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prérequis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-depuis-veaf-mct-v5xx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration depuis VEAF MCT v5.xx
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration depuis VEAF MCT v5.xx">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ce-qui-a-changé-en-v6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui a changé en v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-étape-par-étape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration étape par étape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration étape par étape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-créer-un-nouveau-dossier-de-mission-et-copier-les-fichiers-source-v5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Créer un nouveau dossier de mission et copier les fichiers source v5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-installer-veaf-mct-v6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Installer VEAF MCT v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-convertir-le-dossier-de-mission-en-v6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Convertir le dossier de mission en v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-vérifier-les-patterns-v5-supprimés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Vérifier les patterns v5 supprimés
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-vérifier-avec-un-build-de-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Vérifier avec un build de test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-configurer-le-contrôle-de-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Configurer le contrôle de version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intégration-de-veaf-mct-dans-une-mission-dcs-vanilla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intégration de VEAF MCT dans une mission DCS vanilla
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intégration de VEAF MCT dans une mission DCS vanilla">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#intégration-étape-par-étape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intégration étape par étape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intégration étape par étape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-créer-le-dossier-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Créer le dossier de mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-installer-veaf-mct-v6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Installer VEAF MCT v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-extraire-le-miz-vanilla-puis-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Extraire le .miz vanilla puis builder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-optionnel--préparer-le-dossier-avec-les-défauts-seulement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Optionnel : préparer le dossier avec les défauts seulement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-configurer-les-modules-à-activer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Configurer les modules à activer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-conserver-votre-contenu-de-mission-existant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Conserver votre contenu de mission existant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-tester-et-itérer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tester et itérer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#référence-du-dossier-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence du dossier de mission
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Référence du dossier de mission">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gitignore-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .gitignore recommandé
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#référence-mission-scriptlua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence mission-script.lua
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problèmes-courants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problèmes courants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problèmes courants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        « impossible de charger le fichier de préréglages » après une conversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-trigger-veaf-scripts-loader-apparaît-deux-fois" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le trigger "VEAF scripts loader" apparaît deux fois
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-menus-radio-napparaissent-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les menus radio n'apparaissent pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-commandes-de-marqueurs-ne-fonctionnent-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les commandes de marqueurs ne fonctionnent pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lire-les-journaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lire les journaux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-build-échoue-avec-veaf-scripts-file-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le build échoue avec "VEAF scripts file not found"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklists guidées (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Menu MISSIONS (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IA au sol (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mise à jour & publication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#avant-de-commencer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant de commencer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Avant de commencer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terminologie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terminologie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prérequis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prérequis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-depuis-veaf-mct-v5xx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration depuis VEAF MCT v5.xx
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration depuis VEAF MCT v5.xx">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ce-qui-a-changé-en-v6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui a changé en v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-étape-par-étape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration étape par étape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration étape par étape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-créer-un-nouveau-dossier-de-mission-et-copier-les-fichiers-source-v5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Créer un nouveau dossier de mission et copier les fichiers source v5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-installer-veaf-mct-v6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Installer VEAF MCT v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-convertir-le-dossier-de-mission-en-v6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Convertir le dossier de mission en v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-vérifier-les-patterns-v5-supprimés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Vérifier les patterns v5 supprimés
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-vérifier-avec-un-build-de-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Vérifier avec un build de test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-configurer-le-contrôle-de-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Configurer le contrôle de version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intégration-de-veaf-mct-dans-une-mission-dcs-vanilla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intégration de VEAF MCT dans une mission DCS vanilla
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intégration de VEAF MCT dans une mission DCS vanilla">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#intégration-étape-par-étape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intégration étape par étape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intégration étape par étape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-créer-le-dossier-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Créer le dossier de mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-installer-veaf-mct-v6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Installer VEAF MCT v6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-extraire-le-miz-vanilla-puis-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Extraire le .miz vanilla puis builder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-optionnel--préparer-le-dossier-avec-les-défauts-seulement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Optionnel : préparer le dossier avec les défauts seulement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-configurer-les-modules-à-activer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Configurer les modules à activer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-conserver-votre-contenu-de-mission-existant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Conserver votre contenu de mission existant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-tester-et-itérer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tester et itérer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#référence-du-dossier-de-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence du dossier de mission
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Référence du dossier de mission">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gitignore-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .gitignore recommandé
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#référence-mission-scriptlua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence mission-script.lua
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problèmes-courants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problèmes courants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problèmes courants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        « impossible de charger le fichier de préréglages » après une conversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-trigger-veaf-scripts-loader-apparaît-deux-fois" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le trigger "VEAF scripts loader" apparaît deux fois
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-menus-radio-napparaissent-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les menus radio n'apparaissent pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-commandes-de-marqueurs-ne-fonctionnent-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les commandes de marqueurs ne fonctionnent pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lire-les-journaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lire les journaux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-build-échoue-avec-veaf-scripts-file-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le build échoue avec "VEAF scripts file not found"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="migration-dune-mission-vers-veaf-mct-v6">Migration d'une mission vers VEAF MCT v6<a class="headerlink" href="#migration-dune-mission-vers-veaf-mct-v6" title="Permanent link">&para;</a></h1>
+<p>Ce guide couvre deux scénarios :</p>
+<ol>
+<li><strong><a href="#migration-depuis-veaf-mct-v5xx">Depuis VEAF MCT v5.xx</a></strong> — votre mission utilise déjà les scripts VEAF MCT mais est antérieure à la chaîne d'outils v6</li>
+<li><strong><a href="#intégration-de-veaf-mct-dans-une-mission-dcs-vanilla">Depuis une mission DCS vanilla</a></strong> — votre mission n'a aucun script VEAF MCT</li>
+</ol>
+<p>Dans les deux cas, le résultat final est un <strong>dossier de mission VEAF MCT v6</strong> que vous gérez avec <code>veaf-tools.exe</code>.</p>
+<pre class="mermaid"><code>flowchart TD
+    V5[Mission VEAF MCT v5] --&gt;|veaf-tools convert v5| FOLDER[Dossier de mission v6]
+    VAN[Mission DCS vanilla .miz] --&gt;|veaf-tools mission extract| FOLDER
+    FOLDER --&gt; CFG[Éditer mission.yaml]
+    CFG --&gt; BUILD[veaf-tools mission build]
+    BUILD --&gt; MIZ[.miz v6 prêt à voler]</code></pre>
+<hr />
+<h2 id="avant-de-commencer">Avant de commencer<a class="headerlink" href="#avant-de-commencer" title="Permanent link">&para;</a></h2>
+<h3 id="terminologie">Terminologie<a class="headerlink" href="#terminologie" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dossier de mission</strong></td>
+<td>Le répertoire géré par <code>veaf-tools</code> — contient les fichiers source, la config et le <code>.miz</code></td>
+</tr>
+<tr>
+<td><strong>Fichier <code>.miz</code></strong></td>
+<td>Le fichier de mission DCS (une archive ZIP) ; le résultat du build</td>
+</tr>
+<tr>
+<td><strong><code>published/</code></strong></td>
+<td>Dossier où <code>veaf-tools-updater.exe</code> installe les scripts VEAF</td>
+</tr>
+<tr>
+<td><strong><code>src/</code></strong></td>
+<td>Vos fichiers source spécifiques à la mission (scripts, données)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prérequis">Prérequis<a class="headerlink" href="#prérequis" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Installez <code>veaf-tools-updater.exe</code> — téléchargez depuis la <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/releases/tag/published-latest">dernière release GitHub</a></li>
+</ol>
+<blockquote>
+<p><strong>Sécurité Windows :</strong> Windows peut bloquer les fichiers <code>.exe</code> téléchargés depuis Internet. Si le fichier ne s'exécute pas, cliquez droit dessus → <strong>Propriétés</strong> → onglet <strong>Général</strong> → cochez <strong>Débloquer</strong> en bas de la fenêtre → <strong>OK</strong>.</p>
+</blockquote>
+<ol>
+<li>Exécutez l'updater une fois pour installer <code>veaf-tools.exe</code> et tous les scripts VEAF :</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools-updater</span><span class="p">.</span><span class="n">exe</span>
+</code></pre></div>
+<ol>
+<li>Ayez votre dossier de mission v5 sous la main</li>
+</ol>
+<blockquote>
+<p><strong>Conseil — configuration globale utilisateur :</strong> Avant de commencer, créez <code>~/veafmct.yaml</code> (soit <code>C:\Users\VotreNom\veafmct.yaml</code> sous Windows) pour définir des préférences persistantes sur cette machine — notamment la langue (<code>lang: fr</code>) afin que tous les outils s'affichent en français. Voir <a href="../GUIDE/#global-user-configuration">Configuration globale utilisateur</a> pour le détail et les commandes disponibles.</p>
+</blockquote>
+<hr />
+<h2 id="migration-depuis-veaf-mct-v5xx">Migration depuis VEAF MCT v5.xx<a class="headerlink" href="#migration-depuis-veaf-mct-v5xx" title="Permanent link">&para;</a></h2>
+<h3 id="ce-qui-a-changé-en-v6">Ce qui a changé en v6<a class="headerlink" href="#ce-qui-a-changé-en-v6" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Domaine</th>
+<th>v5</th>
+<th>v6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Trigger DCS</strong></td>
+<td>Triggers <code>DO SCRIPT FILE</code> manuels pointant vers chaque fichier <code>.lua</code></td>
+<td>Trigger unique injecté automatiquement par <code>veaf-tools mission build</code> ; aucun travail de trigger manuel</td>
+</tr>
+<tr>
+<td><strong>Chaîne de build</strong></td>
+<td>Pas d'étape de build — scripts chargés directement depuis le disque au démarrage de la mission</td>
+<td><code>veaf-tools.exe mission build</code> assemble le <code>.miz</code> depuis <code>src/mission/</code> + <code>src/scripts/</code></td>
+</tr>
+<tr>
+<td><strong>Script de build</strong></td>
+<td><code>build.cmd</code> complexe avec une ligne par commande d'injection</td>
+<td>Pas de <code>build.cmd</code> — lancez simplement <code>veaf-tools-updater.exe</code> puis <code>veaf-tools.exe mission build</code></td>
+</tr>
+<tr>
+<td><strong>Pipeline d'auto-injection</strong></td>
+<td>Chaque commande d'injection devait être ajoutée manuellement à <code>build.cmd</code></td>
+<td><code>veaf-tools mission build</code> auto-détecte et exécute chaque étape quand le fichier correspondant est présent dans <code>src/</code></td>
+</tr>
+<tr>
+<td><strong>Mises à jour des outils</strong></td>
+<td>NPM (<code>npm install</code>) — scripts distribués sous forme de package versionné</td>
+<td><code>veaf-tools-updater.exe</code> — télécharge et vérifie la dernière release en une commande</td>
+</tr>
+<tr>
+<td><strong>Config au moment du build</strong></td>
+<td>Pas de fichier de config au moment du build</td>
+<td><code>mission.yaml</code> — contrôle les niveaux de log, l'activation/désactivation des modules, les surcharges d'étapes du pipeline</td>
+</tr>
+<tr>
+<td><strong>Activation/désactivation de modules</strong></td>
+<td>Éditer <code>missionConfig.lua</code> (ou simplement omettre l'appel à <code>initialize()</code>)</td>
+<td>Bloc <code>modules:</code> dans <code>mission.yaml</code> ; génère <code>veaf-config.lua</code> automatiquement</td>
+</tr>
+<tr>
+<td><strong>Configuration de modules</strong></td>
+<td>Affectation directe : <code>veafSpawn.SpawnKeyphrase = "_spawn"</code> dans <code>missionConfig.lua</code></td>
+<td>La même affectation directe fonctionne toujours dans <code>mission-script.lua</code> ; ou <code>veaf.setConfig("MODULE_ID", "key", value)</code> pour les surcharges pilotées par config</td>
+</tr>
+<tr>
+<td><strong>Pattern d'init des modules</strong></td>
+<td>Appels nus <code>veafXxx.initialize()</code></td>
+<td>Auto-généré dans <code>veaf-config.lua</code> par <code>veaf-tools mission build</code> ; aucun appel <code>initialize()</code> manuel nécessaire</td>
+</tr>
+<tr>
+<td><strong>Emplacement de la config</strong></td>
+<td>Initialisation dispersée dans des scripts de trigger DCS ou un fichier Lua séparé</td>
+<td><code>mission.yaml</code> génère <code>veaf-config.lua</code> au moment du build ; code Lua personnalisé optionnel dans <code>mission-script.lua</code></td>
+</tr>
+<tr>
+<td><strong>Migration de la config</strong></td>
+<td>Réécriture manuelle</td>
+<td><code>veaf-tools.exe convert v5</code> — une seule commande migre <code>missionConfig.lua</code>, convertit les fichiers pipeline (préréglages, waypoints, météo, groupes d'aéronefs) et génère <code>mission.yaml</code> + <code>mission-script.lua</code>. Utilisez <code>migrate-config</code> uniquement pour migrer <code>missionConfig.lua</code> seul.</td>
+</tr>
+<tr>
+<td><strong>Niveaux de log des modules</strong></td>
+<td>Définis par module en assignant <code>veafXxx.LogLevel</code> avant l'init</td>
+<td>Section <code>modules: → MODULE_ID: logLevel:</code> dans <code>mission.yaml</code> ou option CLI <code>--log-modules</code></td>
+</tr>
+<tr>
+<td><strong>Skynet / CTLD / CSAR / QRA</strong></td>
+<td>Sections séparées <code>external_modules:</code> et <code>qra:</code></td>
+<td>Tout sous le bloc <code>modules:</code> (<code>modules.SKYNET</code>, <code>modules.CSAR</code> avec un sous-bloc <code>settings:</code>, <code>modules.QRA</code> avec <code>silence_all</code> + <code>definitions:</code>). <strong><code>modules.CTLD</code> est un simple booléen</strong> : CTLD 2 se configure dans un <code>ctld-config.yaml</code> à côté de <code>mission.yaml</code>, un bloc <code>settings:</code> y est refusé par <code>validate</code>. Les sections <code>external_modules:</code> et <code>qra:</code> n'existent plus — voir <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0001-modules-single-source-of-truth.md">ADR 0001</a>. <code>convert-v5</code> émet directement la nouvelle forme.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="migration-étape-par-étape">Migration étape par étape<a class="headerlink" href="#migration-étape-par-étape" title="Permanent link">&para;</a></h3>
+<h4 id="1-créer-un-nouveau-dossier-de-mission-et-copier-les-fichiers-source-v5">1. Créer un nouveau dossier de mission et copier les fichiers source v5<a class="headerlink" href="#1-créer-un-nouveau-dossier-de-mission-et-copier-les-fichiers-source-v5" title="Permanent link">&para;</a></h4>
+<p>Créez un nouveau dossier vide pour votre projet de mission v6, puis copiez le dossier <code>src/</code> de votre mission v5 dedans. Partir d'un dossier neuf évite les interférences avec les anciens fichiers v5 et conserve une seule copie propre de vos sources :</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Adaptez ces chemins à votre configuration</span>
+<span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="s2">&quot;C:\chemin\vers\ma-nouvelle-mission-v6&quot;</span>
+<span class="nb">Copy-Item</span> <span class="n">-Recurse</span> <span class="s2">&quot;C:\chemin\vers\mission-v5\src&quot;</span> <span class="s2">&quot;C:\chemin\vers\ma-nouvelle-mission-v6&quot;</span>
+<span class="nb">Set-Location</span> <span class="s2">&quot;C:\chemin\vers\ma-nouvelle-mission-v6&quot;</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Conseil :</strong> Vous pouvez aussi le faire dans l'Explorateur Windows — créez un nouveau dossier, copiez-y le dossier <code>src/</code> de votre mission v5, puis ouvrez un terminal dans ce nouveau dossier.</p>
+</blockquote>
+<h4 id="2-installer-veaf-mct-v6">2. Installer VEAF MCT v6<a class="headerlink" href="#2-installer-veaf-mct-v6" title="Permanent link">&para;</a></h4>
+<p>Copiez <code>veaf-tools-updater.exe</code> dans le dossier et exécutez :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools-updater</span><span class="p">.</span><span class="n">exe</span>
+</code></pre></div>
+<p>Cela crée le répertoire <code>published/</code> avec tous les scripts et outils. Vos fichiers <code>src/</code> existants ne sont pas touchés.</p>
+<h4 id="3-convertir-le-dossier-de-mission-en-v6">3. Convertir le dossier de mission en v6<a class="headerlink" href="#3-convertir-le-dossier-de-mission-en-v6" title="Permanent link">&para;</a></h4>
+<p>Exécutez le convertisseur tout-en-un :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="n">v5</span> <span class="p">.</span>
+</code></pre></div>
+<p>Cette commande unique gère tout en une seule passe :</p>
+<ul>
+<li><strong>Migration de <code>missionConfig.lua</code></strong> — commente les appels <code>doFile()</code> qui chargent les scripts VEAF (le builder les injecte automatiquement), enveloppe les appels nus <code>veafXxx.initialize()</code> dans des gardes <code>if veafXxx then … end</code>.</li>
+<li><strong>Conversion des configs pipeline</strong> — convertit les fichiers de config v5 (préréglages radio, waypoints, météo, groupes d'aéronefs) du format Lua vers le YAML v6.</li>
+<li><strong>Génération de <code>mission.yaml</code></strong> — crée <code>mission.yaml</code> avec les sections <code>modules:</code> et <code>pipeline:</code> correctes.</li>
+<li><strong>Promotion de <code>src/mission/</code> en v6</strong> — réécrit le <code>.miz</code> éclaté (<code>src/mission/</code>) au format v6 : un build de base migre les triggers v5 hérités <strong>sur disque</strong>, après avoir sauvegardé l'original dans <code>backup_v5/src/mission/</code>. Activé par défaut ; tout le contenu de l'éditeur (groupes, routes, unités) est préservé — seule la couche de triggers v5 hérités est purgée. Utilisez <code>--no-promote</code> pour l'ignorer.</li>
+<li><strong>Tri des fichiers v5 hérités</strong> — l'outillage v5 obsolète (<code>*.cmd</code>, <code>*.ps1</code>, <code>package.json</code>, <code>yarn.lock</code>, <code>configuration.json</code>, …) est déplacé dans <code>backup_v5/</code> ; les artefacts régénérables (<code>node_modules/</code>, <code>build/</code>, <code>cache/</code>) sont supprimés ; tout autre fichier non géré est simplement <strong>listé</strong> dans le rapport pour que vous décidiez. <code>configuration.json</code> est signalé car il peut contenir une clé API v5 (inutile en v6 : la météo réelle passe par <code>avwx-engine</code>, sans clé).</li>
+<li><strong>Rapport de conversion</strong> — sauvegarde <code>convert-v5-report.md</code> avec toutes les actions effectuées et les éléments nécessitant une révision manuelle.</li>
+</ul>
+<p>Si votre pipeline contient des versions météo <code>realweather</code>, fournissez le code ICAO de l'aéroport via l'option <code>--icao</code> pour l'intégrer dans la config générée. Si vous l'omettez, la conversion réussit quand même : l'outil écrit <code>airport_icao: TODO</code> dans la config générée (<code>versions.yaml</code>) et affiche un avertissement. Renseignez-le ensuite, au choix, en éditant le <code>TODO</code> dans <code>versions.yaml</code>, ou en relançant <code>convert-v5 --icao UGGG --force</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="n">v5</span> <span class="p">.</span> <span class="p">-</span><span class="n">-icao</span> <span class="n">UGGG</span>
+</code></pre></div>
+<p>Les anciens triggers DCS <code>DO SCRIPT FILE</code> sont supprimés automatiquement par <code>veaf-tools mission build</code> à l'étape suivante — aucune action manuelle requise.</p>
+<blockquote>
+<p><strong>Promotion de <code>src/mission/</code> en v6 (activée par défaut)</strong> : <code>convert-v5</code> termine en réécrivant <code>src/mission/</code> au format v6 (build de base + extraction), ce qui rend la bascule v6 définitive et évite de re-migrer les triggers v5 à chaque build. L'original est sauvegardé dans <code>backup_v5/src/mission/</code>. Si vous préférez d'abord vérifier les configs générées et builder vous-même, désactivez l'étape avec <code>--no-promote</code> ; vous pourrez relancer <code>convert-v5</code> plus tard pour promouvoir.</p>
+<p><strong>Si vous n'avez besoin de migrer que <code>missionConfig.lua</code></strong> sans convertir les fichiers pipeline, utilisez <code>veaf-tools.exe convert migrate-config src\scripts\missionConfig.lua</code> directement.</p>
+</blockquote>
+<h4 id="4-vérifier-les-patterns-v5-supprimés">4. Vérifier les patterns v5 supprimés<a class="headerlink" href="#4-vérifier-les-patterns-v5-supprimés" title="Permanent link">&para;</a></h4>
+<p>Ce que devient chaque construction v5 — certaines ont été renommées, d'autres sont inchangées et n'ont donc rien à migrer :</p>
+<table>
+<thead>
+<tr>
+<th>v5</th>
+<th>v6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veaf.SecurityDisabled = true</code></td>
+<td>Les <strong>deux</strong> orthographes fonctionnent : <code>veafSecurity.SecurityDisabled</code> est le nom recommandé, <code>veaf.SecurityDisabled</code> reste honoré. Rien à changer dans l'urgence</td>
+</tr>
+<tr>
+<td><code>veafSpawn.Keyphrase</code> défini au niveau global</td>
+<td>Toujours <code>veafSpawn.Keyphrase</code> — inchangé</td>
+</tr>
+<tr>
+<td>Table <code>veafAssets.Assets</code> inline</td>
+<td>Même format de table — inchangé</td>
+</tr>
+<tr>
+<td>Chargement de fichiers <code>.lua</code> individuels via <code>DO SCRIPT FILE</code></td>
+<td>Automatique — ne pas ajouter ces triggers manuellement</td>
+</tr>
+<tr>
+<td>Scripts <code>IADS</code> chargés manuellement</td>
+<td>Chargez-les via <code>src/scripts/</code> — ils sont pris en charge automatiquement</td>
+</tr>
+</tbody>
+</table>
+<h4 id="5-vérifier-avec-un-build-de-test">5. Vérifier avec un build de test<a class="headerlink" href="#5-vérifier-avec-un-build-de-test" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
+</code></pre></div>
+<p>Ouvrez le <code>.miz</code> résultant dans DCS, chargez la mission et confirmez :
+- Pas de triggers <code>DO SCRIPT FILE</code> en double dans l'éditeur de triggers
+- Le trigger chargeur VEAF MCT v6 est présent (nommé quelque chose comme <code>VEAF scripts loader</code>)
+- Les menus radio et les commandes de marqueurs fonctionnent comme prévu</p>
+<h4 id="6-configurer-le-contrôle-de-version">6. Configurer le contrôle de version<a class="headerlink" href="#6-configurer-le-contrôle-de-version" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">git</span> <span class="n">init</span>
+<span class="n">git</span> <span class="n">add</span> <span class="n">src</span><span class="p">/</span> <span class="p">.</span><span class="n">gitignore</span>
+<span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">&quot;feat: migration de ma-mission vers VEAF MCT v6&quot;</span>
+</code></pre></div>
+<p>Ajoutez <code>published/</code> et <code>*.miz</code> à <code>.gitignore</code> — ce sont des artefacts de build.</p>
+<hr />
+<h2 id="intégration-de-veaf-mct-dans-une-mission-dcs-vanilla">Intégration de VEAF MCT dans une mission DCS vanilla<a class="headerlink" href="#intégration-de-veaf-mct-dans-une-mission-dcs-vanilla" title="Permanent link">&para;</a></h2>
+<p>Une mission <strong>vanilla</strong> n'a pas de scripts VEAF MCT, pas de triggers spéciaux, et a été construite entièrement avec l'éditeur de missions DCS.</p>
+<h3 id="intégration-étape-par-étape">Intégration étape par étape<a class="headerlink" href="#intégration-étape-par-étape" title="Permanent link">&para;</a></h3>
+<h4 id="1-créer-le-dossier-de-mission">1. Créer le dossier de mission<a class="headerlink" href="#1-créer-le-dossier-de-mission" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span> <span class="n">ma-mission</span>
+<span class="nb">cd </span><span class="n">ma-mission</span>
+</code></pre></div>
+<h4 id="2-installer-veaf-mct-v6_1">2. Installer VEAF MCT v6<a class="headerlink" href="#2-installer-veaf-mct-v6_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools-updater</span><span class="p">.</span><span class="n">exe</span>
+</code></pre></div>
+<h4 id="3-extraire-le-miz-vanilla-puis-builder">3. Extraire le .miz vanilla puis builder<a class="headerlink" href="#3-extraire-le-miz-vanilla-puis-builder" title="Permanent link">&para;</a></h4>
+<p>Extrayez votre <code>.miz</code> vanilla dans le dossier source, puis lancez le build qui injecte les scripts VEAF MCT et reconstruit un nouveau <code>.miz</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">extract</span> <span class="s2">&quot;C:\chemin\vers\vanilla.miz&quot;</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
+</code></pre></div>
+<p>Cela :
+1. Extrait <code>vanilla.miz</code> dans <code>src/mission/</code>
+2. Crée <code>mission.yaml</code> et <code>src/scripts/mission-script.lua</code> par défaut
+3. Injecte le trigger chargeur VEAF MCT v6
+4. Reconstruit un nouveau <code>.miz</code> à côté du dossier</p>
+<h4 id="4-optionnel--préparer-le-dossier-avec-les-défauts-seulement">4. Optionnel : préparer le dossier avec les défauts seulement<a class="headerlink" href="#4-optionnel--préparer-le-dossier-avec-les-défauts-seulement" title="Permanent link">&para;</a></h4>
+<p>Si vous souhaitez configurer la structure du dossier sans convertir de mission immédiatement, utilisez <code>prepare</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">prepare</span> <span class="p">.</span>
+</code></pre></div>
+<p>Puis copiez votre <code>.miz</code> sous <code>mission.miz</code> et exécutez :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">extract</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">.</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
+</code></pre></div>
+<h4 id="5-configurer-les-modules-à-activer">5. Configurer les modules à activer<a class="headerlink" href="#5-configurer-les-modules-à-activer" title="Permanent link">&para;</a></h4>
+<p>Éditez <code>mission.yaml</code> pour activer les modules souhaités. Un ensemble de modules courants est actif par défaut — radio, spawn, raccourcis, CAS, transport, météo… — à ajuster selon vos besoins :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ma Mission Vanilla</span>
+
+<span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># Décommenter pour activer les missions CAS :</span>
+<span class="w">  </span><span class="c1"># CASMISSION:</span>
+<span class="w">  </span><span class="c1">#   enabled: true</span>
+<span class="w">  </span><span class="c1"># Décommenter pour activer les opérations carrier :</span>
+<span class="w">  </span><span class="c1"># CARRIER:</span>
+<span class="w">  </span><span class="c1">#   enabled: true</span>
+</code></pre></div>
+<p>Pour du Lua personnalisé (appels de modules avancés, alias, etc.), éditez <code>src/scripts/mission-script.lua</code>.</p>
+<p>Consultez la <a href="../../MISSION_YAML_REFERENCE/">référence YAML</a> et les guides de scripts individuels dans <a href="../scripts/">scripts/</a> pour toutes les options.</p>
+<h4 id="6-conserver-votre-contenu-de-mission-existant">6. Conserver votre contenu de mission existant<a class="headerlink" href="#6-conserver-votre-contenu-de-mission-existant" title="Permanent link">&para;</a></h4>
+<p>Tout ce que vous avez construit dans l'éditeur de missions DCS (unités, triggers, waypoints, zones) est préservé. VEAF ne supprime ni n'écrase le contenu de la mission — il se contente de :
+- Ajouter un seul trigger de chargeur au démarrage de la mission
+- Ajouter des entrées de menu radio F10 au moment de l'exécution
+- Répondre aux commandes de marqueurs sur la carte F10</p>
+<p>Vos triggers personnalisés, statiques et groupes sont intacts.</p>
+<h4 id="7-tester-et-itérer">7. Tester et itérer<a class="headerlink" href="#7-tester-et-itérer" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c"># Rebuilder après chaque changement de config</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>
+</code></pre></div>
+<p>Chaque build produit un fichier <code>.miz</code> daté (ex. <code>mission_20260516.miz</code>). Ouvrez-le dans DCS et testez.</p>
+<hr />
+<h2 id="référence-du-dossier-de-mission">Référence du dossier de mission<a class="headerlink" href="#référence-du-dossier-de-mission" title="Permanent link">&para;</a></h2>
+<p>Après la migration, votre dossier devrait ressembler à ceci :</p>
+<div class="highlight"><pre><span></span><code>ma-mission/
+├── src/
+│   ├── mission/                ← données de mission DCS extraites (à commiter)
+│   │   ├── mission             ← dictionnaire Lua principal de la mission
+│   │   ├── options
+│   │   └── warehouses
+│   ├── scripts/
+│   │   ├── mission-script.lua  ← code Lua personnalisé (à commiter)
+│   │   └── veafDynamicConfig.lua   ← config du chargement dynamique des scripts (dev, optionnel)
+│   ├── presets.yaml            ← config des préréglages radio (optionnel)
+│   ├── spawnables.yaml         ← groupes spawnables personnalisés (optionnel)
+│   └── waypoints.yaml          ← waypoints personnalisés (optionnel)
+├── mission.yaml                ← config des modules et du pipeline (à commiter)
+├── published/                  ← installé par veaf-tools-updater (NE PAS commiter)
+│   ├── veaf-scripts.lua
+│   └── ...
+├── veaf-tools.exe              ← installé par veaf-tools-updater (NE PAS commiter)
+├── veaf-tools-updater.exe      ← à commiter
+└── mission_20260516.miz        ← sortie du build (NE PAS commiter)
+</code></pre></div>
+<h3 id="gitignore-recommandé">.gitignore recommandé<a class="headerlink" href="#gitignore-recommandé" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>published/
+*.miz
+*.log
+__pycache__/
+</code></pre></div>
+<hr />
+<h2 id="référence-mission-scriptlua">Référence mission-script.lua<a class="headerlink" href="#référence-mission-scriptlua" title="Permanent link">&para;</a></h2>
+<p><code>mission-script.lua</code> est un fichier optionnel pour du code Lua personnalisé exécuté après l'initialisation de tous les modules VEAF. Utilisez-le pour la configuration avancée qui ne peut pas encore s'exprimer dans <code>mission.yaml</code> — alias personnalisés, surcharges de paramètres de modules, assets, etc.</p>
+<p>Exemple minimal :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Optionnel : surcharger un paramètre de module</span>
+<span class="nv">veafSpawn</span><span class="p">.</span><span class="py">SpawnKeyphrase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;_spawn&quot;</span>
+
+<span class="c1">-- Alias personnalisé</span>
+<span class="nv">veafShortcuts</span><span class="p">.</span><span class="nf">AddAlias</span><span class="p">(</span>
+<span class="w">  </span><span class="nv">VeafAlias</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">    </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;-monalias&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">:</span><span class="nf">setVeafCommand</span><span class="p">(</span><span class="s2">&quot;_spawn group, name mon-template&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>L'activation/désactivation des modules se configure dans <code>mission.yaml</code> → <code>modules:</code> — pas dans ce fichier. Consultez la <a href="../../MISSION_YAML_REFERENCE/">référence YAML</a> pour la syntaxe complète de <code>mission.yaml</code>.</p>
+<hr />
+<h2 id="problèmes-courants">Problèmes courants<a class="headerlink" href="#problèmes-courants" title="Permanent link">&para;</a></h2>
+<h3 id="-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion">« impossible de charger le fichier de préréglages » après une conversion<a class="headerlink" href="#-impossible-de-charger-le-fichier-de-préréglages--après-une-conversion" title="Permanent link">&para;</a></h3>
+<p>Un <code>src/presets.yaml</code> déjà présent avant la conversion pouvait être écrit selon le <strong>schéma v5</strong> :
+même nom, même format de fichier, mais une structure interne différente (<code>presets_definition:</code> au
+lieu de <code>presets_collection:</code>, un niveau <code>coalitions:</code> en trop, les radios définies en ligne dans
+chaque préréglage). <code>convert-v5</code> le laissait alors en place — il était au bon endroit — et le build
+échouait à l'étape suivante.</p>
+<p><code>convert-v5</code> détecte désormais ce cas <strong>par la structure du fichier</strong> et le réécrit sur place, en
+conservant l'original dans <code>backup_v5/src/presets.yaml</code>. Le rapport de conversion le signale, avec
+un avertissement pour chaque point qu'il n'a pas pu trancher seul (une radio dont les canaux
+couvrent plusieurs bandes, par exemple).</p>
+<p>Si vous éditez ce fichier à la main, sachez que le lecteur refuse maintenant une section qu'il ne
+connaît pas au lieu de l'ignorer en silence, et qu'il nomme la clé fautive, ce qu'il y a trouvé et
+ce qu'il attendait.</p>
+<h3 id="le-trigger-veaf-scripts-loader-apparaît-deux-fois">Le trigger "VEAF scripts loader" apparaît deux fois<a class="headerlink" href="#le-trigger-veaf-scripts-loader-apparaît-deux-fois" title="Permanent link">&para;</a></h3>
+<p>Un ancien trigger <code>DO SCRIPT FILE</code> manuel coexiste avec le trigger auto-injecté v6. <code>veaf-tools mission build</code> supprime les anciens triggers v5 automatiquement (option <code>--migrate-from-v5</code>, active par défaut) — relancer le build suffit. Une suppression manuelle dans l'éditeur DCS n'est nécessaire que si vous avez explicitement désactivé cette migration (<code>--no-migrate-from-v5</code>).</p>
+<h3 id="les-menus-radio-napparaissent-pas">Les menus radio n'apparaissent pas<a class="headerlink" href="#les-menus-radio-napparaissent-pas" title="Permanent link">&para;</a></h3>
+<p>Vérifiez que <code>RADIO</code> est activé dans <code>mission.yaml</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Reconstruisez avec <code>veaf-tools.exe mission build</code> après toute modification de <code>mission.yaml</code>.</p>
+<h3 id="les-commandes-de-marqueurs-ne-fonctionnent-pas">Les commandes de marqueurs ne fonctionnent pas<a class="headerlink" href="#les-commandes-de-marqueurs-ne-fonctionnent-pas" title="Permanent link">&para;</a></h3>
+<p>Vérifiez que <code>SPAWN</code> est activé dans <code>mission.yaml</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Ensuite, consultez le journal DCS (<code>Saved Games\DCS\Logs\dcs.log</code>) pour les erreurs VEAF — filtrez sur <code>VEAF</code> ou <code>ERROR</code>.</p>
+<h3 id="lire-les-journaux">Lire les journaux<a class="headerlink" href="#lire-les-journaux" title="Permanent link">&para;</a></h3>
+<p>Tous les messages VEAF sont écrits dans <code>Saved Games\DCS\Logs\dcs.log</code>. Pour les trouver rapidement :</p>
+<ul>
+<li><strong><a href="https://klogg.filimonov.dev/">Klogg</a></strong> (recommandé) : ouvrez <code>dcs.log</code>, utilisez la barre de recherche pour filtrer sur <code>VEAF</code>. Un profil de coloration VEAF est livré avec le dépôt, dans <code>tools/klogg/veaf.conf</code> — chargez-le via <em>Fichier &gt; Importer les surligneurs…</em>.</li>
+<li><strong>Notepad++</strong> : ouvrez <code>dcs.log</code> → Recherche → Rechercher (<code>Ctrl+F</code>) → cherchez <code>VEAF</code>.</li>
+</ul>
+<h3 id="le-build-échoue-avec-veaf-scripts-file-not-found">Le build échoue avec "VEAF scripts file not found"<a class="headerlink" href="#le-build-échoue-avec-veaf-scripts-file-not-found" title="Permanent link">&para;</a></h3>
+<p>Exécutez <code>veaf-tools-updater.exe</code> d'abord — le dossier <code>published/</code> est manquant ou obsolète.</p>
+<hr />
+<h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../GUIDE/">Guide du créateur de missions</a> — workflow général de création de missions</li>
+<li><a href="../scripts/">Référence des scripts</a> — tous les modules disponibles</li>
+<li><a href="../../CLI_REFERENCE/">Référence CLI</a> — les 25 commandes de <code>veaf-tools</code>, arguments et options</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>

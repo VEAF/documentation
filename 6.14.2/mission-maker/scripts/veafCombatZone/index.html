@@ -1,0 +1,3779 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.14.2/mission-maker/scripts/veafCombatZone/">
+      
+      
+        <link rel="prev" href="../veafCombatMission/">
+      
+      
+        <link rel="next" href="../veafCommands/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../../en/mission-maker/scripts/veafCombatZone/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>veafCombatZone - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#veafcombatzone--zones-de-combat-activables" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              veafCombatZone
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/mission-maker/scripts/veafCombatZone/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer/" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklists guidées (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Menu MISSIONS (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dépendances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-combat_zone_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de combat_zone_settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-combat_zones--type-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de combat_zones[] — type zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-combat_zones--type-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de combat_zones[] — type operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#red-side-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone jouée côté rouge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-menu-audience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        À qui le menu F10 est-il proposé ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonctionnement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mise-en-place-dans-léditeur-de-mission-dcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mise en place dans l'éditeur de mission DCS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tags-de-nom-dunité" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags de nom d'unité
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tags de nom d&#39;unité">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-pratique--embuscade-manpads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple pratique — embuscade MANPADS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command--apparition-via-la-syntaxe-de-marqueur-veaf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #command — apparition via la syntaxe de marqueur VEAF
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constantes-du-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constantes du module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#définir-une-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définir une zone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Définir une zone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#méthodes-du-builder-veafcombatzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder VeafCombatZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#méthodes-du-builder-veafcombatzoneelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder VeafCombatZoneElement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-radio-f10-par-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio F10 (par zone)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menu radio F10 (par zone)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#options-du-menu-radio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options du menu radio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nettoyage-des-carcasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nettoyage des carcasses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opérations-zones-groupées" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opérations (zones groupées)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chaînage-de-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaînage de zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mode-entraînement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode entraînement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IA au sol (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mise à jour & publication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dépendances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-combat_zone_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de combat_zone_settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-combat_zones--type-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de combat_zones[] — type zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-combat_zones--type-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de combat_zones[] — type operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#red-side-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone jouée côté rouge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-menu-audience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        À qui le menu F10 est-il proposé ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonctionnement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mise-en-place-dans-léditeur-de-mission-dcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mise en place dans l'éditeur de mission DCS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tags-de-nom-dunité" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags de nom d'unité
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tags de nom d&#39;unité">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-pratique--embuscade-manpads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple pratique — embuscade MANPADS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command--apparition-via-la-syntaxe-de-marqueur-veaf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #command — apparition via la syntaxe de marqueur VEAF
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constantes-du-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constantes du module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#définir-une-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définir une zone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Définir une zone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#méthodes-du-builder-veafcombatzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder VeafCombatZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#méthodes-du-builder-veafcombatzoneelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder VeafCombatZoneElement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-radio-f10-par-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio F10 (par zone)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menu radio F10 (par zone)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#options-du-menu-radio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options du menu radio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nettoyage-des-carcasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nettoyage des carcasses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opérations-zones-groupées" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opérations (zones groupées)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chaînage-de-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaînage de zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mode-entraînement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode entraînement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="veafcombatzone--zones-de-combat-activables">veafCombatZone — Zones de combat activables<a class="headerlink" href="#veafcombatzone--zones-de-combat-activables" title="Permanent link">&para;</a></h1>
+<p><strong>Module ID:</strong> <code>COMBATZONE</code> | <strong>Fichier:</strong> <code>veafCombatZone.lua</code></p>
+<hr />
+<h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
+<p>Définit des zones de combat nommées dans l'éditeur de mission que les joueurs peuvent activer et désactiver via le menu radio F10. Chaque zone suit l'état des unités ennemies, déclenche des événements de completion d'objectif, supporte la notation et peut contenir plusieurs groupes d'unités avec des règles de spawn.</p>
+<hr />
+<h2 id="dépendances">Dépendances<a class="headerlink" href="#dépendances" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>veafRadio</code> — menu F10</li>
+<li><code>veafSpawn</code> — backend de spawn d'unités</li>
+<li><code>veafMarkers</code> — commandes de marqueur optionnelles</li>
+</ul>
+<hr />
+<h2 id="activation">Activation<a class="headerlink" href="#activation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nv">veafCombatZone</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>Les zones individuelles sont créées et initialisées séparément (voir ci-dessous).</p>
+<hr />
+<h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># défaut : true</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">        </span><span class="c1"># surcharge optionnelle du niveau de log</span>
+<span class="w">    </span><span class="nt">combat_zone_settings</span><span class="p">:</span><span class="w"> </span><span class="c1"># surcharges globales optionnelles</span>
+<span class="w">      </span><span class="nt">event_message_combatzonecomplete</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Objectif</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">zone</span><span class="nv"> </span><span class="s">atteint</span><span class="nv"> </span><span class="s">!&quot;</span><span class="w">  </span><span class="c1"># null = supprimer</span>
+<span class="w">      </span><span class="nt">watchdog_check_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">          </span><span class="c1"># secondes entre les sondages du watchdog (défaut : 60)</span>
+<span class="w">      </span><span class="nt">radio_menu_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zones</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">combat&quot;</span><span class="w">   </span><span class="c1"># libellé du menu F10</span>
+<span class="w">      </span><span class="nt">combat_zone_menu_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Opérations</span><span class="nv"> </span><span class="s">Zone</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">Combat&quot;</span>
+<span class="w">      </span><span class="nt">operation_menu_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Opérations&quot;</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span><span class="w">         </span><span class="c1"># définitions de zones et d&#39;opérations</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span><span class="w">                          </span><span class="c1"># zone | operation</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span><span class="w">              </span><span class="c1"># nom de la zone de trigger DCS</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zone</span><span class="nv"> </span><span class="s">Alpha&quot;</span><span class="w">        </span><span class="c1"># libellé dans le menu radio</span>
+<span class="w">        </span><span class="nt">radio_group_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nord&quot;</span><span class="w">           </span><span class="c1"># regroupe les zones de même nom sous un sous-menu commun</span>
+<span class="w">        </span><span class="nt">radio_menu_prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BLEU&quot;</span><span class="w">          </span><span class="c1"># préfixe affiché devant le libellé de la zone</span>
+<span class="w">        </span><span class="nt">briefing</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Détruire</span><span class="nv"> </span><span class="s">la</span><span class="nv"> </span><span class="s">colonne</span><span class="nv"> </span><span class="s">blindée.&quot;</span><span class="w">  </span><span class="c1"># affiché dans les infos mission</span>
+<span class="w">        </span><span class="nt">training</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># true = pas de sécurité, statut verbeux</span>
+<span class="w">        </span><span class="nt">active_at_start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">               </span><span class="c1"># active automatiquement la zone au démarrage de la mission</span>
+<span class="w">        </span><span class="nt">chained_zones</span><span class="p">:</span><span class="w">                      </span><span class="c1"># zones à déclencher quand celle-ci se termine</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Bravo&quot;</span>
+<span class="w">        </span><span class="nt">chained_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">                   </span><span class="c1"># secondes avant le déclenchement des zones chaînées</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operation</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Op-Tonnerre&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Opération</span><span class="nv"> </span><span class="s">Tonnerre&quot;</span>
+<span class="w">        </span><span class="nt">tasking_orders</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span><span class="w">           </span><span class="c1"># première tâche (sans dépendances)</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Bravo&quot;</span>
+<span class="w">            </span><span class="nt">dependencies</span><span class="p">:</span><span class="w">                   </span><span class="c1"># CZ-Bravo se débloque après CZ-Alpha</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+</code></pre></div>
+<h3 id="champs-de-combat_zone_settings">Champs de <code>combat_zone_settings</code><a class="headerlink" href="#champs-de-combat_zone_settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>event_message_combatzonecomplete</code></td>
+<td>string | null</td>
+<td><em>(défaut module)</em></td>
+<td>Message diffusé quand une zone se termine. <code>null</code> le supprime.</td>
+</tr>
+<tr>
+<td><code>watchdog_check_interval</code></td>
+<td>entier</td>
+<td><code>60</code></td>
+<td>Secondes entre les sondages du watchdog</td>
+</tr>
+<tr>
+<td><code>radio_menu_name</code></td>
+<td>string</td>
+<td><code>"COMBAT ZONES"</code></td>
+<td>Libellé du menu de premier niveau F10</td>
+</tr>
+<tr>
+<td><code>combat_zone_menu_name</code></td>
+<td>string</td>
+<td><em>(défaut)</em></td>
+<td>Libellé du sous-menu des opérations de zone</td>
+</tr>
+<tr>
+<td><code>operation_menu_name</code></td>
+<td>string</td>
+<td><em>(défaut)</em></td>
+<td>Libellé du sous-menu des opérations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="champs-de-combat_zones--type-zone">Champs de <code>combat_zones[]</code> — type <code>zone</code><a class="headerlink" href="#champs-de-combat_zones--type-zone" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td><code>zone</code></td>
+<td>Non</td>
+<td><code>zone</code> ou <code>operation</code></td>
+</tr>
+<tr>
+<td><code>zone_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Oui</td>
+<td>Nom de la zone de trigger DCS</td>
+</tr>
+<tr>
+<td><code>friendly_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Libellé affiché dans le menu F10</td>
+</tr>
+<tr>
+<td><code>radio_group_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Regroupe cette zone (et toutes celles portant le même nom) sous un sous-menu radio commun</td>
+</tr>
+<tr>
+<td><code>radio_menu_prefix</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Préfixe affiché devant le libellé de la zone dans le menu</td>
+</tr>
+<tr>
+<td><code>briefing</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Texte de briefing affiché aux joueurs</td>
+</tr>
+<tr>
+<td><code>training</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Mode entraînement : pas de sécurité, statut verbeux</td>
+</tr>
+<tr>
+<td><code>completable</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td><code>false</code> : la zone ne se termine (et ne se désactive) jamais d'elle-même</td>
+</tr>
+<tr>
+<td><code>enemy_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code></td>
+<td><code>RED</code></td>
+<td>Non</td>
+<td>Coalition <strong>hostile</strong> : ses unités sont celles qu'il faut détruire pour terminer la zone, et celles que le rapport F10 annonce comme « ennemis ». <code>BLUE</code> pour une zone jouée <strong>côté rouge</strong> (voir ci-dessous)</td>
+</tr>
+<tr>
+<td><code>radio_menu_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code> | <code>ALL</code></td>
+<td><em>(camp qui joue la zone)</em></td>
+<td>Non</td>
+<td>Coalition à qui le menu F10 de la zone est proposé. Par défaut : le camp opposé à <code>enemy_coalition</code>. <code>ALL</code> le montre aux deux camps (voir ci-dessous)</td>
+</tr>
+<tr>
+<td><code>active_at_start</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Active automatiquement la zone au démarrage de la mission (<code>veafCombatZone.ActivateZone</code> après <code>initialize()</code>)</td>
+</tr>
+<tr>
+<td><code>chained_zones</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Noms des zones à déclencher à la completion</td>
+</tr>
+<tr>
+<td><code>chained_delay</code></td>
+<td>entier</td>
+<td><code>0</code></td>
+<td>Non</td>
+<td>Secondes avant le déclenchement des zones chaînées</td>
+</tr>
+</tbody>
+</table>
+<h3 id="champs-de-combat_zones--type-operation">Champs de <code>combat_zones[]</code> — type <code>operation</code><a class="headerlink" href="#champs-de-combat_zones--type-operation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>—</td>
+<td>Oui</td>
+<td>Doit être <code>operation</code></td>
+</tr>
+<tr>
+<td><code>zone_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Oui</td>
+<td>Nom de la zone de trigger DCS</td>
+</tr>
+<tr>
+<td><code>friendly_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Libellé dans le menu radio</td>
+</tr>
+<tr>
+<td><code>briefing</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Texte de briefing</td>
+</tr>
+<tr>
+<td><code>tasking_orders</code></td>
+<td>objet[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Liste de tâches ordonnées</td>
+</tr>
+<tr>
+<td><code>tasking_orders[].zone_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Oui</td>
+<td>Nom de la zone de combat pour cette tâche</td>
+</tr>
+<tr>
+<td><code>tasking_orders[].dependencies</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Noms des zones devant se terminer en premier</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alpha&quot;</span>
+</code></pre></div>
+<h3 id="red-side-zone">Zone jouée côté rouge<a class="headerlink" href="#red-side-zone" title="Permanent link">&para;</a></h3>
+<p>Par défaut, une zone de combat suppose que les joueurs sont <strong>bleus</strong> et que les unités à
+détruire sont <strong>rouges</strong>. Deux comportements en découlaient : la zone se terminait quand il ne
+restait plus d'unité rouge, et le rapport F10 annonçait les bleus comme « amis » et les rouges
+comme « ennemis ».</p>
+<p><code>enemy_coalition: BLUE</code> inverse les deux : la zone se termine quand ses unités <strong>bleues</strong> ont
+été détruites, et le rapport nomme les bleus « ennemis » et les rouges « amis ».</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">enemy_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span><span class="w">   </span><span class="c1"># les joueurs sont rouges, les bleus sont les ennemis</span>
+</code></pre></div>
+<p>Le décompte des unités reste identique — seul change le camp sur lequel porte la condition de
+fin. Une zone qui ne précise rien se comporte exactement comme avant.</p>
+<blockquote>
+<p>Auparavant, une zone sans unité rouge nécessitait <code>completable: false</code>, ce qui n'en faisait pas
+une zone rouge : cela désactivait simplement la fin automatique, et le rapport continuait
+d'appeler les ennemis bleus « amis ». <code>enemy_coalition</code> remplace ce contournement.</p>
+</blockquote>
+<p>Côté Lua, l'équivalent est <code>VeafCombatZone:setEnemyCoalition(coalition.side.BLUE)</code> ; le setter
+accepte aussi la chaîne <code>"blue"</code> / <code>"red"</code>.</p>
+<h3 id="f10-menu-audience">À qui le menu F10 est-il proposé ?<a class="headerlink" href="#f10-menu-audience" title="Permanent link">&para;</a></h3>
+<p>Le menu F10 d'une zone n'est pas seulement de la lecture : c'est par lui qu'on <strong>active</strong> la
+zone, qu'on demande son état, qu'on tire la fumée. Il est donc proposé au <strong>camp qui joue la
+zone</strong>, c'est-à-dire l'opposé de <code>enemy_coalition</code> :</p>
+<table>
+<thead>
+<tr>
+<th><code>enemy_coalition</code></th>
+<th>Menu F10 visible par</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RED</code> (défaut)</td>
+<td>les bleus</td>
+</tr>
+<tr>
+<td><code>BLUE</code></td>
+<td>les rouges</td>
+</tr>
+</tbody>
+</table>
+<p>Rien à écrire pour obtenir ce comportement. Pour y déroger, <code>radio_menu_coalition</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+<span class="w">        </span><span class="nt">radio_menu_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ALL</span><span class="w">   </span><span class="c1"># les deux camps voient la zone et peuvent l&#39;activer</span>
+</code></pre></div>
+<p><code>ALL</code> est utile pour un arbitre ou un Mission Master qui occupe un slot rouge et doit pouvoir
+déclencher une zone bleue. On peut aussi nommer un camp explicitement (<code>RED</code> / <code>BLUE</code>) quand il
+ne correspond pas à celui qui joue la zone.</p>
+<blockquote>
+<p><strong>Changement de comportement (6.11.8)</strong> : avant cette version, toutes les zones étaient
+proposées aux deux camps. Une mission dont tous les slots joueurs sont bleus ne verra aucune
+différence ; une mission avec des slots rouges qui doivent garder l'accès aux zones bleues doit
+ajouter <code>radio_menu_coalition: ALL</code> sur ces zones.</p>
+</blockquote>
+<p>Le menu parent (<code>COMBAT ZONES</code>, et le sous-menu de <code>radio_group_name</code>) reste visible par tout le
+monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit donc l'entrée
+<code>COMBAT ZONES</code> sans les zones de l'autre.</p>
+<p>Côté Lua : <code>VeafCombatZone:setRadioMenuCoalition(coalition.side.RED)</code> ou <code>"all"</code>.</p>
+<hr />
+<h2 id="fonctionnement">Fonctionnement<a class="headerlink" href="#fonctionnement" title="Permanent link">&para;</a></h2>
+<p>Placez toutes les unités qui doivent apparaître dans la zone directement dans l'éditeur de mission DCS, à l'intérieur de la trigger zone. Au démarrage de la mission, VEAF les retire toutes — la zone est vide. Quand un joueur active la zone via le menu F10, toutes les unités réapparaissent à des positions aléatoires dans le rayon de la zone. Quand toutes les unités ennemies sont détruites, la zone est marquée comme terminée (un callback optionnel se déclenche, les zones chaînées optionnelles s'activent).</p>
+<p>Cette approche vous donne une conception entièrement visuelle dans l'éditeur tout en gardant la zone inactive au démarrage de la mission.</p>
+<h3 id="mise-en-place-dans-léditeur-de-mission-dcs">Mise en place dans l'éditeur de mission DCS<a class="headerlink" href="#mise-en-place-dans-léditeur-de-mission-dcs" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Créez une trigger zone</strong> — définissez la zone de combat. Nommez-la, par exemple <code>ZONE-ALPHA</code>.</li>
+<li><strong>Placez des groupes d'unités</strong> à l'intérieur de la zone. Mettez-les dans n'importe quelle coalition — VEAF gère leur cycle de vie.</li>
+<li><strong>Utilisez les tags de nom d'unité</strong> (voir ci-dessous) pour personnaliser le comportement d'apparition par groupe.</li>
+<li><strong>Enregistrez la zone</strong> dans <code>mission-script.lua</code> :</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- nom de la trigger zone DCS</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span><span class="w">                    </span><span class="c1">-- libellé du menu radio</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Strike Alpha — Colonne blindée&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p><code>veafCombatZone.initialize()</code> doit d'abord être appelé au niveau du module.</p>
+<hr />
+<h2 id="tags-de-nom-dunité">Tags de nom d'unité<a class="headerlink" href="#tags-de-nom-dunité" title="Permanent link">&para;</a></h2>
+<p>Les noms d'unités et de groupes dans l'éditeur de mission DCS peuvent porter des tags spéciaux qui contrôlent la façon dont VEAF les traite à l'activation de la zone. Les tags sont intégrés dans le nom et n'affectent pas DCS lui-même.</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Exemple</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#spawnradius=N</code></td>
+<td><code>#spawnradius=200</code></td>
+<td>Rayon de dispersion en mètres autour du centre de la zone pour ce groupe</td>
+</tr>
+<tr>
+<td><code>#spawnchance=N</code></td>
+<td><code>#spawnchance=50</code></td>
+<td>Probabilité en pourcentage (0–100) que ce groupe apparaisse réellement</td>
+</tr>
+<tr>
+<td><code>#spawncount=N</code></td>
+<td><code>#spawncount=3</code></td>
+<td>Nombre d'exemplaires à faire apparaître (peut être &gt;1 pour des unités répétées)</td>
+</tr>
+<tr>
+<td><code>#spawngroup="name"</code></td>
+<td><code>#spawngroup="SAM"</code></td>
+<td>Remplace le nom du groupe d'apparition (utile pour cibler un modèle nommé)</td>
+</tr>
+<tr>
+<td><code>#spawndelay=N</code></td>
+<td><code>#spawndelay=120</code></td>
+<td>Délai en secondes avant l'apparition de ce groupe après l'activation de la zone</td>
+</tr>
+<tr>
+<td><code>#command="cmd"</code></td>
+<td><code>#command="-spawn sa-11"</code></td>
+<td>Exécute une commande VEAF au lieu de faire apparaître ce groupe ; l'unité sert de déclencheur et est détruite</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exemple-pratique--embuscade-manpads">Exemple pratique — embuscade MANPADS<a class="headerlink" href="#exemple-pratique--embuscade-manpads" title="Permanent link">&para;</a></h3>
+<p>Vous voulez quatre positions de MANPADS dans une zone, mais seules deux devraient réellement être occupées. Placez quatre unités d'infanterie factices nommées :</p>
+<div class="highlight"><pre><span></span><code>ALPHA-MANPAD-1 #spawnchance=50
+ALPHA-MANPAD-2 #spawnchance=50
+ALPHA-MANPAD-3 #spawnchance=50
+ALPHA-MANPAD-4 #spawnchance=50
+</code></pre></div>
+<p>Chaque position a 50 % de chances d'apparaître — statistiquement, environ deux seront actives à chaque déclenchement de la zone.</p>
+<h3 id="command--apparition-via-la-syntaxe-de-marqueur-veaf"><code>#command</code> — apparition via la syntaxe de marqueur VEAF<a class="headerlink" href="#command--apparition-via-la-syntaxe-de-marqueur-veaf" title="Permanent link">&para;</a></h3>
+<p>Le tag <code>#command</code> transforme une unité en déclencheur à usage unique. À l'activation de la zone, VEAF exécute la commande à la position de l'unité et détruit l'unité. C'est l'équivalent du dépôt d'un marqueur de carte à cet endroit.</p>
+<div class="highlight"><pre><span></span><code>SPAWN-SA11 #command=&quot;-spawn sa-11, side red&quot;
+CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
+</code></pre></div>
+<p>Cela permet de monter des apparitions complexes (batterie SA-11, convois avec routes IA) sans aucun code Lua.</p>
+<hr />
+<h2 id="constantes-du-module">Constantes du module<a class="headerlink" href="#constantes-du-module" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Constante</th>
+<th>Valeur par défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafCombatZone.SecondsBetweenWatchdogChecks</code></td>
+<td><code>60</code></td>
+<td>Fréquence de vérification du watchdog de zone (s)</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.SecondsBetweenSmokeRequests</code></td>
+<td><code>180</code></td>
+<td>Délai entre marquages fumée (s)</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.SecondsBetweenFlareRequests</code></td>
+<td><code>120</code></td>
+<td>Délai entre marquages fusée (s)</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.RadioMenuName</code></td>
+<td><code>"COMBAT ZONES"</code></td>
+<td>Libellé du sous-menu F10</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.DefaultSpawnRadiusForUnits</code></td>
+<td><code>50</code></td>
+<td>Rayon de dispersion par défaut (m)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr />
+<h2 id="définir-une-zone">Définir une zone<a class="headerlink" href="#définir-une-zone" title="Permanent link">&para;</a></h2>
+<p>Dans le cas le plus courant, les éléments sont peuplés automatiquement à partir des unités placées dans la trigger zone DCS via <code>:addZoneElementsFromZoneNamed(...)</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">strikeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">-- nom de la trigger zone DCS</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- libellé du menu radio</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Détruire tous les véhicules. Prévoir de l&#39;AAA et des MANPADS.&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElementsFromZoneNamed</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>On peut aussi construire et attacher un élément manuellement avec <code>:addZoneElement(...)</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setDcsGroup</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span><span class="w">    </span><span class="c1">-- nom du groupe DCS à faire apparaître</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnRadius</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="nv">strikeZone</span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">element</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="méthodes-du-builder-veafcombatzone">Méthodes du builder VeafCombatZone<a class="headerlink" href="#méthodes-du-builder-veafcombatzone" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setMissionEditorZoneName(name)</code></td>
+<td>Trigger zone DCS qui définit la zone de spawn</td>
+</tr>
+<tr>
+<td><code>:setFriendlyName(name)</code></td>
+<td>Libellé affiché dans le menu radio</td>
+</tr>
+<tr>
+<td><code>:setBriefing(text)</code></td>
+<td>Texte complet du briefing</td>
+</tr>
+<tr>
+<td><code>:setOnCompletedHook(fn)</code></td>
+<td>Callback quand tous les ennemis sont détruits</td>
+</tr>
+<tr>
+<td><code>:addZoneElement(element)</code></td>
+<td>Ajouter un élément à la zone</td>
+</tr>
+<tr>
+<td><code>:addZoneElementsFromZoneNamed(zoneName)</code></td>
+<td>Peupler les éléments depuis les unités d'une trigger zone</td>
+</tr>
+<tr>
+<td><code>:addSpawnedGroup(groupOrName)</code></td>
+<td>Déclarer un groupe déjà apparu comme appartenant à la zone</td>
+</tr>
+<tr>
+<td><code>:setActive(bool)</code></td>
+<td>Activer la zone au démarrage</td>
+</tr>
+<tr>
+<td><code>:setTraining(bool)</code></td>
+<td>Mode entraînement</td>
+</tr>
+<tr>
+<td><code>:setCompletable(bool)</code></td>
+<td>La zone peut être marquée comme terminée</td>
+</tr>
+<tr>
+<td><code>:enableUserActivation()</code> / <code>:disableUserActivation()</code></td>
+<td>Autoriser/interdire l'activation par les joueurs</td>
+</tr>
+<tr>
+<td><code>:setRadioGroupName(name)</code></td>
+<td>Regrouper cette zone (et toutes celles portant le même nom) sous un sous-menu radio commun</td>
+</tr>
+<tr>
+<td><code>:setRadioMenuPrefix(text)</code></td>
+<td>Préfixe affiché devant le nom de la zone dans le menu</td>
+</tr>
+</tbody>
+</table>
+<h3 id="méthodes-du-builder-veafcombatzoneelement">Méthodes du builder VeafCombatZoneElement<a class="headerlink" href="#méthodes-du-builder-veafcombatzoneelement" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setName(name)</code></td>
+<td>Nom de l'élément</td>
+</tr>
+<tr>
+<td><code>:setPosition(pos)</code></td>
+<td>Position de l'élément</td>
+</tr>
+<tr>
+<td><code>:setDcsGroup(bool)</code></td>
+<td>L'élément référence un groupe DCS</td>
+</tr>
+<tr>
+<td><code>:setDcsStatic(bool)</code></td>
+<td>L'élément référence un objet statique DCS</td>
+</tr>
+<tr>
+<td><code>:setSpawnGroup(name)</code></td>
+<td>Nom du groupe DCS à faire apparaître</td>
+</tr>
+<tr>
+<td><code>:setVeafCommand(cmd)</code></td>
+<td>Commande VEAF à exécuter au lieu d'un spawn</td>
+</tr>
+<tr>
+<td><code>:setRoute(route)</code></td>
+<td>Route IA de l'élément</td>
+</tr>
+<tr>
+<td><code>:setCoalition(side)</code></td>
+<td>Coalition de l'élément</td>
+</tr>
+<tr>
+<td><code>:setSpawnRadius(m)</code></td>
+<td>Rayon de dispersion autour du centre de la zone</td>
+</tr>
+<tr>
+<td><code>:setSpawnChance(pct)</code></td>
+<td>Probabilité d'apparition (0–100)</td>
+</tr>
+<tr>
+<td><code>:setSpawnCount(n)</code></td>
+<td>Nombre d'exemplaires à faire apparaître</td>
+</tr>
+<tr>
+<td><code>:setSpawnDelay(s)</code></td>
+<td>Délai avant apparition (secondes)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="menu-radio-f10-par-zone">Menu radio F10 (par zone)<a class="headerlink" href="#menu-radio-f10-par-zone" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Activer</strong> — faire apparaître les groupes d'unités de la zone</li>
+<li><strong>Désactiver</strong> — faire disparaître les unités, réinitialiser la zone</li>
+<li><strong>Infos</strong> — statut, nombre d'unités restantes, briefing</li>
+<li><strong>Fumée</strong> — marquer la zone avec de la fumée (délai applicable)</li>
+<li><strong>Fusée éclairante</strong> — marquer la zone avec des fusées</li>
+</ul>
+<blockquote>
+<p><strong>Sécurité :</strong> par défaut, les commandes d'activation/désactivation sont sécurisées : le groupe agit au niveau de son occupant le moins gradé (voir <a href="../veafSecurity/">veafSecurity</a>). Seul le <a href="#mode-entraînement">mode entraînement</a> supprime cette restriction. Les demandes d'infos, fumée et fusée sont toujours accessibles à tous.</p>
+</blockquote>
+<h3 id="options-du-menu-radio">Options du menu radio<a class="headerlink" href="#options-du-menu-radio" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:disableRadioMenu()</code></td>
+<td>Désactiver complètement le menu radio pour cette zone</td>
+</tr>
+<tr>
+<td><code>:setRadioMenuPrefix(text)</code></td>
+<td>Préfixe affiché devant le nom de la zone dans le menu</td>
+</tr>
+<tr>
+<td><code>:setRadioGroupName(name)</code></td>
+<td>Regrouper cette zone (et toutes celles portant le même nom) sous un sous-menu radio commun</td>
+</tr>
+<tr>
+<td><code>:setEnableSmokeAndFlare(bool)</code></td>
+<td>Activer/désactiver les demandes de fumée et fusée (défaut : <code>true</code>)</td>
+</tr>
+<tr>
+<td><code>:setShowUnitsList(bool)</code></td>
+<td>Inclure la liste des unités restantes dans le message info (défaut : <code>true</code>)</td>
+</tr>
+<tr>
+<td><code>:setShowZonePositionInfo(bool)</code></td>
+<td>Inclure les coordonnées et la météo dans le message info (défaut : <code>true</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nettoyage-des-carcasses">Nettoyage des carcasses<a class="headerlink" href="#nettoyage-des-carcasses" title="Permanent link">&para;</a></h3>
+<p>Par défaut, à la désactivation d'une zone, les carcasses et cadavres sont automatiquement supprimés. Pour les conserver :</p>
+<div class="highlight"><pre><span></span><code><span class="p">:</span><span class="nf">disableJunkCleanup</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h2 id="opérations-zones-groupées">Opérations (zones groupées)<a class="headerlink" href="#opérations-zones-groupées" title="Permanent link">&para;</a></h2>
+<p>Plusieurs zones peuvent être regroupées dans une <strong>Opération</strong> qui se complète quand toutes les zones filles sont terminées :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatOperation</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;OP-THUNDER&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Operation Thunder&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Détruire les deux colonnes blindées avant qu&#39;elles atteignent Senaki.&quot;</span><span class="p">)</span>
+
+<span class="nv">operation</span><span class="p">:</span><span class="nf">addTaskingOrder</span><span class="p">(</span><span class="nv">alphaZone</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- première tâche</span>
+<span class="nv">operation</span><span class="p">:</span><span class="nf">addTaskingOrder</span><span class="p">(</span><span class="nv">bravoZone</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;OP-THUNDER-ALPHA&quot;</span><span class="w"> </span><span class="p">})</span><span class="w">  </span><span class="c1">-- débloquée après Alpha</span>
+<span class="nv">operation</span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p><code>VeafCombatOperation = VeafCombatZone:new()</code> — l'opération étend <code>VeafCombatZone</code>. Les tâches sont ajoutées avec <code>:addTaskingOrder(zone, requiredComplete)</code>, où <code>zone</code> est une <code>VeafCombatZone</code> et <code>requiredComplete</code> la liste optionnelle des noms de zones devant être terminées avant que celle-ci soit activée. L'opération apparaît dans le menu radio comme une seule entrée.</p>
+<hr />
+<h2 id="chaînage-de-zones">Chaînage de zones<a class="headerlink" href="#chaînage-de-zones" title="Permanent link">&para;</a></h2>
+<p>Une zone peut activer automatiquement une ou plusieurs zones suivantes lorsqu'elle est terminée. Cela permet de construire des progressions de campagne dynamiques sans scripting manuel :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Bravo&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- se déclenche quand Alpha est terminée</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Charlie&quot;</span><span class="p">)</span><span class="w">   </span><span class="c1">-- l&#39;une est choisie au hasard</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setChainedCombatZonesDelay</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="w">           </span><span class="c1">-- attendre 60 s avant le chaînage</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>Quand plusieurs zones chaînées sont définies, <strong>une seule est tirée au hasard</strong> — utile pour des scénarios à embranchements ou pour éviter la prévisibilité.</p>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:addChainedCombatZone(name)</code></td>
+<td>Ajouter une zone à déclencher après la complétion</td>
+</tr>
+<tr>
+<td><code>:setChainedCombatZonesDelay(s)</code></td>
+<td>Secondes à attendre avant le chaînage (défaut : 0)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mode-entraînement">Mode entraînement<a class="headerlink" href="#mode-entraînement" title="Permanent link">&para;</a></h2>
+<p>Mettre une zone en mode entraînement change deux choses :</p>
+<ul>
+<li><strong>Pas de sécurité</strong> : n'importe quel joueur peut activer ou désactiver la zone via le menu radio (normalement ces commandes sont réservées au niveau effectif du groupe — voir <a href="../veafSecurity/">veafSecurity</a>).</li>
+<li><strong>État détaillé</strong> : le message d'info de la zone liste les unités restantes et leurs positions approximatives (via fumée ou relèvements), donnant aux pilotes une vue claire de ce qu'il reste.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-TRAINING-A&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Training-A&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTraining</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>Le mode entraînement est idéal pour des scénarios d'entraînement BFM / CAS où les pilotes ont besoin de connaître les positions des unités.</p>
+<hr />
+<h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../veafCasMission/">veafCasMission</a> — zones CAS générées (sans groupes pré-placés)</li>
+<li><a href="../../../LUA_API_REFERENCE/">Référence API Lua</a> — API complète de <code>veafCombatZone</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>
