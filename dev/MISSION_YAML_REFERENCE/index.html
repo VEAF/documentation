@@ -2275,6 +2275,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#module-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        module_settings:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#third-party-modules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2893,6 +2904,17 @@
     <span class="md-ellipsis">
       
         settings:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        module_settings:
       
     </span>
   </a>
@@ -3529,6 +3551,49 @@ donc jamais et le mot de passe ne fonctionnera <strong>jamais</strong>, en silen
 <span class="w">  </span><span class="nt">PHASE_MISSION</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;alpha&quot;</span>
 </code></pre></div>
 <p>Chaque clé devient <code>veaf.config.MON_FLAG_MISSION = 42</code> dans le <code>veaf-config.lua</code> généré.</p>
+<hr />
+<h3 id="module-settings"><code>module_settings:</code><a class="headerlink" href="#module-settings" title="Permanent link">&para;</a></h3>
+<p>Réglages scalaires posés <strong>directement sur la table d'un module VEAF</strong>, écrits tels quels dans le <code>veaf-config.lua</code> généré. Là où <code>settings:</code> ne sait écrire que <code>veaf.config.CLÉ</code>, cette section vise n'importe quelle table VEAF.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">module_settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">veafSkynet.DelayForStartup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span><span class="w">     </span><span class="c1"># temporisation de démarrage de l&#39;IADS</span>
+<span class="w">  </span><span class="nt">veafSkynet.DynamicSpawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">veafRadio.RadioMenuName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BFR&quot;</span><span class="w">      </span><span class="c1"># nom du menu radio racine, visible par les joueurs</span>
+<span class="w">  </span><span class="nt">veaf.DEFAULT_GROUND_SPEED_KPH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+</code></pre></div>
+<p>Chaque entrée devient l'affectation Lua correspondante, ici <code>veafSkynet.DelayForStartup = 150</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(clé)</em></td>
+<td>string</td>
+<td>—</td>
+<td>—</td>
+<td>La cible Lua complète, <code>veafXxx.Champ</code>. Une clé qui ne commence pas par <code>veaf</code> est <strong>refusée à la génération</strong> : cette section est un chemin de migration pour les réglages VEAF, pas une trappe permettant d'écrire n'importe où dans le runtime</td>
+</tr>
+<tr>
+<td><em>(valeur)</em></td>
+<td>booléen | nombre | string</td>
+<td>—</td>
+<td>—</td>
+<td>Un scalaire. Les tables et les fonctions ne sont pas exprimables ici</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>D'où ça vient.</strong> <code>convert-v5</code> remplit cette section automatiquement : en v5, la moitié de ces
+réglages n'arrivaient ni dans <code>mission.yaml</code> ni dans le Lua généré, et rien ne le signalait.
+Ce que la conversion ne sait toujours pas porter — une table, une fonction — est désormais listé
+en commentaire dans le <code>mission-script.lua</code> généré, sous « Settings NOT migrated ».</p>
+</blockquote>
 <hr />
 <h3 id="third-party-modules">Modules tiers : <code>SKYNET</code> / <code>CTLD</code> / <code>CSAR</code> (sous <code>modules:</code>)<a class="headerlink" href="#third-party-modules" title="Permanent link">&para;</a></h3>
 <blockquote>
