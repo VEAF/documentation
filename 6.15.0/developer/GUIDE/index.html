@@ -1,0 +1,4309 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.15.0/developer/GUIDE/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../dcs-data/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../en/developer/GUIDE/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Guide - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guide-du-développeur--veaf-mission-creation-tools" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../.." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/developer/GUIDE/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mission-maker/" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklists guidées (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Menu MISSIONS (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IA au sol (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/scripts/veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matières" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble-de-larchitecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'ensemble de l'architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure-du-dépôt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure du dépôt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environnement de développement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environnement de développement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a--devcontainer-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option A — DevContainer (recommandé)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b--setup-manuel-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option B — Setup manuel (Windows)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option B — Setup manuel (Windows)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-python-311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Python 3.11+
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-poetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Poetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Git
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-lua-51-pour-les-tests-unitaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Lua 5.1 (pour les tests unitaires)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stylua-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. StyLua 2.4.0 (qualité du code Lua)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-github-cli--optionnel-uniquement-pour-publier-des-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GitHub CLI — optionnel, uniquement pour publier des versions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloner-et-initialiser-le-projet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloner et initialiser le projet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dépendances-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-runtime-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripts Lua runtime
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scripts Lua runtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-des-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure des modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordre-de-chargement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ordre de chargement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#journalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Journalisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accès-mistdbs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accès mist.DBs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outils Python
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Outils Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-de-journalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern de journalisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajouter-un-nouvel-outil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ajouter un nouvel outil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-test-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aides de test partagées
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-et-publication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build et publication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Build et publication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publier-une-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publier une version
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Publier une version">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow-de-release-git-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flow de release (git flow)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modèle-de-sécurité" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modèle de sécurité
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lancer-tous-les-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lancer tous les tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exécution-filtrée" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exécution filtrée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#couverture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Couverture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suite-unique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suite unique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portes-de-qualité" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portes de qualité
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Portes de qualité">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avant-chaque-commit-sur-des-fichiers-lua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant chaque commit sur des fichiers Lua
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jobs-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jobs CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant un commit qui touche à la documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#republier-la-documentation-dune-version-déjà-sortie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Republier la documentation d'une version déjà sortie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publier-une-nouvelle-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publier une nouvelle version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode développeur
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mode développeur">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prérequis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prérequis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activation-ordre-de-priorité--premier-trouvé-appliqué" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation (ordre de priorité — premier trouvé appliqué)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effet-sur-le-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Effet sur le build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribuer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contribuer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contribuer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convention-de-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convention de commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checklist-pull-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checklist Pull Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pour-aller-plus-loin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pour aller plus loin
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mission-maker/dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mise à jour & publication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matières" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble-de-larchitecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'ensemble de l'architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure-du-dépôt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure du dépôt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environnement de développement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environnement de développement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a--devcontainer-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option A — DevContainer (recommandé)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b--setup-manuel-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option B — Setup manuel (Windows)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option B — Setup manuel (Windows)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-python-311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Python 3.11+
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-poetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Poetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Git
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-lua-51-pour-les-tests-unitaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Lua 5.1 (pour les tests unitaires)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stylua-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. StyLua 2.4.0 (qualité du code Lua)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-github-cli--optionnel-uniquement-pour-publier-des-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GitHub CLI — optionnel, uniquement pour publier des versions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloner-et-initialiser-le-projet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloner et initialiser le projet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dépendances-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-runtime-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripts Lua runtime
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scripts Lua runtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-des-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure des modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordre-de-chargement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ordre de chargement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#journalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Journalisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accès-mistdbs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accès mist.DBs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outils Python
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Outils Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-de-journalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern de journalisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajouter-un-nouvel-outil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ajouter un nouvel outil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-test-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aides de test partagées
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-et-publication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build et publication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Build et publication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publier-une-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publier une version
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Publier une version">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow-de-release-git-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flow de release (git flow)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modèle-de-sécurité" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modèle de sécurité
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lancer-tous-les-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lancer tous les tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exécution-filtrée" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exécution filtrée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#couverture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Couverture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suite-unique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suite unique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portes-de-qualité" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portes de qualité
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Portes de qualité">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avant-chaque-commit-sur-des-fichiers-lua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant chaque commit sur des fichiers Lua
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jobs-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jobs CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant un commit qui touche à la documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#republier-la-documentation-dune-version-déjà-sortie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Republier la documentation d'une version déjà sortie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publier-une-nouvelle-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publier une nouvelle version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode développeur
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mode développeur">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prérequis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prérequis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activation-ordre-de-priorité--premier-trouvé-appliqué" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation (ordre de priorité — premier trouvé appliqué)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effet-sur-le-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Effet sur le build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribuer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contribuer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contribuer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convention-de-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convention de commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checklist-pull-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checklist Pull Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pour-aller-plus-loin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pour aller plus loin
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guide-du-développeur--veaf-mission-creation-tools">Guide du développeur — VEAF Mission Creation Tools<a class="headerlink" href="#guide-du-développeur--veaf-mission-creation-tools" title="Permanent link">&para;</a></h1>
+<p>Ce guide s'adresse aux développeurs qui souhaitent contribuer au code source de VEAF Mission Creation Tools, créer de nouvelles versions ou étendre le framework.</p>
+<hr />
+<h2 id="table-des-matières">Table des matières<a class="headerlink" href="#table-des-matières" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#vue-densemble-de-larchitecture">Vue d'ensemble de l'architecture</a></li>
+<li><a href="#structure-du-dépôt">Structure du dépôt</a></li>
+<li><a href="#development-environment">Environnement de développement</a></li>
+<li><a href="#lua-runtime-scripts">Scripts Lua runtime</a></li>
+<li><a href="#python-tools">Outils Python</a></li>
+<li><a href="#build-et-publication">Build et publication</a></li>
+<li><a href="#developer-mode">Mode développeur</a></li>
+<li><a href="#tests">Tests</a></li>
+<li><a href="#portes-de-qualité">Portes de qualité</a></li>
+<li><a href="#contribuer">Contribuer</a></li>
+</ol>
+<hr />
+<h2 id="vue-densemble-de-larchitecture">Vue d'ensemble de l'architecture<a class="headerlink" href="#vue-densemble-de-larchitecture" title="Permanent link">&para;</a></h2>
+<p>Le projet comporte deux couches complètement séparées :</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph DT["DESIGN-TIME — Python"]
+        tools["veaf-tools.exe&lt;br/&gt;— manipulation des .miz"]
+        updater["veaf-tools-updater.exe&lt;br/&gt;— gestion des versions"]
+        build["veaf-build&lt;br/&gt;— pipeline de build"]
+    end
+    DT --&gt;|produit| zip(["published.zip"])
+    zip --&gt;|consommé par| RT
+    subgraph RT["RUNTIME — Lua dans DCS World"]
+        scripts["veaf-scripts.lua&lt;br/&gt;— les modules concaténés"]
+        config["veaf-config.lua&lt;br/&gt;— config générée des modules (depuis mission.yaml)"]
+        custom["mission-script.lua&lt;br/&gt;— code Lua custom spécifique à la mission"]
+    end</code></pre>
+<ul>
+<li><strong>Runtime</strong> (<code>src/scripts/veaf/</code>) — modules Lua chargés dans les missions DCS</li>
+<li><strong>Design-time</strong> (<code>src/python/veaf-tools/</code>) — outils CLI Python pour la manipulation des fichiers <code>.miz</code></li>
+</ul>
+<hr />
+<h2 id="structure-du-dépôt">Structure du dépôt<a class="headerlink" href="#structure-du-dépôt" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>VEAF-Mission-Creation-Tools/
+├── veaf_build/                   # CLI veaf-build (orchestrateur build &amp; publication)
+├── build-and-release.py          # Shim de rétrocompatibilité (utiliser veaf-build à la place)
+├── src/
+│   ├── scripts/veaf/             # Modules Lua runtime
+│   └── python/veaf-tools/        # Code source Python CLI
+│       ├── veaf-tools.py         # Point d&#39;entrée
+│       ├── veaf_libs/            # Utilitaires partagés (logger, progress, miz)
+│       ├── mission_tools/        # Lecture/écriture .miz
+│       └── *_injector/           # Un dossier par commande CLI
+├── published/                    # Sortie Lua compilée
+├── dist/                         # Sortie .exe PyInstaller
+├── build/                        # Espace de travail de build temporaire
+├── test/
+│   ├── lua/                      # Tests unitaires Lua
+│   └── python/                   # Tests unitaires Python
+├── doc/                          # Documentation
+├── .backlog/                     # Backlog des lots (PRD + tickets)
+└── .github/
+    └── workflows/                # CI/CD GitHub Actions
+</code></pre></div>
+<hr />
+<h2 id="development-environment">Environnement de développement<a class="headerlink" href="#development-environment" title="Permanent link">&para;</a></h2>
+<p>Deux options de setup sont disponibles. Le DevContainer est recommandé pour les nouveaux contributeurs : il garantit un environnement identique à la CI.</p>
+<h3 id="option-a--devcontainer-recommandé">Option A — DevContainer (recommandé)<a class="headerlink" href="#option-a--devcontainer-recommandé" title="Permanent link">&para;</a></h3>
+<p>Le dépôt inclut une configuration <code>.devcontainer/</code> qui fournit un environnement pré-configuré, sans installation manuelle : Python 3.13, Lua 5.1, StyLua 2.4.0, Poetry et toutes les extensions VS Code sont déjà installées.</p>
+<p><strong>VS Code Dev Containers</strong> (Docker local) :</p>
+<ol>
+<li>Installer <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a> et l'extension <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">Dev Containers</a></li>
+<li>Ouvrir le dossier du dépôt dans VS Code</li>
+<li>Appuyer sur <code>Ctrl+Shift+P</code> → <em>Dev Containers: Reopen in Container</em></li>
+<li>Attendre la construction du conteneur et la fin de <code>poetry install</code> — l'environnement est prêt</li>
+</ol>
+<p><strong>GitHub Codespaces</strong> (navigateur, sans installation locale) :</p>
+<ol>
+<li>Sur la page du dépôt, cliquer sur <strong>Code</strong> → <strong>Codespaces</strong> → <strong>New codespace</strong></li>
+<li>L'environnement se construit automatiquement — ouvrir un terminal et commencer à travailler</li>
+</ol>
+<p>Dans les deux cas, <code>poetry install --without build --all-extras</code> s'exécute automatiquement à la première ouverture.</p>
+<h3 id="option-b--setup-manuel-windows">Option B — Setup manuel (Windows)<a class="headerlink" href="#option-b--setup-manuel-windows" title="Permanent link">&para;</a></h3>
+<h4 id="1-python-311">1. Python 3.11+<a class="headerlink" href="#1-python-311" title="Permanent link">&para;</a></h4>
+<p>Télécharger l'installateur depuis <a href="https://www.python.org/downloads/">python.org</a> (version <strong>3.13</strong> recommandée) ou via winget :</p>
+<div class="highlight"><pre><span></span><code><span class="n">winget</span> <span class="n">install</span> <span class="p">-</span><span class="n">-id</span> <span class="n">Python</span><span class="p">.</span><span class="n">Python</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">13</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Important :</strong> pendant l'installation graphique, cocher <strong>"Add Python to PATH"</strong>. Sans cette case, <code>python</code> et <code>pip</code> ne seront pas trouvés dans le terminal.</p>
+</blockquote>
+<p>Vérification :</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="p">-</span><span class="n">-version</span>   <span class="c"># Python 3.11 ou supérieur attendu</span>
+</code></pre></div>
+<h4 id="2-poetry">2. Poetry<a class="headerlink" href="#2-poetry" title="Permanent link">&para;</a></h4>
+<p>Poetry gère les environnements virtuels Python et les dépendances du projet. La méthode recommandée est via <code>pipx</code>, qui isole Poetry dans son propre environnement :</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pipx</span>
+<span class="n">pipx</span> <span class="n">ensurepath</span>        <span class="c"># ajoute ~/.local/bin au PATH — redémarrer le terminal ensuite</span>
+<span class="n">pipx</span> <span class="n">install</span> <span class="n">poetry</span>
+</code></pre></div>
+<p>Vérification :</p>
+<div class="highlight"><pre><span></span><code><span class="n">poetry</span> <span class="p">-</span><span class="n">-version</span>
+</code></pre></div>
+<blockquote>
+<p><code>poetry install</code> crée automatiquement un virtualenv isolé dans le projet. Toutes les commandes du projet s'exécutent ensuite avec le préfixe <code>poetry run &lt;commande&gt;</code>.</p>
+</blockquote>
+<h4 id="3-git">3. Git<a class="headerlink" href="#3-git" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">winget</span> <span class="n">install</span> <span class="p">-</span><span class="n">-id</span> <span class="n">Git</span><span class="p">.</span><span class="n">Git</span>
+</code></pre></div>
+<p>Ou télécharger depuis <a href="https://git-scm.com/download/win">git-scm.com</a>.</p>
+<h4 id="4-lua-51-pour-les-tests-unitaires">4. Lua 5.1 (pour les tests unitaires)<a class="headerlink" href="#4-lua-51-pour-les-tests-unitaires" title="Permanent link">&para;</a></h4>
+<p>Lua 5.1 est requis pour exécuter les tests localement. La version <strong>5.1</strong> est obligatoire — les versions 5.2+ ne sont pas compatibles avec le code DCS.</p>
+<p>Via <a href="https://scoop.sh/">Scoop</a> (gestionnaire de paquets Windows recommandé) :</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Installer Scoop si pas encore présent</span>
+<span class="nb">Set-ExecutionPolicy</span> <span class="n">-ExecutionPolicy</span> <span class="n">RemoteSigned</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+<span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="n">https</span><span class="p">://</span><span class="n">get</span><span class="p">.</span><span class="n">scoop</span><span class="p">.</span><span class="n">sh</span> <span class="p">|</span> <span class="nb">Invoke-Expression</span>
+
+<span class="c"># Installer Lua 5.1</span>
+<span class="n">scoop</span> <span class="n">install</span> <span class="n">lua51</span>
+</code></pre></div>
+<blockquote>
+<p>Si une autre version de Lua est déjà installée via scoop, <code>lua51</code> <strong>remplace son shim <code>lua</code></strong>
+(le paquet en déclare un). Le shim <code>lua51</code> reste disponible pour les deux, et
+<code>poetry run test-lua</code> sait le trouver — mais la commande <code>lua</code> nue de votre terminal aura changé
+de version.</p>
+</blockquote>
+<p>Alternativement, télécharger un binaire depuis <a href="https://luabinaries.sourceforge.net/">LuaBinaries</a> (<code>lua-5.1.x_Win64_bin.zip</code>), extraire et ajouter le dossier au PATH système.</p>
+<p>Vérification :</p>
+<div class="highlight"><pre><span></span><code><span class="n">lua</span> <span class="n">-v</span>   <span class="c"># Lua 5.1.x attendu</span>
+</code></pre></div>
+<p>Si ce n'est pas une 5.1, <code>poetry run test-lua</code> refuse de s'exécuter et affiche ce qu'il a trouvé :
+lancer la suite sous 5.4 produit des dizaines d'échecs qui ressemblent à des régressions du code
+VEAF et n'en sont pas.</p>
+<h4 id="stylua-setup">5. StyLua 2.4.0 (qualité du code Lua)<a class="headerlink" href="#stylua-setup" title="Permanent link">&para;</a></h4>
+<p>StyLua formate le code Lua. <strong>La version 2.4.0 est imposée par la CI</strong> — toute autre version fera échouer le job de formatage.</p>
+<p>Télécharger <code>stylua-windows-x86_64.zip</code> depuis la <a href="https://github.com/JohnnyMorganz/StyLua/releases/tag/v2.4.0">page de release v2.4.0</a>, puis installer :</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Créer le dossier cible</span>
+<span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span> <span class="s2">&quot;$HOME\.local\bin&quot;</span>
+
+<span class="c"># Extraire et placer l&#39;exécutable (adapter le chemin selon où le zip a été extrait)</span>
+<span class="nb">Copy-Item</span> <span class="s2">&quot;chemin\vers\stylua.exe&quot;</span> <span class="s2">&quot;$HOME\.local\bin\stylua.exe&quot;</span>
+
+<span class="c"># Vérifier</span>
+<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="p">-</span><span class="n">-version</span>   <span class="c"># stylua 2.4.0 attendu</span>
+</code></pre></div>
+<h4 id="6-github-cli--optionnel-uniquement-pour-publier-des-versions">6. GitHub CLI — optionnel, uniquement pour publier des versions<a class="headerlink" href="#6-github-cli--optionnel-uniquement-pour-publier-des-versions" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">winget</span> <span class="n">install</span> <span class="p">-</span><span class="n">-id</span> <span class="n">GitHub</span><span class="p">.</span><span class="nb">cli</span>
+<span class="n">gh</span> <span class="n">auth</span> <span class="n">login</span>
+</code></pre></div>
+<h4 id="cloner-et-initialiser-le-projet">Cloner et initialiser le projet<a class="headerlink" href="#cloner-et-initialiser-le-projet" title="Permanent link">&para;</a></h4>
+<p>Une fois tous les prérequis installés :</p>
+<div class="highlight"><pre><span></span><code><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">VEAF</span><span class="p">/</span><span class="n">VEAF-Mission-Creation-Tools</span><span class="p">.</span><span class="n">git</span>
+<span class="nb">cd </span><span class="n">VEAF-Mission-Creation-Tools</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">develop</span>
+
+<span class="c"># Installer toutes les dépendances Python</span>
+<span class="n">poetry</span> <span class="n">install</span>
+
+<span class="c"># Vérifier que tout fonctionne</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="nb">test-lua</span>   <span class="c"># tests Lua (requiert Lua 5.1)</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span>     <span class="c"># tests Python</span>
+</code></pre></div>
+<blockquote>
+<p>Pour compiler les exécutables Windows (<code>veaf-tools.exe</code>, etc.), ajouter le groupe <code>build</code> :
+<div class="highlight"><pre><span></span><code><span class="n">poetry</span> <span class="n">install</span> <span class="p">-</span><span class="n">-with</span> <span class="n">build</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="dépendances-python">Dépendances Python<a class="headerlink" href="#dépendances-python" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Utilité</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>typer</code></td>
+<td>Framework CLI</td>
+</tr>
+<tr>
+<td><code>rich</code></td>
+<td>Interface terminal (barres de progression, tableaux)</td>
+</tr>
+<tr>
+<td><code>pyyaml</code></td>
+<td>Chargement des fichiers de config</td>
+</tr>
+<tr>
+<td><code>luadata</code></td>
+<td>Sérialisation/désérialisation Lua</td>
+</tr>
+<tr>
+<td><code>pyinstaller</code></td>
+<td>Compilation des exécutables Windows</td>
+</tr>
+<tr>
+<td><code>pillow</code></td>
+<td>Traitement d'images (icônes météo)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="lua-runtime-scripts">Scripts Lua runtime<a class="headerlink" href="#lua-runtime-scripts" title="Permanent link">&para;</a></h2>
+<h3 id="structure-des-modules">Structure des modules<a class="headerlink" href="#structure-des-modules" title="Permanent link">&para;</a></h3>
+<p>Chaque module Lua suit ce modèle :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">moduleName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="nv">moduleName</span><span class="p">.</span><span class="py">Id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MODULE_ID&quot;</span>
+<span class="c1">-- moduleName.LogLevel = &quot;trace&quot;  -- décommenter pour augmenter la verbosité</span>
+
+<span class="nv">veaf</span><span class="p">.</span><span class="py">loggers</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nv">moduleName</span><span class="p">.</span><span class="py">Id</span><span class="p">,</span><span class="w"> </span><span class="nv">moduleName</span><span class="p">.</span><span class="py">LogLevel</span><span class="p">)</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">moduleName</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
+<span class="w">  </span><span class="c1">-- s&#39;enregistrer auprès des marqueurs, radio, gestionnaire d&#39;événements</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">moduleName</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+<span class="w">  </span><span class="c1">-- démarrer les watchdogs, tâches planifiées</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="ordre-de-chargement">Ordre de chargement<a class="headerlink" href="#ordre-de-chargement" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>veaf.lua</code> — doit être en premier</li>
+<li><code>veafEventHandler.lua</code></li>
+<li><code>veafMarkers.lua</code>, <code>veafRadio.lua</code>, <code>veafSecurity.lua</code></li>
+<li>Tous les autres modules (dans n'importe quel ordre)</li>
+</ol>
+<h3 id="journalisation">Journalisation<a class="headerlink" href="#journalisation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="py">loggers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nv">moduleName</span><span class="p">.</span><span class="py">Id</span><span class="p">):</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="py">loggers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nv">moduleName</span><span class="p">.</span><span class="py">Id</span><span class="p">):</span><span class="nf">debug</span><span class="p">(</span><span class="s2">&quot;Debug: %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">variable</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="py">loggers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nv">moduleName</span><span class="p">.</span><span class="py">Id</span><span class="p">):</span><span class="nf">trace</span><span class="p">(</span><span class="s2">&quot;Trace: %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">lp</span><span class="p">(</span><span class="nv">table</span><span class="p">))</span>
+</code></pre></div>
+<p>Niveaux de log : <code>error</code> (1) → <code>warning</code> (2) → <code>info</code> (3) → <code>debug</code> (4) → <code>trace</code> (5). Par défaut : <code>info</code> (3).</p>
+<p>Pour les arguments coûteux à évaluer, utiliser <code>veaf.lp()</code> (proxy lazy — stringifié uniquement si le niveau est actif).</p>
+<p>Pour augmenter la verbosité pour une mission au <strong>moment du build</strong> (global, intégré dans le <code>.miz</code>), ajouter <code>global_log_level</code> dans <code>mission.yaml</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">global_log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+</code></pre></div>
+<p>Pour le contrôle <strong>par module au moment du build</strong>, utiliser la section <code>modules</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trace</span>
+</code></pre></div>
+<p>Cela génère des appels <code>veaf.setConfig("MODULE_ID", "logLevel", "...")</code> dans <code>veaf-config.lua</code>. Ou utiliser <code>--log-modules SPAWN,RADIO</code> sur la CLI pour réduire au silence tout le reste.</p>
+<p>Pour le contrôle <strong>par module au runtime</strong> (sans rebuild), ajouter l'appel Lua directement dans <code>mission-script.lua</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="py">loggers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">&quot;SPAWN&quot;</span><span class="p">):</span><span class="nf">setLevel</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w">  </span><span class="c1">-- force=true contourne le cap BaseLogLevel</span>
+</code></pre></div>
+<h3 id="accès-mistdbs">Accès mist.DBs<a class="headerlink" href="#accès-mistdbs" title="Permanent link">&para;</a></h3>
+<p>Ne pas accéder à <code>mist.DBs.*</code> directement. Utiliser l'interface <code>veaf.mist</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">groupData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getGroupData</span><span class="p">(</span><span class="nv">groupName</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">isHuman</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">isHumanUnit</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">allUnits</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getAllUnitData</span><span class="p">()</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">groupById</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getGroupById</span><span class="p">(</span><span class="nv">groupId</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="python-tools">Outils Python<a class="headerlink" href="#python-tools" title="Permanent link">&para;</a></h2>
+<h3 id="architecture-cli">Architecture CLI<a class="headerlink" href="#architecture-cli" title="Permanent link">&para;</a></h3>
+<p>Chaque sous-commande de <code>veaf-tools.exe</code> est implémentée comme un package <code>*_injector/</code> :</p>
+<div class="highlight"><pre><span></span><code>weather_injector/
+├── weather_worker.py    # Point d&#39;entrée (méthode run())
+├── weather_manager.py   # Logique de transformation des données
+├── models.py            # Définitions des dataclasses
+└── weather_README.py    # Chaînes d&#39;aide/documentation
+</code></pre></div>
+<h3 id="pattern-de-journalisation">Pattern de journalisation<a class="headerlink" href="#pattern-de-journalisation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">veaf_libs.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">console</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Traitement de la mission...&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Informations détaillées&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Attention&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Échec&quot;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="ajouter-un-nouvel-outil">Ajouter un nouvel outil<a class="headerlink" href="#ajouter-un-nouvel-outil" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Créer <code>src/python/veaf-tools/new_feature_injector/</code></li>
+<li>Implémenter <code>new_feature_worker.py</code> avec une méthode <code>run()</code></li>
+<li>Enregistrer la commande dans <code>veaf-tools.py</code> avec <code>typer</code></li>
+<li>Ajouter le schéma de configuration YAML dans <code>models.py</code></li>
+</ol>
+<h3 id="shared-test-helpers">Aides de test partagées<a class="headerlink" href="#shared-test-helpers" title="Permanent link">&para;</a></h3>
+<p><code>test/python/testlib/</code> contient les aides utilisées par plusieurs fichiers de test. Le dossier est
+sur le <code>pythonpath</code> de pytest, donc ses modules s'importent par leur nom :</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mission_builder_factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_worker</span>
+</code></pre></div>
+<p><code>make_worker(**overrides)</code> construit un <code>MissionBuilderWorker</code> <strong>sans exécuter <code>__init__</code></strong> — celui-ci
+lit <code>mission.yaml</code>, résout le chemin des scripts et vérifie la présence du chargeur sur le disque,
+ce qu'un test unitaire d'une seule méthode veut éviter. Tous les attributs que <code>__init__</code> affecte
+sont présents avec une valeur neutre ; le test ne nomme que ce qui l'intéresse :</p>
+<div class="highlight"><pre><span></span><code><span class="n">worker</span> <span class="o">=</span> <span class="n">make_worker</span><span class="p">(</span><span class="n">mission_yaml</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;dcs_bridge&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}},</span> <span class="n">dev_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>Aucun accès disque : <code>mission_folder</code> vaut <code>None</code> par défaut. Quand un dossier est fourni,
+<code>output_mission</code> en dérive (<code>&lt;mission_folder&gt;/out.miz</code>). Une clé inconnue est refusée
+(<code>TypeError</code>) plutôt que de créer en silence un attribut que personne ne lit ; les remplacements de
+<strong>méthode</strong> s'affectent sur le worker retourné, pas via <code>make_worker</code>.</p>
+<p>Ajouter un champ à <code>MissionBuilderWorker.__init__</code> impose d'ajouter une entrée dans
+<code>init_field_defaults()</code>. Ce n'est pas à retenir :
+<code>test/python/mission_builder/test_mission_builder_factory_contract.py</code> lit les affectations
+<code>self.&lt;champ&gt;</code> de <code>__init__</code> et échoue en nommant le champ manquant et le fichier à corriger.</p>
+<hr />
+<h2 id="build-et-publication">Build et publication<a class="headerlink" href="#build-et-publication" title="Permanent link">&para;</a></h2>
+<h3 id="build-local">Build local<a class="headerlink" href="#build-local" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c"># Build (compile Lua + construit les .exe)</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="n">veaf-build</span> <span class="n">build</span> <span class="p">-</span><span class="n">-version</span> <span class="p">&lt;</span><span class="n">version</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Ce que cela fait :
+1. Valide les prérequis (Git, Python, PyInstaller)
+2. Concatène les modules Lua → <code>published/veaf-scripts.lua</code>
+3. Construit <code>veaf-tools.exe</code> et <code>veaf-tools-updater.exe</code> via PyInstaller
+4. Crée <code>published.zip</code> avec tous les artefacts + somme SHA256</p>
+<h3 id="publier-une-version">Publier une version<a class="headerlink" href="#publier-une-version" title="Permanent link">&para;</a></h3>
+<p>Utiliser le prompt <code>.prompts/generate-release-notes.md</code> pour lancer la préparation de release de façon interactive. Il guide à travers :
+1. Extraction des changements depuis <code>[Unreleased]</code> dans <code>CHANGELOG.md</code>
+2. Interview de consolidation (thème, breaking changes, highlights)
+3. Rédaction et validation de <code>RELEASE_NOTES.md</code>
+4. Clôture administrative (version CHANGELOG, <code>pyproject.toml</code>, ROADMAP)
+5. Commandes git à copier-coller</p>
+<h4 id="flow-de-release-git-flow">Flow de release (git flow)<a class="headerlink" href="#flow-de-release-git-flow" title="Permanent link">&para;</a></h4>
+<p>L'assistant AI gère : créer <code>release/x.y.z</code> depuis <code>develop</code>, commiter tous les fichiers de release, et ouvrir la PR.</p>
+<p>Après le merge de la PR, le développeur exécute :</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>checkout<span class="w"> </span>develop
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>develop
+git<span class="w"> </span>tag<span class="w"> </span>published-vx.y.z
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-vx.y.z
+</code></pre></div>
+<blockquote>
+<p><strong>Attention :</strong> pousser le tag est irréversible — uniquement après le merge de la PR.</p>
+</blockquote>
+<p>Pousser le tag déclenche le workflow CI <code>release</code>, qui va :
+1. Construire <code>veaf-tools.exe</code>, <code>veaf-tools-updater.exe</code> et <code>published.zip</code>
+2. Créer la GitHub Release en utilisant <strong><code>RELEASE_NOTES.md</code> tel quel</strong> depuis le commit tagué
+3. Uploader tous les artefacts et déplacer le tag flottant <code>published-latest</code></p>
+<blockquote>
+<p><strong>Important :</strong> <code>RELEASE_NOTES.md</code> doit être commité et à jour sur le commit tagué — la CI le prend verbatim, sans modification.</p>
+</blockquote>
+<h3 id="modèle-de-sécurité">Modèle de sécurité<a class="headerlink" href="#modèle-de-sécurité" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>veaf-build calcule le SHA256 de published.zip
+    ↓
+SHA256 stocké avec le ZIP dans la GitHub Release
+    ↓
+veaf-tools-updater.exe télécharge les deux fichiers
+    ↓
+Somme de contrôle vérifiée avant extraction
+    ↓
+✅ Intégrité garantie
+</code></pre></div>
+<hr />
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<h3 id="lancer-tous-les-tests">Lancer tous les tests<a class="headerlink" href="#lancer-tous-les-tests" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>test-lua
+</code></pre></div>
+<p>Code de sortie <code>0</code> = tous passent, <code>1</code> = échecs.</p>
+<p>Fonctionne sur Windows, Linux et dans le DevContainer (détection automatique de <code>lua5.1</code> / <code>lua51</code> / <code>lua</code> / chemin Windows de secours). Chaque candidat est <strong>interrogé avec <code>lua -v</code></strong> : un interpréteur 5.2+ est refusé, avec les instructions d'installation, plutôt qu'utilisé — sinon les incompatibilités de la 5.4 ressemblent à des régressions du code VEAF.</p>
+<h3 id="exécution-filtrée">Exécution filtrée<a class="headerlink" href="#exécution-filtrée" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"> </span>--filter<span class="w"> </span>spawn
+poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"> </span>--filter<span class="w"> </span>combat
+</code></pre></div>
+<h3 id="couverture">Couverture<a class="headerlink" href="#couverture" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"> </span>--coverage
+</code></pre></div>
+<p>Affiche un tableau de couverture ligne par ligne. Nécessite <code>luarocks install luacov</code> (pré-installé dans le DevContainer). Voir <a href="../../TESTING/#coverage">TESTING.md</a> pour plus de détails.</p>
+<h3 id="suite-unique">Suite unique<a class="headerlink" href="#suite-unique" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>lua<span class="w"> </span>test/lua/test_veafSpawn.lua
+</code></pre></div>
+<h3 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Framework :</strong> <a href="https://github.com/bluebird75/luaunit">luaunit</a> (intégré dans <code>test/lua/luaunit.lua</code>)</li>
+<li><strong>Stubs DCS :</strong> <code>test/lua/dcs_mocks.lua</code> — stubs pour tous les espaces de noms de l'API DCS</li>
+<li><strong>Chargeur de modules :</strong> <code>test/lua/veaf_loader.lua</code></li>
+<li>Aucune installation DCS requise</li>
+</ul>
+<p>Référence complète des tests : <a href="../../TESTING/">Guide de tests</a></p>
+<hr />
+<h2 id="portes-de-qualité">Portes de qualité<a class="headerlink" href="#portes-de-qualité" title="Permanent link">&para;</a></h2>
+<h3 id="avant-chaque-commit-sur-des-fichiers-lua">Avant chaque commit sur des fichiers Lua<a class="headerlink" href="#avant-chaque-commit-sur-des-fichiers-lua" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c"># Vérifier le formatage (équivalent CI)</span>
+<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="p">-</span><span class="n">-check</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
+
+<span class="c"># Corriger automatiquement</span>
+<span class="p">~/.</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">stylua</span><span class="p">.</span><span class="n">exe</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="n">test</span><span class="p">/</span><span class="n">lua</span><span class="p">/</span>
+
+<span class="c"># Analyse statique</span>
+<span class="n">luacheck</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span> <span class="p">-</span><span class="n">-config</span> <span class="p">.</span><span class="n">luacheckrc</span>
+</code></pre></div>
+<p>Version StyLua : <strong>2.4.0</strong> (imposée par le job CI <code>StyLua Formatting</code>).
+Luacheck est imposé par le job CI <code>Luacheck</code>.</p>
+<h3 id="jobs-ci">Jobs CI<a class="headerlink" href="#jobs-ci" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Ce qu'il vérifie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Lua Unit Tests</code></td>
+<td>Toutes les suites de tests passent</td>
+</tr>
+<tr>
+<td><code>Luacheck</code></td>
+<td>Aucune variable globale non définie, variable inutilisée ni shadowing dans <code>src/scripts/veaf/</code></td>
+</tr>
+<tr>
+<td><code>StyLua Formatting</code></td>
+<td>Aucune violation de formatage dans <code>src/scripts/veaf/</code> et <code>test/lua/</code></td>
+</tr>
+<tr>
+<td><code>Lua Coverage</code></td>
+<td>Couverture ligne (luacov) au-dessus du plancher de cliquet (<code>--cov-fail-under</code>) — bloquant</td>
+</tr>
+<tr>
+<td><code>python-quality</code></td>
+<td>ruff lint + format (<code>src/python/ test/python/ veaf_build/</code>), mypy (<code>src/python/veaf-tools</code>), pytest</td>
+</tr>
+<tr>
+<td><code>Docs Check</code></td>
+<td>Liens et ancres de la documentation, versions FR/EN, pages absentes du menu</td>
+</tr>
+<tr>
+<td><code>Release</code></td>
+<td>Déclenché sur push de tag <code>published-v*</code> — build et publication sur GitHub</td>
+</tr>
+</tbody>
+</table>
+<p>Tous les jobs CI doivent être verts avant qu'une PR puisse être mergée. Exception :
+<code>dcs-mock-coverage</code> est en <code>continue-on-error</code> — informatif, il ne bloque pas le merge.</p>
+<h3 id="docs-check">Avant un commit qui touche à la documentation<a class="headerlink" href="#docs-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>docs-check
+</code></pre></div>
+<p>Le job CI <code>Docs Check</code> lance exactement la même commande, qui enchaîne <strong>trois passes</strong> : la passe
+principale sur <code>doc/</code> (le tableau ci-dessous), une passe de liens relatifs sur le reste du dépôt
+(<code>.backlog/</code>, <code>docs/</code>, les pages racine), et une passe de couverture documentaire (chaque capacité
+définie par le code doit être nommée par sa page de référence). La passe principale refuse quatre
+dérives qui, avant son existence, s'étaient accumulées silencieusement (voir le lot
+<code>DOC-AUDIT-PASS</code>) :</p>
+<table>
+<thead>
+<tr>
+<th>Vérification</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lien relatif <code>.md</code> vers un fichier inexistant</td>
+<td>six liens renvoyaient un 404 <strong>en production</strong></td>
+</tr>
+<tr>
+<td>ancre inter-page inexistante dans la page cible</td>
+<td>une renumérotation de sections avait laissé des liens derrière elle</td>
+</tr>
+<tr>
+<td>ancre inter-page dérivée d'un titre</td>
+<td>elle casse au premier reformulage et <strong>diffère entre FR et EN</strong> ; déclarez <code>{#ancre}</code></td>
+</tr>
+<tr>
+<td>page FR sans version <code>.en.md</code>, ou absente du menu <code>nav</code></td>
+<td>une page est restée non traduite des mois, servant du français sur l'URL anglaise</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Convention d'ancre</strong> : le nom de l'ancre est <strong>en anglais</strong> et identique dans les deux langues ;
+le titre affiché, lui, reste dans la langue de la page.</p>
+<div class="highlight"><pre><span></span><code><span class="gu">## Couverture {#coverage}      &lt;!-- FR : titre français, ancre anglaise --&gt;</span>
+<span class="gu">## Coverage {#coverage}        &lt;!-- EN : même ancre --&gt;</span>
+</code></pre></div>
+<p>Un lien inter-page vise alors toujours <code>#coverage</code>, quelle que soit la langue du lecteur.</p>
+<blockquote>
+<p>La version affichée en en-tête des grosses références n'est <strong>pas</strong> écrite à la main : le dépôt
+garde un intervalle lisible (<code>6.11.x</code>) et le workflow de publication la remplace par la version
+livrée (<code>poetry run docs-stamp-version</code>).</p>
+</blockquote>
+<h3 id="republier-la-documentation-dune-version-déjà-sortie">Republier la documentation d'une version déjà sortie<a class="headerlink" href="#republier-la-documentation-dune-version-déjà-sortie" title="Permanent link">&para;</a></h3>
+<p>Relancer le build du tag ne suffit pas : il reconstruirait depuis le <strong>commit tagué</strong>, donc sans
+un correctif arrivé après le tag. Utilisez le déclenchement manuel du workflow <code>Deploy Docs</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>branche</td>
+<td>celle qui contient le correctif (<code>develop</code>)</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>la version à republier, par exemple <code>6.12.0</code></td>
+</tr>
+<tr>
+<td><code>set_latest</code></td>
+<td>coché si cette version doit rester la <code>latest</code> du site</td>
+</tr>
+</tbody>
+</table>
+<p>La version saisie est aussi celle qui est tamponnée dans les pages — sans quoi republier la 6.12.0
+depuis un dépôt en 6.12.1 estampillerait les pages 6.12.1. Laisser <code>version</code> vide redéploie
+simplement l'alias <code>dev</code>.</p>
+<hr />
+<h3 id="publier-une-nouvelle-version">Publier une nouvelle version<a class="headerlink" href="#publier-une-nouvelle-version" title="Permanent link">&para;</a></h3>
+<p>Pousser un tag <code>published-v*</code> — le workflow CI <code>Release</code> fait tout automatiquement :</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v&lt;version&gt;
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-v&lt;version&gt;
+</code></pre></div>
+<hr />
+<h2 id="developer-mode">Mode développeur<a class="headerlink" href="#developer-mode" title="Permanent link">&para;</a></h2>
+<p>Le mode développeur permet de tester des modifications locales de <code>veaf-scripts.lua</code> sans publier de version.
+Lorsqu'il est activé, <code>veaf-tools mission build</code> lit les scripts depuis un clone local de VEAF-Mission-Creation-Tools
+plutôt que depuis le dossier <code>published/</code> livré avec veaf-tools.</p>
+<h3 id="prérequis">Prérequis<a class="headerlink" href="#prérequis" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Cloner VEAF-Mission-Creation-Tools en local</li>
+<li>Construire le bundle Lua : <code>poetry run veaf-build build</code> → produit <code>build/veaf-scripts.lua</code></li>
+</ol>
+<h3 id="activation-ordre-de-priorité--premier-trouvé-appliqué">Activation (ordre de priorité — premier trouvé appliqué)<a class="headerlink" href="#activation-ordre-de-priorité--premier-trouvé-appliqué" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Priorité</th>
+<th>Méthode</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>veaf-tools mission build --dev-mode</code></td>
+<td>Option CLI — définit <code>dev_mode: true</code>, persisté dans <code>mission.yaml</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>mission.yaml build.dev_mode: true</code></td>
+<td>Config persistée — s'applique à chaque build</td>
+</tr>
+<tr>
+<td>3</td>
+<td><em>(défaut)</em></td>
+<td><code>false</code> — utilise les scripts publiés</td>
+</tr>
+</tbody>
+</table>
+<p>Ordre de résolution de <code>scripts_path</code> (emplacement du dépôt local) :</p>
+<table>
+<thead>
+<tr>
+<th>Priorité</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Option CLI <code>--scripts-path &lt;chemin&gt;</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>mission.yaml build.scripts_path</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>~/veafmct.yaml scripts_path</code></td>
+</tr>
+</tbody>
+</table>
+<p>Lorsqu'ils sont passés via la CLI, <code>dev_mode</code> et <code>scripts_path</code> sont persistés dans <code>mission.yaml</code>.</p>
+<h3 id="effet-sur-le-build">Effet sur le build<a class="headerlink" href="#effet-sur-le-build" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Source des scripts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dev_mode: false</code> (défaut)</td>
+<td><code>published/src/scripts/veaf/veaf-scripts.lua</code> (copie publiée)</td>
+</tr>
+<tr>
+<td><code>dev_mode: true</code></td>
+<td><code>&lt;scripts_path&gt;/build/veaf-scripts.lua</code> (sortie du build local)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exemple-de-workflow">Exemple de workflow<a class="headerlink" href="#exemple-de-workflow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c"># 1. Modifier un module Lua</span>
+<span class="n">code</span> <span class="n">src</span><span class="p">/</span><span class="n">scripts</span><span class="p">/</span><span class="n">veaf</span><span class="p">/</span><span class="n">veafSpawn</span><span class="p">.</span><span class="n">lua</span>
+
+<span class="c"># 2. Reconstruire le bundle Lua</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="n">veaf-build</span> <span class="n">build</span>
+
+<span class="c"># 3. Builder une mission de test avec les scripts locaux</span>
+<span class="nb">cd </span><span class="n">chemin</span><span class="p">/</span><span class="n">vers</span><span class="p">/</span><span class="n">ma-mission</span>
+<span class="n">veaf-tools</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-dev-mode</span> <span class="p">-</span><span class="n">-scripts-path</span> <span class="n">chemin</span><span class="p">/</span><span class="n">vers</span><span class="p">/</span><span class="n">VEAF-Mission-Creation-Tools</span>
+</code></pre></div>
+<hr />
+<h2 id="contribuer">Contribuer<a class="headerlink" href="#contribuer" title="Permanent link">&para;</a></h2>
+<h3 id="git-flow">Git Flow<a class="headerlink" href="#git-flow" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Développement de fonctionnalité :</strong> créer <code>feature/xxx</code> depuis <code>develop</code>, ouvrir PR → <code>develop</code></li>
+<li><strong>Corrections de bugs :</strong> créer <code>fix/xxx</code> depuis <code>develop</code>, ouvrir PR → <code>develop</code></li>
+<li><strong>Hotfixes en production :</strong> <code>fix/xxx</code> depuis <code>master</code>, PR → <code>master</code></li>
+<li><strong>Versions :</strong> <code>release/X.Y.Z</code> (sans <code>v</code>) depuis <code>develop</code>, PR → <code>master</code></li>
+</ul>
+<h3 id="convention-de-commit">Convention de commit<a class="headerlink" href="#convention-de-commit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>type(scope): courte description
+
+feat(spawn): ajouter le mode patrouille convoy
+fix(qra): vérifier unit:isExist() avant unit:inAir()
+chore(deps): mettre à jour luaunit à 3.4
+docs(api): documenter les helpers tanker de veafMove
+</code></pre></div>
+<p><strong>Types :</strong> <code>feat</code>, <code>fix</code>, <code>chore</code>, <code>docs</code>, <code>test</code>, <code>refactor</code>, <code>style</code></p>
+<h3 id="checklist-pull-request">Checklist Pull Request<a class="headerlink" href="#checklist-pull-request" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Tous les changements Lua passent <code>stylua --check</code></li>
+<li>[ ] Tous les tests unitaires passent (<code>poetry run test-lua</code>)</li>
+<li>[ ] Les nouvelles fonctionnalités ont des tests dans <code>test/lua/</code></li>
+<li>[ ] Les changements d'API publique sont documentés dans <code>doc/LUA_API_REFERENCE.md</code></li>
+<li>[ ] <code>CHANGELOG.md</code> mis à jour pour les changements visibles par les utilisateurs</li>
+</ul>
+<hr />
+<h2 id="pour-aller-plus-loin">Pour aller plus loin<a class="headerlink" href="#pour-aller-plus-loin" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../LUA_API_REFERENCE/">Référence API Lua</a> — API publique complète des modules</li>
+<li><a href="../../TESTING/">Guide de tests</a> — détails de l'infrastructure de test</li>
+<li><a href="../../CLI_REFERENCE/">Référence CLI</a> — les 25 commandes de <code>veaf-tools</code> et toutes leurs options</li>
+<li><a href="../../ROADMAP/">Feuille de route</a> — travaux planifiés</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>
