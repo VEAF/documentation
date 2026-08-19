@@ -2179,7 +2179,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flow-de-release-git-flow" class="md-nav__link">
+  <a href="#release-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
         Flow de release (git flow)
@@ -3295,7 +3295,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flow-de-release-git-flow" class="md-nav__link">
+  <a href="#release-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
         Flow de release (git flow)
@@ -3925,16 +3925,38 @@ sont présents avec une valeur neutre ; le test ne nomme que ce qui l'intéresse
 3. Rédaction et validation de <code>RELEASE_NOTES.md</code>
 4. Clôture administrative (version CHANGELOG, <code>pyproject.toml</code>, ROADMAP)
 5. Commandes git à copier-coller</p>
-<h4 id="flow-de-release-git-flow">Flow de release (git flow)<a class="headerlink" href="#flow-de-release-git-flow" title="Permanent link">&para;</a></h4>
-<p>L'assistant AI gère : créer <code>release/x.y.z</code> depuis <code>develop</code>, commiter tous les fichiers de release, et ouvrir la PR.</p>
+<h4 id="release-flow">Flow de release (git flow)<a class="headerlink" href="#release-flow" title="Permanent link">&para;</a></h4>
+<p>L'assistant AI gère : créer <code>release/x.y.z</code> depuis <code>develop</code>, commiter tous les fichiers de release,
+et ouvrir la PR <strong>vers <code>master</code></strong> — jamais vers <code>develop</code>.</p>
+<blockquote>
+<p><strong>La PR de release se merge par un vrai commit de fusion, pas en <code>squash</code>.</strong> Un <code>squash</code> réécrit
+la release en un commit neuf : <code>master</code> et <code>develop</code> cessent de partager leur histoire, <code>develop</code>
+apparaît définitivement « N commits en avance », le tag devient inatteignable depuis <code>master</code> et
+les fusions suivantes lèvent des conflits artificiels. C'est arrivé sur la 6.11.0, réparé par une
+fusion en retour.</p>
+</blockquote>
 <p>Après le merge de la PR, le développeur exécute :</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>checkout<span class="w"> </span>develop
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. les DEUX tags, sur master</span>
+git<span class="w"> </span>checkout<span class="w"> </span>master
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
+git<span class="w"> </span>tag<span class="w"> </span>published-vx.y.z<span class="w">          </span><span class="c1"># → exécutables, published.zip, kit de capture</span>
+git<span class="w"> </span>tag<span class="w"> </span>vx.y.z<span class="w">                    </span><span class="c1"># → documentation versionnée + alias « latest »</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-vx.y.z<span class="w"> </span>vx.y.z
+
+<span class="c1"># 2. fusion en retour, pour que develop partage l&#39;histoire de master</span>
+git<span class="w"> </span>checkout<span class="w"> </span>develop
 git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>develop
-git<span class="w"> </span>tag<span class="w"> </span>published-vx.y.z
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-vx.y.z
+git<span class="w"> </span>merge<span class="w"> </span>origin/master
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>develop
 </code></pre></div>
 <blockquote>
 <p><strong>Attention :</strong> pousser le tag est irréversible — uniquement après le merge de la PR.</p>
+<p><strong>Les deux tags, ou la documentation reste sur la version précédente.</strong> <code>published-v*</code> publie les
+binaires ; <code>vx.y.z</code> déploie la documentation et déplace l'alias <code>latest</code>. Ne pousser que le premier
+livre des binaires dont la documentation n'est pas publiée — c'est ce qui est arrivé à la 6.11.0,
+dont le site est resté sur la 6.10.0 faute de tag <code>v6.11.0</code>.</p>
+<p><strong>Ne pas sauter la fusion en retour :</strong> sans elle <code>develop</code> et <code>master</code> divergent, et chaque
+release suivante devient plus difficile à fusionner.</p>
 </blockquote>
 <p>Pousser le tag déclenche le workflow CI <code>release</code>, qui va :
 1. Construire <code>veaf-tools.exe</code>, <code>veaf-tools-updater.exe</code> et <code>published.zip</code>
@@ -4115,10 +4137,14 @@ depuis un dépôt en 6.12.1 estampillerait les pages 6.12.1. Laisser <code>versi
 simplement l'alias <code>dev</code>.</p>
 <hr />
 <h3 id="publier-une-nouvelle-version">Publier une nouvelle version<a class="headerlink" href="#publier-une-nouvelle-version" title="Permanent link">&para;</a></h3>
-<p>Pousser un tag <code>published-v*</code> — le workflow CI <code>Release</code> fait tout automatiquement :</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v&lt;version&gt;
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-v&lt;version&gt;
+<p>Pousser les <strong>deux</strong> tags depuis <code>master</code>, une fois la PR de release fusionnée — le workflow CI
+<code>Release</code> fait le reste automatiquement :</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>published-v&lt;version&gt;<span class="w">      </span><span class="c1"># → exécutables, published.zip, kit de capture</span>
+git<span class="w"> </span>tag<span class="w"> </span>v&lt;version&gt;<span class="w">                </span><span class="c1"># → documentation versionnée + alias « latest »</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-v&lt;version&gt;<span class="w"> </span>v&lt;version&gt;
 </code></pre></div>
+<p>Le processus complet (branche de release, cible de la PR, méthode de fusion, fusion en retour) est
+décrit dans <a href="#release-flow">Flow de release</a>.</p>
 <hr />
 <h2 id="developer-mode">Mode développeur<a class="headerlink" href="#developer-mode" title="Permanent link">&para;</a></h2>
 <p>Le mode développeur permet de tester des modifications locales de <code>veaf-scripts.lua</code> sans publier de version.

@@ -2179,7 +2179,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#release-flow-git-flow" class="md-nav__link">
+  <a href="#release-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
         Release flow (git flow)
@@ -3295,7 +3295,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#release-flow-git-flow" class="md-nav__link">
+  <a href="#release-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
         Release flow (git flow)
@@ -3924,16 +3924,37 @@ assignments out of <code>__init__</code> and fails naming the missing field and 
 3. Writing and validating <code>RELEASE_NOTES.md</code>
 4. Administrative closure (CHANGELOG version bump, <code>pyproject.toml</code>, ROADMAP)
 5. Git commands to copy-paste</p>
-<h4 id="release-flow-git-flow">Release flow (git flow)<a class="headerlink" href="#release-flow-git-flow" title="Permanent link">&para;</a></h4>
-<p>The AI assistant handles: creating <code>release/x.y.z</code> from <code>develop</code>, committing all release files, and opening the PR.</p>
+<h4 id="release-flow">Release flow (git flow)<a class="headerlink" href="#release-flow" title="Permanent link">&para;</a></h4>
+<p>The AI assistant handles: creating <code>release/x.y.z</code> from <code>develop</code>, committing all release files, and
+opening the PR <strong>against <code>master</code></strong> — never against <code>develop</code>.</p>
+<blockquote>
+<p><strong>A release PR merges with a real merge commit, NOT a squash.</strong> Squashing rewrites the release into
+a single new commit, so <code>master</code> and <code>develop</code> stop sharing history: <code>develop</code> then shows as
+permanently "N commits ahead", the tag becomes unreachable from <code>master</code>, and later merges raise
+artificial conflicts. This happened on 6.11.0 — repaired by a back-merge.</p>
+</blockquote>
 <p>After the PR is merged, the developer runs:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>checkout<span class="w"> </span>develop
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. BOTH tags, on master</span>
+git<span class="w"> </span>checkout<span class="w"> </span>master
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
+git<span class="w"> </span>tag<span class="w"> </span>published-vx.y.z<span class="w">          </span><span class="c1"># → executables, published.zip, the capture kit</span>
+git<span class="w"> </span>tag<span class="w"> </span>vx.y.z<span class="w">                    </span><span class="c1"># → versioned docs + the &quot;latest&quot; alias</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-vx.y.z<span class="w"> </span>vx.y.z
+
+<span class="c1"># 2. back-merge, so develop shares master&#39;s history again</span>
+git<span class="w"> </span>checkout<span class="w"> </span>develop
 git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>develop
-git<span class="w"> </span>tag<span class="w"> </span>published-vx.y.z
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>published-vx.y.z
+git<span class="w"> </span>merge<span class="w"> </span>origin/master
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>develop
 </code></pre></div>
 <blockquote>
 <p><strong>Warning:</strong> pushing the tag is irreversible — only run after the PR is merged.</p>
+<p><strong>Both tags, or the documentation stays on the previous version.</strong> <code>published-v*</code> publishes the
+binaries; <code>vx.y.z</code> deploys the versioned documentation and moves the <code>latest</code> alias. Pushing only
+the first ships binaries whose documentation is not published — which is what happened to 6.11.0,
+whose site stayed on 6.10.0 for want of a <code>v6.11.0</code> tag.</p>
+<p><strong>Do not skip the back-merge:</strong> without it <code>develop</code> and <code>master</code> drift apart, and every later
+release merge gets harder.</p>
 </blockquote>
 <p>Pushing the tag triggers the <code>release</code> CI workflow, which will:
 1. Build <code>veaf-tools.exe</code>, <code>veaf-tools-updater.exe</code>, and <code>published.zip</code>
