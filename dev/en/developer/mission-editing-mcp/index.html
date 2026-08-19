@@ -2084,6 +2084,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#remove_group-fix-mcp-authoring-gaps-lot-ticket-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remove_group (FIX-MCP-AUTHORING-GAPS lot, ticket 02)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#validate_group_name-wave-6" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3016,6 +3027,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#remove_group-fix-mcp-authoring-gaps-lot-ticket-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remove_group (FIX-MCP-AUTHORING-GAPS lot, ticket 02)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#validate_group_name-wave-6" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3445,6 +3467,19 @@ action receives the <code>.miz</code> path to edit as a parameter. The <code>vea
 server in the already-shipped <code>veaf-tools</code> binary (no separate binary to build) — this is what the
 Claude plugin declares in its <code>.mcp.json</code>.</p>
 <h2 id="action-catalog-v1">Action catalog (v1)<a class="headerlink" href="#action-catalog-v1" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title"><code>miz_path</code> also takes a mission <strong>folder</strong> (FIX-MCP-AUTHORING-GAPS lot, ticket 03)</p>
+<p>Every editing action — <code>edit_route</code>, <code>set_group_properties</code>, <code>set_unit_properties</code>, <code>edit_zone</code>,
+<code>add_trigger_zone</code>, <code>add_map_drawing</code>, <code>edit_map_drawing</code> — takes either a <code>.miz</code> or a <strong>mission
+folder</strong>, exactly like <code>add_group</code>'s <code>target</code>. The trade-off is the same: a folder edit is
+<strong>durable</strong> (it goes into <code>src/mission/</code>, so it survives the next <code>veaf-tools build</code>), a <code>.miz</code>
+edit is transient (the next build overwrites it). Each action now returns <code>durable</code> to say which.
+Timestamped backup either way.</p>
+<p>They used to take only a <code>.miz</code>, so a group could be <strong>created</strong> durably but not <strong>edited</strong>
+durably, and pointing <code>edit_route</code> at the folder failed with <code>[Errno 13] Permission denied</code> —
+reading a directory as a zip archive. A directory that is not a mission folder is now refused with
+a message that says so.</p>
+</div>
 <p>The server does <strong>not</strong> expose one MCP tool per business action. It exposes a fixed discovery
 surface, mirroring the <code>dcs-bridge</code> MCP tool (a bridge to a running mission):</p>
 <table>
@@ -3789,6 +3824,15 @@ a <strong>folder</strong> (durable) or a <code>.miz</code> (transient).</p>
   <code>FEAT-MCP-MUTATION-ACTIONS</code> ticket 09), never guessed. The first waypoint's <code>type</code>/<code>action</code> pair is
   written per mode.</li>
 <li><strong><code>frequency_mhz</code></strong> is written (group radio on) rather than inherited from a <code>communication: false</code>.</li>
+<li><strong>Full internal fuel by default.</strong> <code>fuel</code> (kg) and <code>fuel_fraction</code> (]0, 1]) let you choose the
+  load; without them the aircraft gets its type's internal capacity, read from the shipped units
+  database (<code>dcsUnits.yaml</code>, the <code>fuel_capacity</code> field sourced from the datamine's <code>M_fuel_max</code>).
+  Both actions wrote <code>fuel = 0</code> until 6.15.1, which means <strong>no fuel at all</strong>: measured in game on
+  2026-08-18, a KC-135 and its two F-15C escorts created at 20 000 ft pitched straight into the
+  ground on appearing, engines out. A parking start hid the defect, DCS fuelling a parked aircraft
+  from the airfield's stock. A type the database does not know — a third-party mod — is created with
+  <strong>no <code>fuel</code> key</strong> (leaving DCS its own default) and the caller is <strong>warned</strong>, rather than handed an
+  invented number.</li>
 <li>Assigns the country to its side in <code>coalitions</code> (see <code>add_group</code>), so the mission stays loadable.</li>
 </ul>
 <h3 id="add_air_group-feat-mcp-mutation-actions-lot-ticket-09"><code>add_air_group</code> (FEAT-MCP-MUTATION-ACTIONS lot, ticket 09)<a class="headerlink" href="#add_air_group-feat-mcp-mutation-actions-lot-ticket-09" title="Permanent link">&para;</a></h3>
@@ -3822,8 +3866,41 @@ or a <code>.miz</code> (transient).</p>
   and its <code>ETA_locked</code> are written for you.</li>
 <li><strong><code>skill</code></strong> defaults to an AI level (<code>High</code>) — a ramp flight is AI unless you ask for
   <code>Client</code>/<code>Player</code>. <code>parking</code> accepts an explicit stand list that overrides selection.</li>
+<li><strong>Full internal fuel by default.</strong> <code>fuel</code> (kg) and <code>fuel_fraction</code> (]0, 1]) let you choose the
+  load; without them the aircraft gets its type's internal capacity, read from the shipped units
+  database (<code>dcsUnits.yaml</code>, the <code>fuel_capacity</code> field sourced from the datamine's <code>M_fuel_max</code>).
+  Both actions wrote <code>fuel = 0</code> until 6.15.1, which means <strong>no fuel at all</strong>: measured in game on
+  2026-08-18, a KC-135 and its two F-15C escorts created at 20 000 ft pitched straight into the
+  ground on appearing, engines out. A parking start hid the defect, DCS fuelling a parked aircraft
+  from the airfield's stock. A type the database does not know — a third-party mod — is created with
+  <strong>no <code>fuel</code> key</strong> (leaving DCS its own default) and the caller is <strong>warned</strong>, rather than handed an
+  invented number.</li>
 <li>An uncaptured theatre, an unknown airfield, or too few free stands are refused naming the cause.
   Assigns the country to its side in <code>coalitions</code>.</li>
+</ul>
+<h3 id="remove_group-fix-mcp-authoring-gaps-lot-ticket-02"><code>remove_group</code> (FIX-MCP-AUTHORING-GAPS lot, ticket 02)<a class="headerlink" href="#remove_group-fix-mcp-authoring-gaps-lot-ticket-02" title="Permanent link">&para;</a></h3>
+<p>Write. <strong>Removes a group</strong> from the mission — the one group-level edit the catalogue was missing,
+while <code>edit_zone</code> and <code>edit_map_drawing</code> both have a <code>remove: true</code>. Targets a folder (durable) or a
+<code>.miz</code> (transient), timestamped backup before writing.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission-folder&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Texaco&quot;</span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Renumbers what it leaves behind.</strong> That is the whole point: hand-deleting a Lua block leaves the
+  enclosing list numbered <code>1,3,4</code>, which Lua loads without complaint and the <strong>build</strong> dies on
+  (<code>AttributeError: 'int' object has no attribute 'get'</code>) at a line that does not point at the edit.
+  Three corrupted builds on 2026-08-18 came from exactly that — and the stopgap of the day, a
+  renumbering regex keyed on indentation alone, also renumbered <code>units</code> and <code>route.points</code>. The
+  survivors keep their order and are re-keyed from 1.</li>
+<li><strong>The last group of a category takes the <code>group</code> key with it</strong>, rather than leaving an empty
+  container — the shape a downstream reader mistakes for a list (<code>FIX-GROUP-CONTAINER-SHAPE</code>).</li>
+<li><strong>Exact name required.</strong> A fragment is refused, as <code>set_group_properties</code> refuses one: a removal
+  landing on whichever group matched first is not recoverable. An unknown name lists what exists, and
+  <strong>nothing is written</strong>.</li>
+<li><strong>Names what it breaks without refusing</strong> — the mission maker may well mean it: a combat zone
+  capturing the group by name prefix, an <code>Escort</code> task pointing at its <code>groupId</code> (nested inside a
+  <code>ComboTask</code>, which is how DCS actually writes it), and a <code>mission.yaml</code>
+  <code>modules.ASSETS.assets</code> entry naming it. That last one is only checkable on a <strong>folder</strong> target: a
+  <code>.miz</code> carries no <code>mission.yaml</code>.</li>
 </ul>
 <h3 id="validate_group_name-wave-6"><code>validate_group_name</code> (wave 6)<a class="headerlink" href="#validate_group_name-wave-6" title="Permanent link">&para;</a></h3>
 <p>Read-only. Checks a proposed name against the reserved patterns (<code>veafSpawn-</code>/<code>OnDemand-</code>/
