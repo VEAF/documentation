@@ -1531,6 +1531,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#orbit-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comment l'orbite est trouvée
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constantes-clés" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2642,6 +2653,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#orbit-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comment l'orbite est trouvée
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constantes-clés" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2728,6 +2750,18 @@
 <p><code>veafMove.moveTanker(eventPos, groupName, speed, alt, hdg, distance, teleport, silent)</code> — recalcule la route d'orbite du ravitailleur nommé à partir de <code>eventPos</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veafMove</span><span class="p">.</span><span class="nf">moveTanker</span><span class="p">(</span><span class="nv">eventPos</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;KC-135 Texaco&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="p">,</span><span class="w"> </span><span class="mi">7000</span><span class="p">,</span><span class="w"> </span><span class="mi">270</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
 </code></pre></div>
+<hr />
+<h2 id="orbit-search">Comment l'orbite est trouvée<a class="headerlink" href="#orbit-search" title="Permanent link">&para;</a></h2>
+<p>Les deux commandes de ravitailleur travaillent sur le point de route qui porte la tâche <strong>ORBIT</strong>. Depuis la 6.15.12, ce point est <strong>cherché dans toute la route</strong>. Avant, il était supposé être l'avant-dernier : vrai pour les modèles VEAF, dont la route est [approche, orbite, fin de branche], faux pour un ravitailleur généré par DCS-Liberation, dont la route est plus longue et finit par un point d'atterrissage — les deux commandes refusaient alors avec « aucune tâche ORBIT définie ».</p>
+<ul>
+<li><strong>Si la route porte plusieurs orbites, la première gagne</strong> : c'est celle que le ravitailleur atteint d'abord, donc celle qui est en cours ou imminente.</li>
+<li><strong>Sans aucune tâche ORBIT, la commande refuse</strong> et le dit. Déplacer un ravitailleur au mauvais endroit est pire que de dire que ce n'est pas possible.</li>
+<li>L'orbite peut être le <strong>premier</strong> ou le <strong>dernier</strong> point de la route ; ces routes sont valides et ne sont plus refusées.</li>
+</ul>
+<p>Le point qui <strong>suit</strong> l'orbite est l'autre extrémité de la branche de ravitaillement — c'est la sémantique DCS d'une orbite <code>Race-Track</code>, qui fait voler l'appareil entre le point portant la tâche et le suivant. C'est pourquoi <code>_move tanker</code> le repositionne.</p>
+<blockquote>
+<p>Exception : une orbite <code>Circle</code> tourne autour d'un seul point et ne donne aucun rôle au point suivant. Il n'est donc pas touché — sur une route Liberation, ce serait peut-être l'atterrissage. Dans ce cas <code>_move tanker</code> ne peut pas déduire la branche : précisez <code>distance</code> et <code>hdg</code>.</p>
+</blockquote>
 <hr />
 <h2 id="constantes-clés">Constantes clés<a class="headerlink" href="#constantes-clés" title="Permanent link">&para;</a></h2>
 <table>

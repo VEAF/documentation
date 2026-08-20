@@ -1531,6 +1531,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#orbit-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the orbit is found
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2642,6 +2653,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#orbit-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the orbit is found
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2728,6 +2750,18 @@
 <p><code>veafMove.moveTanker(eventPos, groupName, speed, alt, hdg, distance, teleport, silent)</code> — recomputes the named tanker's orbit route starting from <code>eventPos</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veafMove</span><span class="p">.</span><span class="nf">moveTanker</span><span class="p">(</span><span class="nv">eventPos</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;KC-135 Texaco&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="p">,</span><span class="w"> </span><span class="mi">7000</span><span class="p">,</span><span class="w"> </span><span class="mi">270</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
 </code></pre></div>
+<hr />
+<h2 id="orbit-search">How the orbit is found<a class="headerlink" href="#orbit-search" title="Permanent link">&para;</a></h2>
+<p>Both tanker commands work on the waypoint carrying the <strong>ORBIT</strong> task. Since 6.15.12 that waypoint is <strong>searched for across the whole route</strong>. Before, it was assumed to be the second-to-last one: true of VEAF's own templates, whose route is [approach, orbit, leg end], false of a DCS-Liberation tanker, whose longer route ends with a landing point — both commands then refused with "has no ORBIT task defined".</p>
+<ul>
+<li><strong>When a route carries several orbits, the first one wins</strong>: it is the one the tanker reaches first, so the one that is active or imminent.</li>
+<li><strong>With no ORBIT task at all, the command refuses</strong> and says so. Moving a tanker to the wrong place is worse than telling you it cannot be done.</li>
+<li>The orbit may be the <strong>first</strong> or the <strong>last</strong> waypoint of the route; those routes are valid and are no longer refused.</li>
+</ul>
+<p>The waypoint <strong>after</strong> the orbit is the far end of the refuelling leg — that is DCS's own semantics for a <code>Race-Track</code> orbit, which flies between the waypoint carrying the task and the next one. That is why <code>_move tanker</code> repositions it.</p>
+<blockquote>
+<p>Exception: a <code>Circle</code> orbit turns around a single point and gives the next waypoint no role, so it is left alone — on a Liberation route it might be the landing. <code>_move tanker</code> then cannot work out the leg: give <code>distance</code> and <code>hdg</code>.</p>
+</blockquote>
 <hr />
 <h2 id="key-constants">Key Constants<a class="headerlink" href="#key-constants" title="Permanent link">&para;</a></h2>
 <table>
