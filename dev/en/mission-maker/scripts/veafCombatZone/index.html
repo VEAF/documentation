@@ -1358,6 +1358,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#alarm-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #alarm — making a group hold its ground
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#practical-example--manpads-ambush" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2826,6 +2837,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#alarm-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #alarm — making a group hold its ground
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#practical-example--manpads-ambush" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3398,8 +3420,28 @@ other side's zones under it.</p>
 <td><code>#command="-spawn sa-11"</code></td>
 <td>Execute a VEAF command instead of spawning this group; the unit acts as a trigger and is destroyed</td>
 </tr>
+<tr>
+<td><code>#alarm=N</code></td>
+<td><code>#alarm=2</code></td>
+<td>Alarm state given to this group: <code>0</code> AUTO (default), <code>1</code> GREEN, <code>2</code> RED</td>
+</tr>
 </tbody>
 </table>
+<h3 id="alarm-state"><code>#alarm</code> — making a group hold its ground<a class="headerlink" href="#alarm-state" title="Permanent link">&para;</a></h3>
+<p>A ground group on <strong>RED</strong> alert stops and deploys: right for a SAM battery, wrong for a convoy, which then never leaves. Zones therefore spawn every group on <strong>AUTO</strong>, where DCS raises the group's own alert level when it detects something — a convoy drives its route, and a defence still fires once it sees a target.</p>
+<p>Use <code>#alarm=2</code> on the groups you want dug in from the first second, typically air defence you would rather have radars up before the first pass:</p>
+<div class="highlight"><pre><span></span><code>ALPHA-SA6-BATTERY #alarm=2
+ALPHA-SUPPLY-CONVOY
+</code></pre></div>
+<p>An unreadable or out-of-range value (<code>#alarm=7</code>, <code>#alarm=x</code>) falls back to AUTO rather than failing the zone.</p>
+<div class="admonition note">
+<p class="admonition-title">Only for mission groups</p>
+<p>The tag applies to groups the zone spawns itself. On a <code>#command=</code> unit, pass the alarm state inside the command instead (<code>-spawn ..., alarm 2</code>), since the spawn is handled by the VEAF marker interpreter.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Behaviour change</p>
+<p>Zones used to spawn <strong>every</strong> group on RED, which is why convoys placed in a combat zone never moved (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/290">#290</a>). If a zone of yours relied on that — air defence that must be hot at activation — add <code>#alarm=2</code> to those groups.</p>
+</div>
 <h3 id="practical-example--manpads-ambush">Practical example — MANPADS ambush<a class="headerlink" href="#practical-example--manpads-ambush" title="Permanent link">&para;</a></h3>
 <p>You want four MANPADS positions in a zone, but only two should actually be occupied. Place four dummy infantry units named:</p>
 <div class="highlight"><pre><span></span><code>ALPHA-MANPAD-1 #spawnchance=50
