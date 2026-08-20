@@ -3458,6 +3458,12 @@ ALPHA-MANPAD-4 #spawnchance=50
 CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 </code></pre></div>
 <p>Cela permet de monter des apparitions complexes (batterie SA-11, convois avec routes IA) sans aucun code Lua.</p>
+<p><strong>Les commandes retardées sont rattachées à leur zone.</strong> Une commande peut porter un délai, de trois façons — <code>-samsr!30</code> (délai d'alias), l'option <code>delay</code> d'un <code>-spawn</code>, ou une répétition. Dans ces cas, la commande rend la main <strong>avant</strong> d'avoir fait apparaître quoi que ce soit. Ce qui apparaît ensuite appartient bien à la zone : désactiver la zone détruit ces groupes comme les autres.</p>
+<p>Avant la 6.15.9, ce n'était pas le cas : la zone lisait la liste de ce qu'elle avait créé trop tôt, donc un groupe retardé n'était enregistré nulle part et <strong>survivait à la désactivation de sa zone</strong>.</p>
+<blockquote>
+<p>Si la zone est désactivée pendant que le délai court, le groupe qui apparaît ensuite est détruit immédiatement — rien ne pouvant annuler une apparition déjà planifiée, c'est le résultat que la désactivation aurait produit.</p>
+</blockquote>
+<p>À noter : <code>#spawndelay</code> n'a jamais eu ce problème, parce qu'il retarde l'apparition de l'élément de zone lui-même, qui s'enregistre au passage.</p>
 <hr />
 <h2 id="constantes-du-module">Constantes du module<a class="headerlink" href="#constantes-du-module" title="Permanent link">&para;</a></h2>
 <table>
