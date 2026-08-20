@@ -3423,24 +3423,47 @@ other side's zones under it.</p>
 <tr>
 <td><code>#alarm=N</code></td>
 <td><code>#alarm=2</code></td>
-<td>Alarm state given to this group: <code>0</code> AUTO (default), <code>1</code> GREEN, <code>2</code> RED</td>
+<td>Alarm state given to this group: <code>0</code> AUTO, <code>1</code> GREEN, <code>2</code> RED. Without the tag, the state follows the group's nature — see <a href="#alarm-state"><code>#alarm</code></a></td>
 </tr>
 </tbody>
 </table>
 <h3 id="alarm-state"><code>#alarm</code> — making a group hold its ground<a class="headerlink" href="#alarm-state" title="Permanent link">&para;</a></h3>
-<p>A ground group on <strong>RED</strong> alert stops and deploys: right for a SAM battery, wrong for a convoy, which then never leaves. Zones therefore spawn every group on <strong>AUTO</strong>, where DCS raises the group's own alert level when it detects something — a convoy drives its route, and a defence still fires once it sees a target.</p>
-<p>Use <code>#alarm=2</code> on the groups you want dug in from the first second, typically air defence you would rather have radars up before the first pass:</p>
-<div class="highlight"><pre><span></span><code>ALPHA-SA6-BATTERY #alarm=2
-ALPHA-SUPPLY-CONVOY
+<p>The ground alarm state decides two things at once, and both matter: a group on <strong>RED</strong> stops and deploys — radars up, ready to fire — while on <strong>AUTO</strong> it drives and lets DCS raise its alert on detection. Right for a SAM battery in one case, right for a convoy in the other, and never the same one.</p>
+<p><strong>The zone therefore chooses by the nature of the group</strong>, without you saying anything:</p>
+<table>
+<thead>
+<tr>
+<th>The group</th>
+<th>State it gets</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>has a route to drive (more than one waypoint)</td>
+<td><strong>AUTO</strong></td>
+<td>so it leaves: on RED it would never move</td>
+</tr>
+<tr>
+<td>stays put</td>
+<td><strong>RED</strong></td>
+<td>so it fights: on AUTO a SAM battery keeps its radars down</td>
+</tr>
+</tbody>
+</table>
+<p><code>#alarm=N</code> still wins, in both directions — to pin a convoy in place (<code>#alarm=2</code>) as much as to keep a defence quiet until first contact (<code>#alarm=0</code>):</p>
+<div class="highlight"><pre><span></span><code>ALPHA-SA6-BATTERY              ← RED, with nothing written
+ALPHA-SUPPLY-CONVOY            ← AUTO, with nothing written
+ALPHA-SA6-AMBUSH #alarm=0      ← quiet on purpose
 </code></pre></div>
-<p>An unreadable or out-of-range value (<code>#alarm=7</code>, <code>#alarm=x</code>) falls back to AUTO rather than failing the zone.</p>
+<p>An unreadable or out-of-range value (<code>#alarm=7</code>, <code>#alarm=x</code>) falls back to RED and says so in the log, rather than failing the zone.</p>
 <div class="admonition note">
 <p class="admonition-title">Only for mission groups</p>
 <p>The tag applies to groups the zone spawns itself. On a <code>#command=</code> unit, pass the alarm state inside the command instead (<code>-spawn ..., alarm 2</code>), since the spawn is handled by the VEAF marker interpreter.</p>
 </div>
 <div class="admonition warning">
-<p class="admonition-title">Behaviour change</p>
-<p>Zones used to spawn <strong>every</strong> group on RED, which is why convoys placed in a combat zone never moved (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/290">#290</a>). If a zone of yours relied on that — air defence that must be hot at activation — add <code>#alarm=2</code> to those groups.</p>
+<p class="admonition-title">How this behaved before</p>
+<p>Up to 6.15.4 zones spawned <strong>every</strong> group on RED, which is why a convoy placed in a zone never moved (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/290">#290</a>). The fix went through a single AUTO default, which sorted the convoys <strong>and made the zones' air defences go silent</strong> — a battery on AUTO does not light its radars. Hence the per-nature choice above. If you added <code>#alarm=2</code> to your batteries in the meantime, they still work and are now redundant: the default does the same thing.</p>
 </div>
 <h3 id="practical-example--manpads-ambush">Practical example — MANPADS ambush<a class="headerlink" href="#practical-example--manpads-ambush" title="Permanent link">&para;</a></h3>
 <p>You want four MANPADS positions in a zone, but only two should actually be occupied. Place four dummy infantry units named:</p>
