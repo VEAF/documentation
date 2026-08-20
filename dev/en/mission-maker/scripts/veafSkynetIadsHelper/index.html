@@ -1711,10 +1711,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dynamic-spawn--veafskynetdynamicspawn" class="md-nav__link">
+  <a href="#dynamic-spawn" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Dynamic spawn — veafSkynet.DynamicSpawn
+        Groups appearing during the mission — dynamic_spawn
       
     </span>
   </a>
@@ -1749,7 +1749,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deactivating-a-network" class="md-nav__link">
+  <a href="#deactivation" class="md-nav__link">
     <span class="md-ellipsis">
       
         Deactivating a network
@@ -2614,10 +2614,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dynamic-spawn--veafskynetdynamicspawn" class="md-nav__link">
+  <a href="#dynamic-spawn" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Dynamic spawn — veafSkynet.DynamicSpawn
+        Groups appearing during the mission — dynamic_spawn
       
     </span>
   </a>
@@ -2652,7 +2652,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deactivating-a-network" class="md-nav__link">
+  <a href="#deactivation" class="md-nav__link">
     <span class="md-ellipsis">
       
         Deactivating a network
@@ -2736,6 +2736,7 @@
 <span class="w">    </span><span class="nt">debug_red</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># verbose Skynet logging for RED network</span>
 <span class="w">    </span><span class="nt">include_blue_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># show BLUE network status in F10 menu</span>
 <span class="w">    </span><span class="nt">debug_blue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">             </span><span class="c1"># verbose Skynet logging for BLUE network</span>
+<span class="w">    </span><span class="nt">dynamic_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">          </span><span class="c1"># also integrate groups that appear during the mission</span>
 </code></pre></div>
 <table>
 <thead>
@@ -2776,6 +2777,12 @@
 <td>boolean</td>
 <td><code>false</code></td>
 <td>Enable verbose Skynet debug for BLUE coalition</td>
+</tr>
+<tr>
+<td><code>dynamic_spawn</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Also integrate groups that appear <strong>during</strong> the mission — see <a href="#dynamic-spawn">Groups appearing during the mission</a></td>
 </tr>
 </tbody>
 </table>
@@ -2845,7 +2852,8 @@
 </tbody>
 </table>
 <p>In <code>Lenient</code> mode, a convoy of tanks and trucks escorted by a SA-19 will be integrated. In <code>Strict</code> mode, it will not.</p>
-<h3 id="dynamic-spawn--veafskynetdynamicspawn">Dynamic spawn — <code>veafSkynet.DynamicSpawn</code><a class="headerlink" href="#dynamic-spawn--veafskynetdynamicspawn" title="Permanent link">&para;</a></h3>
+<h3 id="dynamic-spawn">Groups appearing during the mission — <code>dynamic_spawn</code><a class="headerlink" href="#dynamic-spawn" title="Permanent link">&para;</a></h3>
+<p>Set from <code>mission.yaml</code> (<code>dynamic_spawn</code>), or before <code>initialize</code> with <code>veafSkynet.DynamicSpawn</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2860,13 +2868,20 @@
 </tr>
 <tr>
 <td><code>true</code></td>
-<td>Groups spawned during the mission are also integrated into existing networks</td>
+<td>Groups appearing during the mission also join the existing networks</td>
 </tr>
 </tbody>
 </table>
+<p><strong>What it costs.</strong> Once on, the module watches <strong>every unit birth</strong> in the mission to spot eligible groups. That is why it is off by default: turn it on when the mission spawns SAMs while it runs (combat zones, dynamic campaign), not as a matter of course.</p>
+<p><strong>What it fixes.</strong> Without it, a SAM appearing during the mission — a combat-zone one included — joins no network at all, and nothing says so.</p>
+<p><strong>Who decides, group by group.</strong> A spawn command's <code>skynet</code> option stays in charge: <code>skynet false</code> keeps the group <strong>out</strong> of every network (which is what the convoy shortcuts carry), and <code>skynet &lt;network name&gt;</code> sends it to that network rather than its coalition's. A group no VEAF command declared — placed in the Mission Editor, created by a third-party script — joins its coalition's network, which is exactly what this setting is for.</p>
 <blockquote>
-<p><code>veafSpawn</code> automatically adds SAM units it spawns to Skynet networks, unless <code>DynamicSpawn = true</code> (in which case <code>veafSkynet</code> handles that monitoring itself).</p>
+<p>The two integration paths are exclusive: when the target network integrates spawns, it does the work; otherwise <code>veafSpawn</code> does it as the group appears. A group is never integrated twice.</p>
 </blockquote>
+<p><strong>Scoped per network.</strong> The setting belongs to each network. Switching integration off on the red side — or deactivating the red network — leaves blue working.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- during the mission, network by network</span>
+<span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">setDynamicSpawn</span><span class="p">(</span><span class="s2">&quot;red iads&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="startup-delay--veafskynetdelayforstartup">Startup delay — <code>veafSkynet.DelayForStartup</code><a class="headerlink" href="#startup-delay--veafskynetdelayforstartup" title="Permanent link">&para;</a></h3>
 <p>Seconds to wait before initialising networks (default: <code>1</code>). Increase if other modules initialise groups with a delay.</p>
 <hr />
@@ -2880,7 +2895,7 @@
 <span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">destroyCommandCentersOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="deactivating-a-network">Deactivating a network<a class="headerlink" href="#deactivating-a-network" title="Permanent link">&para;</a></h2>
+<h2 id="deactivation">Deactivating a network<a class="headerlink" href="#deactivation" title="Permanent link">&para;</a></h2>
 <p>Deactivates a Skynet network and sets all its elements to a defined state before handing them back to DCS AI.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">deactivateNetworkOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
 <span class="c1">-- or with a specific state:</span>
@@ -2908,6 +2923,11 @@
 </tr>
 </tbody>
 </table>
+<p><strong>A deactivated network stays deactivated.</strong> Spawning a SAM into it no longer wakes it up: the group is still attached — that is what <code>skynet true</code> asks for — but the network does not come back on its own. Before, one spawned SAM was enough to restart a network you had just switched off.</p>
+<p>Bringing it back up is a deliberate call. Everything attached meanwhile comes up with it:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">activateNetworkOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+</code></pre></div>
+<p>Deactivating one network <strong>leaves the other alone</strong>: the blue network keeps its state and its integration of dynamic spawns.</p>
 <hr />
 <h2 id="accessing-generated-networks">Accessing generated networks<a class="headerlink" href="#accessing-generated-networks" title="Permanent link">&para;</a></h2>
 <p>After initialisation (which is deferred), access the Skynet network objects via a scheduled task:</p>

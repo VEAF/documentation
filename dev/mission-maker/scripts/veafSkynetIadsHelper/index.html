@@ -1711,10 +1711,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spawn-dynamique--veafskynetdynamicspawn" class="md-nav__link">
+  <a href="#dynamic-spawn" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spawn dynamique — veafSkynet.DynamicSpawn
+        Apparitions en cours de mission — dynamic_spawn
       
     </span>
   </a>
@@ -1749,7 +1749,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#désactivation-dun-réseau" class="md-nav__link">
+  <a href="#deactivation" class="md-nav__link">
     <span class="md-ellipsis">
       
         Désactivation d'un réseau
@@ -2614,10 +2614,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spawn-dynamique--veafskynetdynamicspawn" class="md-nav__link">
+  <a href="#dynamic-spawn" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spawn dynamique — veafSkynet.DynamicSpawn
+        Apparitions en cours de mission — dynamic_spawn
       
     </span>
   </a>
@@ -2652,7 +2652,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#désactivation-dun-réseau" class="md-nav__link">
+  <a href="#deactivation" class="md-nav__link">
     <span class="md-ellipsis">
       
         Désactivation d'un réseau
@@ -2736,6 +2736,7 @@
 <span class="w">    </span><span class="nt">debug_red</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># logs détaillés Skynet pour le réseau rouge</span>
 <span class="w">    </span><span class="nt">include_blue_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># afficher l&#39;état du réseau bleu dans le menu F10</span>
 <span class="w">    </span><span class="nt">debug_blue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">             </span><span class="c1"># logs détaillés Skynet pour le réseau bleu</span>
+<span class="w">    </span><span class="nt">dynamic_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">          </span><span class="c1"># intégrer aussi les groupes apparus en cours de mission</span>
 </code></pre></div>
 <table>
 <thead>
@@ -2776,6 +2777,12 @@
 <td>booléen</td>
 <td><code>false</code></td>
 <td>Debug verbeux Skynet pour la coalition bleue</td>
+</tr>
+<tr>
+<td><code>dynamic_spawn</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Intégrer aussi les groupes apparus <strong>en cours de mission</strong> — voir <a href="#dynamic-spawn">Apparitions en cours de mission</a></td>
 </tr>
 </tbody>
 </table>
@@ -2845,7 +2852,8 @@
 </tbody>
 </table>
 <p>Le mode <code>Lenient</code> intégrera un convoi composé de tanks, transports <strong>et</strong> d'une SA-19 d'escorte. Le mode <code>Strict</code> ne l'intégrera pas.</p>
-<h3 id="spawn-dynamique--veafskynetdynamicspawn">Spawn dynamique — <code>veafSkynet.DynamicSpawn</code><a class="headerlink" href="#spawn-dynamique--veafskynetdynamicspawn" title="Permanent link">&para;</a></h3>
+<h3 id="dynamic-spawn">Apparitions en cours de mission — <code>dynamic_spawn</code><a class="headerlink" href="#dynamic-spawn" title="Permanent link">&para;</a></h3>
+<p>Se règle depuis <code>mission.yaml</code> (<code>dynamic_spawn</code>), ou avant <code>initialize</code> avec <code>veafSkynet.DynamicSpawn</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2860,13 +2868,20 @@
 </tr>
 <tr>
 <td><code>true</code></td>
-<td>Les groupes générés en cours de mission sont également intégrés dans les réseaux existants</td>
+<td>Les groupes apparus en cours de mission rejoignent aussi les réseaux existants</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Ce que ça coûte.</strong> Activé, le module surveille <strong>chaque apparition d'unité</strong> de la mission pour repérer les groupes éligibles. C'est pour cette raison que le réglage est éteint par défaut : à activer quand la mission fait apparaître des SAM en cours de partie (zones de combat, campagne dynamique), pas systématiquement.</p>
+<p><strong>Ce que ça règle.</strong> Sans lui, un SAM apparu en cours de mission — y compris par une zone de combat — ne rejoint aucun réseau, et rien ne le dit.</p>
+<p><strong>Qui décide, groupe par groupe.</strong> L'option <code>skynet</code> d'une commande d'apparition reste maîtresse : <code>skynet false</code> garde le groupe <strong>hors</strong> de tout réseau (c'est ce que portent les raccourcis de convoi), et <code>skynet &lt;nom de réseau&gt;</code> l'envoie dans ce réseau précis plutôt que dans celui de sa coalition. Un groupe qu'aucune commande VEAF n'a déclaré — posé dans l'éditeur, créé par un script tiers — rejoint le réseau de sa coalition : c'est précisément à quoi sert ce réglage.</p>
 <blockquote>
-<p><code>veafSpawn</code> ajoute automatiquement les unités SAM qu'il génère dans les réseaux Skynet, sauf si <code>DynamicSpawn = true</code> (dans ce cas <code>veafSkynet</code> gère lui-même cette surveillance).</p>
+<p>Les deux chemins d'intégration sont exclusifs : quand le réseau visé intègre les apparitions, c'est lui qui fait le travail ; sinon <code>veafSpawn</code> s'en charge au moment de l'apparition. Un groupe n'est jamais intégré deux fois.</p>
 </blockquote>
+<p><strong>Portée par réseau.</strong> Le réglage est propre à chaque réseau. Éteindre l'intégration côté rouge — ou désactiver le réseau rouge — laisse le bleu fonctionner.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- en cours de mission, réseau par réseau</span>
+<span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">setDynamicSpawn</span><span class="p">(</span><span class="s2">&quot;red iads&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="délai-de-démarrage--veafskynetdelayforstartup">Délai de démarrage — <code>veafSkynet.DelayForStartup</code><a class="headerlink" href="#délai-de-démarrage--veafskynetdelayforstartup" title="Permanent link">&para;</a></h3>
 <p>Nombre de secondes à attendre avant d'initialiser les réseaux (défaut : <code>1</code>). À augmenter si d'autres modules initialisent des groupes en retard.</p>
 <hr />
@@ -2880,7 +2895,7 @@
 <span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">destroyCommandCentersOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="désactivation-dun-réseau">Désactivation d'un réseau<a class="headerlink" href="#désactivation-dun-réseau" title="Permanent link">&para;</a></h2>
+<h2 id="deactivation">Désactivation d'un réseau<a class="headerlink" href="#deactivation" title="Permanent link">&para;</a></h2>
 <p>Désactive un réseau Skynet et bascule tous ses éléments dans un état défini avant de les rendre à l'IA DCS.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">deactivateNetworkOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
 <span class="c1">-- ou avec un état spécifique :</span>
@@ -2908,6 +2923,11 @@
 </tr>
 </tbody>
 </table>
+<p><strong>Un réseau désactivé reste désactivé.</strong> Faire apparaître un SAM dedans ne le rallume plus : le groupe est bien rattaché — c'est ce que demande <code>skynet true</code> — mais le réseau ne se réveille pas tout seul. Avant, l'apparition d'un seul SAM suffisait à remettre en route un réseau qu'on venait d'éteindre.</p>
+<p>Pour le rallumer, il faut le demander. Tout ce qui a été rattaché entre-temps s'allume avec lui :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">activateNetworkOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+</code></pre></div>
+<p>Désactiver un réseau <strong>ne touche pas à l'autre</strong> : le réseau bleu garde son état et son intégration des apparitions.</p>
 <hr />
 <h2 id="accéder-aux-réseaux-générés">Accéder aux réseaux générés<a class="headerlink" href="#accéder-aux-réseaux-générés" title="Permanent link">&para;</a></h2>
 <p>Après l'initialisation (qui se fait en différé), on peut accéder aux objets réseaux Skynet via une tâche différée :</p>
