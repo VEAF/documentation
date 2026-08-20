@@ -1151,6 +1151,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#escorting-an-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escorter une ressource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#menu-radio-f10" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2565,6 +2576,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#escorting-an-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escorter une ressource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#menu-radio-f10" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2717,7 +2739,7 @@
 <td>string</td>
 <td><code>null</code></td>
 <td>Non</td>
-<td>Nom d'une ressource liée (ex : un porte-avions lié à son escorte)</td>
+<td>Nom d'un groupe à faire réapparaître en même temps que la ressource. ⚠️ Ce n'est <strong>pas</strong> ce qui déclare une escorte — voir <a href="#escorting-an-asset">Escorter une ressource</a></td>
 </tr>
 <tr>
 <td><code>assets[].jtac</code></td>
@@ -2823,6 +2845,25 @@
 <blockquote>
 <p>Les porte-avions sont gérés par le module séparé <a href="../veafCarrierOperations/">veafCarrierOperations</a>, pas par <code>veafAssets</code>.</p>
 </blockquote>
+<hr />
+<h2 id="escorting-an-asset">Escorter une ressource<a class="headerlink" href="#escorting-an-asset" title="Permanent link">&para;</a></h2>
+<p>L'escorte d'une ressource est le groupe nommé <strong><code>&lt;nom de la ressource&gt; escort</code></strong>. Ce nom n'est pas
+décoratif : c'est ce qui permet au framework de retrouver l'escorte pour <strong>réparer sa tâche
+<code>Escort</code></strong>, que DCS invalide chaque fois que le groupe escorté est recréé — réapparition
+(<em>Respawn</em>) comme téléportation (<code>_move tanker … teleport</code>).</p>
+<p>Concrètement : configurez la tâche <code>Escort</code> sur le <strong>dernier waypoint</strong> de la route de l'escorte,
+dans l'éditeur de mission, comme d'habitude. Le reste est automatique.</p>
+<blockquote>
+<p>⚠️ <strong><code>linked</code> n'est pas ce qui fait d'un groupe une escorte.</strong> Les deux mécanismes sont
+indépendants : <code>linked</code> liste les groupes à faire <strong>réapparaître en même temps</strong> que la ressource,
+alors que la convention de nom est ce qui permet de réparer la tâche d'escorte. Une escorte n'a pas
+besoin d'être dans <code>linked</code> — et il faut malgré tout réparer sa tâche, puisque c'est le changement
+d'identifiant du groupe <strong>escorté</strong> qui la casse, pas celui de l'escorte.</p>
+</blockquote>
+<p><strong>Symptôme si le nom ne suit pas la convention</strong> : l'escorte décolle avec sa protégée, tient un
+moment, puis <strong>part atterrir au bout d'une dizaine de minutes</strong>. Ce n'est pas un abandon de l'IA :
+c'est une escorte dont la tâche pointe vers un groupe qui n'existe plus, qui vole donc sa route
+jusqu'au bout puis rentre.</p>
 <hr />
 <h2 id="menu-radio-f10">Menu radio F10<a class="headerlink" href="#menu-radio-f10" title="Permanent link">&para;</a></h2>
 <p>Les ressources apparaissent sous <strong>F10 → ASSETS</strong> (les libellés sont en anglais). Une ressource sans <code>information</code> ni <code>disposable</code> est une simple commande <strong>Respawn [description]</strong> ; sinon un sous-menu est créé avec :</p>

@@ -1151,6 +1151,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#escorting-an-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escorting an asset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#f10-radio-menu" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2565,6 +2576,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#escorting-an-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escorting an asset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#f10-radio-menu" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2717,7 +2739,7 @@
 <td>string</td>
 <td><code>null</code></td>
 <td>No</td>
-<td>Name of a linked asset (e.g. a carrier linked to its escort)</td>
+<td>Name of a group to respawn along with the asset. ⚠️ This is <strong>not</strong> what declares an escort — see <a href="#escorting-an-asset">Escorting an asset</a></td>
 </tr>
 <tr>
 <td><code>assets[].jtac</code></td>
@@ -2823,6 +2845,24 @@
 <blockquote>
 <p>Carriers are handled by the separate <a href="../veafCarrierOperations/">veafCarrierOperations</a> module, not by <code>veafAssets</code>.</p>
 </blockquote>
+<hr />
+<h2 id="escorting-an-asset">Escorting an asset<a class="headerlink" href="#escorting-an-asset" title="Permanent link">&para;</a></h2>
+<p>An asset's escort is the group named <strong><code>&lt;asset name&gt; escort</code></strong>. That name is not decorative: it is
+what lets the framework find the escort in order to <strong>repair its <code>Escort</code> task</strong>, which DCS
+invalidates every time the escorted group is recreated — by a respawn as much as by a teleport
+(<code>_move tanker … teleport</code>).</p>
+<p>In practice: set the <code>Escort</code> task on the <strong>last waypoint</strong> of the escort's route, in the Mission
+Editor, as you normally would. The rest is automatic.</p>
+<blockquote>
+<p>⚠️ <strong><code>linked</code> is not what makes a group an escort.</strong> The two mechanisms are independent: <code>linked</code>
+lists groups to <strong>respawn along with</strong> the asset, while the naming convention is what allows the
+escort task to be repaired. An escort need not be in <code>linked</code> — and its task still has to be
+repaired, because what breaks it is the <strong>escorted</strong> group's id changing, not the escort's.</p>
+</blockquote>
+<p><strong>The symptom when the name does not follow the convention</strong>: the escort takes off with its charge,
+holds for a while, then <strong>leaves to land after about ten minutes</strong>. That is not the AI giving up: it
+is an escort whose task points at a group that no longer exists, so it flies out its route and goes
+home.</p>
 <hr />
 <h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
 <p>Assets appear under <strong>F10 → ASSETS</strong>. An asset with neither <code>information</code> nor <code>disposable</code> is a plain <strong>Respawn [description]</strong> command; otherwise a submenu is created with:</p>
