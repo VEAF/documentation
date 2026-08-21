@@ -1358,6 +1358,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#spawn-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnradius — la dispersion par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tag-sources" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2848,6 +2859,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#spawn-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnradius — la dispersion par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tag-sources" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3417,7 +3439,7 @@ monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit
 <tr>
 <td><code>#spawnradius=N</code></td>
 <td><code>#spawnradius=200</code></td>
-<td>Rayon de dispersion en mètres autour du centre de la zone pour ce groupe</td>
+<td>Rayon de dispersion en mètres autour de la position enregistrée du groupe. Sans ce tag, voir <a href="#spawn-radius"><code>#spawnradius</code></a></td>
 </tr>
 <tr>
 <td><code>#spawnchance=N</code></td>
@@ -3451,6 +3473,35 @@ monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit
 </tr>
 </tbody>
 </table>
+<h3 id="spawn-radius"><code>#spawnradius</code> — la dispersion par défaut<a class="headerlink" href="#spawn-radius" title="Permanent link">&para;</a></h3>
+<p>Sans tag, un groupe apparaît <strong>dispersé de 50 m</strong> autour de sa position enregistrée, et un objet statique apparaît <strong>exactement</strong> sur la sienne. La dispersion existe pour qu'un groupe ne réapparaisse pas deux fois au même mètre près ; un statique, lui, est souvent posé à un endroit précis (un parking, un quai) où le déplacer n'aurait pas de sens.</p>
+<table>
+<thead>
+<tr>
+<th>Ce que vous écrivez</th>
+<th>Ce que le groupe reçoit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rien</td>
+<td>50 m pour un groupe, 0 m pour un statique</td>
+</tr>
+<tr>
+<td><code>#spawnradius=200</code></td>
+<td>200 m</td>
+</tr>
+<tr>
+<td><code>#spawnradius=0</code></td>
+<td>aucune dispersion — c'est ainsi qu'on la désactive</td>
+</tr>
+</tbody>
+</table>
+<p>Une unité <code>#command=</code> n'est <strong>jamais</strong> dispersée, avec ou sans défaut : la commande s'exécute <em>à sa position</em>, donc la déplacer déplacerait ce qu'elle fait apparaître. Un <code>#spawnradius=</code> écrit explicitement s'y applique tout de même.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ce comportement change les missions existantes</p>
+<p>De mars 2023 à la 6.15.14 le défaut de 50 m était <strong>inatteignable</strong> : la constante existait, le code censé l'appliquer ne s'exécutait jamais, et tous les groupes d'une zone de combat apparaissaient exactement sur leur position enregistrée. Une mission construite pendant ces trois ans verra donc ses groupes bouger d'une cinquantaine de mètres. Si un placement était volontairement précis, écrivez <code>#spawnradius=0</code>.</p>
+</div>
 <h3 id="tag-sources">Où les tags sont lus<a class="headerlink" href="#tag-sources" title="Permanent link">&para;</a></h3>
 <p>Les tags d'un groupe sont ceux portés par <strong>son propre nom et par les noms de toutes ses unités</strong>. Taguer un seul camion d'un convoi suffit donc, quel que soit le camion — inutile de taguer les quatre, et inutile de deviner lequel DCS traitera en premier.</p>
 <p>Les sources sont lues dans un ordre fixe :</p>

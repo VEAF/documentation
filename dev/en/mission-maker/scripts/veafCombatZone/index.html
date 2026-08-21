@@ -1358,6 +1358,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#spawn-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnradius — the default dispersion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tag-sources" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2848,6 +2859,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#spawn-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnradius — the default dispersion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tag-sources" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3415,7 +3437,7 @@ other side's zones under it.</p>
 <tr>
 <td><code>#spawnradius=N</code></td>
 <td><code>#spawnradius=200</code></td>
-<td>Scatter radius in metres around the zone centre for this group</td>
+<td>Scatter radius in metres around the group's recorded position. Without the tag, see <a href="#spawn-radius"><code>#spawnradius</code></a></td>
 </tr>
 <tr>
 <td><code>#spawnchance=N</code></td>
@@ -3449,6 +3471,35 @@ other side's zones under it.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="spawn-radius"><code>#spawnradius</code> — the default dispersion<a class="headerlink" href="#spawn-radius" title="Permanent link">&para;</a></h3>
+<p>With no tag, a group appears <strong>scattered by 50 m</strong> around its recorded position, and a static object appears <strong>exactly</strong> on its own. Dispersion exists so that a group does not respawn on the same metre twice; a static, on the other hand, is usually placed somewhere precise — a parking spot, a quay — where moving it would make no sense.</p>
+<table>
+<thead>
+<tr>
+<th>What you write</th>
+<th>What the group gets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nothing</td>
+<td>50 m for a group, 0 m for a static</td>
+</tr>
+<tr>
+<td><code>#spawnradius=200</code></td>
+<td>200 m</td>
+</tr>
+<tr>
+<td><code>#spawnradius=0</code></td>
+<td>no dispersion — this is how you turn it off</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>#command=</code> unit is <strong>never</strong> scattered, default or not: the command runs <em>at its position</em>, so moving it would move whatever it spawns. An explicitly written <code>#spawnradius=</code> does still apply to it.</p>
+<div class="admonition warning">
+<p class="admonition-title">This changes existing missions</p>
+<p>From March 2023 to 6.15.14 the 50 m default was <strong>unreachable</strong>: the constant existed, the code meant to apply it never ran, and every group of a combat zone appeared exactly on its recorded position. A mission built during those three years will therefore see its groups move by about fifty metres. If a placement was precise on purpose, write <code>#spawnradius=0</code>.</p>
+</div>
 <h3 id="tag-sources">Where tags are read from<a class="headerlink" href="#tag-sources" title="Permanent link">&para;</a></h3>
 <p>A group's tags are the ones carried by <strong>its own name and by the names of all its units</strong>. Tagging a single truck of a convoy is therefore enough, whichever truck it is — no need to tag all four, and no need to guess which one DCS will process first.</p>
 <p>Sources are read in a fixed order:</p>
