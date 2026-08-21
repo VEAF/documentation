@@ -1269,6 +1269,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rename-units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rename_units_sequentially — keeping the original unit names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#combat_zones-fields--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2770,6 +2781,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rename-units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rename_units_sequentially — keeping the original unit names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#combat_zones-fields--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3233,6 +3255,41 @@
 <td><code>false</code>: the zone never completes (nor deactivates) on its own</td>
 </tr>
 <tr>
+<td><code>show_units_list</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the F10 report does not list the remaining units</td>
+</tr>
+<tr>
+<td><code>show_zone_position_info</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the F10 report shows neither the zone's coordinates nor its weather</td>
+</tr>
+<tr>
+<td><code>smoke_and_flare</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the zone offers neither smoke nor flare to mark itself</td>
+</tr>
+<tr>
+<td><code>radio_menu_disabled</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td><code>true</code>: the zone does not appear in the F10 menu at all</td>
+</tr>
+<tr>
+<td><code>rename_units_sequentially</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: units keep their original names when spawned instead of being renamed in sequence. See <a href="#rename-units">below</a></td>
+</tr>
+<tr>
 <td><code>enemy_coalition</code></td>
 <td><code>RED</code> | <code>BLUE</code></td>
 <td><code>RED</code></td>
@@ -3269,6 +3326,15 @@
 </tr>
 </tbody>
 </table>
+<h3 id="rename-units"><code>rename_units_sequentially</code> — keeping the original unit names<a class="headerlink" href="#rename-units" title="Permanent link">&para;</a></h3>
+<p>When a group spawns, a combat zone renames its units in sequence. That helps on a finished map — the names become readable and consistent — and <strong>gets in the way while debugging</strong> a <code>.miz</code>: the name you gave the unit in the Mission Editor is gone, and you can no longer find it in the logs.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CZ-Alpha</span>
+<span class="w">    </span><span class="nt">rename_units_sequentially</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># units keep their Mission Editor names</span>
+</code></pre></div>
+<p>The setting is <strong>per zone</strong>, not a global debug switch: that is what the
+<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/289">original request</a> asked for, and a global one would be one more thing to remember to put back before shipping.</p>
+<p>The default stays <code>true</code>, so no existing mission changes.</p>
 <h3 id="combat_zones-fields--type-operation"><code>combat_zones[]</code> fields — type <code>operation</code><a class="headerlink" href="#combat_zones-fields--type-operation" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

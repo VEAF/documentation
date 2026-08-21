@@ -1269,6 +1269,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rename-units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rename_units_sequentially — garder les noms d'unités d'origine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#champs-de-combat_zones--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2770,6 +2781,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rename-units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rename_units_sequentially — garder les noms d'unités d'origine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#champs-de-combat_zones--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3233,6 +3255,41 @@
 <td><code>false</code> : la zone ne se termine (et ne se désactive) jamais d'elle-même</td>
 </tr>
 <tr>
+<td><code>show_units_list</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td><code>false</code> : le rapport F10 n'énumère pas les unités restantes</td>
+</tr>
+<tr>
+<td><code>show_zone_position_info</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td><code>false</code> : le rapport F10 n'affiche ni les coordonnées de la zone ni sa météo</td>
+</tr>
+<tr>
+<td><code>smoke_and_flare</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td><code>false</code> : la zone ne propose ni fumigène ni fusée éclairante pour se signaler</td>
+</tr>
+<tr>
+<td><code>radio_menu_disabled</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td><code>true</code> : la zone n'apparaît pas du tout dans le menu F10</td>
+</tr>
+<tr>
+<td><code>rename_units_sequentially</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td><code>false</code> : les unités gardent leur nom d'origine à l'apparition, au lieu d'être renommées en séquence. Voir <a href="#rename-units">ci-dessous</a></td>
+</tr>
+<tr>
 <td><code>enemy_coalition</code></td>
 <td><code>RED</code> | <code>BLUE</code></td>
 <td><code>RED</code></td>
@@ -3269,6 +3326,15 @@
 </tr>
 </tbody>
 </table>
+<h3 id="rename-units"><code>rename_units_sequentially</code> — garder les noms d'unités d'origine<a class="headerlink" href="#rename-units" title="Permanent link">&para;</a></h3>
+<p>À l'apparition d'un groupe, une zone de combat renomme ses unités en séquence. C'est utile sur une carte terminée — les noms deviennent lisibles et cohérents — et <strong>gênant pendant la mise au point</strong> d'un <code>.miz</code> : le nom que vous avez donné à l'unité dans l'éditeur de mission a disparu, et vous ne pouvez plus la retrouver dans les journaux.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CZ-Alpha</span>
+<span class="w">    </span><span class="nt">rename_units_sequentially</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># les unités gardent le nom de l&#39;éditeur</span>
+</code></pre></div>
+<p>Le réglage est <strong>par zone</strong>, et non un interrupteur global de débogage : c'est ce que demandait la
+<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/289">demande d'origine</a>, et un interrupteur global serait une chose de plus à penser à remettre avant de livrer.</p>
+<p>Le défaut reste <code>true</code>, donc aucune mission existante ne change.</p>
 <h3 id="champs-de-combat_zones--type-operation">Champs de <code>combat_zones[]</code> — type <code>operation</code><a class="headerlink" href="#champs-de-combat_zones--type-operation" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
