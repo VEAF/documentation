@@ -2972,7 +2972,7 @@
 </ul>
 <hr />
 <h2 id="vue-densemble">Vue d'ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
-<p>Le projet couvre les modules runtime par 36 suites de tests Lua (les exceptions sont listées en fin de section « Suite de tests »). Les tests s'exécutent en <strong>Lua 5.1</strong> standard avec le framework <a href="https://github.com/bluebird75/luaunit">luaunit</a>. Aucune installation de DCS n'est requise — l'API DCS est simulée par <code>dcs_mocks.lua</code>.</p>
+<p>Le projet couvre les modules runtime par une suite de tests Lua par module — la section « Suite de tests » les énumère toutes, et liste à sa fin ce qui n'est délibérément pas couvert. Les tests s'exécutent en <strong>Lua 5.1</strong> standard avec le framework <a href="https://github.com/bluebird75/luaunit">luaunit</a>. Aucune installation de DCS n'est requise — l'API DCS est simulée par <code>dcs_mocks.lua</code>.</p>
 <hr />
 <h2 id="exécuter-les-tests">Exécuter les tests<a class="headerlink" href="#exécuter-les-tests" title="Permanent link">&para;</a></h2>
 <h3 id="tous-les-tests">Tous les tests<a class="headerlink" href="#tous-les-tests" title="Permanent link">&para;</a></h3>
@@ -3024,7 +3024,7 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 ├── luaunit.lua         # Framework de test (embarqué)
 ├── dcs_mocks.lua       # Stubs de l&#39;API DCS
 ├── veaf_loader.lua     # Chargeur de modules pour src/scripts/veaf/
-└── test_*.lua          # Un fichier par module (36 fichiers)
+└── test_*.lua          # Un fichier par module
 </code></pre></div>
 <h3 id="dcs_mockslua">dcs_mocks.lua<a class="headerlink" href="#dcs_mockslua" title="Permanent link">&para;</a></h3>
 <p>Fournit des stubs minimaux pour l'API globale DCS afin que les modules puissent être chargés via <code>require</code> sans instance DCS active. Espaces de noms simulés :</p>
@@ -3056,189 +3056,156 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 <thead>
 <tr>
 <th>Suite</th>
-<th>Tests</th>
 <th>Ce qu'elle couvre</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>test_veaf.lua</code></td>
-<td>393</td>
 <td>Utilitaires de base, helpers string/table/vecteur, logging</td>
 </tr>
 <tr>
 <td><code>test_veafCacheManager.lua</code></td>
-<td>12</td>
 <td>Cache get/set/invalidate</td>
 </tr>
 <tr>
 <td><code>test_veafInterpreter.lua</code></td>
-<td>12</td>
 <td>Tokeniseur de texte marqueur</td>
 </tr>
 <tr>
 <td><code>test_veafTime.lua</code></td>
-<td>71</td>
 <td>Parsing de temps, formatage, helpers temps DCS</td>
 </tr>
 <tr>
 <td><code>test_veafSecurity.lua</code></td>
-<td>79</td>
 <td>Niveaux de sécurité, gestion des admins</td>
 </tr>
 <tr>
 <td><code>test_veafServerHook.lua</code></td>
-<td>14</td>
 <td>Hook serveur : parsing et dispatch des commandes chat</td>
 </tr>
 <tr>
 <td><code>test_veafNamedPoints.lua</code></td>
-<td>25</td>
 <td>Enregistrement de points, recherche, helpers ATC</td>
 </tr>
 <tr>
 <td><code>test_veafShortcuts.lua</code></td>
-<td>77</td>
 <td>Enregistrement et résolution des raccourcis</td>
 </tr>
 <tr>
 <td><code>test_veafWeather.lua</code></td>
-<td>107</td>
 <td>Parsing météo, calculs QNH/vent</td>
 </tr>
 <tr>
 <td><code>test_dcsDataExport.lua</code></td>
-<td>29</td>
 <td>Utilitaires d'export de données unités</td>
 </tr>
 <tr>
 <td><code>test_veafCombatMission.lua</code></td>
-<td>116</td>
 <td>Cycle de vie d'une mission de combat</td>
 </tr>
 <tr>
 <td><code>test_veafAirbases.lua</code></td>
-<td>31</td>
 <td>Recherche de données aérodromes</td>
 </tr>
 <tr>
 <td><code>test_veafCombatZone.lua</code></td>
-<td>138</td>
 <td>Activation de zone, scoring, machine à états</td>
 </tr>
 <tr>
 <td><code>test_veafUnits.lua</code></td>
-<td>67</td>
 <td>Recherche de templates d'unités, filtrage par catégorie</td>
 </tr>
 <tr>
 <td><code>test_veafAssets.lua</code></td>
-<td>26</td>
 <td>Enregistrement d'assets, suivi d'état</td>
 </tr>
 <tr>
 <td><code>test_veafAssist.lua</code></td>
-<td>67</td>
 <td>Assistance pilote : checklists, progression, menus</td>
 </tr>
 <tr>
 <td><code>test_veafRemote.lua</code></td>
-<td>37</td>
 <td>Parsing de commandes distantes</td>
 </tr>
 <tr>
 <td><code>test_veafMarkers.lua</code></td>
-<td>18</td>
 <td>Gestion des événements marqueur</td>
 </tr>
 <tr>
 <td><code>test_veafEventHandler.lua</code></td>
-<td>21</td>
 <td>Dispatch d'événements, enregistrement de handlers</td>
 </tr>
 <tr>
 <td><code>test_veafSkynetIadsHelper.lua</code></td>
-<td>68</td>
 <td>Helpers d'intégration Skynet IADS</td>
 </tr>
 <tr>
 <td><code>test_veafSkynetIadsMonitor.lua</code></td>
-<td>41</td>
 <td>État du moniteur Skynet</td>
 </tr>
 <tr>
 <td><code>test_veafGroundAI.lua</code></td>
-<td>83</td>
 <td>Flags de comportement IA sol</td>
 </tr>
 <tr>
 <td><code>test_veafRadio.lua</code></td>
-<td>127</td>
 <td>Construction de l'arbre de menus radio</td>
 </tr>
 <tr>
 <td><code>test_veafQraManager.lua</code></td>
-<td>99</td>
 <td>Machine à états QRA, gestion de zones</td>
 </tr>
 <tr>
 <td><code>test_veafAirWaves.lua</code></td>
-<td>135</td>
 <td>Planification de waves, assignation de groupes</td>
 </tr>
 <tr>
 <td><code>test_veafSanctuary.lua</code></td>
-<td>49</td>
 <td>Détection de zone sanctuaire</td>
 </tr>
 <tr>
 <td><code>test_veafMissileGuardian.lua</code></td>
-<td>38</td>
 <td>Logique d'interception de missiles</td>
 </tr>
 <tr>
 <td><code>test_veafCasMission.lua</code></td>
-<td>51</td>
 <td>Génération de packages de menaces CAS</td>
 </tr>
 <tr>
 <td><code>test_veafTransportMission.lua</code></td>
-<td>52</td>
 <td>Setup de mission de transport</td>
 </tr>
 <tr>
 <td><code>test_veafCarrierOperations.lua</code></td>
-<td>47</td>
 <td>Séquence de recovery porte-avions</td>
 </tr>
 <tr>
 <td><code>test_veafMove.lua</code></td>
-<td>95</td>
 <td>Parsing de commandes de déplacement/téléportation</td>
 </tr>
 <tr>
+<td><code>test_veafMove_escort.lua</code></td>
+<td>Récupération de la tâche Escort après recréation du groupe escorté</td>
+</tr>
+<tr>
 <td><code>test_veafGrass.lua</code></td>
-<td>16</td>
 <td>Initialisation de pistes en herbe</td>
 </tr>
 <tr>
 <td><code>test_veafSpawn.lua</code></td>
-<td>184</td>
 <td>Commandes spawn, analyse de texte marqueur, conversion fréquence laser</td>
 </tr>
 <tr>
 <td><code>test_veafSpawnParser.lua</code></td>
-<td>70</td>
 <td>Parsing déterministe du texte marqueur de spawn (<code>markTextAnalysis</code>)</td>
 </tr>
 <tr>
 <td><code>test_veafCommands.lua</code></td>
-<td>17</td>
 <td>Registre de commandes : ordonnancement par priorité et dispatch</td>
 </tr>
 <tr>
 <td><code>test_veafI18n.lua</code></td>
-<td>32</td>
 <td>Couche i18n runtime Lua (<code>veaf.t</code>, catalogue <code>veafI18n</code>)</td>
 </tr>
 </tbody>
