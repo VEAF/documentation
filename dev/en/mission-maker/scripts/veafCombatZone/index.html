@@ -1402,6 +1402,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#tag-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A value drawn from a range
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2942,6 +2953,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#tag-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A value drawn from a range
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3630,6 +3652,19 @@ other side's zones under it.</p>
 <p>A zone adopts a group as soon as <strong>one</strong> of its units stands inside the circle: the whole group is then destroyed and recreated, units left outside included. That is deliberate, and it spares you having to frame a zone to the metre around a convoy.</p>
 <p>What went wrong is that the zone anchored itself on <strong>the first unit it could see</strong> — so on the group's second unit whenever the first sat outside the circle. The entire group then appeared offset by the gap between those two units, a truck-length for a convoy, with no dispersion asked for and even with <code>#spawnradius=0</code>.</p>
 <p>Since 6.15.21 the anchor is always the group's <strong>first unit</strong>, inside the circle or not. A group straddling the edge therefore appears where you drew it. If you had compensated for the offset by hand by moving your units, remove the compensation.</p>
+<h4 id="tag-ranges">A value drawn from a range<a class="headerlink" href="#tag-ranges" title="Permanent link">&para;</a></h4>
+<p>The four tags carrying a number — <code>#spawnradius</code>, <code>#spawnchance</code>, <code>#spawncount</code>, <code>#spawndelay</code> — accept a range instead of a fixed value, written the same way as in marker commands:</p>
+<div class="highlight"><pre><span></span><code>ALPHA-CONVOY #spawnradius=100-300 #spawndelay=30-90
+</code></pre></div>
+<p>The value is drawn <strong>once per mission</strong>, when names are read at startup. Every activation of the zone therefore uses the same value: this varies placement from one game to the next, not from one activation to the next.</p>
+<div class="admonition warning">
+<p class="admonition-title">Before 6.15.23 a range was silently truncated</p>
+<p><code>#spawnradius=100-300</code> was read as <code>100</code>, with no message: you got the lower bound while believing you had a range. If you wrote any, they take effect now — so the radius may be larger than it used to be.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title"><code>#alarm</code> takes no range</p>
+<p>The alarm state is an enumeration (<code>0</code> AUTO, <code>1</code> GREEN, <code>2</code> RED): <code>#alarm=0-2</code> is not a random state, it is a typo. The tag refuses it as it already refuses an out-of-bounds value.</p>
+</div>
 <h3 id="tag-sources">Where tags are read from<a class="headerlink" href="#tag-sources" title="Permanent link">&para;</a></h3>
 <p>A group's tags are the ones carried by <strong>its own name and by the names of all its units</strong>. Tagging a single truck of a convoy is therefore enough, whichever truck it is — no need to tag all four, and no need to guess which one DCS will process first.</p>
 <p>Sources are read in a fixed order:</p>

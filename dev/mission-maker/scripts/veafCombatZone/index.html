@@ -1402,6 +1402,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#tag-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une valeur au hasard dans un intervalle
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2942,6 +2953,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#tag-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une valeur au hasard dans un intervalle
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3632,6 +3654,19 @@ monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit
 <p>Un groupe est pris en charge par la zone dès qu'<strong>une seule</strong> de ses unités se trouve dans le cercle : il est alors détruit et recréé en entier, les unités restées dehors comprises. C'est voulu, et ça évite d'avoir à cadrer une zone au mètre près autour d'un convoi.</p>
 <p>Ce qui posait problème, c'est que la zone s'ancrait sur la <strong>première unité qu'elle voyait</strong>, donc sur la deuxième du groupe quand la première était hors du cercle. Le groupe entier apparaissait alors décalé de l'écart entre ces deux unités — la longueur d'un camion pour un convoi — sans dispersion demandée et même avec <code>#spawnradius=0</code>.</p>
 <p>Depuis la 6.15.21, l'ancrage est toujours la <strong>première unité du groupe</strong>, qu'elle soit dans le cercle ou non. Un groupe à cheval sur le bord apparaît donc à l'endroit où vous l'avez dessiné. Si vous aviez compensé ce décalage à la main en déplaçant vos unités, retirez la compensation.</p>
+<h4 id="tag-ranges">Une valeur au hasard dans un intervalle<a class="headerlink" href="#tag-ranges" title="Permanent link">&para;</a></h4>
+<p>Les quatre tags qui portent un nombre — <code>#spawnradius</code>, <code>#spawnchance</code>, <code>#spawncount</code>, <code>#spawndelay</code> — acceptent un intervalle au lieu d'une valeur fixe, avec la même écriture que dans les commandes de marqueur :</p>
+<div class="highlight"><pre><span></span><code>ALPHA-CONVOY #spawnradius=100-300 #spawndelay=30-90
+</code></pre></div>
+<p>La valeur est tirée <strong>une fois par mission</strong>, à la lecture des noms au démarrage. Toutes les activations de la zone utilisent donc la même valeur : c'est un placement varié d'une partie à l'autre, pas un placement qui bouge à chaque réactivation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Avant la 6.15.23, l'intervalle était tronqué en silence</p>
+<p><code>#spawnradius=100-300</code> était lu comme <code>100</code>, sans message : vous obteniez la borne basse en croyant avoir un intervalle. Si vous en avez écrit, ils prennent effet maintenant — et le rayon peut donc être plus grand qu'avant.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title"><code>#alarm</code> n'accepte pas d'intervalle</p>
+<p>L'état d'alerte est une énumération (<code>0</code> AUTO, <code>1</code> VERT, <code>2</code> ROUGE) : <code>#alarm=0-2</code> n'est pas un état au hasard, c'est une faute de frappe. Le tag la refuse comme il refuse déjà une valeur hors bornes.</p>
+</div>
 <h3 id="tag-sources">Où les tags sont lus<a class="headerlink" href="#tag-sources" title="Permanent link">&para;</a></h3>
 <p>Les tags d'un groupe sont ceux portés par <strong>son propre nom et par les noms de toutes ses unités</strong>. Taguer un seul camion d'un convoi suffit donc, quel que soit le camion — inutile de taguer les quatre, et inutile de deviner lequel DCS traitera en premier.</p>
 <p>Les sources sont lues dans un ordre fixe :</p>
