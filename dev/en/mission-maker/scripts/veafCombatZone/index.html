@@ -1346,16 +1346,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#unit-name-tags" class="md-nav__link">
+  <a href="#unit-and-group-name-tags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unit Name Tags
+        Unit and Group Name Tags
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Unit Name Tags">
+    <nav class="md-nav" aria-label="Unit and Group Name Tags">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tag-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where tags are read from
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#alarm-state" class="md-nav__link">
@@ -2825,16 +2836,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#unit-name-tags" class="md-nav__link">
+  <a href="#unit-and-group-name-tags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unit Name Tags
+        Unit and Group Name Tags
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Unit Name Tags">
+    <nav class="md-nav" aria-label="Unit and Group Name Tags">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tag-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where tags are read from
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#alarm-state" class="md-nav__link">
@@ -3368,7 +3390,7 @@ other side's zones under it.</p>
 <ol>
 <li><strong>Create a trigger zone</strong> — define the combat area. Name it, e.g. <code>ZONE-ALPHA</code>.</li>
 <li><strong>Place unit groups</strong> inside the zone. Set them to any coalition — VEAF will handle their lifecycle.</li>
-<li><strong>Use unit name tags</strong> (see below) to customise spawn behaviour per group.</li>
+<li><strong>Use unit or group name tags</strong> (see below) to customise spawn behaviour per group.</li>
 <li><strong>Register the zone</strong> in <code>mission-script.lua</code>:</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
@@ -3379,7 +3401,7 @@ other side's zones under it.</p>
 </code></pre></div>
 <p><code>veafCombatZone.initialize()</code> must be called at the module level first.</p>
 <hr />
-<h2 id="unit-name-tags">Unit Name Tags<a class="headerlink" href="#unit-name-tags" title="Permanent link">&para;</a></h2>
+<h2 id="unit-and-group-name-tags">Unit and Group Name Tags<a class="headerlink" href="#unit-and-group-name-tags" title="Permanent link">&para;</a></h2>
 <p>Unit and group names in the DCS Mission Editor can carry special tags that control how VEAF handles them when the zone activates. Tags are embedded in the name and do not affect DCS itself.</p>
 <table>
 <thead>
@@ -3427,6 +3449,22 @@ other side's zones under it.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="tag-sources">Where tags are read from<a class="headerlink" href="#tag-sources" title="Permanent link">&para;</a></h3>
+<p>A group's tags are the ones carried by <strong>its own name and by the names of all its units</strong>. Tagging a single truck of a convoy is therefore enough, whichever truck it is — no need to tag all four, and no need to guess which one DCS will process first.</p>
+<p>Sources are read in a fixed order:</p>
+<ol>
+<li>the <strong>group</strong> name;</li>
+<li>the <strong>unit</strong> names, in <strong>alphabetical</strong> order.</li>
+</ol>
+<p>The first value found for a tag wins. A later source stating a <em>different</em> value for the same tag is ignored and the log says so — two trucks of one convoy carrying <code>#alarm=0</code> and <code>#alarm=2</code> do not toss a coin: one wins and you are told. Repeating the <em>same</em> value on several units produces no message at all: that is the ordinary way of doing it.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>#command</code> is the exception</p>
+<p><code>#command</code> stays attached to the object carrying it: every unit carrying one becomes its own trigger, which is what lets a group carry several commands. Put on the <strong>group</strong> name, it makes that group a <strong>single</strong> trigger rather than one per unit.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Before 6.15.14</p>
+<p>Only the tags carried by whichever unit the engine met first counted, and tags on a group name were silently ignored. Since that order is not guaranteed, a tag put on a given truck worked or did not work for no visible reason.</p>
+</div>
 <h3 id="alarm-state"><code>#alarm</code> — making a group hold its ground<a class="headerlink" href="#alarm-state" title="Permanent link">&para;</a></h3>
 <p>The ground alarm state decides two things at once, and both matter: a group on <strong>RED</strong> stops and deploys — radars up, ready to fire — while on <strong>AUTO</strong> it drives and lets DCS raise its alert on detection. Right for a SAM battery in one case, right for a convoy in the other, and never the same one.</p>
 <p><strong>The zone therefore chooses by the nature of the group</strong>, without you saying anything:</p>
