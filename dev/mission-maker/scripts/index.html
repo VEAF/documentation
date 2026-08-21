@@ -1083,6 +1083,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unknown-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une option mal orthographiée est refusée, pas ignorée
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#raccourcis-aliases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2597,6 +2608,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unknown-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une option mal orthographiée est refusée, pas ignorée
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#raccourcis-aliases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2892,6 +2914,22 @@
 </tbody>
 </table>
 <hr />
+<h2 id="unknown-options">Une option mal orthographiée est refusée, pas ignorée<a class="headerlink" href="#unknown-options" title="Permanent link">&para;</a></h2>
+<p>Quand une commande de marqueur porte une option qu'aucune règle ne reconnaît — presque toujours une faute de frappe — la commande est <strong>refusée</strong> et le nom de l'option vous est affiché, avec une suggestion quand elle est proche d'une option existante :</p>
+<div class="highlight"><pre><span></span><code>_spawn group, name sa6, headng 270
+      ↓
+VEAF SPAWN : paramètre(s) inconnu(s), commande abandonnée : &#39;headng&#39; (vouliez-vous dire « heading » ?)
+</code></pre></div>
+<p>Refuser plutôt qu'exécuter est délibéré : une option inconnue ne fait rien, donc la commande ferait apparaître ou déplacerait autre chose que ce que vous avez demandé — sans que rien ne vous le dise. Le marqueur reste en place, vous corrigez et vous replacez.</p>
+<p>S'applique aux commandes de <strong><code>SPAWN</code>, <code>CASMISSION</code>, <code>MOVE</code>, <code>RADIO</code>, <code>TRANSPORTMISSION</code>, <code>GROUNDAI</code></strong> (ordres d'artillerie compris). Le nom affiché est celui que le module utilise aussi comme préfixe dans le log DCS, pour que le message et le log se recoupent.</p>
+<div class="admonition note">
+<p class="admonition-title">Les alias sont exclus</p>
+<p>Un alias (<code>-sa6</code>, <code>-samsr</code>) transporte les paramètres de la commande qu'il déploie, et non les siens : la vérification y signalerait des options parfaitement valides. Les fautes de frappe dans un alias sont donc attrapées par la commande finale, pas par l'alias.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Ordres d'artillerie : le séparateur est le point-virgule</p>
+<p>Un ordre d'artillerie voyage comme <strong>valeur</strong> d'une clé <code>order</code>, dans un marqueur déjà découpé sur la virgule — d'où le <code>;</code> : <code>aim; shells 10; radius 50</code>. Si vous mettez une virgule, la vérification vous le dit maintenant, au lieu de perdre silencieusement le reste de l'ordre.</p>
+</div>
 <h2 id="raccourcis-aliases">Raccourcis (Aliases)<a class="headerlink" href="#raccourcis-aliases" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

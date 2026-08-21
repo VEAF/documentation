@@ -1094,6 +1094,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unknown-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A misspelt option is refused, not ignored
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shortcuts" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2608,6 +2619,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unknown-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A misspelt option is refused, not ignored
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shortcuts" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2913,6 +2935,22 @@
 </tbody>
 </table>
 <hr />
+<h2 id="unknown-options">A misspelt option is refused, not ignored<a class="headerlink" href="#unknown-options" title="Permanent link">&para;</a></h2>
+<p>When a marker command carries an option no rule recognises — almost always a typo — the command is <strong>refused</strong> and the option is named back to you, with a suggestion when it is close to a real one:</p>
+<div class="highlight"><pre><span></span><code>_spawn group, name sa6, headng 270
+      ↓
+VEAF SPAWN: unknown parameter(s), command aborted: &#39;headng&#39; (did you mean &#39;heading&#39;?)
+</code></pre></div>
+<p>Refusing rather than running is deliberate: an unknown option does nothing, so the command would spawn or move something other than what you asked for, and nothing would tell you. The marker is left in place — fix it and drop it again.</p>
+<p>Applies to the <strong><code>SPAWN</code>, <code>CASMISSION</code>, <code>MOVE</code>, <code>RADIO</code>, <code>TRANSPORTMISSION</code>, <code>GROUNDAI</code></strong> commands, artillery orders included. The name shown is the one the module also uses to prefix its DCS log lines, so the message and the log line up.</p>
+<div class="admonition note">
+<p class="admonition-title">Aliases are excluded</p>
+<p>An alias (<code>-sa6</code>, <code>-samsr</code>) carries the parameters of the command it expands into rather than its own, so checking there would warn about perfectly valid options. A typo inside an alias is caught by the final command instead.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Artillery orders: the separator is a semicolon</p>
+<p>An artillery order travels as the <strong>value</strong> of an <code>order</code> key, inside a marker that is already split on commas — hence the <code>;</code>: <code>aim; shells 10; radius 50</code>. Use a comma and the check now tells you, instead of silently losing the rest of the order.</p>
+</div>
 <h2 id="shortcuts">Shortcuts<a class="headerlink" href="#shortcuts" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
