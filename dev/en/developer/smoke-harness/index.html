@@ -2118,6 +2118,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#csar-over-water" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The CSAR-over-water checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-is-still-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2550,6 +2561,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#csar-over-water" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The CSAR-over-water checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-is-still-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2836,6 +2858,30 @@ this transport, "it came back" is not "it worked".</p>
 signal that a load has finished, far better than watching a frame counter that freezes during the load;
 and <code>Sim.getLogHistory(from)</code>, which makes <code>dcs.log</code> readable through the hook instead of parsed off
 disk.</p>
+<h2 id="csar-over-water">The CSAR-over-water checks<a class="headerlink" href="#csar-over-water" title="Permanent link">&para;</a></h2>
+<p><code>csar-avoids-water-open-sea</code> and <code>csar-avoids-water-coast</code> answer
+<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/245">#245</a> — "the CSAR pilot spawns in the
+water" — with no aircraft and no human pilot. Three scripting calls are enough: trigger the spawn, read
+the position back, ask what is underneath.</p>
+<p>The two ask different questions, which is the point:</p>
+<ul>
+<li><strong>out at sea</strong> — the reported case;</li>
+<li><strong>near a coast</strong> — the interesting one. <code>FEAT-SCENERY-AWARE-SPAWN</code> gave <code>veaf.findSpawnPoint</code> land
+  awareness, and the real question is whether CSAR goes through it at all. A pass offshore with a failure
+  inshore would mean CSAR has its own placement path.</li>
+</ul>
+<p>No coordinate is hard-coded: the check anchors on the first airbase and sweeps until it finds water, then
+classifies the spot by what surrounds it at 150 m. So it travels between theatres.</p>
+<p>It runs over the <code>BRIDGE</code> transport: <code>csar</code> is a mission-environment global loaded by
+<code>mission-script.lua</code>. In the hook environment it would answer <code>csar-absent</code> for a mission that has it —
+a false negative.</p>
+<div class="admonition warning">
+<p class="admonition-title">Any answer other than a dry placement is a failure</p>
+<p>Including the ones saying the question could not be asked (<code>csar-absent</code>, <code>no-water-found</code>,
+<code>no-group</code>). A check that passes while having asked nothing would close #245 on nothing at all, and
+that is exactly the failure mode this harness is written against.</p>
+</div>
+<hr />
 <h2 id="what-is-still-missing">What is still missing<a class="headerlink" href="#what-is-still-missing" title="Permanent link">&para;</a></h2>
 <p>The <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/.backlog/archive/FEAT-DCS-SMOKE-HARNESS.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> lot carries the detail.
 The launch → load → assert → quit cycle is now <strong>written</strong> (the <code>--full</code> mode above), on the facts the

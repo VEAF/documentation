@@ -2118,6 +2118,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#csar-over-water" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les vérifications CSAR sur l'eau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ce-qui-reste-à-faire" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2550,6 +2561,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#csar-over-water" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les vérifications CSAR sur l'eau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ce-qui-reste-à-faire" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2843,6 +2865,31 @@ celui-ci. Dans ce transport, « ça est revenu » n'est pas « ça a marché ».
 d'<strong>événement</strong> pour savoir qu'un chargement est terminé, bien meilleur que de surveiller un compteur
 d'images qui gèle pendant le chargement ; et <code>Sim.getLogHistory(from)</code>, qui rend le <code>dcs.log</code> lisible à
 travers le hook au lieu d'être analysé sur disque.</p>
+<h2 id="csar-over-water">Les vérifications CSAR sur l'eau<a class="headerlink" href="#csar-over-water" title="Permanent link">&para;</a></h2>
+<p><code>csar-avoids-water-open-sea</code> et <code>csar-avoids-water-coast</code> répondent à
+<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/245">#245</a> — « le pilote CSAR apparaît dans
+l'eau » — sans avion et sans pilote humain. Trois appels de script suffisent : déclencher l'apparition,
+relire la position, demander ce qu'il y a dessous.</p>
+<p>Les deux vérifications posent des questions différentes, et c'est le but :</p>
+<ul>
+<li><strong>en haute mer</strong> — le cas signalé ;</li>
+<li><strong>près d'une côte</strong> — le cas intéressant. <code>FEAT-SCENERY-AWARE-SPAWN</code> a doté <code>veaf.findSpawnPoint</code> de
+  la conscience du terrain ; la vraie question est de savoir si CSAR passe par là. Un succès au large
+  avec un échec près de la côte signifierait que CSAR a son propre chemin de placement.</li>
+</ul>
+<p>Aucune coordonnée n'est écrite en dur : la vérification s'ancre sur le premier aérodrome et balaye
+jusqu'à trouver de l'eau, puis classe le point selon ce qui l'entoure à 150 m. Elle fonctionne donc sur
+n'importe quel théâtre.</p>
+<p>Elle tourne en transport <code>BRIDGE</code> : <code>csar</code> est un global de l'environnement de mission, chargé par
+<code>mission-script.lua</code>. Dans l'environnement du hook, elle répondrait <code>csar-absent</code> sur une mission qui
+l'a pourtant — un faux négatif.</p>
+<div class="admonition warning">
+<p class="admonition-title">Toute réponse autre qu'un placement au sec est un échec</p>
+<p>Y compris celles qui disent que la question n'a pas pu être posée (<code>csar-absent</code>, <code>no-water-found</code>,
+<code>no-group</code>). Une vérification qui passe alors qu'elle n'a rien demandé clôturerait #245 sur du vide,
+et c'est précisément le mode d'échec contre lequel ce banc d'essai est écrit.</p>
+</div>
+<hr />
 <h2 id="ce-qui-reste-à-faire">Ce qui reste à faire<a class="headerlink" href="#ce-qui-reste-à-faire" title="Permanent link">&para;</a></h2>
 <p>Le lot <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/.backlog/archive/FEAT-DCS-SMOKE-HARNESS.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> porte le détail. Le
 cycle launch → load → assert → quit est désormais <strong>écrit</strong> (mode <code>--full</code> ci-dessus), sur les faits que
