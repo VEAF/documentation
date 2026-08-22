@@ -1109,6 +1109,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#csar-over-water" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un pilote abattu au-dessus de l'eau
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ordre-de-chargement-dans-la-chaîne-de-triggers-dcs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3260,6 +3271,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#csar-over-water" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un pilote abattu au-dessus de l'eau
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ordre-de-chargement-dans-la-chaîne-de-triggers-dcs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4105,6 +4127,33 @@ tout de suite, ajoutez cette ligne dans votre <code>src/scripts/mission-script.l
 <span class="w">      </span><span class="nt">csarPrefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MEDEVAC&quot;</span>
 </code></pre></div>
 <p>VEAF génère les assignations <code>csar.xxx = value</code> et l'appel <code>csar.initialize()</code> dans <code>veaf-config.lua</code>. Pour les paramètres complexes comme <code>aircraftType</code> (une table par appareil), continuez à utiliser le pattern callback Lua dans <code>mission-script.lua</code>.</p>
+<h3 id="csar-over-water">Un pilote abattu au-dessus de l'eau<a class="headerlink" href="#csar-over-water" title="Permanent link">&para;</a></h3>
+<p>Quand un appareil est descendu, CSAR fait apparaître le pilote survivant à récupérer. Sa position venait d'un décalage fixe de 50 m par rapport à l'appareil, sans que rien ne regarde ce qu'il y avait là : une éjection près d'un rivage mettait donc le survivant <strong>dans l'eau</strong>, injoignable (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/245">#245</a>).</p>
+<p>Depuis la 6.15.28, deux issues et rien entre les deux :</p>
+<table>
+<thead>
+<tr>
+<th>Où l'éjection a eu lieu</th>
+<th>Ce que la mission obtient</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>au sec, ou dans l'eau avec du sec à moins de <strong>500 m</strong></td>
+<td>un CSAR au point sec le plus proche</td>
+</tr>
+<tr>
+<td>en pleine eau, rien de sec à moins de 500 m</td>
+<td><strong>aucun CSAR</strong> — le pilote est perdu, et un message le dit à sa coalition</td>
+</tr>
+</tbody>
+</table>
+<p>Le second cas n'est pas « un CSAR inaccessible » : c'est l'absence de CSAR. Pas de MAYDAY, pas de balise ADF, pas de groupe de blessé posé au fond de l'eau jusqu'à la fin de la mission. Un flight n'attend donc pas un sauvetage qui n'existe pas.</p>
+<p>L'eau peu profonde ne compte pas comme la pleine mer : un survivant qui a pied à quelques mètres d'une plage reste récupérable là où il est.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>CSAR.lua</code> n'est pas modifié</p>
+<p>Le script CSAR est un composant tiers embarqué : le corriger sur place serait effacé à sa prochaine mise à jour. VEAF remplace <code>csar.addCsar</code> depuis son propre code, comme il remplace déjà les journaux de CSAR.</p>
+</div>
 <h3 id="ordre-de-chargement-dans-la-chaîne-de-triggers-dcs">Ordre de chargement dans la chaîne de triggers DCS<a class="headerlink" href="#ordre-de-chargement-dans-la-chaîne-de-triggers-dcs" title="Permanent link">&para;</a></h3>
 <p>Le build produit cette chaîne pour vous ; elle est décrite ici pour que vous puissiez la relire dans l'éditeur de mission :</p>
 <div class="highlight"><pre><span></span><code>DO SCRIPT FILE → CTLD_userConfig.lua (généré depuis votre ctld-config.yaml)
