@@ -1414,6 +1414,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What works, and what does not
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2464,6 +2475,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What works, and what does not
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2567,11 +2589,46 @@
 </tbody>
 </table>
 <hr />
+<h2 id="state">What works, and what does not<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
+<p>Established by reading the code on 2026-08-24 rather than inferred:</p>
+<table>
+<thead>
+<tr>
+<th>What you can do</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build a guardian, give it units and a zone, attach it with <code>start()</code></td>
+<td>works</td>
+</tr>
+<tr>
+<td><strong>Be warned</strong> when a shot targets a protected unit inside the zone</td>
+<td>works</td>
+</tr>
+<tr>
+<td>Have the missile destroyed in flight</td>
+<td><strong>not implemented</strong> — there is no watchdog at all, and <code>veafMissileGuardian.getLargeScaleProtector()</code> is a stub returning <code>nil</code></td>
+</tr>
+<tr>
+<td><code>veafMissileGuardian.AddGuardian</code> / <code>ActivateGuardian</code> / <code>DesactivateGuardian</code></td>
+<td><strong>refuse</strong>: the module has no guardian storage, and the class has neither <code>activate</code> nor <code>desactivate</code>. They warn in the DCS log instead of raising</td>
+</tr>
+<tr>
+<td>List guardians from the radio menu</td>
+<td><strong>not implemented</strong>: the "GUARDIAN" menu holds a Help entry and nothing else</td>
+</tr>
+</tbody>
+</table>
+<p>Up to 6.15.36 the warning to the pilot was followed by a <strong>Lua error on every shot</strong> (the missing
+protector), and the three verbs above raised on a function that was never written. So the one behaviour
+this page describes — warning the target — is now complete, and the rest is explicitly refused rather
+than silently broken.</p>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>The module is experimental: actual missile destruction is not yet implemented</li>
 <li>A guardian only warns targets inside its protected zone when a shot is detected</li>
-<li>Internal classes: <code>VeafMG_Weapon</code> (weapon in flight), <code>VeafMG_Guardian</code> (observer), <code>VeafMG_Protector</code> (protector, stub)</li>
+<li>Internal classes: <code>VeafMG_Weapon</code> (weapon in flight), <code>VeafMG_Guardian</code> (observer), <code>VeafMG_Protector</code> (protector, stub: its <code>start()</code> and <code>stop()</code> have empty bodies)</li>
 </ul>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

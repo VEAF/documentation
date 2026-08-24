@@ -1414,6 +1414,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui marche, et ce qui ne marche pas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2464,6 +2475,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui marche, et ce qui ne marche pas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2567,11 +2589,46 @@
 </tbody>
 </table>
 <hr />
+<h2 id="state">Ce qui marche, et ce qui ne marche pas<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
+<p>Établi en lisant le code le 2026-08-24, plutôt que déduit :</p>
+<table>
+<thead>
+<tr>
+<th>Ce que vous pouvez faire</th>
+<th>État</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Construire un gardien, lui donner des unités et une zone, l'attacher avec <code>start()</code></td>
+<td>fonctionne</td>
+</tr>
+<tr>
+<td><strong>Être averti</strong> quand un tir vise une unité protégée dans la zone</td>
+<td>fonctionne</td>
+</tr>
+<tr>
+<td>Faire détruire le missile en vol</td>
+<td><strong>pas implémenté</strong> — il n'y a aucun watchdog, et <code>veafMissileGuardian.getLargeScaleProtector()</code> est une ébauche qui renvoie <code>nil</code></td>
+</tr>
+<tr>
+<td><code>veafMissileGuardian.AddGuardian</code> / <code>ActivateGuardian</code> / <code>DesactivateGuardian</code></td>
+<td><strong>refusent</strong> : le module n'a pas de stockage de gardiens, et la classe n'a ni <code>activate</code> ni <code>desactivate</code>. Elles écrivent un avertissement dans le journal DCS au lieu de planter</td>
+</tr>
+<tr>
+<td>Lister les gardiens depuis le menu radio</td>
+<td><strong>pas implémenté</strong> : le menu « GUARDIAN » ne contient qu'une entrée d'aide</td>
+</tr>
+</tbody>
+</table>
+<p>Jusqu'à la 6.15.36, l'avertissement au pilote était suivi d'une <strong>erreur Lua à chaque tir</strong> (le protecteur
+manquant), et les trois verbes ci-dessus plantaient sur une fonction qui n'avait jamais été écrite. Le
+comportement que cette page décrit — avertir la cible — est donc désormais complet ; le reste est
+explicitement refusé plutôt que silencieusement cassé.</p>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Le module est expérimental : la destruction effective des missiles n'est pas encore implémentée</li>
 <li>Un gardien n'avertit que les cibles présentes dans sa zone protégée lorsqu'un tir est détecté</li>
-<li>Classes internes : <code>VeafMG_Weapon</code> (arme en vol), <code>VeafMG_Guardian</code> (observateur), <code>VeafMG_Protector</code> (protecteur, ébauche)</li>
+<li>Classes internes : <code>VeafMG_Weapon</code> (arme en vol), <code>VeafMG_Guardian</code> (observateur), <code>VeafMG_Protector</code> (protecteur, ébauche : ses méthodes <code>start()</code> et <code>stop()</code> ont un corps vide)</li>
 </ul>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
