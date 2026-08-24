@@ -3904,7 +3904,23 @@ years without it being implemented; it is now.</p>
 were knowingly relying on order so that a broad plan masked a specific one, that specific plan now
 applies.</p>
 </div>
-<p>Only <strong>human-piloted</strong> groups receive waypoints.</p>
+<p>Only <strong>human-piloted</strong> groups receive waypoints — and since 6.15.43, <strong>all</strong> of them do.</p>
+<div class="admonition warning">
+<p class="admonition-title">Before 6.15.43 your flight plan reached almost no slot</p>
+<p>The waypoints step ran <strong>before</strong> aircraft injection (<code>spawnables.yaml</code>,
+<code>dynamic-slot-templates.yaml</code>). The slots those files create did not exist yet when the waypoints
+were injected.</p>
+<p>Measured on this repository's smoke-test mission: <strong>105</strong> human-piloted groups, exactly <strong>1</strong> carrying
+a waypoint from the plan — the one already in the source <code>.miz</code>. At the corrected position: <strong>105 of
+105</strong>.</p>
+<p>This was never only about an automatic bullseye: it was your <em>declared</em> flight plan, applied to a
+handful of slots and nothing else. And the build did not say so — it reported "1 injected, 0 without a
+plan", which is accurate and reads perfectly healthy. The count was taken before the world was
+finished.</p>
+<p><strong>What changes for you</strong>: if your mission uses dynamic slots or spawnable aircraft, your declared
+waypoints now reach those slots — which is what you were asking for already. If your mission only has
+slots placed in the editor, nothing changes.</p>
+</div>
 <h2 id="design-time-tools">Design-Time Tools<a class="headerlink" href="#design-time-tools" title="Permanent link">&para;</a></h2>
 <p><code>veaf-tools.exe</code> manipulates <code>.miz</code> files at build time — before loading them in DCS.</p>
 <blockquote>
