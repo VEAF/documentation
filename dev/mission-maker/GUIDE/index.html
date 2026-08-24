@@ -933,6 +933,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Configurer le pipeline de build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flight-plan-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quel plan de vol pour quel appareil ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3117,6 +3134,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Configurer le pipeline de build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flight-plan-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quel plan de vol pour quel appareil ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3645,7 +3679,7 @@
 │   ├── warehouses.yaml          # Dynamic Slots par coalition (étape warehouses, optionnel)
 │   ├── spawn-groups.yaml        # Extension/override de la base de spawn (étape spawn_data, optionnel)
 │   ├── versions.yaml            # Variantes météo/horaires (étape weather)
-│   └── waypoints.yaml           # Bullseye / points de navigation (étape waypoints)
+│   └── waypoints.yaml           # Points de navigation par plan de vol (étape waypoints)
 ├── published/                    # Scripts &amp; outils VEAF (auto-installés)
 ├── mission.yaml                  # Configuration de build
 ├── .gitignore                    # Exclut les fichiers générés/téléchargés
@@ -3839,6 +3873,39 @@ Sans le hook, personne n'a de niveau et tout retombe sur les mots de passe.</p>
 </code></pre></div>
 <p>Voir la <a href="../../PIPELINE_REFERENCE/">Référence Pipeline</a> pour le schéma complet de chaque étape et la <a href="../../MISSION_YAML_REFERENCE/#pipeline">Référence mission.yaml</a> pour tous les champs de <code>pipeline:</code>.</p>
 <hr />
+<h3 id="flight-plan-matching">Quel plan de vol pour quel appareil ?<a class="headerlink" href="#flight-plan-matching" title="Permanent link">&para;</a></h3>
+<p><code>src/waypoints.yaml</code> déclare des <strong>plans de vol</strong>, chacun avec des critères : coalition, catégorie
+(<code>plane</code> / <code>helicopter</code>), type d'appareil, pays. Les critères qu'un plan ne pose pas sont des jokers.</p>
+<blockquote>
+<p><strong>Le plan le plus précis gagne.</strong> Parmi ceux qui correspondent, celui qui pose le <strong>plus</strong> de critères
+est retenu — où qu'il soit écrit dans le fichier.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="nt">settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">all_blue_planes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span>
+<span class="w">    </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plane</span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">}</span>
+
+<span class="w">  </span><span class="nt">f16_flight_plan</span><span class="p">:</span><span class="w">          </span><span class="c1"># plus précis : il nomme aussi le type</span>
+<span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span>
+<span class="w">    </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plane</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">F-16C_50</span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>Un F-16C bleu correspond aux deux et reçoit <code>f16_flight_plan</code>. Un autre avion bleu reçoit
+<code>all_blue_planes</code>. Un plan <strong>sans aucun critère</strong> est le repli : il correspond à tout et perd contre
+tout. L'ordre de déclaration ne tranche qu'une <strong>égalité</strong> de précision, et seulement dans ce cas.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ce comportement a changé en 6.15.42</p>
+<p>Avant, c'était le <strong>premier</strong> plan compatible qui gagnait, donc l'ordre de déclaration décidait — et
+un plan précis écrit après un plan large était inatteignable. Ce fichier et le code annonçaient tous
+deux la règle de précision depuis des années sans qu'elle soit implémentée ; c'est elle qui l'est
+désormais.</p>
+<p>Si vous aviez rangé vos plans du plus étroit au plus large pour contourner le problème, <strong>rien ne
+change pour vous</strong>. Si vous vous appuyiez sciemment sur l'ordre pour qu'un plan large en masque un
+précis, ce plan précis va maintenant s'appliquer.</p>
+</div>
+<p>Seuls les groupes <strong>pilotés par un humain</strong> reçoivent des waypoints.</p>
 <h2 id="outils-de-conception">Outils de conception<a class="headerlink" href="#outils-de-conception" title="Permanent link">&para;</a></h2>
 <p><code>veaf-tools.exe</code> manipule les fichiers <code>.miz</code> au moment du build — avant de les charger dans DCS.</p>
 <blockquote>
