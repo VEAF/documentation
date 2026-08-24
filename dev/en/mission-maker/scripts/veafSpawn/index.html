@@ -1833,6 +1833,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#beacon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn a radio beacon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#destroy-units" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2769,6 +2780,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#beacon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn a radio beacon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#destroy-units" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3030,6 +3052,54 @@ _spawn smoke, color green, shells 5
 <h3 id="spawn-a-farp">Spawn a FARP<a class="headerlink" href="#spawn-a-farp" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_spawn farp, name &quot;FARP Alpha&quot;, side blue
 </code></pre></div>
+<h3 id="beacon">Spawn a radio beacon<a class="headerlink" href="#beacon" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_spawn beacon
+_spawn beacon, name &quot;Alpha Beacon&quot;, side red
+-beacon
+</code></pre></div>
+<p>One command places <strong>three</strong> beacons at the same spot — ADF (VHF), UHF and <strong>FM</strong> — and the on-screen
+message hands you all three frequencies:</p>
+<div class="highlight"><pre><span></span><code>Radio beacon up — ADF 245.00 kHz · UHF 251.00 MHz · FM 40.50 MHz
+</code></pre></div>
+<p>The beacon goes <strong>exactly where you dropped the marker</strong>, with no scatter, unlike the commands that spawn
+groups.</p>
+<div class="admonition note">
+<p class="admonition-title">CTLD picks the frequencies, not you</p>
+<p>CTLD draws them from its own pools so that two beacons never collide, and it exposes no way to ask
+for a particular one. That is why the command <strong>tells</strong> you them instead of taking them as a
+parameter: a beacon whose frequency nobody knows is of no use.</p>
+<p>An option to request a frequency is proposed upstream
+(<a href="https://github.com/VEAF/CTLD/pull/128">VEAF/CTLD#128</a>); a <code>freq</code> parameter will be added here once
+it lands.</p>
+</div>
+<p><strong>CTLD has to be running</strong> in the mission (<code>modules: CTLD: true</code>); otherwise the command says so rather
+than doing nothing.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>CTLD numbers it ("Beacon #1")</td>
+<td>the beacon's display name</td>
+</tr>
+<tr>
+<td><code>side</code></td>
+<td>blue</td>
+<td>the coalition that hears it</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>0</td>
+<td>scatter around the marker, in metres</td>
+</tr>
+</tbody>
+</table>
 <h3 id="destroy-units">Destroy units<a class="headerlink" href="#destroy-units" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_destroy, radius 500
 _destroy, name Tank-1

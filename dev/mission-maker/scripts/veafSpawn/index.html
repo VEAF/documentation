@@ -1833,6 +1833,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#beacon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faire apparaître une balise radio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#détruire-des-unités" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2769,6 +2780,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#beacon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faire apparaître une balise radio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#détruire-des-unités" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3030,6 +3052,54 @@ _spawn smoke, color green, shells 5
 <h3 id="faire-apparaître-un-farp">Faire apparaître un FARP<a class="headerlink" href="#faire-apparaître-un-farp" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_spawn farp, name &quot;FARP Alpha&quot;, side blue
 </code></pre></div>
+<h3 id="beacon">Faire apparaître une balise radio<a class="headerlink" href="#beacon" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_spawn beacon
+_spawn beacon, name &quot;Balise Alpha&quot;, side red
+-beacon
+</code></pre></div>
+<p>Une seule commande pose <strong>trois</strong> balises au même endroit — ADF (VHF), UHF et <strong>FM</strong> — et le message
+affiché vous donne les trois fréquences :</p>
+<div class="highlight"><pre><span></span><code>Balise radio en place — ADF 245.00 kHz · UHF 251.00 MHz · FM 40.50 MHz
+</code></pre></div>
+<p>La balise est posée <strong>exactement là où vous avez déposé le marqueur</strong>, sans dispersion, contrairement aux
+commandes qui font apparaître des groupes.</p>
+<div class="admonition note">
+<p class="admonition-title">Les fréquences sont choisies par CTLD, pas par vous</p>
+<p>CTLD les tire de ses propres réserves pour éviter les collisions entre balises, et n'expose aucun
+moyen d'en demander une précise. C'est pourquoi la commande <strong>vous les annonce</strong> au lieu de les
+accepter en paramètre : une balise dont personne ne connaît la fréquence ne sert à rien.</p>
+<p>Une option pour demander une fréquence est proposée en amont
+(<a href="https://github.com/VEAF/CTLD/pull/128">VEAF/CTLD#128</a>) ; le jour où elle arrive, un paramètre
+<code>freq</code> sera ajouté ici.</p>
+</div>
+<p>Il faut que <strong>CTLD soit démarré</strong> dans la mission (<code>modules: CTLD: true</code>) : sinon la commande vous le dit
+au lieu de ne rien faire.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>CTLD numérote lui-même (« Beacon #1 »)</td>
+<td>nom affiché de la balise</td>
+</tr>
+<tr>
+<td><code>side</code></td>
+<td>bleu</td>
+<td>coalition qui entend la balise</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>0</td>
+<td>dispersion autour du marqueur, en mètres</td>
+</tr>
+</tbody>
+</table>
 <h3 id="détruire-des-unités">Détruire des unités<a class="headerlink" href="#détruire-des-unités" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_destroy, radius 500
 _destroy, name Tank-1
