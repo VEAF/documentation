@@ -1344,6 +1344,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Order syntax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fire-adjustment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adjusting the fire
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2517,6 +2534,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Order syntax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fire-adjustment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adjusting the fire
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2704,6 +2738,12 @@ before it ever reaches the artillery.</p>
 <td>40</td>
 <td>100 m</td>
 </tr>
+<tr>
+<td><code>correct</code></td>
+<td>Shift the last aim point and fire again</td>
+<td>2</td>
+<td>10 m</td>
+</tr>
 </tbody>
 </table>
 <table>
@@ -2726,6 +2766,10 @@ before it ever reaches the artillery.</p>
 <td><code>radius</code></td>
 <td>Dispersion of the fire, in metres. Also accepts a range.</td>
 </tr>
+<tr>
+<td><code>correction</code></td>
+<td>The offset to apply, for the <code>correct</code> order: <strong>three digits of true bearing then the distance in metres</strong>. <code>09050</code> is 50 m east. <strong>Validated</strong>: an unreadable correction is refused and announced, never guessed.</td>
+</tr>
 </tbody>
 </table>
 <p><strong><code>fire</code> with no <code>target</code> re-engages the last target aimed at</strong> — which is what lets you chain a
@@ -2733,6 +2777,21 @@ ranging order and then the effect without re-entering the coordinates.</p>
 <div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; radius 15-30; target 42 N 42 E
 _ground order, name arty-1, order fire; radius 50-150; shells 40-80
 </code></pre></div>
+<h3 id="fire-adjustment">Adjusting the fire<a class="headerlink" href="#fire-adjustment" title="Permanent link">&para;</a></h3>
+<p>A battery remembers <strong>the last point it aimed at</strong>, and <code>correct</code> shifts that point. This is the classic
+adjustment loop: fire, watch where the rounds land, call the correction in.</p>
+<div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; target 42 N 42 E
+_ground order, name arty-1, order correct; correction 09050
+_ground order, name arty-1, order fire; shells 40-80
+</code></pre></div>
+<p>The bearing is <strong>always written as three digits</strong>, because <code>090</code> and <code>90</code> would be the same string once
+the distance is appended: <code>09050</code> is 50 m east, whereas <code>9050</code> would read as a bearing of 905 and be
+refused.</p>
+<p>Two corrections <strong>compound</strong>: two <code>09050</code> in a row and the aim point has moved 100 m east. A later
+<code>fire</code> with no target then fires at the corrected point — it is the one aim point both orders share.</p>
+<p>A correction is refused, and the refusal is announced to the pilot, in two cases: when it cannot be read
+(the message then recalls the expected form), and when the battery has <strong>no fire mission</strong> to correct —
+firing at the offset alone would put the rounds wherever the battery happens to stand.</p>
 <hr />
 <h2 id="aliases">The shipped aliases<a class="headerlink" href="#aliases" title="Permanent link">&para;</a></h2>
 <p><code>veafShortcuts</code> ships ready-made shortcuts, and they are how most pilots use this module:</p>
@@ -2781,6 +2840,8 @@ after, and they complete the order.</p>
   (<code>veafGroundAI.add</code> / <code>.remove</code> / <code>.get</code> take any named handler), but no other one ships.</li>
 <li><strong>The 250-metre search radius is not configurable.</strong></li>
 <li>Orders go through the F10 map only: <strong>this module has no radio menu</strong>.</li>
+<li><strong>A correction has no automatic spotter</strong>: the pilot is the one who watches where the rounds land and calls the offset in. The module does not measure the miss
+  itself.</li>
 </ul>
 <hr />
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

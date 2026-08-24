@@ -1344,6 +1344,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="La syntaxe des ordres">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fire-adjustment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le réglage du tir
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2517,6 +2534,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="La syntaxe des ordres">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fire-adjustment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le réglage du tir
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2706,6 +2740,12 @@ est découpé par le marqueur avant d'atteindre l'artillerie.</p>
 <td>40</td>
 <td>100 m</td>
 </tr>
+<tr>
+<td><code>correct</code></td>
+<td>Décale le dernier point visé et retire dessus</td>
+<td>2</td>
+<td>10 m</td>
+</tr>
 </tbody>
 </table>
 <table>
@@ -2728,6 +2768,10 @@ est découpé par le marqueur avant d'atteindre l'artillerie.</p>
 <td><code>radius</code></td>
 <td>Dispersion du tir, en mètres. Accepte aussi une plage.</td>
 </tr>
+<tr>
+<td><code>correction</code></td>
+<td>Le décalage à appliquer, pour l'ordre <code>correct</code> : <strong>trois chiffres de cap vrai puis la distance en mètres</strong>. <code>09050</code> vaut 50 m à l'est. <strong>Validé</strong> : une correction illisible est refusée et annoncée, jamais devinée.</td>
+</tr>
 </tbody>
 </table>
 <p><strong><code>fire</code> sans <code>target</code> tire à nouveau sur la dernière cible visée</strong> — c'est ce qui permet d'enchaîner un
@@ -2735,6 +2779,20 @@ réglage puis l'efficacité sans redonner les coordonnées.</p>
 <div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; radius 15-30; target 42 N 42 E
 _ground order, name arty-1, order fire; radius 50-150; shells 40-80
 </code></pre></div>
+<h3 id="fire-adjustment">Le réglage du tir<a class="headerlink" href="#fire-adjustment" title="Permanent link">&para;</a></h3>
+<p>Une batterie retient <strong>le dernier point qu'elle a visé</strong>, et <code>correct</code> décale ce point. C'est la boucle
+de réglage classique : on tire, on observe où les obus tombent, on annonce la correction.</p>
+<div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; target 42 N 42 E
+_ground order, name arty-1, order correct; correction 09050
+_ground order, name arty-1, order fire; shells 40-80
+</code></pre></div>
+<p>Le cap s'écrit <strong>toujours sur trois chiffres</strong>, parce que <code>090</code> et <code>90</code> seraient la même chaîne une fois
+la distance collée derrière : <code>09050</code> c'est 50 m à l'est, <code>9050</code> serait lu comme un cap de 905 et refusé.</p>
+<p>Deux corrections se <strong>cumulent</strong> : deux fois <code>09050</code>, et le point visé a bougé de 100 m vers l'est.
+<code>fire</code> sans cible, ensuite, tire à l'endroit corrigé — c'est le même point visé pour les deux ordres.</p>
+<p>La correction est refusée, et le refus est annoncé au pilote, dans deux cas : quand elle est illisible
+(le message rappelle alors la forme attendue), et quand la batterie n'a <strong>aucun tir en cours</strong> à corriger
+— tirer sur le seul décalage mettrait les obus là où la batterie se trouve.</p>
 <hr />
 <h2 id="aliases">Les alias fournis<a class="headerlink" href="#aliases" title="Permanent link">&para;</a></h2>
 <p><code>veafShortcuts</code> livre des raccourcis prêts à l'emploi, et c'est par eux que la plupart des pilotes
@@ -2785,6 +2843,8 @@ coordonnées juste après, et elles complètent l'ordre.</p>
   aucun autre n'est livré.</li>
 <li><strong>Le rayon de recherche de 250 mètres n'est pas configurable.</strong></li>
 <li>Les ordres passent par la carte F10 uniquement : <strong>ce module n'a pas de menu radio</strong>.</li>
+<li><strong>La correction n'a pas d'observateur automatique</strong> : c'est le pilote qui regarde où les obus tombent et qui annonce le décalage. Le module ne mesure pas l'écart
+  lui-même.</li>
 </ul>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
