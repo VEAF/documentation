@@ -1120,6 +1120,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#csar-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making an ejection cost something: csarMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#loading-order-in-the-dcs-trigger-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3282,6 +3293,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#csar-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making an ejection cost something: csarMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#loading-order-in-the-dcs-trigger-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4153,6 +4175,51 @@ up-to-date version — or, if you cannot rebuild right away, add this line to yo
 <div class="admonition note">
 <p class="admonition-title"><code>CSAR.lua</code> is not modified</p>
 <p>The CSAR script is a vendored third-party component; fixing it in place would be erased by its next update. VEAF replaces <code>csar.addCsar</code> from its own code, as it already replaces CSAR's loggers.</p>
+</div>
+<h3 id="csar-mode">Making an ejection cost something: <code>csarMode</code><a class="headerlink" href="#csar-mode" title="Permanent link">&para;</a></h3>
+<p>CSAR can charge a pilot for ejecting, so that crashing is not free. It is a <code>settings:</code> value like any
+other:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">settings</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">csarMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">disableTimeoutTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">   </span><span class="c1"># in minutes, for modes 1 and 2</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th><code>csarMode</code></th>
+<th>What the pilot loses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code> (default)</td>
+<td>nothing</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><strong>his aircraft is unavailable to everyone</strong> for <code>disableTimeoutTime</code> minutes</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>that same aircraft is barred to him alone; others may still take it</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>he loses one of his lives</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">One case where modes 1 and 2 do not apply</p>
+<p>Modes 1 and 2 lock <strong>one specific aircraft</strong>, named by its DCS identifier. When the pilot has
+ejected and his aircraft is already gone from the world, that identifier no longer exists, so the
+sanction is <strong>skipped</strong> — and the DCS log says so (<code>csarMode … the sanction is skipped</code>).</p>
+<p>That is a deliberate refusal rather than a default: locking an arbitrary aircraft would ground a
+pilot who did nothing. Mode <code>3</code> does not have the problem — it depends only on the player's name —
+and always applies.</p>
 </div>
 <h3 id="loading-order-in-the-dcs-trigger-chain">Loading order in the DCS trigger chain<a class="headerlink" href="#loading-order-in-the-dcs-trigger-chain" title="Permanent link">&para;</a></h3>
 <p>The build produces this chain for you; it is written out here so you can read it back in the Mission Editor:</p>

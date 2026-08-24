@@ -1120,6 +1120,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#csar-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sanctionner une éjection : csarMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ordre-de-chargement-dans-la-chaîne-de-triggers-dcs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3282,6 +3293,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#csar-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sanctionner une éjection : csarMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ordre-de-chargement-dans-la-chaîne-de-triggers-dcs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4153,6 +4175,51 @@ tout de suite, ajoutez cette ligne dans votre <code>src/scripts/mission-script.l
 <div class="admonition note">
 <p class="admonition-title"><code>CSAR.lua</code> n'est pas modifié</p>
 <p>Le script CSAR est un composant tiers embarqué : le corriger sur place serait effacé à sa prochaine mise à jour. VEAF remplace <code>csar.addCsar</code> depuis son propre code, comme il remplace déjà les journaux de CSAR.</p>
+</div>
+<h3 id="csar-mode">Sanctionner une éjection : <code>csarMode</code><a class="headerlink" href="#csar-mode" title="Permanent link">&para;</a></h3>
+<p>CSAR peut faire payer une éjection, pour que se crasher ne soit pas gratuit. C'est un réglage
+<code>settings:</code> comme un autre :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">settings</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">csarMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">disableTimeoutTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">   </span><span class="c1"># en minutes, pour les modes 1 et 2</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th><code>csarMode</code></th>
+<th>Ce que le pilote perd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code> (défaut)</td>
+<td>rien</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><strong>son appareil est indisponible pour tout le monde</strong> pendant <code>disableTimeoutTime</code> minutes</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>le même appareil lui est interdit à lui seul, les autres peuvent le prendre</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>il perd une de ses vies</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Un cas où les modes 1 et 2 ne s'appliquent pas</p>
+<p>Les modes 1 et 2 verrouillent <strong>un appareil précis</strong>, désigné par son identifiant DCS. Quand le
+pilote s'est éjecté et que son appareil a déjà disparu du monde, cet identifiant n'existe plus :
+la sanction est alors <strong>passée</strong>, et le journal DCS le dit (<code>csarMode … the sanction is skipped</code>).</p>
+<p>Ce n'est pas un choix par défaut mais un refus délibéré : verrouiller un appareil au hasard
+priverait de son avion un pilote qui n'a rien fait. Le mode <code>3</code> n'a pas ce problème — il ne
+dépend que du nom du joueur — et s'applique toujours.</p>
 </div>
 <h3 id="ordre-de-chargement-dans-la-chaîne-de-triggers-dcs">Ordre de chargement dans la chaîne de triggers DCS<a class="headerlink" href="#ordre-de-chargement-dans-la-chaîne-de-triggers-dcs" title="Permanent link">&para;</a></h3>
 <p>Le build produit cette chaîne pour vous ; elle est décrite ici pour que vous puissiez la relire dans l'éditeur de mission :</p>
