@@ -1878,6 +1878,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#welcome-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accueil à la prise de slot
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#voir-aussi" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2653,6 +2664,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#welcome-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accueil à la prise de slot
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#voir-aussi" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2857,6 +2879,33 @@ sont interchangeables ; c'est le mot qui suit qui choisit l'action :</p>
 </tbody>
 </table>
 <p>Le nom de la constante est insensible à la casse (sans le préfixe <code>veafWeather.</code>).</p>
+<hr />
+<h2 id="welcome-brief">Accueil à la prise de slot<a class="headerlink" href="#welcome-brief" title="Permanent link">&para;</a></h2>
+<p>Quand un pilote prend un slot, il reçoit quelques secondes plus tard un message court : le terrain le plus
+proche, la <strong>piste en service</strong> déduite du vent, et la météo du moment.</p>
+<div class="highlight"><pre><span></span><code>Bienvenue à Kobuleti — piste en service 13
+WIND 270/10 QNH 1013 ...
+</code></pre></div>
+<p>Le message va <strong>à son groupe seulement</strong>, pas à la coalition : il parle de <em>son</em> terrain, et diffusé à
+tout le monde il deviendrait du bruit dès que deux pilotes prennent des slots sur des bases différentes.</p>
+<p>Quelques choix à connaître :</p>
+<ul>
+<li><strong>Il est différé de quelques secondes.</strong> Un pilote qui vient d'entrer dans son appareil charge encore
+  son cockpit ; un message affiché à cet instant est un message qu'il ne lit pas.</li>
+<li><strong>Il se répète à chaque prise de slot.</strong> Un pilote qui change de terrain veut la piste du nouveau
+  terrain, et « une fois par session » retiendrait justement l'information qui a changé.</li>
+<li><strong>Un porte-avions n'a pas de piste en service</strong> — il se met au vent, donc la piste est mobile. Il
+  annonce à la place son <strong>cap actuel (vrai)</strong>, dans les mêmes termes que l'ATC du groupe aéronaval.
+  Une <strong>hélisurface</strong> n'a ni l'un ni l'autre : elle donne la météo seule.</li>
+<li>Le rapport <strong>complet</strong> (ATIS) reste disponible dans le menu radio. L'accueil est volontairement plus
+  court : un message qui remplit l'écran à chaque changement de slot cesse d'être lu.</li>
+</ul>
+<p>Pour le désactiver — par exemple si votre mission fait son propre briefing :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">WEATHER</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">welcomeBrief</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>
