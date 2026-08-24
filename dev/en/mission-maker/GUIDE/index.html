@@ -945,6 +945,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Which flight plan for which aircraft?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-bullseye" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The bullseye, injected for you
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3146,6 +3163,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Which flight plan for which aircraft?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-bullseye" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The bullseye, injected for you
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3921,6 +3955,29 @@ finished.</p>
 waypoints now reach those slots — which is what you were asking for already. If your mission only has
 slots placed in the editor, nothing changes.</p>
 </div>
+<h4 id="automatic-bullseye">The bullseye, injected for you<a class="headerlink" href="#automatic-bullseye" title="Permanent link">&para;</a></h4>
+<p>Since 6.15.44, every flight plan also receives a <strong><code>BULLSEYE</code></strong> waypoint at <strong>your mission's own</strong>
+bullseye coordinates — no need to declare it, and no risk of copying another map's.</p>
+<p>The coalition is honoured: a <strong>red</strong> flight gets the red bullseye, <strong>everything else</strong> gets the blue one.
+That is the same rule the VEAF scripts have applied in game since
+<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/304">#304</a>, and it is not a shortcut: in real
+missions the "neutral" bullseye is often <code>{0, 0}</code> or <code>{100, 100}</code>, so a neutral flight would be sent to
+the map origin.</p>
+<p>The waypoint is <strong>appended</strong> to the plan, so your existing points keep their numbers.</p>
+<div class="admonition note">
+<p class="admonition-title">Your own declaration always wins</p>
+<p>If your flight plan already declares a waypoint named <code>BULLSEYE</code>, <strong>yours</strong> is used, with your
+coordinates. Nothing is added and nothing is replaced.</p>
+</div>
+<p>To turn it off:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">waypoints</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">bullseye</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>And it only applies to missions that already inject waypoints: a mission <strong>without</strong> a
+<code>src/waypoints.yaml</code> is untouched, and a group no flight plan matches receives nothing — the bullseye
+rides along with a plan, it does not create one.</p>
+<p>The build tells you how many it added.</p>
 <h2 id="design-time-tools">Design-Time Tools<a class="headerlink" href="#design-time-tools" title="Permanent link">&para;</a></h2>
 <p><code>veaf-tools.exe</code> manipulates <code>.miz</code> files at build time — before loading them in DCS.</p>
 <blockquote>
