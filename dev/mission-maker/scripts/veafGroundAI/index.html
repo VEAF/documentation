@@ -1348,6 +1348,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#coordinate-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les formats de coordonnées acceptés
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#fire-adjustment" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2538,6 +2549,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#coordinate-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les formats de coordonnées acceptés
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#fire-adjustment" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2758,7 +2780,7 @@ est découpé par le marqueur avant d'atteindre l'artillerie.</p>
 <tbody>
 <tr>
 <td><code>target</code></td>
-<td>Coordonnées de l'objectif. <strong>Validées</strong> : une chaîne que le module ne sait pas lire est ignorée, et l'ordre se plaint de ne pas avoir de cible.</td>
+<td>Coordonnées de l'objectif (<a href="#coordinate-formats">les formats acceptés</a>). <strong>Validées</strong> : une chaîne que le module ne sait pas lire est ignorée, et l'ordre se plaint de ne pas avoir de cible.</td>
 </tr>
 <tr>
 <td><code>shells</code></td>
@@ -2779,6 +2801,71 @@ réglage puis l'efficacité sans redonner les coordonnées.</p>
 <div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; radius 15-30; target 42 N 42 E
 _ground order, name arty-1, order fire; radius 50-150; shells 40-80
 </code></pre></div>
+<h3 id="coordinate-formats">Les formats de coordonnées acceptés<a class="headerlink" href="#coordinate-formats" title="Permanent link">&para;</a></h3>
+<p>Un <code>target</code> accepte toutes ces formes. Elles valent <strong>partout où VEAF lit une coordonnée</strong> — zones
+AirWaves, points nommés, QRA, alias — parce qu'un seul lecteur les traite toutes.</p>
+<table>
+<thead>
+<tr>
+<th>Ce que vous écrivez</th>
+<th>Ce que c'est</th>
+<th>Précision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>37T GG 12345 12345</code></td>
+<td>MGRS <strong>tel que DCS l'affiche</strong></td>
+<td>1 m</td>
+</tr>
+<tr>
+<td><code>37TGG12345678</code></td>
+<td>le même, sans les espaces</td>
+<td>10 m</td>
+</tr>
+<tr>
+<td><code>u37TGG123456</code></td>
+<td>l'ancienne syntaxe VEAF, toujours valable</td>
+<td>100 m</td>
+</tr>
+<tr>
+<td><code>N42:30:15E041:45:30</code></td>
+<td>degrés, minutes, secondes</td>
+<td>~30 m</td>
+</tr>
+<tr>
+<td><code>N42 30 15 E041 45 30</code></td>
+<td>les mêmes, séparés par des espaces</td>
+<td>~30 m</td>
+</tr>
+<tr>
+<td><code>N42°30'15"E041°45'30"</code></td>
+<td>les mêmes, avec les symboles</td>
+<td>~30 m</td>
+</tr>
+<tr>
+<td><code>N42:30.5E041:45.5</code></td>
+<td>degrés et minutes décimales</td>
+<td>~2 m</td>
+</tr>
+<tr>
+<td><code>N42.50416E041.75833</code></td>
+<td>degrés décimaux</td>
+<td>~1 m</td>
+</tr>
+<tr>
+<td><code>N42E041</code></td>
+<td>degrés entiers</td>
+<td>~100 km</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Le nombre de chiffres MGRS est la précision</strong> : deux chiffres de chaque côté valent 10 km, cinq valent
+le mètre. Un nombre <strong>impair</strong> de chiffres est refusé plutôt que deviné — c'est une faute de frappe, et
+la couper en deux produirait une position que personne n'a demandée.</p>
+<p><code>S</code> et <code>W</code> donnent les valeurs négatives. La casse est libre.</p>
+<p><strong>Le conseil pratique</strong> : lisez les coordonnées sur votre propre écran et recopiez-les telles quelles. Le
+format MGRS que DCS affiche est accepté sans retouche, et c'est le moins susceptible d'être mal recopié.</p>
 <h3 id="fire-adjustment">Le réglage du tir<a class="headerlink" href="#fire-adjustment" title="Permanent link">&para;</a></h3>
 <p>Une batterie retient <strong>le dernier point qu'elle a visé</strong>, et <code>correct</code> décale ce point. C'est la boucle
 de réglage classique : on tire, on observe où les obus tombent, on annonce la correction.</p>

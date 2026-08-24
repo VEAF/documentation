@@ -1348,6 +1348,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#coordinate-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The coordinate formats accepted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#fire-adjustment" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2538,6 +2549,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#coordinate-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The coordinate formats accepted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#fire-adjustment" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2756,7 +2778,7 @@ before it ever reaches the artillery.</p>
 <tbody>
 <tr>
 <td><code>target</code></td>
-<td>The target's coordinates. <strong>Validated</strong>: a string the module cannot read is ignored, and the order complains that it has no target.</td>
+<td>The target's coordinates (<a href="#coordinate-formats">the accepted formats</a>). <strong>Validated</strong>: a string the module cannot read is ignored, and the order complains that it has no target.</td>
 </tr>
 <tr>
 <td><code>shells</code></td>
@@ -2777,6 +2799,71 @@ ranging order and then the effect without re-entering the coordinates.</p>
 <div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; radius 15-30; target 42 N 42 E
 _ground order, name arty-1, order fire; radius 50-150; shells 40-80
 </code></pre></div>
+<h3 id="coordinate-formats">The coordinate formats accepted<a class="headerlink" href="#coordinate-formats" title="Permanent link">&para;</a></h3>
+<p>A <code>target</code> accepts any of these. They work <strong>anywhere VEAF reads a coordinate</strong> — AirWaves zones, named
+points, QRAs, aliases — because one reader handles them all.</p>
+<table>
+<thead>
+<tr>
+<th>What you write</th>
+<th>What it is</th>
+<th>Precision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>37T GG 12345 12345</code></td>
+<td>MGRS <strong>exactly as DCS displays it</strong></td>
+<td>1 m</td>
+</tr>
+<tr>
+<td><code>37TGG12345678</code></td>
+<td>the same, without the spaces</td>
+<td>10 m</td>
+</tr>
+<tr>
+<td><code>u37TGG123456</code></td>
+<td>the older VEAF syntax, still valid</td>
+<td>100 m</td>
+</tr>
+<tr>
+<td><code>N42:30:15E041:45:30</code></td>
+<td>degrees, minutes, seconds</td>
+<td>~30 m</td>
+</tr>
+<tr>
+<td><code>N42 30 15 E041 45 30</code></td>
+<td>the same, separated by spaces</td>
+<td>~30 m</td>
+</tr>
+<tr>
+<td><code>N42°30'15"E041°45'30"</code></td>
+<td>the same, with the symbols</td>
+<td>~30 m</td>
+</tr>
+<tr>
+<td><code>N42:30.5E041:45.5</code></td>
+<td>degrees and decimal minutes</td>
+<td>~2 m</td>
+</tr>
+<tr>
+<td><code>N42.50416E041.75833</code></td>
+<td>decimal degrees</td>
+<td>~1 m</td>
+</tr>
+<tr>
+<td><code>N42E041</code></td>
+<td>whole degrees</td>
+<td>~100 km</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The MGRS digit count is the precision</strong>: two digits a side is 10 km, five is one metre. An <strong>odd</strong> digit
+count is refused rather than guessed — it is a typo, and halving it would produce a position nobody asked
+for.</p>
+<p><code>S</code> and <code>W</code> give the negative values. Case does not matter.</p>
+<p><strong>The practical advice</strong>: read the coordinates off your own screen and copy them as they are. The MGRS form
+DCS shows is accepted untouched, and it is the hardest to mis-transcribe.</p>
 <h3 id="fire-adjustment">Adjusting the fire<a class="headerlink" href="#fire-adjustment" title="Permanent link">&para;</a></h3>
 <p>A battery remembers <strong>the last point it aimed at</strong>, and <code>correct</code> shifts that point. This is the classic
 adjustment loop: fire, watch where the rounds land, call the correction in.</p>
