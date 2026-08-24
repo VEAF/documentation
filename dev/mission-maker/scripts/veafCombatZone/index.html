@@ -1479,6 +1479,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nom des groupes créés
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constantes-du-module" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3041,6 +3052,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nom des groupes créés
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constantes-du-module" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3775,6 +3797,51 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 <p>Si la zone est désactivée pendant que le délai court, le groupe qui apparaît ensuite est détruit immédiatement — rien ne pouvant annuler une apparition déjà planifiée, c'est le résultat que la désactivation aurait produit.</p>
 </blockquote>
 <p>À noter : <code>#spawndelay</code> n'a jamais eu ce problème, parce qu'il retarde l'apparition de l'élément de zone lui-même, qui s'enregistre au passage.</p>
+<hr />
+<h2 id="group-naming">Nom des groupes créés<a class="headerlink" href="#group-naming" title="Permanent link">&para;</a></h2>
+<p>Un groupe créé par une zone de combat n'a pas le nom que vous avez donné dans l'éditeur. Il ressemble à
+ceci :</p>
+<div class="highlight"><pre><span></span><code>[r]-Hydra Unit#10230
+</code></pre></div>
+<p>Trois parties, dont deux sont là pour de bon :</p>
+<table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Rôle</th>
+<th>Réglable ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[r]</code> / <code>[b]</code> / <code>[n]</code></td>
+<td>la coalition du groupe</td>
+<td>non</td>
+</tr>
+<tr>
+<td><code>Hydra Unit</code></td>
+<td><strong>un nom inventé</strong>, pas le vôtre</td>
+<td>oui, voir plus bas</td>
+</tr>
+<tr>
+<td><code>#10230</code></td>
+<td>un identifiant unique</td>
+<td>non — DCS exige des noms de groupe uniques</td>
+</tr>
+</tbody>
+</table>
+<p>Le nom inventé est délibéré : sans lui, un joueur lit le contenu d'une zone sur la carte F10 avant d'y
+aller. C'est le réglage <code>veaf.HideNamesFromSpawnedGroups</code>, <strong>actif par défaut</strong>.</p>
+<p>Pour voir les vrais noms — en construction ou en débogage d'une mission :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hide_names_from_spawned_groups</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>Les noms deviennent alors <code>&lt;nom de la zone&gt; [r] &lt;nom réel&gt;#&lt;id&gt;</code>. Le tag de coalition et l'identifiant
+restent dans les deux cas.</p>
+<blockquote>
+<p>Le champ n'existe que depuis la 6.15.34. Avant, le réglage n'était atteignable que par
+<code>module_settings: { veaf.HideNamesFromSpawnedGroups: false }</code>, ce qui marche toujours.</p>
+</blockquote>
 <hr />
 <h2 id="constantes-du-module">Constantes du module<a class="headerlink" href="#constantes-du-module" title="Permanent link">&para;</a></h2>
 <table>

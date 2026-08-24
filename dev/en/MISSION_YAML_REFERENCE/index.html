@@ -3587,6 +3587,13 @@ password silently never works.</p>
 </tbody>
 </table>
 <blockquote>
+<p><strong>A documented field beats a migration leftover.</strong> When a setting now has its own field in
+<code>mission.yaml</code> <strong>and</strong> a <code>module_settings:</code> entry targets the same Lua variable, the <strong>documented
+field</strong> is what applies: the <code>module_settings:</code> entry is dropped, and the build says so, naming both.
+This section is a migration path, not a permanent override — delete the line that is no longer
+needed.</p>
+<p>One setting is in that position today: <code>veaf.HideNamesFromSpawnedGroups</code>, superseded by
+<code>mission.hide_names_from_spawned_groups</code>.</p>
 <p><strong>Where it comes from.</strong> <code>convert-v5</code> fills this section automatically: under v5, half of these
 settings reached neither <code>mission.yaml</code> nor the generated Lua, and nothing reported it. Whatever
 the conversion still cannot carry — a table, a function — is now listed as comments in the

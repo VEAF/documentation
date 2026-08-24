@@ -1479,6 +1479,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawned group names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#module-constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3041,6 +3052,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawned group names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#module-constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3773,6 +3795,49 @@ CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
 <p>If the zone is deactivated while the delay is running, the group that appears afterwards is destroyed straight away — nothing can cancel an already scheduled spawn, so this is the outcome the deactivation would have produced.</p>
 </blockquote>
 <p>Note that <code>#spawndelay</code> never had this problem: it delays the zone element itself, which registers on the way through.</p>
+<hr />
+<h2 id="group-naming">Spawned group names<a class="headerlink" href="#group-naming" title="Permanent link">&para;</a></h2>
+<p>A group a combat zone creates does not carry the name you gave it in the editor. It looks like this:</p>
+<div class="highlight"><pre><span></span><code>[r]-Hydra Unit#10230
+</code></pre></div>
+<p>Three parts, two of which are there to stay:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it is</th>
+<th>Configurable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[r]</code> / <code>[b]</code> / <code>[n]</code></td>
+<td>the group's coalition</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>Hydra Unit</code></td>
+<td><strong>an invented name</strong>, not yours</td>
+<td>yes, see below</td>
+</tr>
+<tr>
+<td><code>#10230</code></td>
+<td>a unique identifier</td>
+<td>no — DCS requires unique group names</td>
+</tr>
+</tbody>
+</table>
+<p>The invented name is deliberate: without it a player reads a zone's contents off the F10 map before
+going anywhere near it. That is <code>veaf.HideNamesFromSpawnedGroups</code>, <strong>on by default</strong>.</p>
+<p>To see the real names — while building or debugging a mission:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hide_names_from_spawned_groups</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>Names then read <code>&lt;zone name&gt; [r] &lt;real name&gt;#&lt;id&gt;</code>. The coalition tag and the identifier stay either way.</p>
+<blockquote>
+<p>The field exists from 6.15.34. Before that the setting was only reachable through
+<code>module_settings: { veaf.HideNamesFromSpawnedGroups: false }</code>, which still works.</p>
+</blockquote>
 <hr />
 <h2 id="module-constants">Module Constants<a class="headerlink" href="#module-constants" title="Permanent link">&para;</a></h2>
 <table>
