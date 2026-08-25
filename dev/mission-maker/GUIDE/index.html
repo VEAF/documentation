@@ -1105,6 +1105,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#getting-ctld-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Où récupérer ctld-tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-fichier-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le fichier de configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#la-langue-de-ctld" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3323,6 +3345,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#getting-ctld-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Où récupérer ctld-tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-fichier-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le fichier de configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#la-langue-de-ctld" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3628,6 +3672,11 @@
 <td>VS Code ou Notepad++</td>
 <td>Édition des fichiers Lua/YAML de configuration</td>
 <td>Recommandé</td>
+</tr>
+<tr>
+<td><code>ctld-tools.exe</code></td>
+<td>Éditeur de la configuration CTLD — <strong>fourni avec CTLD, pas avec VEAF MCT</strong> (<a href="#getting-ctld-tools">où le télécharger</a>)</td>
+<td>Seulement si votre mission utilise CTLD</td>
 </tr>
 </tbody>
 </table>
@@ -4246,6 +4295,22 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>Tout le reste — distances, temporisations, caisses, groupes de troupes, zones, capacités par appareil — vit dans un fichier <strong><code>ctld-config.yaml</code></strong>, à côté de <code>mission.yaml</code> dans votre dossier mission. Vous l'éditez avec <strong><code>ctld-tools.exe</code></strong>, fourni avec CTLD : double-cliquez, l'outil s'ouvre dans votre navigateur, en local, sans installation. Il valide au fil de la saisie et affiche les libellés en clair plutôt que les noms de réglages.</p>
+<h4 id="getting-ctld-tools">Où récupérer <code>ctld-tools</code><a class="headerlink" href="#getting-ctld-tools" title="Permanent link">&para;</a></h4>
+<p>L'outil ne vient <strong>pas</strong> avec VEAF MCT. Il est publié avec CTLD : ouvrez les <a href="https://github.com/VEAF/CTLD/releases">releases de VEAF/CTLD</a> et téléchargez le fichier <code>ctld-tools.exe</code> attaché à la release.</p>
+<div class="admonition warning">
+<p class="admonition-title">Il n'apparaît pas en « Latest release »</p>
+<p>Tant que CTLD 2 n'a pas de version stable, <strong>toutes</strong> ses releases sont publiées en <em>pre-release</em> — la page d'accueil du dépôt n'en affiche donc aucune, et le lien « Releases » est le seul chemin. La plus récente est en haut de la liste.</p>
+</div>
+<p>Prenez la release <strong>qui correspond à la version de CTLD embarquée dans votre VEAF MCT</strong> : l'outil et le moteur évoluent ensemble. Cette version est écrite en clair dans l'entête du script installé chez vous, <code>published/src/scripts/community/CTLD.lua</code> :</p>
+<div class="highlight"><pre><span></span><code>    CTLD.lua - Combined Transport and Logistics Dispatcher for DCS World
+    Version : 2.0.0-rc7
+</code></pre></div>
+<p>(La vôtre peut être plus récente — c'est cette ligne qui fait foi, pas cet exemple.)</p>
+<p>Après chaque mise à jour de VEAF MCT, relisez cette ligne : si la version a changé, retéléchargez <code>ctld-tools.exe</code> depuis la release correspondante. Un décalage n'est pas silencieux — l'outil vous liste les écarts en ouvrant votre fichier (voir plus bas).</p>
+<blockquote>
+<p><strong>Sécurité Windows :</strong> comme pour <code>veaf-tools-updater.exe</code>, Windows peut bloquer un <code>.exe</code> téléchargé depuis Internet. Clic droit → <strong>Propriétés</strong> → cochez <strong>Débloquer</strong> → <strong>OK</strong>.</p>
+</blockquote>
+<h4 id="le-fichier-de-configuration">Le fichier de configuration<a class="headerlink" href="#le-fichier-de-configuration" title="Permanent link">&para;</a></h4>
 <p><code>veaf-tools mission prepare</code> crée ce fichier pour vous quand le modèle choisi active CTLD, pré-rempli avec les valeurs par défaut du moteur. Il n'est jamais écrasé ensuite : c'est votre configuration.</p>
 <p>Au build, VEAF l'injecte dans la mission sous forme d'un <code>CTLD_userConfig.lua</code> chargé juste avant <code>CTLD.lua</code>.</p>
 <div class="admonition warning">

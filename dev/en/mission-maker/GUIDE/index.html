@@ -1105,6 +1105,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#getting-ctld-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where to get ctld-tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The configuration file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ctlds-language" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3323,6 +3345,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#getting-ctld-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where to get ctld-tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The configuration file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ctlds-language" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3628,6 +3672,11 @@
 <td>VS Code or Notepad++</td>
 <td>Editing Lua/YAML config files</td>
 <td>Recommended</td>
+</tr>
+<tr>
+<td><code>ctld-tools.exe</code></td>
+<td>CTLD configuration editor — <strong>shipped with CTLD, not with VEAF MCT</strong> (<a href="#getting-ctld-tools">where to download it</a>)</td>
+<td>Only if your mission uses CTLD</td>
 </tr>
 </tbody>
 </table>
@@ -4243,6 +4292,22 @@ If you need to run a single step in isolation (e.g. inject weather only, without
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>Everything else — distances, timers, crates, troop groups, zones, per-aircraft capabilities — lives in a <strong><code>ctld-config.yaml</code></strong> file next to <code>mission.yaml</code> in your mission folder. You edit it with <strong><code>ctld-tools.exe</code></strong>, shipped with CTLD: double-click it and the tool opens in your browser, locally, with nothing to install. It validates as you type and shows plain-language labels rather than raw setting names.</p>
+<h4 id="getting-ctld-tools">Where to get <code>ctld-tools</code><a class="headerlink" href="#getting-ctld-tools" title="Permanent link">&para;</a></h4>
+<p>The tool does <strong>not</strong> come with VEAF MCT. It is published with CTLD: open the <a href="https://github.com/VEAF/CTLD/releases">VEAF/CTLD releases</a> and download the <code>ctld-tools.exe</code> file attached to the release.</p>
+<div class="admonition warning">
+<p class="admonition-title">It does not show up under \"Latest release\"</p>
+<p>Until CTLD 2 cuts a stable version, <strong>every</strong> one of its releases is published as a <em>pre-release</em> — so the repository landing page shows none of them, and the "Releases" link is the only way in. The most recent one is at the top of the list.</p>
+</div>
+<p>Take the release <strong>matching the CTLD version your VEAF MCT ships</strong>: the tool and the engine move together. That version is written in plain text in the header of the script installed on your machine, <code>published/src/scripts/community/CTLD.lua</code>:</p>
+<div class="highlight"><pre><span></span><code>    CTLD.lua - Combined Transport and Logistics Dispatcher for DCS World
+    Version : 2.0.0-rc7
+</code></pre></div>
+<p>(Yours may be newer — that line is what counts, not this example.)</p>
+<p>After every VEAF MCT update, read that line again: if the version changed, re-download <code>ctld-tools.exe</code> from the matching release. A mismatch is not silent — the tool lists the differences when it opens your file (see below).</p>
+<blockquote>
+<p><strong>Windows security:</strong> as with <code>veaf-tools-updater.exe</code>, Windows may block an <code>.exe</code> downloaded from the internet. Right-click → <strong>Properties</strong> → tick <strong>Unblock</strong> → <strong>OK</strong>.</p>
+</blockquote>
+<h4 id="the-configuration-file">The configuration file<a class="headerlink" href="#the-configuration-file" title="Permanent link">&para;</a></h4>
 <p><code>veaf-tools mission prepare</code> creates the file for you when the chosen template enables CTLD, pre-filled with the engine's own defaults. It is never overwritten afterwards: it is your configuration.</p>
 <p>At build time VEAF injects it into the mission as a <code>CTLD_userConfig.lua</code> loaded immediately before <code>CTLD.lua</code>.</p>
 <div class="admonition warning">
