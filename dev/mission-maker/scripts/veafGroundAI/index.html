@@ -1311,30 +1311,19 @@
   <a href="#marker-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Le marqueur _ground
+        Le marqueur _gc
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Le marqueur _ground">
+    <nav class="md-nav" aria-label="Le marqueur _gc">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#paramètres" class="md-nav__link">
+  <a href="#les-paramètres" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paramètres
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#silent-refusals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quand rien ne semble se passer
+        Les paramètres
       
     </span>
   </a>
@@ -1350,12 +1339,12 @@
   <a href="#order-syntax" class="md-nav__link">
     <span class="md-ellipsis">
       
-        La syntaxe des ordres
+        Les trois ordres
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="La syntaxe des ordres">
+    <nav class="md-nav" aria-label="Les trois ordres">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2523,30 +2512,19 @@
   <a href="#marker-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Le marqueur _ground
+        Le marqueur _gc
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Le marqueur _ground">
+    <nav class="md-nav" aria-label="Le marqueur _gc">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#paramètres" class="md-nav__link">
+  <a href="#les-paramètres" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paramètres
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#silent-refusals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quand rien ne semble se passer
+        Les paramètres
       
     </span>
   </a>
@@ -2562,12 +2540,12 @@
   <a href="#order-syntax" class="md-nav__link">
     <span class="md-ellipsis">
       
-        La syntaxe des ordres
+        Les trois ordres
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="La syntaxe des ordres">
+    <nav class="md-nav" aria-label="Les trois ordres">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2666,7 +2644,7 @@
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
 <p>Donne à un groupe de véhicules au sol un <strong>pilote automatique</strong> que les joueurs commandent depuis la
-carte F10, avec le marqueur <code>_ground</code>. Aujourd'hui un seul type de pilote existe : l'artillerie
+carte F10, avec le marqueur <code>_gc</code>. Aujourd'hui un seul type de pilote existe : l'artillerie
 (<code>ArtilleryUnitHandler</code>), à qui on ordonne de tirer sur des coordonnées — quelques obus pour se
 régler, puis un tir d'efficacité.</p>
 <p>Le module est <strong>actif par défaut</strong> (<code>veaf.registerModule(..., { enable = true }, 190)</code>), et ses
@@ -2680,117 +2658,107 @@ dans <code>veaf-pilots.txt</code>. Un pilote non inscrit doit fournir le mot de 
 <li><code>veafShortcuts</code> — les alias <code>-ai_set</code> et la famille <code>-arty*</code> (facultatif mais c'est l'usage courant)</li>
 </ul>
 <hr />
-<h2 id="marker-command">Le marqueur <code>_ground</code><a class="headerlink" href="#marker-command" title="Permanent link">&para;</a></h2>
-<p>Un pilote place un marqueur sur la carte F10 et écrit son texte. Sept verbes, et <strong><code>name</code> est
-obligatoire pour tous les sept</strong> — c'est le nom du pilote automatique, celui que vous réutiliserez
-pour lui donner ses ordres ensuite.</p>
+<h2 id="marker-command">Le marqueur <code>_gc</code><a class="headerlink" href="#marker-command" title="Permanent link">&para;</a></h2>
+<p><code>_gc</code>, pour <em>ground commander</em>. Un pilote place un marqueur sur la carte F10 et écrit :</p>
+<div class="highlight"><pre><span></span><code>_gc &lt;nom&gt;, &lt;verbe&gt; &lt;valeur&gt;, &lt;paramètre valeur&gt;, ...
+</code></pre></div>
+<p><strong>Le destinataire d'abord</strong>, comme à la radio. Le <code>&lt;nom&gt;</code> est celui que vous donnez au pilote
+automatique — vous le choisissez, et vous le réutilisez pour tous ses ordres.</p>
 <table>
 <thead>
 <tr>
-<th>Verbe</th>
-<th>Ce qu'il fait</th>
+<th>Ce que vous écrivez</th>
+<th>Ce que ça fait</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>_ground set</code> <em>(par défaut)</em></td>
-<td>Attache un pilote automatique nommé à un groupe, et le démarre. Si le nom existe déjà, le groupe est remplacé.</td>
+<td><code>_gc arty-1</code> <em>(marqueur sur la batterie)</em></td>
+<td>crée le pilote automatique <code>arty-1</code> et le démarre</td>
 </tr>
 <tr>
-<td><code>_ground unset</code></td>
-<td>Arrête le pilote automatique et l'oublie complètement.</td>
+<td><code>_gc arty-1, groupname ARTY-1</code></td>
+<td>idem, en nommant le groupe DCS au lieu de le chercher</td>
 </tr>
 <tr>
-<td><code>_ground order</code></td>
-<td>Donne un ordre au pilote automatique (voir <a href="#order-syntax">la syntaxe des ordres</a>).</td>
+<td><code>_gc arty-1, aim 37T GG 12345 12345</code></td>
+<td>tir de réglage sur cette position</td>
 </tr>
 <tr>
-<td><code>_ground start</code></td>
-<td>Redémarre un pilote automatique arrêté.</td>
+<td><code>_gc arty-1, correction 09050</code></td>
+<td>décale le dernier point visé et retire (<a href="#fire-adjustment">le réglage du tir</a>)</td>
 </tr>
 <tr>
-<td><code>_ground stop</code></td>
-<td>L'arrête sans l'oublier — ses ordres restent en mémoire.</td>
+<td><code>_gc arty-1, fire</code></td>
+<td>tir d'efficacité au dernier point visé</td>
 </tr>
 <tr>
-<td><code>_ground clear</code></td>
-<td>L'arrête <strong>et</strong> efface ses ordres.</td>
+<td><code>_gc arty-1, fire 37T GG 12345 12345, shells 40-80</code></td>
+<td>tir d'efficacité sur une position donnée</td>
 </tr>
 <tr>
-<td><code>_ground status</code></td>
-<td>Affiche à l'écran ce que le pilote automatique est en train de faire.</td>
+<td><code>_gc arty-1, status</code></td>
+<td>affiche ce que la batterie est en train de faire</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, stop</code></td>
+<td>l'arrête, ses ordres restent en mémoire</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, clear</code></td>
+<td>l'arrête <strong>et</strong> efface ses ordres</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, start</code></td>
+<td>redémarre un pilote automatique arrêté</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, unset</code></td>
+<td>l'arrête et l'oublie complètement</td>
 </tr>
 </tbody>
 </table>
-<p>Écrire <code>_ground</code> seul revient à écrire <code>_ground set</code>.</p>
-<h3 id="paramètres">Paramètres<a class="headerlink" href="#paramètres" title="Permanent link">&para;</a></h3>
+<p><strong>Écrire <code>_gc &lt;nom&gt;</code> seul revient à écrire <code>_gc &lt;nom&gt;, set</code>.</strong></p>
+<h3 id="les-paramètres">Les paramètres<a class="headerlink" href="#les-paramètres" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th>Paramètre</th>
-<th>Verbes concernés</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>name</code></td>
-<td><strong>tous</strong></td>
-<td>Nom du pilote automatique. <strong>Obligatoire</strong> : un <code>_ground status, name</code> sans valeur est refusé, pas exécuté avec un nom vide.</td>
-</tr>
-<tr>
 <td><code>groupname</code></td>
-<td><code>set</code>, <code>unset</code></td>
-<td>Nom exact du groupe DCS à piloter.</td>
+<td>Nom exact du groupe DCS à piloter. Sur un <code>set</code>, si vous l'omettez, le module cherche le groupe allié <strong>le plus proche du marqueur, dans un rayon de 250 mètres</strong> — et vous le dit s'il n'en trouve aucun.</td>
 </tr>
 <tr>
-<td><code>order</code></td>
-<td><code>order</code></td>
-<td>Le texte de l'ordre.</td>
+<td><code>target</code></td>
+<td>Les coordonnées, si vous préférez les écrire séparément plutôt qu'après <code>aim</code> ou <code>fire</code> (<a href="#coordinate-formats">les formats acceptés</a>).</td>
+</tr>
+<tr>
+<td><code>shells</code></td>
+<td>Nombre d'obus. Accepte une plage aléatoire, par exemple <code>40-80</code>.</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>Dispersion du tir, en mètres. Accepte aussi une plage.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Si vous omettez <code>groupname</code> sur un <code>set</code></strong>, le module cherche le groupe allié <strong>le plus proche du
-marqueur, dans un rayon de 250 mètres</strong>. Aucun groupe dans ce rayon : la commande <strong>vous le dit</strong> et ne
-fait rien. Posez donc le marqueur sur la batterie, ou nommez-la.</p>
-<h3 id="silent-refusals">Quand rien ne semble se passer<a class="headerlink" href="#silent-refusals" title="Permanent link">&para;</a></h3>
-<p>Aucune de ces commandes n'échoue plus en silence. C'était le cas avant, et un ordre qui disparaissait sans
-un mot était indistinguable d'un module cassé.</p>
-<table>
-<thead>
-<tr>
-<th>Ce que vous voyez</th>
-<th>Ce que ça veut dire</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>« Aucun pilote automatique nommé <em>X</em> »</td>
-<td>ce nom n'existe pas. <strong>Recharger une mission efface les pilotes automatiques</strong> : il faut refaire le <code>_ground set</code>. Le message vous rappelle la commande.</td>
-</tr>
-<tr>
-<td>« Aucun groupe allié à moins de 250 m »</td>
-<td>le marqueur est trop loin du groupe, ou le groupe est de l'autre coalition. Posez-le dessus, ou donnez <code>groupname</code>.</td>
-</tr>
-<tr>
-<td>« ordre illisible »</td>
-<td>le texte de l'ordre n'a pas pu être lu du tout. Le message liste les ordres possibles.</td>
-</tr>
-<tr>
-<td>« ne peut pas viser, aucune coordonnée »</td>
-<td>l'ordre est bon, mais <code>target</code> manque ou n'a pas pu être lu (<a href="#coordinate-formats">les formats acceptés</a>).</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span><code>_ground set, name arty-1, groupname ARTY-1
-_ground status, name arty-1
-_ground stop, name arty-1
+<p><code>correct</code> s'écrit aussi <code>correction</code> : les deux marchent, pour ne pas avoir à s'en souvenir.</p>
+<div class="highlight"><pre><span></span><code>_gc arty-1
+_gc arty-1, radius 15-30, aim 37T GG 12345 12345
+_gc arty-1, correction 09050
+_gc arty-1, fire, shells 40-80, radius 50-150
 </code></pre></div>
+<blockquote>
+<p><strong>L'ancienne syntaxe marche encore.</strong> <code>_ground order, name arty-1, order aim; target …</code> reste acceptée
+pour ne casser aucune mission existante, mais elle n'est plus documentée : elle demandait un
+point-virgule là où tout le reste de VEAF utilise la virgule, et c'était son seul piège.</p>
+</blockquote>
 <hr />
-<h2 id="order-syntax">La syntaxe des ordres<a class="headerlink" href="#order-syntax" title="Permanent link">&para;</a></h2>
-<p>Le texte passé à <code>order</code> a <strong>sa propre syntaxe, séparée par des points-virgules</strong> — et non par des
-virgules comme le reste du marqueur. C'est le piège de ce module : un ordre écrit avec des virgules
-est découpé par le marqueur avant d'atteindre l'artillerie.</p>
+<h2 id="order-syntax">Les trois ordres<a class="headerlink" href="#order-syntax" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -2802,7 +2770,7 @@ est découpé par le marqueur avant d'atteindre l'artillerie.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>aim</code> <em>(par défaut)</em></td>
+<td><code>aim</code></td>
 <td>Tir de réglage : quelques obus pour ajuster</td>
 <td>2</td>
 <td>10 m</td>
@@ -2814,43 +2782,22 @@ est découpé par le marqueur avant d'atteindre l'artillerie.</p>
 <td>100 m</td>
 </tr>
 <tr>
-<td><code>correct</code></td>
+<td><code>correct</code> <em>(ou <code>correction</code>)</em></td>
 <td>Décale le dernier point visé et retire dessus</td>
 <td>2</td>
 <td>10 m</td>
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th>Paramètre d'ordre</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>target</code></td>
-<td>Coordonnées de l'objectif (<a href="#coordinate-formats">les formats acceptés</a>). <strong>Validées</strong> : une chaîne que le module ne sait pas lire est ignorée, et l'ordre se plaint de ne pas avoir de cible.</td>
-</tr>
-<tr>
-<td><code>shells</code></td>
-<td>Nombre d'obus. Accepte une plage aléatoire, par exemple <code>40-80</code>.</td>
-</tr>
-<tr>
-<td><code>radius</code></td>
-<td>Dispersion du tir, en mètres. Accepte aussi une plage.</td>
-</tr>
-<tr>
-<td><code>correction</code></td>
-<td>Le décalage à appliquer, pour l'ordre <code>correct</code> : <strong>trois chiffres de cap vrai puis la distance en mètres</strong>. <code>09050</code> vaut 50 m à l'est. <strong>Validé</strong> : une correction illisible est refusée et annoncée, jamais devinée.</td>
-</tr>
-</tbody>
-</table>
-<p><strong><code>fire</code> sans <code>target</code> tire à nouveau sur la dernière cible visée</strong> — c'est ce qui permet d'enchaîner un
-réglage puis l'efficacité sans redonner les coordonnées.</p>
-<div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; radius 15-30; target 42 N 42 E
-_ground order, name arty-1, order fire; radius 50-150; shells 40-80
+<p><code>aim</code> et <code>fire</code> prennent les coordonnées <strong>juste après le mot</strong> : <code>aim 37T GG 12345 12345</code>. <code>correct</code>
+prend son décalage de la même façon : <code>correction 09050</code>.</p>
+<p><strong><code>fire</code> sans coordonnées tire à nouveau sur la dernière cible visée</strong> — c'est ce qui permet d'enchaîner
+un réglage puis l'efficacité sans redonner la position.</p>
+<p>Les deux valeurs sont <strong>validées à la lecture</strong> : une position ou un décalage que le module ne sait pas
+lire est refusé et annoncé, jamais deviné. Un chiffre qu'un canon exécute ne se devine pas.</p>
+<div class="highlight"><pre><span></span><code>_gc arty-1, radius 15-30, aim 37T GG 12345 12345
+_gc arty-1, correction 09050
+_gc arty-1, fire, shells 40-80, radius 50-150
 </code></pre></div>
 <h3 id="coordinate-formats">Les formats de coordonnées acceptés<a class="headerlink" href="#coordinate-formats" title="Permanent link">&para;</a></h3>
 <p>Un <code>target</code> accepte toutes ces formes. Elles valent <strong>partout où VEAF lit une coordonnée</strong> — zones
@@ -2920,9 +2867,9 @@ format MGRS que DCS affiche est accepté sans retouche, et c'est le moins suscep
 <h3 id="fire-adjustment">Le réglage du tir<a class="headerlink" href="#fire-adjustment" title="Permanent link">&para;</a></h3>
 <p>Une batterie retient <strong>le dernier point qu'elle a visé</strong>, et <code>correct</code> décale ce point. C'est la boucle
 de réglage classique : on tire, on observe où les obus tombent, on annonce la correction.</p>
-<div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; target 42 N 42 E
-_ground order, name arty-1, order correct; correction 09050
-_ground order, name arty-1, order fire; shells 40-80
+<div class="highlight"><pre><span></span><code>_gc arty-1, aim 37T GG 12345 12345
+_gc arty-1, correction 09050
+_gc arty-1, fire, shells 40-80
 </code></pre></div>
 <p>Le cap s'écrit <strong>toujours sur trois chiffres</strong>, parce que <code>090</code> et <code>90</code> seraient la même chaîne une fois
 la distance collée derrière : <code>09050</code> c'est 50 m à l'est, <code>9050</code> serait lu comme un cap de 905 et refusé.</p>
@@ -2945,7 +2892,7 @@ utilisent ce module :</p>
 <tbody>
 <tr>
 <td><code>-ai_set</code></td>
-<td><code>_ground set</code> — attache un pilote automatique au groupe le plus proche</td>
+<td><code>_gc</code> — attache un pilote automatique au groupe le plus proche ; écrivez son nom derrière</td>
 </tr>
 <tr>
 <td><code>-arty1</code>, <code>-arty2</code>, <code>-arty3</code></td>
@@ -2971,7 +2918,7 @@ coordonnées juste après, et elles complètent l'ordre.</p>
 <h2 id="configuration-missionyaml">Configuration <code>mission.yaml</code><a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
 <p>Le module n'a <strong>aucune option de configuration</strong>. Il s'active et se désactive comme les autres :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># actif par défaut ; `false` retire le marqueur _ground</span>
+<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># actif par défaut ; `false` retire le marqueur _gc</span>
 </code></pre></div>
 <hr />
 <h2 id="limitations">Limites connues<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>

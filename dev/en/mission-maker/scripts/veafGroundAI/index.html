@@ -1311,30 +1311,19 @@
   <a href="#marker-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The _ground marker
+        The _gc marker
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The _ground marker">
+    <nav class="md-nav" aria-label="The _gc marker">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
+  <a href="#the-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#silent-refusals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When nothing seems to happen
+        The parameters
       
     </span>
   </a>
@@ -1350,12 +1339,12 @@
   <a href="#order-syntax" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Order syntax
+        The three orders
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Order syntax">
+    <nav class="md-nav" aria-label="The three orders">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2523,30 +2512,19 @@
   <a href="#marker-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The _ground marker
+        The _gc marker
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The _ground marker">
+    <nav class="md-nav" aria-label="The _gc marker">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
+  <a href="#the-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#silent-refusals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When nothing seems to happen
+        The parameters
       
     </span>
   </a>
@@ -2562,12 +2540,12 @@
   <a href="#order-syntax" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Order syntax
+        The three orders
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Order syntax">
+    <nav class="md-nav" aria-label="The three orders">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2666,7 +2644,7 @@
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Gives a group of ground vehicles an <strong>autopilot</strong> that players command from the F10 map, with the
-<code>_ground</code> marker. One kind of autopilot exists today: artillery (<code>ArtilleryUnitHandler</code>), told to
+<code>_gc</code> marker. One kind of autopilot exists today: artillery (<code>ArtilleryUnitHandler</code>), told to
 shell a set of coordinates — a few rounds to range in, then a fire-for-effect.</p>
 <p>The module is <strong>enabled by default</strong> (<code>veaf.registerModule(..., { enable = true }, 190)</code>), and its
 commands are reserved to <strong>pilots the server knows</strong>: <code>KNOWN_PILOT</code>, meaning anyone listed in
@@ -2679,116 +2657,107 @@ commands are reserved to <strong>pilots the server knows</strong>: <code>KNOWN_P
 <li><code>veafShortcuts</code> — the <code>-ai_set</code> alias and the <code>-arty*</code> family (optional, but the common way in)</li>
 </ul>
 <hr />
-<h2 id="marker-command">The <code>_ground</code> marker<a class="headerlink" href="#marker-command" title="Permanent link">&para;</a></h2>
-<p>A pilot drops a marker on the F10 map and writes its text. Seven verbs, and <strong><code>name</code> is mandatory
-for all seven</strong> — it names the autopilot, and it is the name you reuse to give it orders later.</p>
+<h2 id="marker-command">The <code>_gc</code> marker<a class="headerlink" href="#marker-command" title="Permanent link">&para;</a></h2>
+<p><code>_gc</code>, for <em>ground commander</em>. A pilot places a marker on the F10 map and writes:</p>
+<div class="highlight"><pre><span></span><code>_gc &lt;name&gt;, &lt;verb&gt; &lt;value&gt;, &lt;parameter value&gt;, ...
+</code></pre></div>
+<p><strong>The addressee first</strong>, the way you would say it on the radio. The <code>&lt;name&gt;</code> is the one you give the
+autopilot — you choose it, and you reuse it for every order you give it.</p>
 <table>
 <thead>
 <tr>
-<th>Verb</th>
+<th>What you write</th>
 <th>What it does</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>_ground set</code> <em>(default)</em></td>
-<td>Attaches a named autopilot to a group and starts it. If the name already exists, the group is replaced.</td>
+<td><code>_gc arty-1</code> <em>(marker on the battery)</em></td>
+<td>creates the <code>arty-1</code> autopilot and starts it</td>
 </tr>
 <tr>
-<td><code>_ground unset</code></td>
-<td>Stops the autopilot and forgets it entirely.</td>
+<td><code>_gc arty-1, groupname ARTY-1</code></td>
+<td>the same, naming the DCS group instead of searching for it</td>
 </tr>
 <tr>
-<td><code>_ground order</code></td>
-<td>Gives the autopilot an order (see <a href="#order-syntax">order syntax</a>).</td>
+<td><code>_gc arty-1, aim 37T GG 12345 12345</code></td>
+<td>ranging fire on that position</td>
 </tr>
 <tr>
-<td><code>_ground start</code></td>
-<td>Restarts a stopped autopilot.</td>
+<td><code>_gc arty-1, correction 09050</code></td>
+<td>shifts the last aim point and fires again (<a href="#fire-adjustment">adjusting the fire</a>)</td>
 </tr>
 <tr>
-<td><code>_ground stop</code></td>
-<td>Stops it without forgetting it — its orders stay in memory.</td>
+<td><code>_gc arty-1, fire</code></td>
+<td>fire for effect at the last aim point</td>
 </tr>
 <tr>
-<td><code>_ground clear</code></td>
-<td>Stops it <strong>and</strong> clears its orders.</td>
+<td><code>_gc arty-1, fire 37T GG 12345 12345, shells 40-80</code></td>
+<td>fire for effect on a given position</td>
 </tr>
 <tr>
-<td><code>_ground status</code></td>
-<td>Prints on screen what the autopilot is currently doing.</td>
+<td><code>_gc arty-1, status</code></td>
+<td>shows what the battery is doing</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, stop</code></td>
+<td>stops it; its orders stay in memory</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, clear</code></td>
+<td>stops it <strong>and</strong> clears its orders</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, start</code></td>
+<td>restarts a stopped autopilot</td>
+</tr>
+<tr>
+<td><code>_gc arty-1, unset</code></td>
+<td>stops it and forgets it entirely</td>
 </tr>
 </tbody>
 </table>
-<p>Writing <code>_ground</code> alone is the same as writing <code>_ground set</code>.</p>
-<h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h3>
+<p><strong>Writing <code>_gc &lt;name&gt;</code> on its own is the same as writing <code>_gc &lt;name&gt;, set</code>.</strong></p>
+<h3 id="the-parameters">The parameters<a class="headerlink" href="#the-parameters" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Verbs</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>name</code></td>
-<td><strong>all</strong></td>
-<td>The autopilot's name. <strong>Mandatory</strong>: a <code>_ground status, name</code> with no value is refused, not run with an empty name.</td>
-</tr>
-<tr>
 <td><code>groupname</code></td>
-<td><code>set</code>, <code>unset</code></td>
-<td>Exact name of the DCS group to drive.</td>
+<td>The exact name of the DCS group to drive. On a <code>set</code>, if you leave it out, the module looks for the allied group <strong>nearest the marker, within 250 metres</strong> — and tells you if it finds none.</td>
 </tr>
 <tr>
-<td><code>order</code></td>
-<td><code>order</code></td>
-<td>The order's text.</td>
+<td><code>target</code></td>
+<td>The coordinates, if you would rather write them separately than after <code>aim</code> or <code>fire</code> (<a href="#coordinate-formats">the accepted formats</a>).</td>
+</tr>
+<tr>
+<td><code>shells</code></td>
+<td>Number of rounds. Accepts a random range, e.g. <code>40-80</code>.</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>Dispersion of the fire, in metres. Also accepts a range.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>If you omit <code>groupname</code> on a <code>set</code></strong>, the module looks for the allied group <strong>nearest the marker,
-within 250 metres</strong>. No group in that radius: the command <strong>tells you</strong> and does nothing. So drop the
-marker on the battery, or name it.</p>
-<h3 id="silent-refusals">When nothing seems to happen<a class="headerlink" href="#silent-refusals" title="Permanent link">&para;</a></h3>
-<p>None of these commands fails silently any more. They did, and an order that vanished without a word was
-indistinguishable from a broken module.</p>
-<table>
-<thead>
-<tr>
-<th>What you see</th>
-<th>What it means</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>"No autopilot named <em>X</em>"</td>
-<td>that name does not exist. <strong>Reloading a mission discards the autopilots</strong>: the <code>_ground set</code> has to be done again. The message reminds you of the command.</td>
-</tr>
-<tr>
-<td>"No allied group within 250 m"</td>
-<td>the marker is too far from the group, or the group belongs to the other coalition. Drop it on the group, or give <code>groupname</code>.</td>
-</tr>
-<tr>
-<td>"unreadable order"</td>
-<td>the order text could not be read at all. The message lists the valid orders.</td>
-</tr>
-<tr>
-<td>"cannot aim, no target coordinates"</td>
-<td>the order is fine, but <code>target</code> is missing or could not be read (<a href="#coordinate-formats">the accepted formats</a>).</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span><code>_ground set, name arty-1, groupname ARTY-1
-_ground status, name arty-1
-_ground stop, name arty-1
+<p><code>correct</code> can also be spelled <code>correction</code>: both work, so there is nothing to remember.</p>
+<div class="highlight"><pre><span></span><code>_gc arty-1
+_gc arty-1, radius 15-30, aim 37T GG 12345 12345
+_gc arty-1, correction 09050
+_gc arty-1, fire, shells 40-80, radius 50-150
 </code></pre></div>
+<blockquote>
+<p><strong>The old syntax still works.</strong> <code>_ground order, name arty-1, order aim; target …</code> is still accepted so
+that no existing mission breaks, but it is no longer documented: it needed a semicolon where the whole
+of the rest of VEAF uses a comma, and that was its only trap.</p>
+</blockquote>
 <hr />
-<h2 id="order-syntax">Order syntax<a class="headerlink" href="#order-syntax" title="Permanent link">&para;</a></h2>
-<p>The text handed to <code>order</code> has <strong>its own syntax, separated by semicolons</strong> — not by commas like the
-rest of the marker. That is this module's trap: an order written with commas is split by the marker
-before it ever reaches the artillery.</p>
+<h2 id="order-syntax">The three orders<a class="headerlink" href="#order-syntax" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -2800,7 +2769,7 @@ before it ever reaches the artillery.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>aim</code> <em>(default)</em></td>
+<td><code>aim</code></td>
 <td>Ranging fire: a few rounds to adjust</td>
 <td>2</td>
 <td>10 m</td>
@@ -2812,43 +2781,22 @@ before it ever reaches the artillery.</p>
 <td>100 m</td>
 </tr>
 <tr>
-<td><code>correct</code></td>
-<td>Shift the last aim point and fire again</td>
+<td><code>correct</code> <em>(or <code>correction</code>)</em></td>
+<td>Shifts the last aim point and fires again</td>
 <td>2</td>
 <td>10 m</td>
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th>Order parameter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>target</code></td>
-<td>The target's coordinates (<a href="#coordinate-formats">the accepted formats</a>). <strong>Validated</strong>: a string the module cannot read is ignored, and the order complains that it has no target.</td>
-</tr>
-<tr>
-<td><code>shells</code></td>
-<td>Number of rounds. Accepts a random range, e.g. <code>40-80</code>.</td>
-</tr>
-<tr>
-<td><code>radius</code></td>
-<td>Dispersion of the fire, in metres. Also accepts a range.</td>
-</tr>
-<tr>
-<td><code>correction</code></td>
-<td>The offset to apply, for the <code>correct</code> order: <strong>three digits of true bearing then the distance in metres</strong>. <code>09050</code> is 50 m east. <strong>Validated</strong>: an unreadable correction is refused and announced, never guessed.</td>
-</tr>
-</tbody>
-</table>
-<p><strong><code>fire</code> with no <code>target</code> re-engages the last target aimed at</strong> — which is what lets you chain a
-ranging order and then the effect without re-entering the coordinates.</p>
-<div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; radius 15-30; target 42 N 42 E
-_ground order, name arty-1, order fire; radius 50-150; shells 40-80
+<p><code>aim</code> and <code>fire</code> take the coordinates <strong>right after the word</strong>: <code>aim 37T GG 12345 12345</code>. <code>correct</code>
+takes its offset the same way: <code>correction 09050</code>.</p>
+<p><strong><code>fire</code> with no coordinates fires again at the last aim point</strong> — which is what lets you chain a ranging
+order and then the effect without giving the position twice.</p>
+<p>Both values are <strong>validated as they are read</strong>: a position or an offset the module cannot read is refused
+and announced, never guessed at. A number a gun acts on is not something to guess.</p>
+<div class="highlight"><pre><span></span><code>_gc arty-1, radius 15-30, aim 37T GG 12345 12345
+_gc arty-1, correction 09050
+_gc arty-1, fire, shells 40-80, radius 50-150
 </code></pre></div>
 <h3 id="coordinate-formats">The coordinate formats accepted<a class="headerlink" href="#coordinate-formats" title="Permanent link">&para;</a></h3>
 <p>A <code>target</code> accepts any of these. They work <strong>anywhere VEAF reads a coordinate</strong> — AirWaves zones, named
@@ -2918,9 +2866,9 @@ DCS shows is accepted untouched, and it is the hardest to mis-transcribe.</p>
 <h3 id="fire-adjustment">Adjusting the fire<a class="headerlink" href="#fire-adjustment" title="Permanent link">&para;</a></h3>
 <p>A battery remembers <strong>the last point it aimed at</strong>, and <code>correct</code> shifts that point. This is the classic
 adjustment loop: fire, watch where the rounds land, call the correction in.</p>
-<div class="highlight"><pre><span></span><code>_ground order, name arty-1, order aim; target 42 N 42 E
-_ground order, name arty-1, order correct; correction 09050
-_ground order, name arty-1, order fire; shells 40-80
+<div class="highlight"><pre><span></span><code>_gc arty-1, aim 37T GG 12345 12345
+_gc arty-1, correction 09050
+_gc arty-1, fire, shells 40-80
 </code></pre></div>
 <p>The bearing is <strong>always written as three digits</strong>, because <code>090</code> and <code>90</code> would be the same string once
 the distance is appended: <code>09050</code> is 50 m east, whereas <code>9050</code> would read as a bearing of 905 and be
@@ -2943,7 +2891,7 @@ firing at the offset alone would put the rounds wherever the battery happens to 
 <tbody>
 <tr>
 <td><code>-ai_set</code></td>
-<td><code>_ground set</code> — attaches an autopilot to the nearest group</td>
+<td><code>_gc</code> — attaches an autopilot to the nearest group; write its name after it</td>
 </tr>
 <tr>
 <td><code>-arty1</code>, <code>-arty2</code>, <code>-arty3</code></td>
@@ -2969,7 +2917,7 @@ after, and they complete the order.</p>
 <h2 id="configuration-missionyaml"><code>mission.yaml</code> configuration<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
 <p>The module has <strong>no configuration options</strong>. It is enabled and disabled like the others:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># on by default; `false` removes the _ground marker</span>
+<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># on by default; `false` removes the _gc marker</span>
 </code></pre></div>
 <hr />
 <h2 id="limitations">Known limits<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
