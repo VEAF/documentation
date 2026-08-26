@@ -1,0 +1,4200 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.17.0/en/mission-maker/scripts/veafCombatZone/">
+      
+      
+        <link rel="prev" href="../veafCombatMission/">
+      
+      
+        <link rel="next" href="../veafCommands/">
+      
+      
+        
+          <link rel="alternate" href="../../../../mission-maker/scripts/veafCombatZone/" hreflang="fr">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>veafCombatZone - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#veafcombatzone--activatable-combat-zones" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../" title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              veafCombatZone
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../../mission-maker/scripts/veafCombatZone/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Pilot Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Mission Maker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer/" class="md-tabs__link">
+          
+  
+  
+  Developer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  References
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../" title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pilot Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pilot Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aliases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission Maker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mission Maker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aliases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guided checklists (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Missions menu (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#combat_zone_settings-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        combat_zone_settings fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combat_zones-fields--type-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        combat_zones[] fields — type zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rename-units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rename_units_sequentially — keeping the original unit names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combat_zones-fields--type-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        combat_zones[] fields — type operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimal-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#red-side-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A zone played from the red side
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-menu-audience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who is offered the F10 menu?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How it works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-in-the-dcs-mission-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up in the DCS Mission Editor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out-of-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Groups out of action
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-and-group-name-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit and Group Name Tags
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unit and Group Name Tags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spawn-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnradius — the default dispersion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="#spawnradius — the default dispersion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#waypoint-follows-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The first waypoint follows the group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-straddling-the-edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A group straddling the zone's edge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A value drawn from a range
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where tags are read from
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alarm-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #alarm — making a group hold its ground
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-example--manpads-ambush" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical example — MANPADS ambush
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command--spawning-via-veaf-marker-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #command — spawning via VEAF marker syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#group-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawned group names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module Constants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-a-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining a Zone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defining a Zone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#veafcombatzone-builder-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VeafCombatZone Builder Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafcombatzoneelement-builder-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VeafCombatZoneElement Builder Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#f10-radio-menu-per-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F10 Radio Menu (per zone)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="F10 Radio Menu (per zone)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#radio-menu-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Radio menu options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wreck-cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wreck cleanup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-grouped-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations (Grouped Zones)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zone-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone Chaining
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ground AI (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capture a map's airbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    References
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    References
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mission.yaml Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lua API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Updater & release tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#combat_zone_settings-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        combat_zone_settings fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combat_zones-fields--type-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        combat_zones[] fields — type zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rename-units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rename_units_sequentially — keeping the original unit names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combat_zones-fields--type-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        combat_zones[] fields — type operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimal-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#red-side-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A zone played from the red side
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-menu-audience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who is offered the F10 menu?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How it works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-in-the-dcs-mission-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up in the DCS Mission Editor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out-of-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Groups out of action
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-and-group-name-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit and Group Name Tags
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unit and Group Name Tags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spawn-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnradius — the default dispersion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="#spawnradius — the default dispersion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#waypoint-follows-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The first waypoint follows the group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-straddling-the-edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A group straddling the zone's edge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A value drawn from a range
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where tags are read from
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alarm-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #alarm — making a group hold its ground
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-example--manpads-ambush" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical example — MANPADS ambush
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command--spawning-via-veaf-marker-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #command — spawning via VEAF marker syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#group-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawned group names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module Constants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-a-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining a Zone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defining a Zone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#veafcombatzone-builder-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VeafCombatZone Builder Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafcombatzoneelement-builder-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VeafCombatZoneElement Builder Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#f10-radio-menu-per-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F10 Radio Menu (per zone)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="F10 Radio Menu (per zone)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#radio-menu-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Radio menu options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wreck-cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wreck cleanup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-grouped-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations (Grouped Zones)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zone-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone Chaining
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="veafcombatzone--activatable-combat-zones">veafCombatZone — Activatable Combat Zones<a class="headerlink" href="#veafcombatzone--activatable-combat-zones" title="Permanent link">&para;</a></h1>
+<p><strong>Module ID:</strong> <code>COMBATZONE</code> | <strong>File:</strong> <code>veafCombatZone.lua</code></p>
+<hr />
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p>Defines named combat zones in the mission editor that players can activate and deactivate via the F10 radio menu. Each zone tracks enemy unit state, fires objective-completion events, supports scoring, and can contain multiple unit groups with spawning rules.</p>
+<hr />
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>veafRadio</code> — F10 menu</li>
+<li><code>veafSpawn</code> — unit spawning backend</li>
+<li><code>veafMarkers</code> — optional marker commands</li>
+</ul>
+<hr />
+<h2 id="enable">Enable<a class="headerlink" href="#enable" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nv">veafCombatZone</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>Individual zones are created and initialised separately (see below).</p>
+<hr />
+<h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># default: true</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">        </span><span class="c1"># optional log level override</span>
+<span class="w">    </span><span class="nt">combat_zone_settings</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional global overrides</span>
+<span class="w">      </span><span class="nt">event_message_combatzonecomplete</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zone</span><span class="nv"> </span><span class="s">objective</span><span class="nv"> </span><span class="s">complete!&quot;</span><span class="w">  </span><span class="c1"># null = suppress</span>
+<span class="w">      </span><span class="nt">watchdog_check_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">          </span><span class="c1"># seconds between zone watchdog polls (default: 60)</span>
+<span class="w">      </span><span class="nt">radio_menu_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Combat</span><span class="nv"> </span><span class="s">Zones&quot;</span><span class="w">      </span><span class="c1"># F10 menu label</span>
+<span class="w">      </span><span class="nt">combat_zone_menu_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Combat</span><span class="nv"> </span><span class="s">Zone</span><span class="nv"> </span><span class="s">Operations&quot;</span>
+<span class="w">      </span><span class="nt">operation_menu_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Operations&quot;</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span><span class="w">         </span><span class="c1"># zone and operation definitions</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span><span class="w">                          </span><span class="c1"># zone | operation</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span><span class="w">              </span><span class="c1"># DCS trigger zone name</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alpha</span><span class="nv"> </span><span class="s">Zone&quot;</span><span class="w">        </span><span class="c1"># label in radio menu</span>
+<span class="w">        </span><span class="nt">radio_group_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;North&quot;</span><span class="w">          </span><span class="c1"># gather same-named zones under one shared submenu</span>
+<span class="w">        </span><span class="nt">radio_menu_prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BLUE&quot;</span><span class="w">          </span><span class="c1"># prefix shown before the zone label</span>
+<span class="w">        </span><span class="nt">briefing</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Destroy</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">armoured</span><span class="nv"> </span><span class="s">column.&quot;</span><span class="w">  </span><span class="c1"># shown in mission info</span>
+<span class="w">        </span><span class="nt">training</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># true = no security, verbose status</span>
+<span class="w">        </span><span class="nt">active_at_start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">               </span><span class="c1"># automatically activate the zone at mission start</span>
+<span class="w">        </span><span class="nt">chained_zones</span><span class="p">:</span><span class="w">                      </span><span class="c1"># zones to trigger when this one completes</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Bravo&quot;</span>
+<span class="w">        </span><span class="nt">chained_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">                   </span><span class="c1"># seconds before chaining fires</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operation</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Op-Thunder&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Operation</span><span class="nv"> </span><span class="s">Thunder&quot;</span>
+<span class="w">        </span><span class="nt">tasking_orders</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span><span class="w">           </span><span class="c1"># first task (no dependencies)</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Bravo&quot;</span>
+<span class="w">            </span><span class="nt">dependencies</span><span class="p">:</span><span class="w">                   </span><span class="c1"># CZ-Bravo unlocks after CZ-Alpha</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+</code></pre></div>
+<h3 id="combat_zone_settings-fields"><code>combat_zone_settings</code> fields<a class="headerlink" href="#combat_zone_settings-fields" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>event_message_combatzonecomplete</code></td>
+<td>string | null</td>
+<td><em>(module default)</em></td>
+<td>Message broadcast when a zone completes. <code>null</code> suppresses it.</td>
+</tr>
+<tr>
+<td><code>watchdog_check_interval</code></td>
+<td>integer</td>
+<td><code>60</code></td>
+<td>Seconds between watchdog polls</td>
+</tr>
+<tr>
+<td><code>radio_menu_name</code></td>
+<td>string</td>
+<td><code>"COMBAT ZONES"</code></td>
+<td>F10 top-level menu label</td>
+</tr>
+<tr>
+<td><code>combat_zone_menu_name</code></td>
+<td>string</td>
+<td><em>(default)</em></td>
+<td>Sub-menu label for zone operations</td>
+</tr>
+<tr>
+<td><code>operation_menu_name</code></td>
+<td>string</td>
+<td><em>(default)</em></td>
+<td>Sub-menu label for operations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="combat_zones-fields--type-zone"><code>combat_zones[]</code> fields — type <code>zone</code><a class="headerlink" href="#combat_zones-fields--type-zone" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td><code>zone</code></td>
+<td>No</td>
+<td><code>zone</code> or <code>operation</code></td>
+</tr>
+<tr>
+<td><code>zone_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Yes</td>
+<td>DCS trigger zone name</td>
+</tr>
+<tr>
+<td><code>friendly_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Label shown in the F10 menu</td>
+</tr>
+<tr>
+<td><code>radio_group_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Gather this zone (and every zone sharing the same name) under one shared radio submenu</td>
+</tr>
+<tr>
+<td><code>radio_menu_prefix</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Prefix shown before the zone label in the menu</td>
+</tr>
+<tr>
+<td><code>briefing</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Briefing text shown to players</td>
+</tr>
+<tr>
+<td><code>training</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td>Training mode: no security, verbose status</td>
+</tr>
+<tr>
+<td><code>completable</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the zone never completes (nor deactivates) on its own</td>
+</tr>
+<tr>
+<td><code>show_units_list</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the F10 report does not list the remaining units</td>
+</tr>
+<tr>
+<td><code>show_zone_position_info</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the F10 report shows neither the zone's coordinates nor its weather</td>
+</tr>
+<tr>
+<td><code>smoke_and_flare</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: the zone offers neither smoke nor flare to mark itself</td>
+</tr>
+<tr>
+<td><code>radio_menu_disabled</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td><code>true</code>: the zone does not appear in the F10 menu at all</td>
+</tr>
+<tr>
+<td><code>rename_units_sequentially</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>No</td>
+<td><code>false</code>: units keep their original names when spawned instead of being renamed in sequence. See <a href="#rename-units">below</a></td>
+</tr>
+<tr>
+<td><code>enemy_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code></td>
+<td><code>RED</code></td>
+<td>No</td>
+<td>The <strong>hostile</strong> coalition: its units are the ones that must be destroyed for the zone to complete, and the ones the F10 report calls "enemies". Use <code>BLUE</code> for a zone played from the <strong>red side</strong> (see below)</td>
+</tr>
+<tr>
+<td><code>radio_menu_coalition</code></td>
+<td><code>RED</code> | <code>BLUE</code> | <code>ALL</code></td>
+<td><em>(the side playing the zone)</em></td>
+<td>No</td>
+<td>Which coalition is offered the zone's F10 menu. Defaults to the opposite of <code>enemy_coalition</code>. <code>ALL</code> shows it to both sides (see below)</td>
+</tr>
+<tr>
+<td><code>active_at_start</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td>Automatically activate the zone at mission start (<code>veafCombatZone.ActivateZone</code> after <code>initialize()</code>)</td>
+</tr>
+<tr>
+<td><code>chained_zones</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td>Zone names to trigger on completion</td>
+</tr>
+<tr>
+<td><code>chained_delay</code></td>
+<td>integer</td>
+<td><code>0</code></td>
+<td>No</td>
+<td>Seconds before chained zones fire</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rename-units"><code>rename_units_sequentially</code> — keeping the original unit names<a class="headerlink" href="#rename-units" title="Permanent link">&para;</a></h3>
+<p>When a group spawns, a combat zone renames its units in sequence. That helps on a finished map — the names become readable and consistent — and <strong>gets in the way while debugging</strong> a <code>.miz</code>: the name you gave the unit in the Mission Editor is gone, and you can no longer find it in the logs.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CZ-Alpha</span>
+<span class="w">    </span><span class="nt">rename_units_sequentially</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># units keep their Mission Editor names</span>
+</code></pre></div>
+<p>The setting is <strong>per zone</strong>, not a global debug switch: that is what the
+<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/289">original request</a> asked for, and a global one would be one more thing to remember to put back before shipping.</p>
+<p>The default stays <code>true</code>, so no existing mission changes.</p>
+<h3 id="combat_zones-fields--type-operation"><code>combat_zones[]</code> fields — type <code>operation</code><a class="headerlink" href="#combat_zones-fields--type-operation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>—</td>
+<td>Yes</td>
+<td>Must be <code>operation</code></td>
+</tr>
+<tr>
+<td><code>zone_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Yes</td>
+<td>DCS trigger zone name</td>
+</tr>
+<tr>
+<td><code>friendly_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Label in the radio menu</td>
+</tr>
+<tr>
+<td><code>briefing</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Briefing text</td>
+</tr>
+<tr>
+<td><code>tasking_orders</code></td>
+<td>object[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td>Ordered task list</td>
+</tr>
+<tr>
+<td><code>tasking_orders[].zone_name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Yes</td>
+<td>Combat zone name for this task</td>
+</tr>
+<tr>
+<td><code>tasking_orders[].dependencies</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td>Zone names that must complete first</td>
+</tr>
+</tbody>
+</table>
+<h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alpha&quot;</span>
+</code></pre></div>
+<h3 id="red-side-zone">A zone played from the red side<a class="headerlink" href="#red-side-zone" title="Permanent link">&para;</a></h3>
+<p>By default a combat zone assumes the players are <strong>blue</strong> and the units to destroy are <strong>red</strong>.
+Two behaviours followed from that: the zone completed once no red unit was left, and the F10
+report labelled the blue tally "friends" and the red one "enemies".</p>
+<p><code>enemy_coalition: BLUE</code> flips both: the zone completes once its <strong>blue</strong> units are destroyed, and
+the report calls the blue units "enemies" and the red ones "friends".</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Kobuleti&quot;</span>
+<span class="w">        </span><span class="nt">enemy_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span><span class="w">   </span><span class="c1"># players are red, blue are the enemies</span>
+</code></pre></div>
+<p>Unit counting itself is unchanged — only the side the completion condition looks at. A zone that
+says nothing behaves exactly as before.</p>
+<blockquote>
+<p>A zone holding no red unit previously needed <code>completable: false</code>, which did not make it a
+red-side zone: it merely switched auto-completion off, and the report still called the blue
+enemies "friends". <code>enemy_coalition</code> replaces that workaround.</p>
+</blockquote>
+<p>In Lua the equivalent is <code>VeafCombatZone:setEnemyCoalition(coalition.side.BLUE)</code>; the setter also
+accepts the <code>"blue"</code> / <code>"red"</code> string form.</p>
+<h3 id="f10-menu-audience">Who is offered the F10 menu?<a class="headerlink" href="#f10-menu-audience" title="Permanent link">&para;</a></h3>
+<p>A zone's F10 menu is not read-only: it is how the zone gets <strong>activated</strong>, its status requested,
+its smoke popped. So it is offered to the <strong>side playing the zone</strong> — the opposite of
+<code>enemy_coalition</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>enemy_coalition</code></th>
+<th>F10 menu visible to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RED</code> (default)</td>
+<td>blue</td>
+</tr>
+<tr>
+<td><code>BLUE</code></td>
+<td>red</td>
+</tr>
+</tbody>
+</table>
+<p>Nothing to write to get that. To override it, use <code>radio_menu_coalition</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Alpha&quot;</span>
+<span class="w">        </span><span class="nt">radio_menu_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ALL</span><span class="w">   </span><span class="c1"># both sides see the zone and can activate it</span>
+</code></pre></div>
+<p><code>ALL</code> is what you want for an umpire or Mission Master sitting in a red slot who must be able to
+trigger a blue zone. A side can also be named explicitly (<code>RED</code> / <code>BLUE</code>) when it is not the one
+playing the zone.</p>
+<blockquote>
+<p><strong>Behaviour change (6.11.8)</strong>: before this version every zone was offered to both sides. A
+mission whose player slots are all blue sees no difference; a mission with red slots that must
+keep access to the blue zones needs <code>radio_menu_coalition: ALL</code> on those zones.</p>
+</blockquote>
+<p>The parent menu (<code>COMBAT ZONES</code>, and the <code>radio_group_name</code> submenu) stays visible to everyone: a
+radio group may hold zones of both sides. So each side sees the <code>COMBAT ZONES</code> entry without the
+other side's zones under it.</p>
+<p>In Lua: <code>VeafCombatZone:setRadioMenuCoalition(coalition.side.RED)</code> or <code>"all"</code>.</p>
+<hr />
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<p>Place all the units that should appear in the zone directly in the DCS Mission Editor, inside the trigger zone. When the mission starts VEAF removes them all — the zone is empty. When a player activates the zone via the F10 menu, all units are respawned at randomised positions within the zone radius. When every enemy unit is destroyed, the zone is marked as completed (optional callback fires, optional chained zones activate).</p>
+<p>This approach gives you full visual design in the editor while keeping the zone inactive at mission start.</p>
+<h3 id="setting-up-in-the-dcs-mission-editor">Setting up in the DCS Mission Editor<a class="headerlink" href="#setting-up-in-the-dcs-mission-editor" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Create a trigger zone</strong> — define the combat area. Name it, e.g. <code>ZONE-ALPHA</code>.</li>
+<li><strong>Place unit groups</strong> inside the zone. Set them to any coalition — VEAF will handle their lifecycle.</li>
+<li><strong>Use unit or group name tags</strong> (see below) to customise spawn behaviour per group.</li>
+<li><strong>Register the zone</strong> in <code>mission-script.lua</code>:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- DCS trigger zone name</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span><span class="w">                    </span><span class="c1">-- radio menu label</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Strike Alpha — Armoured column&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p><code>veafCombatZone.initialize()</code> must be called at the module level first.</p>
+<hr />
+<h3 id="out-of-action">Groups out of action<a class="headerlink" href="#out-of-action" title="Permanent link">&para;</a></h3>
+<p>A group is not only alive or dead. An S-300 battery whose tracking radar is destroyed keeps its launchers, its trucks and its crew — and cannot fire.</p>
+<p>The zone report now says so:</p>
+<div class="highlight"><pre><span></span><code>OUT OF ACTION (can no longer fight): ALPHA-SA10
+</code></pre></div>
+<p>A group that has been wiped out does not appear there: it is simply gone from the remaining tallies. This line is only about groups <strong>still standing</strong> that have become harmless.</p>
+<div class="admonition note">
+<p class="admonition-title">This does not change when a zone ends</p>
+<p>For now the information is advisory only: a zone still completes when <strong>every</strong> enemy unit is destroyed, useless launchers included. Ending the zone sooner is a separate design decision, not yet taken.</p>
+</div>
+<p><strong>How a group is judged.</strong> By default a group counts as out of action if it is a SAM site (a search radar or a launcher is still standing) and no tracking radar is left. A vehicle that is its own radar and launcher — Tunguska, Tor, Osa — stays operational as long as it lives. A convoy has no radar at all: it remains a threat while it rolls.</p>
+<p>For sites whose composition the DCS attributes cannot describe, a pattern table (<code>veaf.ImportantUnitsByGroupPattern</code>, in <code>veaf.lua</code>) declares the sets of units a site cannot do without and the minimum life, as a percentage, they need. The S-300 is already in it.</p>
+<h2 id="unit-and-group-name-tags">Unit and Group Name Tags<a class="headerlink" href="#unit-and-group-name-tags" title="Permanent link">&para;</a></h2>
+<p>Unit and group names in the DCS Mission Editor can carry special tags that control how VEAF handles them when the zone activates. Tags are embedded in the name and do not affect DCS itself.</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#spawnradius=N</code></td>
+<td><code>#spawnradius=200</code></td>
+<td>Scatter radius in metres around the group's recorded position. Without the tag, see <a href="#spawn-radius"><code>#spawnradius</code></a></td>
+</tr>
+<tr>
+<td><code>#spawnchance=N</code></td>
+<td><code>#spawnchance=50</code></td>
+<td>Percentage chance (0–100) this group will actually spawn</td>
+</tr>
+<tr>
+<td><code>#spawncount=N</code></td>
+<td><code>#spawncount=3</code></td>
+<td>Number of instances to spawn (can be &gt;1 for repeated units)</td>
+</tr>
+<tr>
+<td><code>#spawngroup="name"</code></td>
+<td><code>#spawngroup="SAM"</code></td>
+<td>Override the spawn group name (useful to target a named template)</td>
+</tr>
+<tr>
+<td><code>#spawndelay=N</code></td>
+<td><code>#spawndelay=120</code></td>
+<td>Delay in seconds before this group spawns after zone activation</td>
+</tr>
+<tr>
+<td><code>#command="cmd"</code></td>
+<td><code>#command="-spawn sa-11"</code></td>
+<td>Execute a VEAF command instead of spawning this group; the unit acts as a trigger and is destroyed</td>
+</tr>
+<tr>
+<td><code>#alarm=N</code></td>
+<td><code>#alarm=2</code></td>
+<td>Alarm state given to this group: <code>0</code> AUTO, <code>1</code> GREEN, <code>2</code> RED. Without the tag, the state follows the group's nature — see <a href="#alarm-state"><code>#alarm</code></a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="spawn-radius"><code>#spawnradius</code> — the default dispersion<a class="headerlink" href="#spawn-radius" title="Permanent link">&para;</a></h3>
+<p>With no tag, a group appears <strong>scattered by 50 m</strong> around its recorded position, and a static object appears <strong>exactly</strong> on its own. Dispersion exists so that a group does not respawn on the same metre twice; a static, on the other hand, is usually placed somewhere precise — a parking spot, a quay — where moving it would make no sense.</p>
+<table>
+<thead>
+<tr>
+<th>What you write</th>
+<th>What the group gets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nothing</td>
+<td>50 m for a group, 0 m for a static</td>
+</tr>
+<tr>
+<td><code>#spawnradius=200</code></td>
+<td>200 m</td>
+</tr>
+<tr>
+<td><code>#spawnradius=0</code></td>
+<td>no dispersion — this is how you turn it off</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>#command=</code> unit is <strong>never</strong> scattered, default or not: the command runs <em>at its position</em>, so moving it would move whatever it spawns. An explicitly written <code>#spawnradius=</code> does still apply to it.</p>
+<div class="admonition warning">
+<p class="admonition-title">This changes existing missions</p>
+<p>From March 2023 to 6.15.14 the 50 m default was <strong>unreachable</strong>: the constant existed, the code meant to apply it never ran, and every group of a combat zone appeared exactly on its recorded position. A mission built during those three years will therefore see its groups move by about fifty metres. If a placement was precise on purpose, write <code>#spawnradius=0</code>.</p>
+</div>
+<h4 id="waypoint-follows-group">The first waypoint follows the group<a class="headerlink" href="#waypoint-follows-group" title="Permanent link">&para;</a></h4>
+<p>A scattered group no longer appears on its first waypoint, and the first waypoint is where a group sets off from. So it <strong>moves with the group</strong>, by the same distance in the same direction.</p>
+<p><strong>The rest of the track stays put.</strong> You placed those waypoints on roads, bridges and passes; shifting them fifty random metres would put them beside those features, and would draw a different track on every activation. A group therefore leaves from where it appeared and joins the route you drew.</p>
+<p>Before 6.15.20 the first waypoint stayed at the editor position, so a scattered convoy drove back to fetch it first, walking a leg nobody had drawn. Mostly visible since 6.15.15, which made the 50 m dispersion effective.</p>
+<h4 id="group-straddling-the-edge">A group straddling the zone's edge<a class="headerlink" href="#group-straddling-the-edge" title="Permanent link">&para;</a></h4>
+<p>A zone adopts a group as soon as <strong>one</strong> of its units stands inside the circle: the whole group is then destroyed and recreated, units left outside included. That is deliberate, and it spares you having to frame a zone to the metre around a convoy.</p>
+<p>What went wrong is that the zone anchored itself on <strong>the first unit it could see</strong> — so on the group's second unit whenever the first sat outside the circle. The entire group then appeared offset by the gap between those two units, a truck-length for a convoy, with no dispersion asked for and even with <code>#spawnradius=0</code>.</p>
+<p>Since 6.15.21 the anchor is always the group's <strong>first unit</strong>, inside the circle or not. A group straddling the edge therefore appears where you drew it. If you had compensated for the offset by hand by moving your units, remove the compensation.</p>
+<h4 id="tag-ranges">A value drawn from a range<a class="headerlink" href="#tag-ranges" title="Permanent link">&para;</a></h4>
+<p>The four tags carrying a number — <code>#spawnradius</code>, <code>#spawnchance</code>, <code>#spawncount</code>, <code>#spawndelay</code> — accept a range instead of a fixed value, written the same way as in marker commands:</p>
+<div class="highlight"><pre><span></span><code>ALPHA-CONVOY #spawnradius=100-300 #spawndelay=30-90
+</code></pre></div>
+<p>The value is drawn <strong>once per mission</strong>, when names are read at startup. Every activation of the zone therefore uses the same value: this varies placement from one game to the next, not from one activation to the next.</p>
+<div class="admonition warning">
+<p class="admonition-title">Before 6.15.23 a range was silently truncated</p>
+<p><code>#spawnradius=100-300</code> was read as <code>100</code>, with no message: you got the lower bound while believing you had a range. If you wrote any, they take effect now — so the radius may be larger than it used to be.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title"><code>#alarm</code> takes no range</p>
+<p>The alarm state is an enumeration (<code>0</code> AUTO, <code>1</code> GREEN, <code>2</code> RED): <code>#alarm=0-2</code> is not a random state, it is a typo. The tag refuses it as it already refuses an out-of-bounds value.</p>
+</div>
+<h3 id="tag-sources">Where tags are read from<a class="headerlink" href="#tag-sources" title="Permanent link">&para;</a></h3>
+<p>A group's tags are the ones carried by <strong>its own name and by the names of all its units</strong>. Tagging a single truck of a convoy is therefore enough, whichever truck it is — no need to tag all four, and no need to guess which one DCS will process first.</p>
+<p>Sources are read in a fixed order:</p>
+<ol>
+<li>the <strong>group</strong> name;</li>
+<li>the <strong>unit</strong> names, in <strong>alphabetical</strong> order.</li>
+</ol>
+<p>The first value found for a tag wins. A later source stating a <em>different</em> value for the same tag is ignored and the log says so — two trucks of one convoy carrying <code>#alarm=0</code> and <code>#alarm=2</code> do not toss a coin: one wins and you are told. Repeating the <em>same</em> value on several units produces no message at all: that is the ordinary way of doing it.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>#command</code> is the exception</p>
+<p><code>#command</code> stays attached to the object carrying it: every unit carrying one becomes its own trigger, which is what lets a group carry several commands. Put on the <strong>group</strong> name, it makes that group a <strong>single</strong> trigger rather than one per unit.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Before 6.15.14</p>
+<p>Only the tags carried by whichever unit the engine met first counted, and tags on a group name were silently ignored. Since that order is not guaranteed, a tag put on a given truck worked or did not work for no visible reason.</p>
+</div>
+<h3 id="alarm-state"><code>#alarm</code> — making a group hold its ground<a class="headerlink" href="#alarm-state" title="Permanent link">&para;</a></h3>
+<p>The ground alarm state decides two things at once, and both matter: a group on <strong>RED</strong> stops and deploys — radars up, ready to fire — while on <strong>AUTO</strong> it drives and lets DCS raise its alert on detection. Right for a SAM battery in one case, right for a convoy in the other, and never the same one.</p>
+<p><strong>The zone therefore chooses by the nature of the group</strong>, without you saying anything:</p>
+<table>
+<thead>
+<tr>
+<th>The group</th>
+<th>State it gets</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>has a route to drive (more than one waypoint)</td>
+<td><strong>AUTO</strong></td>
+<td>so it leaves: on RED it would never move</td>
+</tr>
+<tr>
+<td>stays put</td>
+<td><strong>RED</strong></td>
+<td>so it fights: on AUTO a SAM battery keeps its radars down</td>
+</tr>
+</tbody>
+</table>
+<p><code>#alarm=N</code> still wins, in both directions — to pin a convoy in place (<code>#alarm=2</code>) as much as to keep a defence quiet until first contact (<code>#alarm=0</code>):</p>
+<div class="highlight"><pre><span></span><code>ALPHA-SA6-BATTERY              ← RED, with nothing written
+ALPHA-SUPPLY-CONVOY            ← AUTO, with nothing written
+ALPHA-SA6-AMBUSH #alarm=0      ← quiet on purpose
+</code></pre></div>
+<p>An unreadable or out-of-range value (<code>#alarm=7</code>, <code>#alarm=x</code>) falls back to RED and says so in the log, rather than failing the zone.</p>
+<div class="admonition note">
+<p class="admonition-title">Only for mission groups</p>
+<p>The tag applies to groups the zone spawns itself. On a <code>#command=</code> unit, pass the alarm state inside the command instead (<code>-spawn ..., alarm 2</code>), since the spawn is handled by the VEAF marker interpreter.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">How this behaved before</p>
+<p>Up to 6.15.4 zones spawned <strong>every</strong> group on RED, which is why a convoy placed in a zone never moved (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/290">#290</a>). The fix went through a single AUTO default, which sorted the convoys <strong>and made the zones' air defences go silent</strong> — a battery on AUTO does not light its radars. Hence the per-nature choice above. If you added <code>#alarm=2</code> to your batteries in the meantime, they still work and are now redundant: the default does the same thing.</p>
+</div>
+<h3 id="practical-example--manpads-ambush">Practical example — MANPADS ambush<a class="headerlink" href="#practical-example--manpads-ambush" title="Permanent link">&para;</a></h3>
+<p>You want four MANPADS positions in a zone, but only two should actually be occupied. Place four dummy infantry units named:</p>
+<div class="highlight"><pre><span></span><code>ALPHA-MANPAD-1 #spawnchance=50
+ALPHA-MANPAD-2 #spawnchance=50
+ALPHA-MANPAD-3 #spawnchance=50
+ALPHA-MANPAD-4 #spawnchance=50
+</code></pre></div>
+<p>Each position has a 50% chance of spawning — statistically, around two will be active each time the zone is triggered.</p>
+<h3 id="command--spawning-via-veaf-marker-syntax"><code>#command</code> — spawning via VEAF marker syntax<a class="headerlink" href="#command--spawning-via-veaf-marker-syntax" title="Permanent link">&para;</a></h3>
+<p>The <code>#command</code> tag turns a unit into a one-shot trigger. When the zone activates, VEAF executes the command at the unit's position and destroys the unit. This is equivalent to dropping a map marker at that location.</p>
+<div class="highlight"><pre><span></span><code>SPAWN-SA11 #command=&quot;-spawn sa-11, side red&quot;
+CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
+</code></pre></div>
+<p>This lets you set up complex spawns (SA-11 battery, convoys with AI routes) without any Lua code.</p>
+<p><strong>A delayed command's groups belong to their zone.</strong> A command can carry a delay in three ways — <code>-samsr!30</code> (an alias delay), a <code>-spawn</code>'s <code>delay</code> option, or a repeat. In all of them the command returns <strong>before</strong> anything has been spawned. What appears afterwards still belongs to the zone: deactivating the zone destroys those groups like any other.</p>
+<p>Before 6.15.9 it did not. The zone read the list of what it had created too early, so a delayed group was registered nowhere and <strong>outlived the zone that spawned it</strong>.</p>
+<blockquote>
+<p>If the zone is deactivated while the delay is running, the group that appears afterwards is destroyed straight away — nothing can cancel an already scheduled spawn, so this is the outcome the deactivation would have produced.</p>
+</blockquote>
+<p>Note that <code>#spawndelay</code> never had this problem: it delays the zone element itself, which registers on the way through.</p>
+<hr />
+<h2 id="group-naming">Spawned group names<a class="headerlink" href="#group-naming" title="Permanent link">&para;</a></h2>
+<p>A group a combat zone creates does not carry the name you gave it in the editor. It looks like this:</p>
+<div class="highlight"><pre><span></span><code>[r]-Hydra Unit#10230
+</code></pre></div>
+<p>Three parts, two of which are there to stay:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it is</th>
+<th>Configurable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[r]</code> / <code>[b]</code> / <code>[n]</code></td>
+<td>the group's coalition</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>Hydra Unit</code></td>
+<td><strong>an invented name</strong>, not yours</td>
+<td>yes, see below</td>
+</tr>
+<tr>
+<td><code>#10230</code></td>
+<td>a unique identifier</td>
+<td>no — DCS requires unique group names</td>
+</tr>
+</tbody>
+</table>
+<p>The invented name is deliberate: without it a player reads a zone's contents off the F10 map before
+going anywhere near it. That is <code>veaf.HideNamesFromSpawnedGroups</code>, <strong>on by default</strong>.</p>
+<p>To see the real names — while building or debugging a mission:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hide_names_from_spawned_groups</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>Names then read <code>&lt;zone name&gt; [r] &lt;real name&gt;#&lt;id&gt;</code>. The coalition tag and the identifier stay either way.</p>
+<blockquote>
+<p>The field exists from 6.15.34. Before that the setting was only reachable through
+<code>module_settings: { veaf.HideNamesFromSpawnedGroups: false }</code>, which still works.</p>
+</blockquote>
+<hr />
+<h2 id="module-constants">Module Constants<a class="headerlink" href="#module-constants" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafCombatZone.SecondsBetweenWatchdogChecks</code></td>
+<td><code>60</code></td>
+<td>How often the zone watchdog polls (s)</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.SecondsBetweenSmokeRequests</code></td>
+<td><code>180</code></td>
+<td>Smoke mark cooldown (s)</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.SecondsBetweenFlareRequests</code></td>
+<td><code>120</code></td>
+<td>Flare mark cooldown (s)</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.RadioMenuName</code></td>
+<td><code>"COMBAT ZONES"</code></td>
+<td>F10 submenu label</td>
+</tr>
+<tr>
+<td><code>veafCombatZone.DefaultSpawnRadiusForUnits</code></td>
+<td><code>50</code></td>
+<td>Default unit scatter radius (m)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="defining-a-zone">Defining a Zone<a class="headerlink" href="#defining-a-zone" title="Permanent link">&para;</a></h2>
+<p>In the most common case, elements are populated automatically from the units placed inside the DCS trigger zone via <code>:addZoneElementsFromZoneNamed(...)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">strikeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">-- DCS trigger zone name</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- radio menu label</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Destroy all vehicles. Expect AAA and MANPADS.&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElementsFromZoneNamed</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>You can also build and attach an element manually with <code>:addZoneElement(...)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setDcsGroup</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span><span class="w">    </span><span class="c1">-- DCS group name to spawn</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnRadius</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="nv">strikeZone</span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">element</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="veafcombatzone-builder-methods">VeafCombatZone Builder Methods<a class="headerlink" href="#veafcombatzone-builder-methods" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setMissionEditorZoneName(name)</code></td>
+<td>DCS trigger zone that defines the spawn area</td>
+</tr>
+<tr>
+<td><code>:setFriendlyName(name)</code></td>
+<td>Label shown in the radio menu</td>
+</tr>
+<tr>
+<td><code>:setBriefing(text)</code></td>
+<td>Full briefing text</td>
+</tr>
+<tr>
+<td><code>:setOnCompletedHook(fn)</code></td>
+<td>Callback when all enemies destroyed</td>
+</tr>
+<tr>
+<td><code>:addZoneElement(element)</code></td>
+<td>Add an element to the zone</td>
+</tr>
+<tr>
+<td><code>:addZoneElementsFromZoneNamed(zoneName)</code></td>
+<td>Populate elements from the units of a trigger zone</td>
+</tr>
+<tr>
+<td><code>:addSpawnedGroup(groupOrName)</code></td>
+<td>Register an already-spawned group as belonging to the zone</td>
+</tr>
+<tr>
+<td><code>:setActive(bool)</code></td>
+<td>Activate the zone at start</td>
+</tr>
+<tr>
+<td><code>:setTraining(bool)</code></td>
+<td>Training mode</td>
+</tr>
+<tr>
+<td><code>:setCompletable(bool)</code></td>
+<td>Whether the zone can be marked as completed</td>
+</tr>
+<tr>
+<td><code>:enableUserActivation()</code> / <code>:disableUserActivation()</code></td>
+<td>Allow/forbid player activation</td>
+</tr>
+<tr>
+<td><code>:setRadioGroupName(name)</code></td>
+<td>Gather this zone (and every zone sharing the same name) under one shared radio submenu</td>
+</tr>
+<tr>
+<td><code>:setRadioMenuPrefix(text)</code></td>
+<td>Prefix displayed before the zone name in the menu</td>
+</tr>
+</tbody>
+</table>
+<h3 id="veafcombatzoneelement-builder-methods">VeafCombatZoneElement Builder Methods<a class="headerlink" href="#veafcombatzoneelement-builder-methods" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setName(name)</code></td>
+<td>Element name</td>
+</tr>
+<tr>
+<td><code>:setPosition(pos)</code></td>
+<td>Element position</td>
+</tr>
+<tr>
+<td><code>:setDcsGroup(bool)</code></td>
+<td>The element references a DCS group</td>
+</tr>
+<tr>
+<td><code>:setDcsStatic(bool)</code></td>
+<td>The element references a DCS static object</td>
+</tr>
+<tr>
+<td><code>:setSpawnGroup(name)</code></td>
+<td>DCS group name to spawn</td>
+</tr>
+<tr>
+<td><code>:setVeafCommand(cmd)</code></td>
+<td>VEAF command to run instead of a spawn</td>
+</tr>
+<tr>
+<td><code>:setRoute(route)</code></td>
+<td>Element AI route</td>
+</tr>
+<tr>
+<td><code>:setCoalition(side)</code></td>
+<td>Element coalition</td>
+</tr>
+<tr>
+<td><code>:setSpawnRadius(m)</code></td>
+<td>Scatter radius around zone centre</td>
+</tr>
+<tr>
+<td><code>:setSpawnChance(pct)</code></td>
+<td>Spawn probability (0–100)</td>
+</tr>
+<tr>
+<td><code>:setSpawnCount(n)</code></td>
+<td>Number of instances to spawn</td>
+</tr>
+<tr>
+<td><code>:setSpawnDelay(s)</code></td>
+<td>Delay before spawn (seconds)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="f10-radio-menu-per-zone">F10 Radio Menu (per zone)<a class="headerlink" href="#f10-radio-menu-per-zone" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Activate</strong> — spawn the zone's unit groups</li>
+<li><strong>Deactivate</strong> — despawn units, reset the zone</li>
+<li><strong>Info</strong> — status, remaining unit count, briefing</li>
+<li><strong>Smoke</strong> — mark zone with smoke (cooldown applies)</li>
+<li><strong>Flare</strong> — mark zone with flares</li>
+</ul>
+<blockquote>
+<p><strong>Security:</strong> activate and deactivate commands are secured by default: the group acts at the level of its lowest-graded occupant (see <a href="../veafSecurity/">veafSecurity</a>). <a href="#training-mode">Training mode</a> removes this restriction. Info, smoke, and flare requests are always accessible to everyone.</p>
+</blockquote>
+<h3 id="radio-menu-options">Radio menu options<a class="headerlink" href="#radio-menu-options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:disableRadioMenu()</code></td>
+<td>Disable the radio menu entirely for this zone</td>
+</tr>
+<tr>
+<td><code>:setRadioMenuPrefix(text)</code></td>
+<td>Prefix displayed before the zone name in the menu</td>
+</tr>
+<tr>
+<td><code>:setRadioGroupName(name)</code></td>
+<td>Gather this zone (and every zone sharing the same name) under one shared radio submenu</td>
+</tr>
+<tr>
+<td><code>:setEnableSmokeAndFlare(bool)</code></td>
+<td>Enable/disable smoke and flare requests (default: <code>true</code>)</td>
+</tr>
+<tr>
+<td><code>:setShowUnitsList(bool)</code></td>
+<td>Include remaining unit list in the info message (default: <code>true</code>)</td>
+</tr>
+<tr>
+<td><code>:setShowZonePositionInfo(bool)</code></td>
+<td>Include zone coordinates and weather in the info message (default: <code>true</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wreck-cleanup">Wreck cleanup<a class="headerlink" href="#wreck-cleanup" title="Permanent link">&para;</a></h3>
+<p>By default, vehicle wrecks and corpses are automatically removed when a zone is deactivated. To keep them:</p>
+<div class="highlight"><pre><span></span><code><span class="p">:</span><span class="nf">disableJunkCleanup</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h2 id="operations-grouped-zones">Operations (Grouped Zones)<a class="headerlink" href="#operations-grouped-zones" title="Permanent link">&para;</a></h2>
+<p>Multiple zones can be grouped into an <strong>Operation</strong> that completes when all child zones are done:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatOperation</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;OP-THUNDER&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Operation Thunder&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Destroy both armour columns before they reach Senaki.&quot;</span><span class="p">)</span>
+
+<span class="nv">operation</span><span class="p">:</span><span class="nf">addTaskingOrder</span><span class="p">(</span><span class="nv">alphaZone</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- first task</span>
+<span class="nv">operation</span><span class="p">:</span><span class="nf">addTaskingOrder</span><span class="p">(</span><span class="nv">bravoZone</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;OP-THUNDER-ALPHA&quot;</span><span class="w"> </span><span class="p">})</span><span class="w">  </span><span class="c1">-- unlocked after Alpha</span>
+<span class="nv">operation</span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p><code>VeafCombatOperation = VeafCombatZone:new()</code> — the operation extends <code>VeafCombatZone</code>. Tasks are added with <code>:addTaskingOrder(zone, requiredComplete)</code>, where <code>zone</code> is a <code>VeafCombatZone</code> and <code>requiredComplete</code> is the optional list of zone names that must complete before this one is activated. The operation appears in the radio menu as a single entry.</p>
+<hr />
+<h2 id="zone-chaining">Zone Chaining<a class="headerlink" href="#zone-chaining" title="Permanent link">&para;</a></h2>
+<p>A zone can automatically activate one or more follow-on zones when it is completed. This lets you build dynamic campaign progressions without manual scripting:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Bravo&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- triggers when Alpha is done</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Charlie&quot;</span><span class="p">)</span><span class="w">   </span><span class="c1">-- one is chosen at random</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setChainedCombatZonesDelay</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="w">           </span><span class="c1">-- wait 60 s before chaining</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>When multiple chained zones are defined, <strong>one is picked at random</strong> — useful for branching narratives or avoiding predictability.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:addChainedCombatZone(name)</code></td>
+<td>Add a zone to trigger after completion</td>
+</tr>
+<tr>
+<td><code>:setChainedCombatZonesDelay(s)</code></td>
+<td>Seconds to wait before chaining (default: 0)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="training-mode">Training Mode<a class="headerlink" href="#training-mode" title="Permanent link">&para;</a></h2>
+<p>Setting a zone to training mode changes two things:</p>
+<ul>
+<li><strong>No security</strong>: any player can activate or deactivate the zone via the radio menu (normally these commands are restricted to the group's effective level — see <a href="../veafSecurity/">veafSecurity</a>).</li>
+<li><strong>Verbose status</strong>: the zone info message lists remaining units and their approximate positions (using smoke or bearings), giving pilots a clear picture of what is left.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-TRAINING-A&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Training-A&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTraining</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<p>Training mode is ideal for BFM / CAS training scenarios where pilots need to know unit positions.</p>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../veafCasMission/">veafCasMission</a> — generated CAS zones (no pre-placed groups needed)</li>
+<li><a href="../../../LUA_API_REFERENCE/">Lua API Reference</a> — full <code>veafCombatZone</code> API</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>

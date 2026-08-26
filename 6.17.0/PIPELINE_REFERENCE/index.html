@@ -1,0 +1,4250 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.17.0/PIPELINE_REFERENCE/">
+      
+      
+        <link rel="prev" href="../MISSION_YAML_REFERENCE/">
+      
+      
+        <link rel="next" href="../mission-maker/dcs-radio-specs/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../en/PIPELINE_REFERENCE/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Référence Pipeline - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#référence-pipeline" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href=".." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Référence Pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../en/PIPELINE_REFERENCE/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../mission-maker/" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../developer/" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklists guidées (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Menu MISSIONS (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IA au sol (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'ensemble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contrôle-du-pipeline-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrôle du pipeline (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contrôle du pipeline (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de pipeline:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-1-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 1 — Préréglages radio (presets.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 1 — Préréglages radio (presets.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-authoring-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deux formats d'auteur
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma--channel_lists-modèle-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma — channel_lists (modèle recommandé)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma--format-historique-surcharge-manuelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma — format historique (surcharge manuelle)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valeur-dun-canal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valeur d'un canal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priorité-et-couleur-dun-canal-planchettes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priorité et couleur d'un canal (planchettes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversion-v5--deux-fichiers-convert-v5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conversion v5 : deux fichiers (convert-v5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-des-fréquences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation des fréquences
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-2-waypoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 2 — Points de cheminement (waypoints.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 2 — Points de cheminement (waypoints.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priorité-de-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priorité de correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-3-aircraft-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 3 — Groupes d'aéronefs : spawnables (B) et modèles de slot dynamique (C)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 3 — Groupes d&#39;aéronefs : spawnables (B) et modèles de slot dynamique (C)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacements-par-défaut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacements par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modes-dinjection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modes d'injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-4-warehouses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 4 — Warehouses Dynamic-Slot (warehouses.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 4 — Warehouses Dynamic-Slot (warehouses.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-5-spawn-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 5 — Données de spawn (spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 5 — Données de spawn (spawn-groups.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#toujours-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Toujours active
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#étendre-la-base-srcspawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étendre la base (src/spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-6-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 6 — Variantes météo &amp; horaire (versions.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 6 — Variantes météo &amp; horaire (versions.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de versions[]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#briefing-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Afficher la météo dans le briefing : ${METAR}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expressions-horaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions horaires
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expressions-de-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions de date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-lobjet-weather" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de l'objet weather
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mise à jour & publication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'ensemble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contrôle-du-pipeline-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrôle du pipeline (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contrôle du pipeline (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de pipeline:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-1-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 1 — Préréglages radio (presets.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 1 — Préréglages radio (presets.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-authoring-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deux formats d'auteur
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma--channel_lists-modèle-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma — channel_lists (modèle recommandé)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma--format-historique-surcharge-manuelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma — format historique (surcharge manuelle)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valeur-dun-canal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valeur d'un canal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priorité-et-couleur-dun-canal-planchettes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priorité et couleur d'un canal (planchettes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversion-v5--deux-fichiers-convert-v5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conversion v5 : deux fichiers (convert-v5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-des-fréquences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation des fréquences
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-2-waypoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 2 — Points de cheminement (waypoints.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 2 — Points de cheminement (waypoints.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priorité-de-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priorité de correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-3-aircraft-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 3 — Groupes d'aéronefs : spawnables (B) et modèles de slot dynamique (C)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 3 — Groupes d&#39;aéronefs : spawnables (B) et modèles de slot dynamique (C)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacements-par-défaut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacements par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modes-dinjection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modes d'injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-4-warehouses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 4 — Warehouses Dynamic-Slot (warehouses.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 4 — Warehouses Dynamic-Slot (warehouses.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-5-spawn-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 5 — Données de spawn (spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 5 — Données de spawn (spawn-groups.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#toujours-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Toujours active
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#étendre-la-base-srcspawn-groupsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étendre la base (src/spawn-groups.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-step-6-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 6 — Variantes météo &amp; horaire (versions.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Étape 6 — Variantes météo &amp; horaire (versions.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-par-défaut_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schéma_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de versions[]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#briefing-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Afficher la météo dans le briefing : ${METAR}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expressions-horaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions horaires
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expressions-de-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions de date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-lobjet-weather" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de l'objet weather
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="référence-pipeline">Référence Pipeline<a class="headerlink" href="#référence-pipeline" title="Permanent link">&para;</a></h1>
+<p>Cette page documente les étapes optionnelles du <strong>pipeline de build</strong> que <code>veaf-tools mission build</code> peut exécuter après la génération de <code>veaf-config.lua</code>. Chaque étape injecte des données dans le fichier <code>.miz</code> à partir d'un fichier de configuration YAML séparé.</p>
+<hr />
+<h2 id="vue-densemble">Vue d'ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
+<p>Le pipeline exécute les étapes optionnelles suivantes, dans cet ordre :</p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Fichier config</th>
+<th>Ce qu'elle fait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>presets</code></td>
+<td><code>src/presets.yaml</code></td>
+<td>Injecte les préréglages de fréquences radio dans les groupes d'avions pilotés par des humains</td>
+</tr>
+<tr>
+<td><code>waypoints</code></td>
+<td><code>src/waypoints.yaml</code> ou <code>waypoints.yaml</code></td>
+<td>Injecte des modèles de points de cheminement dans les groupes d'avions pilotés par des humains</td>
+</tr>
+<tr>
+<td><code>spawnable_aircrafts</code></td>
+<td><code>src/spawnables.yaml</code></td>
+<td>Injecte les groupes d'avions <strong>spawnables</strong> (préfixe <code>veafSpawn-</code>, clonés par <code>veafSpawn</code>)</td>
+</tr>
+<tr>
+<td><code>dynamic_slot_templates</code></td>
+<td><code>src/dynamic-slot-templates.yaml</code></td>
+<td>Injecte les <strong>modèles de slot dynamique</strong> (<code>dynSpawnTemplate = true</code>, consommés par DCS)</td>
+</tr>
+<tr>
+<td><code>warehouses</code></td>
+<td><code>src/warehouses.yaml</code></td>
+<td>Configure les warehouses pour les slots dynamiques (Dynamic Slots)</td>
+</tr>
+<tr>
+<td><code>spawn_data</code></td>
+<td><code>src/spawn-groups.yaml</code> <em>(optionnel)</em></td>
+<td>Injecte la base de données de spawn (<code>_spawn unit</code>/<code>_spawn group</code>) ; <strong>toujours active</strong> (les données du framework sont embarquées)</td>
+</tr>
+<tr>
+<td><code>weather</code></td>
+<td><code>src/versions.yaml</code> ou <code>versions.yaml</code></td>
+<td>Crée plusieurs variantes de mission avec différentes météos et heures</td>
+</tr>
+</tbody>
+</table>
+<p>Chaque étape est <strong>auto-détectée</strong> : elle s'exécute si son fichier de config par défaut existe. Vous pouvez modifier ce comportement dans <code>mission.yaml</code>. <strong>Exception</strong> : <code>spawn_data</code> s'exécute toujours (même sans fichier mission) afin d'embarquer la base de spawn du framework ; le fichier <code>src/spawn-groups.yaml</code> ne sert qu'à l'étendre.</p>
+<hr />
+<h2 id="contrôle-du-pipeline-missionyaml">Contrôle du pipeline (<code>mission.yaml</code>)<a class="headerlink" href="#contrôle-du-pipeline-missionyaml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">presets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                        </span><span class="c1"># ignoré même si src/presets.yaml existe</span>
+<span class="w">  </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                       </span><span class="c1"># auto-détection : exécuté seulement si le fichier existe</span>
+<span class="w">  </span><span class="nt">spawnable_aircrafts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-spawnables.yaml</span><span class="w">        </span><span class="c1"># chemin de fichier non-standard</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace</span><span class="w">                       </span><span class="c1"># add (défaut) | replace</span>
+<span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># ignorer l&#39;injection des modèles de slot dynamique</span>
+<span class="w">  </span><span class="nt">spawn_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># désactiver l&#39;injection de la base de spawn (framework inclus)</span>
+<span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                        </span><span class="c1"># ignorer les variantes météo</span>
+</code></pre></div>
+<h3 id="champs-de-pipeline">Champs de <code>pipeline:</code><a class="headerlink" href="#champs-de-pipeline" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>presets</code></td>
+<td>bool | objet</td>
+<td>auto</td>
+<td>Non</td>
+<td><code>true</code>/non défini = auto-détection (exécuté si fichier trouvé), <code>false</code> = toujours ignorer, objet = options personnalisées</td>
+</tr>
+<tr>
+<td><code>waypoints</code></td>
+<td>bool | objet</td>
+<td>auto</td>
+<td>Non</td>
+<td><code>true</code>/non défini = auto-détection (exécuté si fichier trouvé), <code>false</code> = toujours ignorer, objet = options personnalisées</td>
+</tr>
+<tr>
+<td><code>spawnable_aircrafts</code></td>
+<td>bool | objet</td>
+<td>auto</td>
+<td>Non</td>
+<td><code>true</code>/non défini = auto-détection (exécuté si fichier trouvé), <code>false</code> = toujours ignorer, objet = options personnalisées</td>
+</tr>
+<tr>
+<td><code>dynamic_slot_templates</code></td>
+<td>bool | objet</td>
+<td>auto</td>
+<td>Non</td>
+<td><code>true</code>/non défini = auto-détection (exécuté si fichier trouvé), <code>false</code> = toujours ignorer, objet = options personnalisées</td>
+</tr>
+<tr>
+<td><code>spawn_data</code></td>
+<td>bool | objet</td>
+<td>toujours</td>
+<td>Non</td>
+<td><code>true</code>/non défini = <strong>toujours exécuté</strong> (données framework embarquées), <code>false</code> = désactiver complètement, objet <code>{file: …}</code> = fichier mission non-standard</td>
+</tr>
+<tr>
+<td><code>warehouses</code></td>
+<td>bool | objet</td>
+<td>auto</td>
+<td>Non</td>
+<td><code>true</code>/non défini = auto-détection (exécuté si <code>src/warehouses.yaml</code> est trouvé), <code>false</code> = toujours ignorer, objet = options personnalisées</td>
+</tr>
+<tr>
+<td><code>weather</code></td>
+<td>bool | objet</td>
+<td>auto</td>
+<td>Non</td>
+<td><code>true</code>/non défini = auto-détection (exécuté si fichier trouvé), <code>false</code> = toujours ignorer, objet = options personnalisées</td>
+</tr>
+</tbody>
+</table>
+<p>Quand la valeur est un objet, les sous-champs suivants s'appliquent :</p>
+<table>
+<thead>
+<tr>
+<th>Sous-champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td>string</td>
+<td><em>(voir défauts par étape)</em></td>
+<td>Chemin vers le fichier de config, relatif au dossier mission</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>add</code> | <code>replace</code></td>
+<td><code>add</code></td>
+<td><em>(étapes d'injection de groupes uniquement)</em> <code>add</code> conserve les groupes existants ; <code>replace</code> met à jour les groupes de même nom</td>
+</tr>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+<td>Désactive l'étape sans perdre les autres sous-champs — c'est la forme longue de <code>&lt;étape&gt;: false</code></td>
+</tr>
+<tr>
+<td><code>kneeboards</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+<td><em>(étape <code>presets</code> uniquement)</em> <code>false</code> conserve l'injection des fréquences et ne génère aucune planchette PNG</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Auto-détection</strong> (quand non défini ou <code>true</code>) : l'étape ne s'exécute que si son fichier par défaut est trouvé. L'absence du fichier ignore silencieusement l'étape.</p>
+<hr />
+<h2 id="pipeline-step-1-presets">Étape 1 — Préréglages radio (<code>presets.yaml</code>)<a class="headerlink" href="#pipeline-step-1-presets" title="Permanent link">&para;</a></h2>
+<p>Injecte des préréglages de fréquences radio dans chaque groupe d'aéronefs contenant au moins un pilote humain (compétence Client/Player). Génère également des images de kneeboard PNG pour chaque préréglage.</p>
+<blockquote>
+<p><strong>Désactiver les planchettes (kneeboards)</strong> : la forme mapping de l'étape accepte un sous-champ <code>kneeboards</code> (défaut <code>true</code>). Passer <code>pipeline: { presets: { enabled: true, kneeboards: false } }</code> permet de conserver l'injection des fréquences radio tout en ne générant aucune planchette PNG (<code>KNEEBOARD/&lt;type&gt;/IMAGES/presets[-&lt;coalition&gt;].png</code>).</p>
+</blockquote>
+<h3 id="emplacement-par-défaut">Emplacement par défaut<a class="headerlink" href="#emplacement-par-défaut" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>&lt;dossier-mission&gt;/src/presets.yaml
+</code></pre></div>
+<h3 id="two-authoring-formats">Deux formats d'auteur<a class="headerlink" href="#two-authoring-formats" title="Permanent link">&para;</a></h3>
+<p>Depuis <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>presets.yaml</code> accepte deux couches, qui coexistent :</p>
+<ul>
+<li><strong><code>channel_lists</code></strong> (recommandé) : le mission-maker déclare une seule fois par coalition ses listes de canaux, par <strong>rôle radio</strong> fonctionnel (UHF principal, VHF principal, FM…), et le build projette automatiquement chaque liste sur les radios physiques de chaque type d'aéronef, en tenant compte de ses particularités matérielles (canal 0, slots réservés, canaux spéciaux en dur, fusion de radios — AJS-37, OH-58D, Mi-24P…). Une seule modification de fréquence se propage à toute la flotte. Le détail de ces règles de projection par type est documenté côté développeur : <a href="../developer/radio-preset-projection/">Projection des presets radio par type</a>.</li>
+<li><strong><code>radios_collection</code> / <code>presets_collection</code> / <code>presets_assignments</code></strong> (historique) : le mission-maker définit lui-même, radio par radio, le contenu de chaque préréglage puis l'assigne explicitement par type d'appareil. Ce format reste entièrement supporté et sert désormais de <strong>mécanisme de surcharge manuelle</strong> : une affectation explicite dans <code>presets_assignments</code> pour un type donné l'emporte toujours sur la projection automatique de <code>channel_lists</code> — y compris la valeur spéciale <code>none</code> (aucune injection).</li>
+</ul>
+<p>Dans tous les cas, <code>channels_collection</code> (les fréquences) reste la source commune aux deux formats.</p>
+<blockquote>
+<p><strong><code>convert-v5</code> nomme les fréquences automatiquement.</strong> À la conversion d'une mission v5, les fréquences en dur sont remplacées par des <strong>noms</strong> dans <code>presets.yaml</code> — aérodromes du théâtre (<code>Gudauta</code>, <code>Batumi</code>…) et indicatifs VEAF (<code>Guard</code>, <code>Archer</code>, <code>Texaco-1</code>…) — et le <code>channels_collection</code> correspondant est inséré pour les résoudre. Une fréquence sans nom connu reste en clair. La copie fidèle <code>presets.v5.yaml</code> conserve, elle, les fréquences brutes.</p>
+</blockquote>
+<h3 id="schéma--channel_lists-modèle-recommandé">Schéma — <code>channel_lists</code> (modèle recommandé)<a class="headerlink" href="#schéma--channel_lists-modèle-recommandé" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ── Définitions de canaux (commun aux deux formats) ────────────────────────</span>
+<span class="nt">channels_collection</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;nom-ensemble&gt;</span><span class="p">:</span><span class="w">                       </span><span class="c1"># groupe logique de canaux (ex: airports-caucasus)</span>
+<span class="w">    </span><span class="nt">&lt;nom-canal&gt;</span><span class="p">:</span><span class="w">                        </span><span class="c1"># identifiant du canal</span>
+<span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">16X&quot;</span><span class="w">            </span><span class="c1"># libellé lisible par l&#39;humain</span>
+<span class="w">      </span><span class="nt">freqs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">uhf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">260</span><span class="w">                        </span><span class="c1"># fréquence UHF (MHz)</span>
+<span class="w">        </span><span class="nt">vhf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">131</span><span class="w">                        </span><span class="c1"># fréquence VHF-AM (MHz)</span>
+<span class="w">        </span><span class="nt">fm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40.4</span><span class="w">                        </span><span class="c1"># fréquence FM (MHz)</span>
+
+<span class="c1"># ── Listes de canaux par rôle radio ─────────────────────────────────────────</span>
+<span class="nt">channel_lists</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                          </span><span class="c1"># blue | red</span>
+<span class="w">    </span><span class="nt">primary_1</span><span class="p">:</span><span class="w">                          </span><span class="c1"># 1re radio V/UHF (bande uhf)</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
+<span class="w">      </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Batumi</span>
+<span class="w">    </span><span class="nt">primary_2</span><span class="p">:</span><span class="w">                          </span><span class="c1"># 2e radio V/UHF (bande vhf) ; aussi la radio unique des warbirds</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
+<span class="w">      </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Batumi</span>
+<span class="w">    </span><span class="nt">fm_supplement</span><span class="p">:</span><span class="w">                      </span><span class="c1"># FM en 3e radio, en plus de deux radios primaires (ex: A-10C)</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">fm_substitute</span><span class="p">:</span><span class="w">                      </span><span class="c1"># FM en 2e radio, à la place d&#39;une 2e radio primaire (ex: hélicoptères)</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">fm_secondary</span><span class="p">:</span><span class="w">                       </span><span class="c1"># 2e radio FM supplémentaire (ex: OH-58D) ; par défaut, copie de fm_supplement</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">31</span>
+</code></pre></div>
+<p><strong>Rôles radio</strong> (vocabulaire fixe) :</p>
+<table>
+<thead>
+<tr>
+<th>Rôle</th>
+<th>Bande</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary_1</code></td>
+<td>uhf</td>
+<td>1re radio V/UHF</td>
+</tr>
+<tr>
+<td><code>primary_2</code></td>
+<td>vhf</td>
+<td>2e radio V/UHF ; radio unique des warbirds</td>
+</tr>
+<tr>
+<td><code>fm_substitute</code></td>
+<td>fm</td>
+<td>FM à la place d'une 2e radio primaire (hélicoptères à une seule radio primaire)</td>
+</tr>
+<tr>
+<td><code>fm_supplement</code></td>
+<td>fm</td>
+<td>FM en plus de deux radios primaires (appareils d'attaque, ex: A-10C)</td>
+</tr>
+<tr>
+<td><code>fm_secondary</code></td>
+<td>fm</td>
+<td>2e radio FM supplémentaire (ex: OH-58D) ; par défaut, copie de <code>fm_supplement</code> si non déclaré</td>
+</tr>
+</tbody>
+</table>
+<p>Le build assigne automatiquement chaque radio physique de chaque type d'aéronef au rôle qui lui correspond (déduit de ses plages de fréquences matérielles), puis y projette la liste de canaux déclarée pour ce rôle. Un canal qui n'a pas de fréquence pour la bande du rôle est ignoré silencieusement (signalé par <code>validate</code>).</p>
+<h3 id="schéma--format-historique-surcharge-manuelle">Schéma — format historique (surcharge manuelle)<a class="headerlink" href="#schéma--format-historique-surcharge-manuelle" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ── Définitions de radios ──────────────────────────────────────────────────</span>
+<span class="nt">radios_collection</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;nom-ensemble&gt;</span><span class="p">:</span><span class="w">                       </span><span class="c1"># groupe logique de radios (ex: blue_radios)</span>
+<span class="w">    </span><span class="nt">&lt;nom-radio&gt;</span><span class="p">:</span><span class="w">                        </span><span class="c1"># identifiant référencé dans presets_collection</span>
+<span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UHF&quot;</span><span class="w">                      </span><span class="c1"># libellé affiché sur le kneeboard</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uhf</span><span class="w">                         </span><span class="c1"># uhf | vhf | fm</span>
+<span class="w">      </span><span class="nt">channels</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span><span class="w">                       </span><span class="c1"># numéro de canal → nom-canal (depuis channels_collection)</span>
+<span class="w">        </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Batumi</span>
+<span class="w">        </span><span class="nt">10</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Stennis</span>
+
+<span class="c1"># ── Définitions de préréglages ────────────────────────────────────────────</span>
+<span class="nt">presets_collection</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;nom-ensemble&gt;</span><span class="p">:</span><span class="w">                       </span><span class="c1"># groupe logique de préréglages (ex: blue_presets)</span>
+<span class="w">    </span><span class="nt">&lt;nom-préréglage&gt;</span><span class="p">:</span><span class="w">                   </span><span class="c1"># identifiant référencé dans presets_assignments</span>
+<span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Coalition</span><span class="nv"> </span><span class="s">bleue</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">UHF/VHF/FM&quot;</span>
+<span class="w">      </span><span class="nt">radios</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">radio_1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;nom-radio&gt;</span><span class="w">            </span><span class="c1"># slot → nom-radio (depuis radios_collection)</span>
+<span class="w">        </span><span class="nt">radio_2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;nom-radio&gt;</span>
+<span class="w">        </span><span class="nt">radio_3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;nom-radio&gt;</span>
+
+<span class="c1"># ── Règles d&#39;affectation (surcharge manuelle des channel_lists) ────────────</span>
+<span class="nt">presets_assignments</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                          </span><span class="c1"># blue | red</span>
+<span class="w">    </span><span class="nt">&lt;catégorie&gt;</span><span class="p">:</span><span class="w">                        </span><span class="c1"># plane | helicopter</span>
+<span class="w">      </span><span class="nt">all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;nom-préréglage&gt;</span><span class="w">            </span><span class="c1"># préréglage par défaut pour tous les aéronefs de ce type</span>
+<span class="w">      </span><span class="nt">&lt;type-aéronef&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;nom-préréglage&gt;</span><span class="w"> </span><span class="c1"># surcharge pour un type DCS exact (ex: A-10C_2) ou un pattern regex (ex: A[-]10C.*)</span>
+<span class="w">      </span><span class="nt">&lt;type-aéronef&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w">              </span><span class="c1"># désactive toute injection pour ce type (aucun équivalent en channel_lists)</span>
+</code></pre></div>
+<h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">channels_collection</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">common</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Guard</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
+<span class="w">      </span><span class="nt">freqs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">uhf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">243.0</span>
+<span class="w">        </span><span class="nt">vhf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">121.5</span>
+
+<span class="nt">channel_lists</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blue</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">primary_1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
+</code></pre></div>
+<h3 id="valeur-dun-canal">Valeur d'un canal<a class="headerlink" href="#valeur-dun-canal" title="Permanent link">&para;</a></h3>
+<p>Un canal peut être défini de trois façons, dans <code>channel_lists</code> comme dans <code>radios_collection</code> :</p>
+<ul>
+<li>un <strong>nom de canal</strong> (alias résolu depuis <code>channels_collection</code>) : <code>01: Guard</code> ;</li>
+<li>une <strong>fréquence</strong> directe (MHz) : <code>01: 243.0</code> ;</li>
+<li>un <strong>objet</strong> : <code>01: { freq: 243.0, mod: 1 }</code>, où <code>mod</code> est la modulation (<code>0</code> = AM, <code>1</code> = FM). Le champ <code>mod</code> est optionnel ; absent, DCS utilise sa valeur par défaut.</li>
+</ul>
+<h3 id="priorité-et-couleur-dun-canal-planchettes">Priorité et couleur d'un canal (planchettes)<a class="headerlink" href="#priorité-et-couleur-dun-canal-planchettes" title="Permanent link">&para;</a></h3>
+<p>Sur une entrée du plan (forme objet), deux attributs facultatifs enrichissent la
+planchette (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0012-channel-priority-colour-and-ajs37-packing.md">ADR 0012</a>) :</p>
+<ul>
+<li><strong><code>priority: &lt;n&gt;</code></strong> — met le canal en évidence sur <strong>toute</strong> planchette
+  (marqueur <code>Pn</code> + cellules Name/Freq surlignées en orange). Sur l'<strong>AJS-37
+  (Viggen)</strong> uniquement, les priorités 1 à 4 alimentent en plus les raccourcis
+  FR22 Special 1/2/3 et FR24 H. À déclarer <strong>dans <code>channel_lists</code></strong> (une seule
+  entrée par valeur de priorité).</li>
+<li><strong><code>color: &lt;couleur&gt;</code></strong> — colorise la cellule <strong>CH</strong> pour regrouper visuellement
+  des canaux. Valeur : un nom de couleur (<code>green</code>, <code>blue</code>…) ou <code>#RRGGBBAA</code>.
+  Accepté dans <code>channel_lists</code> <strong>et</strong> dans <code>channels_collection</code> (l'entrée du
+  plan l'emporte sur la définition du canal).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">channel_lists</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blue</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">primary_1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">01</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Guard</span><span class="p p-Indicator">,</span><span class="nt"> priority</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="nv">red</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># Pn + surlignage ; sur Viggen → FR24 H</span>
+<span class="w">      </span><span class="nt">02</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Texaco-1</span><span class="p p-Indicator">,</span><span class="nt"> priority</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">             </span><span class="c1"># sur Viggen → FR22 Special 1</span>
+<span class="w">      </span><span class="nt">03</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> channel</span><span class="p">:</span><span class="w"> </span><span class="nv">Batumi</span><span class="p p-Indicator">,</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#2E7D32&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">          </span><span class="c1"># regroupement visuel (cellule CH)</span>
+</code></pre></div>
+<p>Les planchettes sont générées <strong>une par type d'aéronef</strong> injecté, dans le dossier
+DCS du type (<code>KNEEBOARD/&lt;type&gt;/IMAGES/</code>).</p>
+<h3 id="conversion-v5--deux-fichiers-convert-v5">Conversion v5 : deux fichiers (<code>convert-v5</code>)<a class="headerlink" href="#conversion-v5--deux-fichiers-convert-v5" title="Permanent link">&para;</a></h3>
+<p>Depuis <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0010-per-type-radio-preset-projection.md">ADR 0010</a>, <code>convert-v5</code> produit <strong>deux</strong> fichiers de préréglages :</p>
+<ul>
+<li><strong><code>presets.yaml</code> — plan simplifié (par défaut, chargé par le build)</strong> : <code>channel_lists</code> seul (plus, le cas échéant, les rares surcharges que le packer ne peut pas projeter du tout). Le build projette automatiquement la cristallisation sur chaque aéronef, warbirds compris (radios compatibles VHF/FM), en écartant les canaux hors bande. C'est le fichier qui exploite pleinement le modèle preset-plan.</li>
+<li><strong><code>presets.v5.yaml</code> — copie fidèle (référence / repli, non chargée par le build)</strong> : la conversion iso-fonctionnelle complète (<code>channel_lists</code> + un préréglage dédié <code>{coalition}_{aéronef}</code> par agencement sur mesure, reproduisant exactement la carte canal → fréquence et les <code>mod</code>, voir ADR 0003).</li>
+</ul>
+<p><strong>Attention</strong> : le plan peut faire <strong>diverger</strong> certaines fréquences de la mission v5 d'origine — les warbirds passent sur les canaux de la coalition, et les radios fusionnées/à modulations des jets (F-14, AV8B…) sont projetées au mieux (partiellement) tant qu'aucune entrée <code>dcs-radio-layouts.yaml</code> dédiée n'existe pour leur type. <code>convert-v5</code> avertit quels aéronefs sont projetés au mieux. <strong>Vérifiez et éditez <code>presets.yaml</code></strong> ; en cas de doute, la reproduction exacte du v5 reste dans <code>presets.v5.yaml</code> (à copier dans <code>presets.yaml</code> pour revenir au comportement iso-fonctionnel).</p>
+<h3 id="validation-des-fréquences">Validation des fréquences<a class="headerlink" href="#validation-des-fréquences" title="Permanent link">&para;</a></h3>
+<p>Lors de l'injection, chaque fréquence assignée à un aéronef est vérifiée par rapport aux spécifications matérielles de ses radios.</p>
+<p><strong>Comportement par défaut (build normal) :</strong></p>
+<ul>
+<li><strong>Appareils critiques</strong> (<code>dcs_rejects_on_load: true</code> dans les specs) : si une fréquence est hors plage, un <code>WARNING</code> est émis dans le log. Ce sont les appareils pour lesquels DCS lance une erreur au chargement de la mission.</li>
+<li><strong>Autres appareils</strong> : la validation est silencieuse — DCS stocke les fréquences mais ne les utilise pas pour les radios hors plage, sans crasher.</li>
+</ul>
+<p><strong>Rapport automatique :</strong></p>
+<p>Après chaque injection de presets, un fichier <code>presets-validation-report.md</code> est automatiquement créé dans le dossier mission si au moins un appareil (critique ou non) présente des fréquences hors plage. Ce fichier liste tous les problèmes avec les valeurs invalides et un extrait YAML pour les désactiver temporairement. Si aucun problème n'est détecté, le fichier est supprimé.</p>
+<div class="highlight"><pre><span></span><code>&lt;dossier-mission&gt;/presets-validation-report.md
+</code></pre></div>
+<p><strong>Désactiver temporairement l'injection pour un appareil :</strong></p>
+<p>Pendant que vous corrigez les presets, vous pouvez désactiver l'injection pour un type d'appareil en lui affectant la valeur <code>none</code> dans <code>presets_assignments</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">presets_assignments</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blue</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">plane</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">MiG-19P</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w">   </span><span class="c1"># DCS rejetera les fréquences standard — à corriger</span>
+</code></pre></div>
+<p>Une fois les presets corrigés, supprimez la ligne <code>none</code> pour réactiver l'injection.</p>
+<p>Les specs couvrent 100 aéronefs pilotables et sont issues de <a href="https://github.com/Quaggles/dcs-lua-datamine">dcs-lua-datamine</a>. Si un aéronef n'est pas dans la base, la vérification est silencieusement ignorée.</p>
+<blockquote>
+<p><strong>Voir aussi</strong> : <a href="../mission-maker/dcs-radio-specs/"><code>doc/mission-maker/dcs-radio-specs.md</code></a> — table de référence complète des plages de fréquences valides et liste des appareils critiques.<br />
+Pour régénérer après une mise à jour DCS : <code>poetry run update-radio-specs</code></p>
+</blockquote>
+<hr />
+<h2 id="pipeline-step-2-waypoints">Étape 2 — Points de cheminement (<code>waypoints.yaml</code>)<a class="headerlink" href="#pipeline-step-2-waypoints" title="Permanent link">&para;</a></h2>
+<p>Injecte des modèles de points de cheminement dans les groupes d'aéronefs pilotés par des humains. Seuls les groupes avec au moins une unité Client/Player sont modifiés.</p>
+<h3 id="emplacement-par-défaut_1">Emplacement par défaut<a class="headerlink" href="#emplacement-par-défaut_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>&lt;dossier-mission&gt;/src/waypoints.yaml
+
+Aussi accepté : waypoints.yaml  (racine du dossier mission)
+</code></pre></div>
+<h3 id="schéma">Schéma<a class="headerlink" href="#schéma" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ── Définitions de waypoints ───────────────────────────────────────────────</span>
+<span class="nt">waypoints</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;NOM_WAYPOINT&gt;</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Turning</span><span class="nv"> </span><span class="s">Point&quot;</span><span class="w">               </span><span class="c1"># type de waypoint DCS</span>
+<span class="w">    </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Turning</span><span class="nv"> </span><span class="s">Point&quot;</span><span class="w">             </span><span class="c1"># action de waypoint DCS</span>
+<span class="w">    </span><span class="nt">alt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6096</span><span class="w">                           </span><span class="c1"># altitude en mètres</span>
+<span class="w">    </span><span class="nt">alt_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BARO&quot;</span><span class="w">                    </span><span class="c1"># BARO | RADIO</span>
+<span class="w">    </span><span class="nt">speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span><span class="w">                          </span><span class="c1"># vitesse en m/s</span>
+<span class="w">    </span><span class="nt">speed_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TAS&quot;</span><span class="w">                   </span><span class="c1"># TAS | IAS</span>
+<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">75869</span><span class="w">                            </span><span class="c1"># coordonnée X mission</span>
+<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">48674</span><span class="w">                            </span><span class="c1"># coordonnée Y mission</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BULLSEYE&quot;</span><span class="w">                    </span><span class="c1"># libellé du waypoint (optionnel)</span>
+<span class="w">    </span><span class="nt">ETA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">364.89</span><span class="w">                         </span><span class="c1"># temps d&#39;arrivée estimé en secondes (optionnel)</span>
+<span class="w">    </span><span class="nt">ETA_locked</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                   </span><span class="c1"># verrouiller l&#39;ETA (optionnel)</span>
+
+<span class="c1"># ── Affectations de plans de vol ───────────────────────────────────────────</span>
+<span class="nt">settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;NOM_PLAN&gt;</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plane&quot;</span><span class="w">                   </span><span class="c1"># plane | helicopter (filtre optionnel)</span>
+<span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="w">                   </span><span class="c1"># blue | red (filtre optionnel)</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;F-16C_50&quot;</span><span class="w">                    </span><span class="c1"># type d&#39;aéronef DCS (filtre optionnel)</span>
+<span class="w">    </span><span class="nt">country</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;USA&quot;</span><span class="w">                      </span><span class="c1"># nom du pays (filtre optionnel)</span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">&lt;NOM_WAYPOINT&gt;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;NOM_WAYPOINT&gt;&quot;</span><span class="w">  </span><span class="c1"># associer la définition du waypoint au slot</span>
+</code></pre></div>
+<h3 id="priorité-de-correspondance">Priorité de correspondance<a class="headerlink" href="#priorité-de-correspondance" title="Permanent link">&para;</a></h3>
+<p>Les plans de vol sont associés aux groupes selon cet ordre de priorité :
+1. Type d'aéronef (<code>type</code>)
+2. Catégorie d'aéronef (<code>category</code>)
+3. Coalition (<code>coalition</code>)
+4. Pays (<code>country</code>)
+5. Tous les autres groupes (sans filtre = joker)</p>
+<h3 id="exemple-minimal_1">Exemple minimal<a class="headerlink" href="#exemple-minimal_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">waypoints</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">BULLSEYE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Turning</span><span class="nv"> </span><span class="s">Point&quot;</span>
+<span class="w">    </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Turning</span><span class="nv"> </span><span class="s">Point&quot;</span>
+<span class="w">    </span><span class="nt">alt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6096</span>
+<span class="w">    </span><span class="nt">alt_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BARO&quot;</span>
+<span class="w">    </span><span class="nt">speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">999</span>
+<span class="w">    </span><span class="nt">speed_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TAS&quot;</span>
+<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">75869</span>
+<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">48674</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BULLSEYE&quot;</span>
+
+<span class="nt">settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">AVIONS_BLEUS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plane&quot;</span>
+<span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;blue&quot;</span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">BULLSEYE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BULLSEYE&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="pipeline-step-3-aircraft-groups">Étape 3 — Groupes d'aéronefs : spawnables (B) et modèles de slot dynamique (C)<a class="headerlink" href="#pipeline-step-3-aircraft-groups" title="Permanent link">&para;</a></h2>
+<p>Deux <strong>usages distincts</strong> de groupes d'aéronefs injectés, gérés par deux étapes indépendantes (voir <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0002-aircraft-group-injection-sort-criteria.md">ADR 0002</a>) :</p>
+<ul>
+<li><strong>(B) groupes spawnables</strong> (<code>src/spawnables.yaml</code>, étape <code>spawnable_aircrafts</code>) : vrais groupes cachés, clonés à la demande en jeu par <code>veafSpawn</code>. Marqueur : préfixe de nom <code>veafSpawn-</code>.</li>
+<li><strong>(C) modèles de slot dynamique</strong> (<code>src/dynamic-slot-templates.yaml</code>, étape <code>dynamic_slot_templates</code>) : groupes servant de <strong>modèle</strong> aux Dynamic Slots DCS, consommés nativement par le moteur. Marqueur : flag DCS <code>dynSpawnTemplate = true</code>.</li>
+</ul>
+<p>À l'extraction (<code>extract-aircraft-groups</code>), chaque groupe est routé vers l'une des deux familles selon ce critère (le flag prime sur le préfixe) ; les autres groupes sont ignorés. Par défaut, l'extraction produit <strong>les deux</strong> fichiers ; l'option <code>--kind spawnable|dynamic-template</code> restreint la production à un seul. L'ancien tri par nom <code>.*[tT]emplate.*</code> est abandonné (il aiguillait à tort un spawnable nommé « … Template … »).</p>
+<h3 id="emplacements-par-défaut">Emplacements par défaut<a class="headerlink" href="#emplacements-par-défaut" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>&lt;dossier-mission&gt;/src/spawnables.yaml              # (B) spawnable_aircrafts
+&lt;dossier-mission&gt;/src/dynamic-slot-templates.yaml  # (C) dynamic_slot_templates
+</code></pre></div>
+<blockquote>
+<p><strong>Rupture v6</strong> : les anciens noms <code>src/aircraft-templates.yaml</code> / <code>src/templates.yaml</code> et l'étape <code>aircraft_groups</code> ne sont plus utilisés. <code>convert-v5</code> produit directement les deux nouveaux fichiers.</p>
+</blockquote>
+<h3 id="modes-dinjection">Modes d'injection<a class="headerlink" href="#modes-dinjection" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Comportement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>add</code> <em>(défaut)</em></td>
+<td>Ajoute tous les groupes du fichier ; les groupes existants sont conservés</td>
+</tr>
+<tr>
+<td><code>replace</code></td>
+<td>Les groupes portant le même nom dans la mission sont mis à jour ; les autres sont conservés</td>
+</tr>
+</tbody>
+</table>
+<h3 id="schéma_1">Schéma<a class="headerlink" href="#schéma_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">airplanes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">coalitions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                        </span><span class="c1"># blue | red</span>
+<span class="w">      </span><span class="nt">&lt;Nom Pays&gt;</span><span class="p">:</span><span class="w">                       </span><span class="c1"># nom de pays DCS (ex: &quot;France&quot;, &quot;USA&quot;)</span>
+<span class="w">        </span><span class="nt">&lt;Nom Groupe&gt;</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nom</span><span class="nv"> </span><span class="s">Groupe&quot;</span><span class="w">            </span><span class="c1"># REQUIS — doit correspondre à la clé</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;M-2000C&quot;</span><span class="w">               </span><span class="c1"># REQUIS — type d&#39;aéronef DCS principal</span>
+<span class="w">          </span><span class="nt">units</span><span class="p">:</span><span class="w">                        </span><span class="c1"># REQUIS — au moins une unité</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;M-2000C&quot;</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Pilote-1&quot;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;M-2000C&quot;</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Pilote-2&quot;</span>
+
+<span class="nt">helicopters</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">coalitions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">&lt;coalition&gt;</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">&lt;Nom Pays&gt;</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;Nom Groupe&gt;</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nom</span><span class="nv"> </span><span class="s">Groupe&quot;</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UH-1H&quot;</span>
+<span class="w">          </span><span class="nt">units</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UH-1H&quot;</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Helo-1&quot;</span>
+</code></pre></div>
+<h3 id="exemple-minimal_2">Exemple minimal<a class="headerlink" href="#exemple-minimal_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">airplanes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">coalitions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">blue</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">France</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">Vol-Mirage</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Vol-Mirage&quot;</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;M-2000C&quot;</span>
+<span class="w">          </span><span class="nt">units</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;M-2000C&quot;</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Mirage-1&quot;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;M-2000C&quot;</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Mirage-2&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="pipeline-step-4-warehouses">Étape 4 — Warehouses Dynamic-Slot (<code>warehouses.yaml</code>)<a class="headerlink" href="#pipeline-step-4-warehouses" title="Permanent link">&para;</a></h2>
+<p>Configure les <strong>Dynamic Slots</strong> DCS par coalition. S'exécute <strong>après</strong> l'injection
+des aéronefs (pour que les groupes <code>dynSpawnTemplate</code> existent déjà) et modifie les
+<code>warehouses</code> de la mission : active <code>dynamicSpawn</code> sur les aérodromes choisis, fixe
+carburant / munitions et le stock d'aéronefs, et lie chaque type d'aéronef proposé
+à son groupe-modèle via <code>linkDynTempl</code>.</p>
+<h3 id="emplacement-par-défaut_2">Emplacement par défaut<a class="headerlink" href="#emplacement-par-défaut_2" title="Permanent link">&para;</a></h3>
+<p><code>src/warehouses.yaml</code> (auto-activé si présent ; désactiver avec <code>pipeline: { warehouses: false }</code>).</p>
+<h3 id="schéma_2">Schéma<a class="headerlink" href="#schéma_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;coalition&gt;</span><span class="p">:</span><span class="w">                 </span><span class="c1"># blue | red | neutral. Une coalition non déclarée est laissée intacte.</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span><span class="w">                  </span><span class="c1"># appliqué à chaque aérodrome sélectionné</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span><span class="w">          </span><span class="c1"># optionnel -&gt; unlimitedFuel</span>
+<span class="w">    </span><span class="nt">weapons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span><span class="w">       </span><span class="c1"># optionnel -&gt; unlimitedMunitions</span>
+<span class="w">    </span><span class="nt">aircrafts</span><span class="p">:</span><span class="w">               </span><span class="c1"># types d&#39;aéronefs proposés en slot dynamique</span>
+<span class="w">      </span><span class="nt">&lt;type DCS&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">unlimited | &lt;entier&gt;</span><span class="p p-Indicator">,</span><span class="nt"> template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;nom</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">groupe&gt;&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">airports</span><span class="p">:</span><span class="w">                  </span><span class="c1"># optionnel. Absent -&gt; TOUS les aérodromes de la coalition reçoivent `defaults`.</span>
+<span class="w">    </span><span class="nt">&lt;nom ou id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">                        </span><span class="c1"># defaults seuls</span>
+<span class="w">    </span><span class="nt">&lt;nom ou id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> aircrafts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">     </span><span class="c1"># defaults + override par aérodrome</span>
+</code></pre></div>
+<ul>
+<li><code>template</code> référence un groupe-modèle par <strong>nom</strong> ; omettez-le pour l'auto-matcher
+  à un groupe-modèle du même <strong>type d'aéronef</strong> (même coalition).</li>
+<li>Les aérodromes ne peuvent être nommés que sur les théâtres installés présents dans
+  la table versionnée (<code>veaf-build update-dcs-data --airdromes</code>) ; sinon utilisez l'id
+  numérique (visible dans les <code>warehouses</code> de la mission : <code>airports[&lt;id&gt;]</code>).</li>
+</ul>
+<h3 id="exemple-minimal_3">Exemple minimal<a class="headerlink" href="#exemple-minimal_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">blue</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span>
+<span class="w">    </span><span class="nt">aircrafts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">UH-1H</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">unlimited</span><span class="p p-Indicator">,</span><span class="nt"> template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DST</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">UH-1H&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">airports</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Senaki-Kolkhi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
+<hr />
+<h2 id="pipeline-step-5-spawn-data">Étape 5 — Données de spawn (<code>spawn-groups.yaml</code>)<a class="headerlink" href="#pipeline-step-5-spawn-data" title="Permanent link">&para;</a></h2>
+<p>Les commandes marqueurs <code>_spawn unit &lt;alias&gt;</code> et <code>_spawn group &lt;alias&gt;</code> s'appuient sur deux tables Lua (<code>veafUnits.UnitsDatabase</code> et <code>veafUnits.GroupsDatabase</code>). Depuis la v6, ces tables ne sont plus codées en dur dans <code>veafUnits.lua</code> : elles proviennent d'un YAML, sont rendues en Lua et <strong>injectées dans le <code>.miz</code> au build de la mission</strong> (DCS ne sait pas lire du YAML à l'exécution). Voir <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0005-spawn-data-externalization.md">ADR 0005</a>.</p>
+<h3 id="toujours-active">Toujours active<a class="headerlink" href="#toujours-active" title="Permanent link">&para;</a></h3>
+<p>Contrairement aux autres étapes, <code>spawn_data</code> s'exécute <strong>toujours</strong> (même sans fichier mission) car la base de spawn du framework doit être embarquée pour que <code>_spawn</code> fonctionne. Pour la désactiver entièrement :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">spawn_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<h3 id="étendre-la-base-srcspawn-groupsyaml">Étendre la base (<code>src/spawn-groups.yaml</code>)<a class="headerlink" href="#étendre-la-base-srcspawn-groupsyaml" title="Permanent link">&para;</a></h3>
+<p>Un fichier <code>src/spawn-groups.yaml</code> (optionnel) permet d'ajouter ou de redéfinir des unités/groupes pour une mission donnée. Il est <strong>fusionné par-dessus</strong> les données du framework :</p>
+<ul>
+<li>un alias inédit est <strong>ajouté</strong> ;</li>
+<li>un alias déjà présent dans le framework <strong>remplace</strong> l'entrée correspondante (override).</li>
+</ul>
+<h3 id="schéma_3">Schéma<a class="headerlink" href="#schéma_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">units</span><span class="p">:</span><span class="w">                              </span><span class="c1"># -&gt; _spawn unit &lt;alias&gt;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aliases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">myaaa</span><span class="p p-Indicator">]</span><span class="w">                </span><span class="c1"># un ou plusieurs alias (insensibles à la casse)</span>
+<span class="w">    </span><span class="nt">unitType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZSU-23-4 Shilka</span><span class="w">       </span><span class="c1"># un type d&#39;unité DCS</span>
+
+<span class="nt">groups</span><span class="p">:</span><span class="w">                             </span><span class="c1"># -&gt; _spawn group &lt;alias&gt;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aliases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">mysam</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">disposition</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">h</span><span class="p">:</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="nt"> w</span><span class="p">:</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">}</span><span class="w">       </span><span class="c1"># grille de placement en cellules (10m x 10m)</span>
+<span class="w">    </span><span class="nt">units</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">ZSU-23-4 Shilka</span><span class="p p-Indicator">,</span><span class="nt"> cell</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">Ural-375</span><span class="p p-Indicator">,</span><span class="nt"> random</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span><span class="w">                       </span><span class="c1"># placé aléatoirement dans sa cellule</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nv">Soldier M4</span><span class="p p-Indicator">,</span><span class="nt"> number</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">},</span><span class="nt"> random</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mon site SAM</span>
+<span class="w">    </span><span class="nt">groupName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MySAM</span>
+</code></pre></div>
+<p>Champs d'une unité de groupe : <code>type</code> (requis), <code>cell</code> (cellule préférée), <code>number</code> (quantité, ou <code>{min, max}</code> aléatoire), <code>hdg</code> (cap), <code>size</code> (taille de cellule fixe en m), <code>random</code> (placement aléatoire dans la cellule), <code>fitToUnit</code> (cellule ajustée à l'emprise exacte de l'unité).</p>
+<p>La base du framework est définie dans <code>veaf_libs/data/veaf-units.yaml</code> (embarqué dans l'outil).</p>
+<hr />
+<h2 id="pipeline-step-6-versions">Étape 6 — Variantes météo &amp; horaire (<code>versions.yaml</code>)<a class="headerlink" href="#pipeline-step-6-versions" title="Permanent link">&para;</a></h2>
+<p>Crée plusieurs variantes <code>.miz</code> à partir d'une mission de base, chacune avec une configuration de temps et/ou de météo différente.</p>
+<h3 id="emplacement-par-défaut_3">Emplacement par défaut<a class="headerlink" href="#emplacement-par-défaut_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>&lt;dossier-mission&gt;/src/versions.yaml
+
+Aussi accepté : versions.yaml  (racine du dossier mission)
+</code></pre></div>
+<h3 id="schéma_4">Schéma<a class="headerlink" href="#schéma_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ── Position géographique pour les calculs solaires ────────────────────────</span>
+<span class="nt">position</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span><span class="w">                        </span><span class="c1"># degrés décimaux, -90 à 90</span>
+<span class="w">  </span><span class="nt">longitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.5</span><span class="w">                       </span><span class="c1"># degrés décimaux, -180 à 180</span>
+<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Damascus&quot;</span><span class="w">             </span><span class="c1"># fuseau horaire IANA</span>
+
+<span class="c1"># ── Date de base pour toutes les versions ─────────────────────────────────</span>
+<span class="nt">base_date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-03-15&quot;</span><span class="w">                 </span><span class="c1"># ISO 8601 (AAAA-MM-JJ)</span>
+
+<span class="c1"># ── Variantes de mission ───────────────────────────────────────────────────</span>
+<span class="nt">versions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aube</span><span class="w">                          </span><span class="c1"># REQUIS — nom de la variante (suffixe du fichier de sortie)</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sunrise+30*60&quot;</span><span class="w">               </span><span class="c1"># expression horaire (voir ci-dessous)</span>
+<span class="w">    </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;today&quot;</span><span class="w">                       </span><span class="c1"># expression de date (voir ci-dessous, optionnel)</span>
+<span class="w">    </span><span class="nt">metar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;METAR</span><span class="nv"> </span><span class="s">OSDI</span><span class="nv"> </span><span class="s">151420Z</span><span class="nv"> </span><span class="s">27015G25KT</span><span class="nv"> </span><span class="s">9999</span><span class="nv"> </span><span class="s">SKC</span><span class="nv"> </span><span class="s">15/10</span><span class="nv"> </span><span class="s">Q1018&quot;</span><span class="w">  </span><span class="c1"># optionnel</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">midi</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;12:00&quot;</span>
+<span class="w">    </span><span class="nt">weather</span><span class="p">:</span><span class="w">                            </span><span class="c1"># météo manuelle (alternative au metar)</span>
+<span class="w">      </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25.0</span><span class="w">                 </span><span class="c1"># °C, plage -50..50</span>
+<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0</span><span class="w">                   </span><span class="c1"># m/s</span>
+<span class="w">      </span><span class="nt">wind_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">270.0</span><span class="w">             </span><span class="c1"># degrés (0=Nord)</span>
+<span class="w">      </span><span class="nt">visibility</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9999</span><span class="w">                  </span><span class="c1"># mètres</span>
+<span class="w">      </span><span class="nt">cloud_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;clear&quot;</span><span class="w">               </span><span class="c1"># clear | few | scattered | broken | overcast</span>
+<span class="w">      </span><span class="nt">cloud_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span><span class="w">                </span><span class="c1"># base des nuages en mètres</span>
+<span class="w">      </span><span class="nt">fog_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                </span><span class="c1"># activer l&#39;effet de brouillard</span>
+</code></pre></div>
+<h3 id="champs-de-versions">Champs de <code>versions[]</code><a class="headerlink" href="#champs-de-versions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Oui</td>
+<td>Nom de la variante. Dans <code>mission build</code>, la sortie est <code>missions/&lt;NomDeBase&gt;_&lt;name&gt;.miz</code> (ex: <code>aube</code> → <code>Ma-Mission_aube.miz</code>) ; la forme nue <code>&lt;name&gt;.miz</code> n'existe qu'avec <code>inject-weather</code> autonome</td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td>string</td>
+<td>Non</td>
+<td>Expression horaire — voir ci-dessous</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>string</td>
+<td>Non</td>
+<td>Expression de date — voir ci-dessous</td>
+</tr>
+<tr>
+<td><code>metar</code></td>
+<td>string</td>
+<td>Non</td>
+<td>Chaîne METAR complète — analysée pour les données météo, et affichable dans le briefing via <a href="#briefing-variables"><code>${METAR}</code></a></td>
+</tr>
+<tr>
+<td><code>airport_icao</code></td>
+<td>string</td>
+<td>Non</td>
+<td>Code OACI dont la météo réelle est récupérée en ligne (utilisé sans <code>metar</code>)</td>
+</tr>
+<tr>
+<td><code>weather</code></td>
+<td>objet</td>
+<td>Non</td>
+<td>Surcharge météo manuelle (utilisée sans <code>metar</code> ni <code>airport_icao</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="briefing-variables">Afficher la météo dans le briefing : <code>${METAR}</code><a class="headerlink" href="#briefing-variables" title="Permanent link">&para;</a></h3>
+<p>Écrivez <code>${METAR}</code> dans le briefing de la mission (dans l'éditeur DCS : Situation, ou l'une des tâches
+par camp) et le build le remplace par la météo de <strong>cette variante</strong>. Sept variantes météo donnent donc
+sept briefings différents, sans rien retaper.</p>
+<div class="highlight"><pre><span></span><code>Situation : vol de reconnaissance au nord du théâtre.
+
+Météo au départ : ${METAR}
+</code></pre></div>
+<p>C'était l'objet de <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/40">#40</a> : une mission
+étant reconstruite depuis ses sources à chaque build, tout ce qu'on tape à la main dans le briefing est
+écrasé au build suivant. La substitution résout ça en posant la valeur <strong>pendant</strong> le build.</p>
+<p>Ce que <code>${METAR}</code> vaut selon la variante :</p>
+<table>
+<thead>
+<tr>
+<th>La variante déclare</th>
+<th><code>${METAR}</code> affiche</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>metar: "..."</code></td>
+<td>la chaîne telle que vous l'avez écrite</td>
+</tr>
+<tr>
+<td><code>airport_icao: LFRS</code></td>
+<td>le METAR réel récupéré pour cette station</td>
+</tr>
+<tr>
+<td>seulement <code>weather:</code></td>
+<td><strong>rien</strong> — il n'existe aucun METAR à afficher, donc le texte <code>${METAR}</code> reste tel quel et un avertissement le dit dans le log</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Un <code>${...}</code> inconnu n'est jamais effacé</p>
+<p><code>${METRA}</code> reste écrit <code>${METRA}</code> dans le briefing. C'est délibéré : un briefing est lu par des
+joueurs, et un trou à la place du texte se lit comme si le build avait mangé votre prose, alors qu'un
+nom visiblement mal orthographié vous dit quoi corriger.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Aucun appel réseau si vous ne l'utilisez pas</p>
+<p>La récupération du METAR d'un OACI n'a lieu que si le briefing contient réellement <code>${METAR}</code>.</p>
+</div>
+<hr />
+<h3 id="expressions-horaires">Expressions horaires<a class="headerlink" href="#expressions-horaires" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Exemple</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HH:MM</code></td>
+<td><code>14:30</code></td>
+<td>Heure absolue (14h30 heure locale)</td>
+</tr>
+<tr>
+<td><code>sunrise</code></td>
+<td><code>sunrise</code></td>
+<td>Heure du lever du soleil (nécessite <code>position:</code>)</td>
+</tr>
+<tr>
+<td><code>sunset</code></td>
+<td><code>sunset</code></td>
+<td>Heure du coucher du soleil (nécessite <code>position:</code>)</td>
+</tr>
+<tr>
+<td>Expression</td>
+<td><code>sunrise+30*60</code></td>
+<td>Arithmétique — décalage en secondes</td>
+</tr>
+<tr>
+<td>Secondes</td>
+<td><code>54000</code></td>
+<td>Secondes brutes depuis minuit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="expressions-de-date">Expressions de date<a class="headerlink" href="#expressions-de-date" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Exemple</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISO 8601</td>
+<td><code>2024-03-15</code></td>
+<td>Date spécifique</td>
+</tr>
+<tr>
+<td>Mot-clé</td>
+<td><code>today</code>, <code>tomorrow</code>, <code>yesterday</code></td>
+<td>Relatif à la date d'exécution</td>
+</tr>
+<tr>
+<td>Relatif</td>
+<td><code>+1</code>, <code>-7</code></td>
+<td>Jours depuis <code>base_date</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="champs-de-lobjet-weather">Champs de l'objet <code>weather</code><a class="headerlink" href="#champs-de-lobjet-weather" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>temperature</code></td>
+<td>nombre</td>
+<td>Température de l'air en °C</td>
+</tr>
+<tr>
+<td><code>wind_speed</code></td>
+<td>nombre</td>
+<td>Vitesse du vent en m/s</td>
+</tr>
+<tr>
+<td><code>wind_direction</code></td>
+<td>nombre</td>
+<td>Direction du vent en degrés (0 = Nord)</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>nombre</td>
+<td>Visibilité en mètres</td>
+</tr>
+<tr>
+<td><code>cloud_type</code></td>
+<td>string</td>
+<td><code>clear</code> | <code>few</code> | <code>scattered</code> | <code>broken</code> | <code>overcast</code></td>
+</tr>
+<tr>
+<td><code>cloud_height</code></td>
+<td>nombre</td>
+<td>Altitude de la base des nuages en mètres</td>
+</tr>
+<tr>
+<td><code>fog_enabled</code></td>
+<td>booléen</td>
+<td>Activer l'effet de brouillard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exemple-minimal_4">Exemple minimal<a class="headerlink" href="#exemple-minimal_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">42.3</span>
+<span class="w">  </span><span class="nt">longitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">43.4</span>
+<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Tbilisi&quot;</span>
+
+<span class="nt">base_date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-06-01&quot;</span>
+
+<span class="nt">versions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aube</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sunrise+20*60&quot;</span>
+<span class="w">    </span><span class="nt">metar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;METAR</span><span class="nv"> </span><span class="s">UGTB</span><span class="nv"> </span><span class="s">010500Z</span><span class="nv"> </span><span class="s">27010KT</span><span class="nv"> </span><span class="s">9999</span><span class="nv"> </span><span class="s">FEW030</span><span class="nv"> </span><span class="s">18/10</span><span class="nv"> </span><span class="s">Q1016&quot;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">après-midi</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;15:00&quot;</span>
+<span class="w">    </span><span class="nt">weather</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">28.0</span>
+<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">      </span><span class="nt">wind_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180.0</span>
+<span class="w">      </span><span class="nt">cloud_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;few&quot;</span>
+<span class="w">      </span><span class="nt">cloud_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2500</span>
+</code></pre></div>
+<hr />
+<hr />
+<h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../MISSION_YAML_REFERENCE/">Référence mission.yaml</a> — configuration top-level de la mission</li>
+<li><a href="../mission-maker/GUIDE/">Guide mission maker</a> — workflow complet</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>
