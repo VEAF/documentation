@@ -1127,6 +1127,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ctld-manage-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARPs and carriers placed in the editor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ctlds-language" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3367,6 +3378,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ctld-manage-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARPs and carriers placed in the editor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ctlds-language" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4313,6 +4335,32 @@ If you need to run a single step in isolation (e.g. inject weather only, without
 <div class="admonition warning">
 <p class="admonition-title">Do not use ctld-tools' own \"inject into mission\" button</p>
 <p>It writes straight into a <code>.miz</code>. On a VEAF mission the <code>.miz</code> is rebuilt from the mission folder on every build, so your injection would be wiped by the next one. Save the <code>ctld-config.yaml</code> file and let the build do the rest.</p>
+</div>
+<h4 id="ctld-manage-logistics">FARPs and carriers placed in the editor<a class="headerlink" href="#ctld-manage-logistics" title="Permanent link">&para;</a></h4>
+<p>For a FARP or a carrier to serve as a loading point, CTLD 2 has to know its unit <strong>type</strong> — through
+the <code>logisticUnitTypes</code> and <code>troopZoneShipTypes</code> settings. CTLD ships them <strong>empty</strong>, which is the
+right default for the wider world and the wrong one for a VEAF mission, which has always recognised
+carriers and FARP ammo dumps automatically.</p>
+<p>VEAF handles it, through a switch in <code>mission.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">manage_logistics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># default</span>
+</code></pre></div>
+<p>At build time the VEAF types (<code>LHA_Tarawa</code>, <code>Stennis</code>, <code>CVN_71</code>, <code>KUZNECOW</code>,
+<code>FARP Ammo Dump Coating</code>) are <strong>added</strong> to whatever your file declares. Added, not substituted: a
+type you entered yourself in <code>ctld-tools</code> — a modded carrier, say — is kept. Your <code>ctld-config.yaml</code>
+is not modified; the copy injected into the mission is, and the generated <code>CTLD_userConfig.lua</code>
+records in a comment what was added.</p>
+<p>Set it to <code>false</code> to own those two lists entirely — that is the only way to <strong>remove</strong> a type VEAF
+adds. In that case, if both lists are empty, the build warns you plainly: the mission will start with
+no loading point from the editor at all.</p>
+<div class="admonition warning">
+<p class="admonition-title">A mission whose <code>ctld-config.yaml</code> did not come from <code>mission prepare</code></p>
+<p>A file written by hand, copied from another mission, or regenerated from the CTLD defaults
+arrives with both lists empty. The symptom is confusing because it is partial: the FOBs you
+create in flight work — they take a different path — and the FARPs you placed in the editor do
+not. That is exactly what this setting fixes.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">This file is a <strong>complete</strong> configuration</p>

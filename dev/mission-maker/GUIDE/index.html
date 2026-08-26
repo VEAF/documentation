@@ -1127,6 +1127,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ctld-manage-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les FARP et porte-avions posés dans l'éditeur
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#la-langue-de-ctld" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3367,6 +3378,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ctld-manage-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les FARP et porte-avions posés dans l'éditeur
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#la-langue-de-ctld" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4316,6 +4338,32 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 <div class="admonition warning">
 <p class="admonition-title">N'utilisez pas le bouton « Injecter dans la mission » de ctld-tools</p>
 <p>Il écrit directement dans un <code>.miz</code>. Sur une mission VEAF, le <code>.miz</code> est reconstruit à chaque build depuis le dossier mission : votre injection serait effacée au build suivant. Enregistrez le fichier <code>ctld-config.yaml</code>, et laissez le build faire le reste.</p>
+</div>
+<h4 id="ctld-manage-logistics">Les FARP et porte-avions posés dans l'éditeur<a class="headerlink" href="#ctld-manage-logistics" title="Permanent link">&para;</a></h4>
+<p>Pour qu'une FARP ou un porte-avions serve de point de chargement, CTLD 2 doit connaître son <strong>type</strong>
+d'unité — par les réglages <code>logisticUnitTypes</code> et <code>troopZoneShipTypes</code>. CTLD les livre <strong>vides</strong>, ce
+qui est le bon choix pour le reste du monde et le mauvais pour une mission VEAF, qui a toujours
+reconnu les porte-avions et les dépôts de munitions FARP automatiquement.</p>
+<p>VEAF s'en charge, via un interrupteur dans <code>mission.yaml</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">manage_logistics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># défaut</span>
+</code></pre></div>
+<p>Au build, les types VEAF (<code>LHA_Tarawa</code>, <code>Stennis</code>, <code>CVN_71</code>, <code>KUZNECOW</code>, <code>FARP Ammo Dump Coating</code>)
+sont <strong>ajoutés</strong> à ce que votre fichier déclare. Ajoutés, pas substitués : un type que vous avez
+saisi vous-même dans <code>ctld-tools</code> — un porte-avions de mod, par exemple — est conservé. Votre
+<code>ctld-config.yaml</code> n'est pas modifié ; c'est la copie injectée dans la mission qui l'est, et le
+<code>CTLD_userConfig.lua</code> généré indique en commentaire ce qui a été ajouté.</p>
+<p>Passez le réglage à <code>false</code> pour gouverner ces deux listes entièrement vous-même — c'est le seul
+moyen de <strong>retirer</strong> un type que VEAF ajoute. Dans ce cas, si les deux listes sont vides, le build
+vous avertit en clair : la mission démarrera sans aucun point de chargement issu de l'éditeur.</p>
+<div class="admonition warning">
+<p class="admonition-title">Une mission dont le <code>ctld-config.yaml</code> ne vient pas de <code>mission prepare</code></p>
+<p>Un fichier écrit à la main, repris d'une autre mission ou régénéré depuis les défauts de CTLD
+arrive avec ces deux listes vides. Le symptôme est déroutant parce qu'il est partiel : les FOB
+que vous créez en vol fonctionnent — elles passent par un autre chemin — et les FARP que vous
+avez posées dans l'éditeur, non. C'est exactement ce que ce réglage corrige.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Ce fichier est une configuration <strong>complète</strong></p>
