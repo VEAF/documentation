@@ -2067,6 +2067,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#planification-dune-fonction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planification d'une fonction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#accès-mistdbs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3183,6 +3194,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#planification-dune-fonction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planification d'une fonction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#accès-mistdbs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3855,6 +3877,21 @@ VEAF et n'en sont pas.</p>
 <p>Pour le contrôle <strong>par module au runtime</strong> (sans rebuild), ajouter l'appel Lua directement dans <code>mission-script.lua</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="py">loggers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">&quot;SPAWN&quot;</span><span class="p">):</span><span class="nf">setLevel</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w">  </span><span class="c1">-- force=true contourne le cap BaseLogLevel</span>
 </code></pre></div>
+<h3 id="planification-dune-fonction">Planification d'une fonction<a class="headerlink" href="#planification-dune-fonction" title="Permanent link">&para;</a></h3>
+<p>Ne pas appeler <code>timer.scheduleFunction</code> ni <code>mist.scheduleFunction</code>. Utiliser <code>veaf.scheduleFunction</code>,
+qui pose la tâche sur le timer natif de DCS en gardant les commodités attendues : répétition, heure
+d'arrêt, arguments en table, et une tâche qui échoue sans emporter les autres.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- une seule fois, dans 30 secondes</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">scheduleFunction</span><span class="p">(</span><span class="nv">maFonction</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">arg1</span><span class="p">,</span><span class="w"> </span><span class="nv">arg2</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span>
+
+<span class="c1">-- toutes les 10 secondes, pendant une heure</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">scheduleFunction</span><span class="p">(</span><span class="nv">maFonction</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3600</span><span class="p">)</span>
+
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">removeFunction</span><span class="p">(</span><span class="nv">id</span><span class="p">)</span><span class="w"> </span><span class="c1">-- annule ; renvoie false si la tâche a déjà tourné</span>
+</code></pre></div>
+<p>L'implémentation vit dans <code>veafScheduler.lua</code>. Il n'y a <strong>pas</strong> de boucle de scrutation : chaque tâche
+est un appel planifié natif, réarmé en renvoyant sa prochaine échéance, donc rien ne tourne quand rien
+n'est dû.</p>
 <h3 id="accès-mistdbs">Accès mist.DBs<a class="headerlink" href="#accès-mistdbs" title="Permanent link">&para;</a></h3>
 <p>Ne pas accéder à <code>mist.DBs.*</code> directement. Utiliser l'interface <code>veaf.mist</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>

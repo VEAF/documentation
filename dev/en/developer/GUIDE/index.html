@@ -2067,6 +2067,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scheduling-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduling a function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mistdbs-access" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3183,6 +3194,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scheduling-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduling a function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mistdbs-access" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3854,6 +3876,20 @@ under 5.4 produces dozens of failures that look like regressions in the VEAF cod
 <p>For <strong>per-module runtime</strong> control (no rebuild), add the Lua call directly in <code>mission-script.lua</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="py">loggers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">&quot;SPAWN&quot;</span><span class="p">):</span><span class="nf">setLevel</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w">  </span><span class="c1">-- force=true bypasses BaseLogLevel cap</span>
 </code></pre></div>
+<h3 id="scheduling-a-function">Scheduling a function<a class="headerlink" href="#scheduling-a-function" title="Permanent link">&para;</a></h3>
+<p>Do not call <code>timer.scheduleFunction</code> or <code>mist.scheduleFunction</code>. Use <code>veaf.scheduleFunction</code>, which
+puts the task on the native DCS timer while keeping the conveniences the code expects: repetition, a
+stop time, arguments as a table, and a task that fails without taking the others down with it.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- once, in 30 seconds</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">scheduleFunction</span><span class="p">(</span><span class="nv">myFunction</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">arg1</span><span class="p">,</span><span class="w"> </span><span class="nv">arg2</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span>
+
+<span class="c1">-- every 10 seconds, for an hour</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">scheduleFunction</span><span class="p">(</span><span class="nv">myFunction</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3600</span><span class="p">)</span>
+
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">removeFunction</span><span class="p">(</span><span class="nv">id</span><span class="p">)</span><span class="w"> </span><span class="c1">-- cancels; answers false if the task has already run</span>
+</code></pre></div>
+<p>The implementation lives in <code>veafScheduler.lua</code>. There is <strong>no</strong> polling loop: every task is one
+native scheduled call, re-armed by returning its next time, so nothing runs when nothing is due.</p>
 <h3 id="mistdbs-access">mist.DBs Access<a class="headerlink" href="#mistdbs-access" title="Permanent link">&para;</a></h3>
 <p>Do not access <code>mist.DBs.*</code> directly. Use the <code>veaf.mist</code> wrapper:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
