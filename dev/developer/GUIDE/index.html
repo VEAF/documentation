@@ -2078,6 +2078,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#maths-vecteurs-et-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maths, vecteurs et conversions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#accès-mistdbs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3205,6 +3216,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#maths-vecteurs-et-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maths, vecteurs et conversions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#accès-mistdbs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3892,6 +3914,24 @@ d'arrêt, arguments en table, et une tâche qui échoue sans emporter les autres
 <p>L'implémentation vit dans <code>veafScheduler.lua</code>. Il n'y a <strong>pas</strong> de boucle de scrutation : chaque tâche
 est un appel planifié natif, réarmé en renvoyant sa prochaine échéance, donc rien ne tourne quand rien
 n'est dû.</p>
+<h3 id="maths-vecteurs-et-conversions">Maths, vecteurs et conversions<a class="headerlink" href="#maths-vecteurs-et-conversions" title="Permanent link">&para;</a></h3>
+<p>Ne pas appeler <code>mist.utils.*</code> ni <code>mist.vec.*</code>. Les fonctions vivent dans <code>veafMath.lua</code>, derrière des
+façades <code>veaf.*</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="nf">metersToNM</span><span class="p">(</span><span class="nv">d</span><span class="p">)</span><span class="w">  </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">NMToMeters</span><span class="p">(</span><span class="nv">d</span><span class="p">)</span><span class="w">  </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">metersToFeet</span><span class="p">(</span><span class="nv">d</span><span class="p">)</span><span class="w">  </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">feetToMeters</span><span class="p">(</span><span class="nv">d</span><span class="p">)</span><span class="w">  </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">mpsToKnots</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">vecAdd</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w">   </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">vecScalarMult</span><span class="p">(</span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="nv">k</span><span class="p">)</span><span class="w">   </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">vecMag</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span><span class="w">   </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">get2DDist</span><span class="p">(</span><span class="nv">p1</span><span class="p">,</span><span class="w"> </span><span class="nv">p2</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">makeVec3</span><span class="p">(</span><span class="nv">p</span><span class="p">,</span><span class="w"> </span><span class="nv">alt</span><span class="p">)</span><span class="w">   </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">makeVec2</span><span class="p">(</span><span class="nv">p</span><span class="p">)</span><span class="w">   </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">getDir</span><span class="p">(</span><span class="nv">v</span><span class="p">,</span><span class="w"> </span><span class="nv">point</span><span class="p">)</span><span class="w">   </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">getNorthCorrection</span><span class="p">(</span><span class="nv">point</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">deepCopy</span><span class="p">(</span><span class="nv">t</span><span class="p">)</span>
+</code></pre></div>
+<p>Trois pièges, dans l'ordre où ils mordent :</p>
+<ul>
+<li><strong><code>makeVec3</code> / <code>makeVec2</code> traduisent entre les deux conventions de coordonnées de DCS</strong> — lire
+  <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/agents/dcs-coordinates.md"><code>docs/agents/dcs-coordinates.md</code></a>
+  avant de les utiliser. Se tromper ne lève aucune erreur, seulement une position à cent kilomètres.</li>
+<li><strong>Pas de <code>veaf.toRadian</code> ni <code>veaf.toDegree</code></strong> : ce sont <code>math.rad</code> et <code>math.deg</code>, de la bibliothèque
+  standard Lua.</li>
+<li><strong>Pas de <code>veaf.round</code> dans <code>veafMath</code></strong> : il est dans <code>veaf.lua</code> depuis toujours, et il est identique
+  à celui de MiST.</li>
+</ul>
 <h3 id="accès-mistdbs">Accès mist.DBs<a class="headerlink" href="#accès-mistdbs" title="Permanent link">&para;</a></h3>
 <p>Ne pas accéder à <code>mist.DBs.*</code> directement. Utiliser l'interface <code>veaf.mist</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
