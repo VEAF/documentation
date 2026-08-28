@@ -3969,9 +3969,10 @@ façades:</p>
 <p>And unit id allocation lives in <code>veafMissionDb.lua</code>: <code>veaf.getNextUnitId()</code>.</p>
 <p><strong>These strings go into F10 reports and briefings</strong>, so they are pinned by literal-string tests. The
 port reproduced MiST to the character, oddities included; correcting one of them changes what pilots
-read and is therefore decided on its own. One has been (<code>FIX-DMS-MINUTE-CARRY</code>: in DMS a minute
-reaching 60 now carries into the degree, as the decimal layout already did). One remains, still
-MiST's: a position at exactly zero renders as <code>S</code>/<code>W</code>, the hemisphere test being <code>&gt; 0</code>.</p>
+read and was therefore decided on its own. Both have been: <code>FIX-DMS-MINUTE-CARRY</code> (in DMS a minute
+reaching 60 now carries into the degree, as the decimal layout already did) and <code>FIX-ZERO-HEMISPHERE</code>
+(a position at exactly zero renders as <code>N</code>/<code>E</code>, the hemisphere test having moved from <code>&gt; 0</code> to
+<code>&gt;= 0</code>).</p>
 <h3 id="mistdbs-access">mist.DBs Access<a class="headerlink" href="#mistdbs-access" title="Permanent link">&para;</a></h3>
 <p>Do not access <code>mist.DBs.*</code> directly. Use the <code>veaf.mist</code> wrapper:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
