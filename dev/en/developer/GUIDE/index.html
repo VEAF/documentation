@@ -2100,10 +2100,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mistdbs-access" class="md-nav__link">
+  <a href="#what-the-mission-holds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        mist.DBs Access
+        What the mission holds
       
     </span>
   </a>
@@ -3249,10 +3249,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mistdbs-access" class="md-nav__link">
+  <a href="#what-the-mission-holds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        mist.DBs Access
+        What the mission holds
       
     </span>
   </a>
@@ -3973,14 +3973,33 @@ read and was therefore decided on its own. Both have been: <code>FIX-DMS-MINUTE-
 reaching 60 now carries into the degree, as the decimal layout already did) and <code>FIX-ZERO-HEMISPHERE</code>
 (a position at exactly zero renders as <code>N</code>/<code>E</code>, the hemisphere test having moved from <code>&gt; 0</code> to
 <code>&gt;= 0</code>).</p>
-<h3 id="mistdbs-access">mist.DBs Access<a class="headerlink" href="#mistdbs-access" title="Permanent link">&para;</a></h3>
-<p>Do not access <code>mist.DBs.*</code> directly. Use the <code>veaf.mist</code> wrapper:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
-<span class="kd">local</span><span class="w"> </span><span class="nv">groupData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getGroupData</span><span class="p">(</span><span class="nv">groupName</span><span class="p">)</span>
-<span class="kd">local</span><span class="w"> </span><span class="nv">isHuman</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">isHumanUnit</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
-<span class="kd">local</span><span class="w"> </span><span class="nv">allUnits</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getAllUnitData</span><span class="p">()</span>
-<span class="kd">local</span><span class="w"> </span><span class="nv">groupById</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getGroupById</span><span class="p">(</span><span class="nv">groupId</span><span class="p">)</span>
+<h3 id="what-the-mission-holds">What the mission holds<a class="headerlink" href="#what-the-mission-holds" title="Permanent link">&para;</a></h3>
+<p><code>veafMissionDb.lua</code> answers three questions, and accumulates nothing else.</p>
+<p><strong>The editor snapshot</strong> — every group and unit placed in the Mission Editor, read once from
+<code>env.mission</code>. A <em>mission record</em> is not a live object: it exists for a unit that has not spawned yet
+and for one already destroyed. That is precisely what <code>Unit.getByName</code> cannot do, and why the index
+exists at all.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="nf">getUnitRecord</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span><span class="w">      </span><span class="c1">-- x, y, alt, type, groupName, coalition, coalitionId, category…</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getGroupRecord</span><span class="p">(</span><span class="nv">groupName</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getGroupRecordById</span><span class="p">(</span><span class="nv">groupId</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getAllUnitRecords</span><span class="p">()</span><span class="w">          </span><span class="c1">-- to iterate</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getAllGroupRecords</span><span class="p">()</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getBullseye</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span><span class="w">          </span><span class="c1">-- straight from env.mission</span>
 </code></pre></div>
+<p><strong>The player roster</strong> — the editor's slots, <strong>plus DCS dynamic slots</strong>, which appear in no
+<code>env.mission</code>. It is the only one of the three that refreshes, and it does so when it is read rather
+than on a clock:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="nf">isHumanUnit</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getAllHumanRecords</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>The name registry</strong> — what VEAF has named, so a group can respawn under a name it used before:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="nf">takeSpawnedName</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">releaseSpawnedName</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">isNameTaken</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span>
+</code></pre></div>
+<p>The old <code>veaf.mist.getGroupData</code>, <code>isHumanUnit</code>, <code>getAllUnitData</code>, <code>getAllGroupData</code>,
+<code>getAllHumanUnitData</code> and <code>getGroupById</code> façades still exist and forward here; new code calls <code>veaf.*</code>
+directly. <code>veaf.mist.getUnitData</code> was removed: it had no caller.</p>
 <hr />
 <h2 id="python-tools">Python Tools<a class="headerlink" href="#python-tools" title="Permanent link">&para;</a></h2>
 <h3 id="cli-architecture">CLI Architecture<a class="headerlink" href="#cli-architecture" title="Permanent link">&para;</a></h3>
