@@ -3961,6 +3961,14 @@ façades <code>veaf.*</code> :</p>
 <span class="nv">veaf</span><span class="p">.</span><span class="nf">toStringMGRS</span><span class="p">(</span><span class="nv">coord</span><span class="p">.</span><span class="nf">LLtoMGRS</span><span class="p">(</span><span class="nv">lat</span><span class="p">,</span><span class="w"> </span><span class="nv">lon</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w">  </span><span class="c1">-- &quot;38T KM 123 679&quot;</span>
 </code></pre></div>
 <p>La géodésie reste celle de DCS (<code>coord.LOtoLL</code>, <code>coord.LLtoMGRS</code>) ; ce module ne fait que le texte.</p>
+<p><code>veafGeo</code> porte aussi les zones et les polygones :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="nf">zoneToVec3</span><span class="p">(</span><span class="s2">&quot;NOM DE ZONE&quot;</span><span class="p">)</span><span class="w">        </span><span class="c1">-- centre de la zone, ou nil si elle n&#39;existe pas</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getAvgPos</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;unite1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;unite2&quot;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="c1">-- position moyenne, nil si aucune n&#39;existe</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getAvgGroupPos</span><span class="p">(</span><span class="s2">&quot;nom du groupe&quot;</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">pointInPolygon</span><span class="p">(</span><span class="nv">point</span><span class="p">,</span><span class="w"> </span><span class="nv">sommets</span><span class="p">)</span><span class="w">    </span><span class="c1">-- accepte les deux formes de coordonnées</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getUnitsInPolygon</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;u1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;u2&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nv">sommets</span><span class="p">)</span>
+</code></pre></div>
+<p>Et l'allocation d'identifiants d'unité vit dans <code>veafMissionDb.lua</code> : <code>veaf.getNextUnitId()</code>.</p>
 <p><strong>Ces chaînes partent dans les rapports F10 et les briefings</strong>, donc elles sont figées par des tests à
 chaîne littérale. Le port a repris MiST au caractère près, bizarreries comprises ; corriger l'une
 d'elles change ce que lisent les pilotes, et se décide donc à part. Une l'a été

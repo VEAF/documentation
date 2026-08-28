@@ -3959,6 +3959,14 @@ façades:</p>
 <span class="nv">veaf</span><span class="p">.</span><span class="nf">toStringMGRS</span><span class="p">(</span><span class="nv">coord</span><span class="p">.</span><span class="nf">LLtoMGRS</span><span class="p">(</span><span class="nv">lat</span><span class="p">,</span><span class="w"> </span><span class="nv">lon</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w">  </span><span class="c1">-- &quot;38T KM 123 679&quot;</span>
 </code></pre></div>
 <p>The geodesy stays DCS's own (<code>coord.LOtoLL</code>, <code>coord.LLtoMGRS</code>); this module only does the text.</p>
+<p><code>veafGeo</code> also carries zones and polygons:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="nf">zoneToVec3</span><span class="p">(</span><span class="s2">&quot;ZONE NAME&quot;</span><span class="p">)</span><span class="w">           </span><span class="c1">-- the zone&#39;s centre, or nil when there is no such zone</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getAvgPos</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;unit1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;unit2&quot;</span><span class="w"> </span><span class="p">})</span><span class="w">   </span><span class="c1">-- average position, nil when none of them exists</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getAvgGroupPos</span><span class="p">(</span><span class="s2">&quot;group name&quot;</span><span class="p">)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">pointInPolygon</span><span class="p">(</span><span class="nv">point</span><span class="p">,</span><span class="w"> </span><span class="nv">corners</span><span class="p">)</span><span class="w">    </span><span class="c1">-- accepts either coordinate shape</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">getUnitsInPolygon</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;u1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;u2&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nv">corners</span><span class="p">)</span>
+</code></pre></div>
+<p>And unit id allocation lives in <code>veafMissionDb.lua</code>: <code>veaf.getNextUnitId()</code>.</p>
 <p><strong>These strings go into F10 reports and briefings</strong>, so they are pinned by literal-string tests. The
 port reproduced MiST to the character, oddities included; correcting one of them changes what pilots
 read and is therefore decided on its own. One has been (<code>FIX-DMS-MINUTE-CARRY</code>: in DMS a minute
