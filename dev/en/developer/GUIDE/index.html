@@ -3959,11 +3959,11 @@ façades:</p>
 <span class="nv">veaf</span><span class="p">.</span><span class="nf">toStringMGRS</span><span class="p">(</span><span class="nv">coord</span><span class="p">.</span><span class="nf">LLtoMGRS</span><span class="p">(</span><span class="nv">lat</span><span class="p">,</span><span class="w"> </span><span class="nv">lon</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w">  </span><span class="c1">-- &quot;38T KM 123 679&quot;</span>
 </code></pre></div>
 <p>The geodesy stays DCS's own (<code>coord.LOtoLL</code>, <code>coord.LLtoMGRS</code>); this module only does the text.</p>
-<p><strong>These strings go into F10 reports and briefings</strong>, so they are pinned by literal-string tests. Two of
-MiST's oddities are reproduced on purpose and documented in the module: a position at zero renders as
-<code>S</code>/<code>W</code>, and in DMS a minute reaching 60 does not carry into the degree (<code>41 60'</code> rather than
-<code>42 00'</code>), while the decimal branch does carry. Correcting either changes what pilots read: that is a
-decision of its own, not a side effect.</p>
+<p><strong>These strings go into F10 reports and briefings</strong>, so they are pinned by literal-string tests. The
+port reproduced MiST to the character, oddities included; correcting one of them changes what pilots
+read and is therefore decided on its own. One has been (<code>FIX-DMS-MINUTE-CARRY</code>: in DMS a minute
+reaching 60 now carries into the degree, as the decimal layout already did). One remains, still
+MiST's: a position at exactly zero renders as <code>S</code>/<code>W</code>, the hemisphere test being <code>&gt; 0</code>.</p>
 <h3 id="mistdbs-access">mist.DBs Access<a class="headerlink" href="#mistdbs-access" title="Permanent link">&para;</a></h3>
 <p>Do not access <code>mist.DBs.*</code> directly. Use the <code>veaf.mist</code> wrapper:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>

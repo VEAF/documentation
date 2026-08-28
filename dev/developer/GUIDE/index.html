@@ -3962,10 +3962,11 @@ façades <code>veaf.*</code> :</p>
 </code></pre></div>
 <p>La géodésie reste celle de DCS (<code>coord.LOtoLL</code>, <code>coord.LLtoMGRS</code>) ; ce module ne fait que le texte.</p>
 <p><strong>Ces chaînes partent dans les rapports F10 et les briefings</strong>, donc elles sont figées par des tests à
-chaîne littérale. Deux bizarreries de MiST sont reproduites volontairement et documentées dans le
-module : une position à zéro s'affiche <code>S</code>/<code>W</code>, et en DMS une minute atteignant 60 n'est pas reportée
-sur le degré (<code>41 60'</code> au lieu de <code>42 00'</code>), alors que le mode décimal, lui, la reporte. Les corriger
-change ce que lisent les pilotes : c'est une décision à prendre à part, pas un effet de bord.</p>
+chaîne littérale. Le port a repris MiST au caractère près, bizarreries comprises ; corriger l'une
+d'elles change ce que lisent les pilotes, et se décide donc à part. Une l'a été
+(<code>FIX-DMS-MINUTE-CARRY</code> : en DMS, une minute atteignant 60 se reporte maintenant sur le degré, comme
+le faisait déjà le mode décimal). Il en reste une, toujours celle de MiST : une position à exactement
+zéro s'affiche <code>S</code>/<code>W</code>, le test d'hémisphère étant <code>&gt; 0</code>.</p>
 <h3 id="accès-mistdbs">Accès mist.DBs<a class="headerlink" href="#accès-mistdbs" title="Permanent link">&para;</a></h3>
 <p>Ne pas accéder à <code>mist.DBs.*</code> directement. Utiliser l'interface <code>veaf.mist</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
