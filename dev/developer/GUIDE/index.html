@@ -2089,6 +2089,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rendu-texte-dune-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rendu texte d'une position
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#accès-mistdbs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3227,6 +3238,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rendu-texte-dune-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rendu texte d'une position
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#accès-mistdbs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3932,6 +3954,18 @@ façades <code>veaf.*</code> :</p>
 <li><strong>Pas de <code>veaf.round</code> dans <code>veafMath</code></strong> : il est dans <code>veaf.lua</code> depuis toujours, et il est identique
   à celui de MiST.</li>
 </ul>
+<h3 id="rendu-texte-dune-position">Rendu texte d'une position<a class="headerlink" href="#rendu-texte-dune-position" title="Permanent link">&para;</a></h3>
+<p><code>veafGeo.lua</code> assemble les chaînes de coordonnées, derrière deux façades :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veaf</span><span class="p">.</span><span class="nf">toStringLL</span><span class="p">(</span><span class="nv">lat</span><span class="p">,</span><span class="w"> </span><span class="nv">lon</span><span class="p">,</span><span class="w"> </span><span class="nv">acc</span><span class="p">)</span><span class="w">         </span><span class="c1">-- &quot;42 21.00&#39;N⇥ 43 34.07&#39;E&quot;  (minutes décimales)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">toStringLL</span><span class="p">(</span><span class="nv">lat</span><span class="p">,</span><span class="w"> </span><span class="nv">lon</span><span class="p">,</span><span class="w"> </span><span class="nv">acc</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w">   </span><span class="c1">-- &quot;42 21&#39; 00\&quot;N⇥ 43 34&#39; 04\&quot;E&quot;  (degrés/minutes/secondes)</span>
+<span class="nv">veaf</span><span class="p">.</span><span class="nf">toStringMGRS</span><span class="p">(</span><span class="nv">coord</span><span class="p">.</span><span class="nf">LLtoMGRS</span><span class="p">(</span><span class="nv">lat</span><span class="p">,</span><span class="w"> </span><span class="nv">lon</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w">  </span><span class="c1">-- &quot;38T KM 123 679&quot;</span>
+</code></pre></div>
+<p>La géodésie reste celle de DCS (<code>coord.LOtoLL</code>, <code>coord.LLtoMGRS</code>) ; ce module ne fait que le texte.</p>
+<p><strong>Ces chaînes partent dans les rapports F10 et les briefings</strong>, donc elles sont figées par des tests à
+chaîne littérale. Deux bizarreries de MiST sont reproduites volontairement et documentées dans le
+module : une position à zéro s'affiche <code>S</code>/<code>W</code>, et en DMS une minute atteignant 60 n'est pas reportée
+sur le degré (<code>41 60'</code> au lieu de <code>42 00'</code>), alors que le mode décimal, lui, la reporte. Les corriger
+change ce que lisent les pilotes : c'est une décision à prendre à part, pas un effet de bord.</p>
 <h3 id="accès-mistdbs">Accès mist.DBs<a class="headerlink" href="#accès-mistdbs" title="Permanent link">&para;</a></h3>
 <p>Ne pas accéder à <code>mist.DBs.*</code> directement. Utiliser l'interface <code>veaf.mist</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">unitData</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="py">mist</span><span class="p">.</span><span class="nf">getUnitData</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
