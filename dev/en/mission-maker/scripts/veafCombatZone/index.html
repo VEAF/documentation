@@ -4135,12 +4135,17 @@ only a label.</p>
 </table>
 <p>A static object is its own group: the rule then applies to <strong>its</strong> name.</p>
 <div class="admonition danger">
-<p class="admonition-title">A misnamed group fails silently</p>
-<p>Nothing reports it, neither in game nor in the log. The zone activates normally and announces
-its success; the group stays exactly where you put it — never removed at start-up, never
-recreated on activation, never counted in the zone report. This is undebuggable from the game:
-<strong>a zone that "spawns nothing" is almost always a zone whose groups do not carry its name.</strong>
-Check the prefix before looking anywhere else.</p>
+<p class="admonition-title">A misnamed group is dropped — nothing shows in game</p>
+<p>The zone activates normally and announces its success; the group stays exactly where you put
+it — never removed at start-up, never recreated on activation, never counted in the zone
+report. <strong>A zone that "spawns nothing" is almost always a zone whose groups do not carry its
+name.</strong> Check the prefix before looking anywhere else.</p>
+<p><strong>The DCS log names them.</strong> A zone that found groups inside its circle and turned them down
+writes one line at start-up, listing the groups and the prefix they are missing:</p>
+<div class="highlight"><pre><span></span><code>COMBATZONE|I|Combat zone [CZ-Alpha]: 2 group(s) found inside the zone were ignored:
+ARMOR-1, SAM-NORTH. To belong to the zone, a group name must start with the zone name [CZ-Alpha].
+</code></pre></div>
+<p>A zone whose groups are all named right writes nothing at all.</p>
 </div>
 <p>The corollary runs the other way, and is just as silent: a group that has nothing to do with the
 zone, but sits inside the circle <strong>and</strong> is named <code>CZ-Alpha-…</code>, is part of it — and will be
@@ -4321,6 +4326,11 @@ CZ-Alpha-SA6-D #spawngroup=&quot;CZ-Alpha-SAM&quot; #spawncount=2
 </code></pre></div>
 <p>Two of the four batteries, always two, drawn at random on every activation.</p>
 <p>Without a <code>#spawngroup</code>, <strong>each group is alone in its own</strong>: its probability is drawn for it and for nothing else. A <code>#spawngroup</code> with no <code>#spawncount</code> goes on meaning "one of these", but every candidate now draws for the slot instead of being handed it.</p>
+<div class="admonition note">
+<p class="admonition-title">Where <code>#spawncount</code> may be written, and what happens if two members disagree</p>
+<p>The count belongs to the <strong>spawn group</strong>, not to one of its members, so writing it on any single member of the <code>#spawngroup</code> is enough — the example above repeats it on all four for readability, not because it has to. It used to count only on whichever member the zone met first, which meant a count written on the second one was dropped without a word.</p>
+<p>If two members of one spawn group state <strong>different</strong> counts, <strong>the highest wins</strong>, and the log says which one was kept. The rule does not depend on the order the groups sit in the editor — that order is exactly what caused the old defect — and a <code>#spawncount</code> is a guarantee, so the larger of the two promises is the one that keeps both. Repeating the <em>same</em> count is not a disagreement and produces no message.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">This changes existing missions</p>
 <p>Up to and including 6.17.0, <code>#spawnchance</code> could <strong>not</strong> deny a spawn. The zone redrew up to ten times and forced the draw on the last try, so a lone group always ended up spawning: the tag changed <em>when</em>, never <em>whether</em>. Even <code>#spawnchance=0</code> spawned. Redraws and the forced draw are now reserved for a <code>#spawncount</code> actually written, where they keep a promise of a number. <strong>A mission in service that uses <code>#spawnchance</code> will therefore spawn fewer groups than before</strong> — which is the behaviour this page has always described. If a group must spawn for certain, drop its tag or write <code>#spawnchance=100</code>.</p>
