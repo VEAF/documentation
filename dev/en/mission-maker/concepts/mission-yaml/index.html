@@ -2934,9 +2934,16 @@ derives <code>src/scripts/veaf-config.lua</code> from it, and that is what the s
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">         </span><span class="c1"># spawn units from the F10 map</span>
 <span class="w">  </span><span class="nt">SHORTCUTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">     </span><span class="c1"># the built-in aliases (-shilka, -sa2, …)</span>
 <span class="w">  </span><span class="nt">INTERPRETER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># Community scripts: written out even when off — see &quot;The gotcha&quot; below</span>
+<span class="w">  </span><span class="nt">STTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># configured in ctld-config.yaml, beside this file</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">AIEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <p>That is exactly what <code>prepare --template minimal</code> produces. A VEAF module absent from the block is
-not shipped at all — <strong>community scripts are the exception, see <a href="#gotcha">the gotcha</a></strong>.</p>
+not shipped at all — the community scripts follow the opposite rule, which is why the generated file
+writes every one of them out, even at <code>false</code>.</p>
 <h2 id="three-forms">The three forms of a module<a class="headerlink" href="#three-forms" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2975,14 +2982,15 @@ shipped <code>mission.yaml</code> shows them commented out, ready to uncomment.<
 <code>GROUNDAI</code>. Enable the feature without its dependency and the build enables it for you, saying so in
 a warning — even if you had explicitly set it to <code>false</code>. So the <code>modules:</code> you write is not exactly
 the one that runs: read the build's warnings.</p>
-<p><strong>Community scripts are there even when you never name them.</strong> <code>STTS</code>, <code>CTLD</code>, <code>AIEN</code>, <code>CSAR</code> and
-<code>SKYNET</code> are <em>opt-out</em>: they ship unless you write <code>CTLD: false</code>. A minimal <code>modules:</code> block that
-mentions none of them ships them all — which is why the build can talk to you about CTLD in a
-mission where you never wrote that word. Nothing is broken; to be rid of them, set them explicitly
-to <code>false</code>. The two exceptions are <code>MIST</code> and <code>TUM</code>, which are <em>opt-in</em>: absent from the block, they
-stay off.</p>
 <p>And a YAML gotcha: <code>MODULE:</code> (nothing after the colon) and <code>MODULE: false</code> do not mean the same
 thing. The first is "infrastructure, active"; the second is "off".</p>
+<p><strong>The five <em>opt-out</em> community scripts work the other way round from VEAF modules.</strong> <code>STTS</code>, <code>CTLD</code>,
+<code>AIEN</code>, <code>CSAR</code> and <code>SKYNET</code> are <strong>active when you do not mention them</strong>: their absence from the
+<code>modules:</code> block means "keep your default state", and their default is on. An absent VEAF module, by
+contrast, is not shipped. That is why every scaffold (<code>prepare --template</code>, <code>convert-v5</code>, the shipped
+<code>mission.yaml</code>) writes them out <strong>explicitly</strong>, <code>true</code> or <code>false</code>: a <code>false</code> can be read, an omission
+that means "enabled" cannot. Do the same when you write the file by hand — otherwise the build ships
+CTLD in a mission that never names it.</p>
 <h2 id="more">Going further<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../../MISSION_YAML_REFERENCE/#modules"><code>mission.yaml</code> reference — <code>modules:</code></a></li>

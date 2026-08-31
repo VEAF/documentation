@@ -2935,9 +2935,16 @@ jeu.</p>
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">         </span><span class="c1"># faire apparaître des unités depuis la carte F10</span>
 <span class="w">  </span><span class="nt">SHORTCUTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">     </span><span class="c1"># les alias intégrés (-shilka, -sa2, …)</span>
 <span class="w">  </span><span class="nt">INTERPRETER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># Scripts communautaires : écrits même éteints — voir « Le piège » plus bas</span>
+<span class="w">  </span><span class="nt">STTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># configuré dans ctld-config.yaml, à côté de ce fichier</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">AIEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <p>C'est exactement ce que produit <code>prepare --template minimal</code>. Un module VEAF absent du bloc n'est
-pas embarqué du tout — <strong>les scripts communautaires font exception, voir <a href="#gotcha">le piège</a></strong>.</p>
+pas embarqué du tout — les scripts communautaires, eux, suivent la règle inverse, et c'est pourquoi
+le fichier généré les écrit tous, même à <code>false</code>.</p>
 <h2 id="three-forms">Les trois formes d'un module<a class="headerlink" href="#three-forms" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2977,14 +2984,15 @@ besoin de <code>SPAWN</code> <strong>et</strong> de <code>GROUNDAI</code>. Si vo
 build l'active pour vous et le dit dans un avertissement — même si vous l'aviez explicitement mise
 à <code>false</code>. Le <code>modules:</code> que vous écrivez n'est donc pas exactement celui qui tourne : lisez les
 avertissements du build.</p>
-<p><strong>Les scripts communautaires sont là même si vous ne les nommez pas.</strong> <code>STTS</code>, <code>CTLD</code>, <code>AIEN</code>,
-<code>CSAR</code> et <code>SKYNET</code> sont <em>opt-out</em> : ils sont embarqués tant que vous n'écrivez pas <code>CTLD: false</code>.
-Un <code>modules:</code> minimal, qui ne les mentionne nulle part, les embarque quand même — c'est pourquoi le
-build peut vous parler de CTLD dans une mission où vous n'avez jamais écrit ce mot. Rien n'est
-cassé ; pour vous en débarrasser, mettez-les explicitement à <code>false</code>. Les deux exceptions sont
-<code>MIST</code> et <code>TUM</code>, <em>opt-in</em> : absents du bloc, ils restent éteints.</p>
 <p>Et un piège de YAML : <code>MODULE:</code> (rien après le deux-points) et <code>MODULE: false</code> ne veulent pas dire
 la même chose. Le premier est « infrastructure, active » ; le second, « éteinte ».</p>
+<p><strong>Les cinq scripts communautaires <em>opt-out</em> marchent à l'envers des modules VEAF.</strong> <code>STTS</code>, <code>CTLD</code>,
+<code>AIEN</code>, <code>CSAR</code> et <code>SKYNET</code> sont <strong>actifs quand on ne les mentionne pas</strong> : leur absence du bloc
+<code>modules:</code> vaut « garde ton état par défaut », et leur défaut est activé. Un module VEAF absent,
+lui, n'est pas embarqué. C'est pour cette raison que tous les scaffolds (<code>prepare --template</code>,
+<code>convert-v5</code>, le <code>mission.yaml</code> livré) les écrivent <strong>explicitement</strong>, <code>true</code> ou <code>false</code> : un
+<code>false</code> se lit, une absence qui veut dire « activé » ne se lit pas. Si vous écrivez le fichier à la
+main, faites de même — sinon le build embarquera CTLD dans une mission qui ne le nomme jamais.</p>
 <h2 id="more">Pour aller plus loin<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../../MISSION_YAML_REFERENCE/#modules">Référence <code>mission.yaml</code> — <code>modules:</code></a></li>
