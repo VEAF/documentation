@@ -1781,6 +1781,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La règle du préfixe — ce que la zone ramasse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#out-of-action" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3365,6 +3376,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La règle du préfixe — ce que la zone ramasse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#out-of-action" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4047,27 +4069,89 @@ monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit
 <p>Côté Lua : <code>VeafCombatZone:setRadioMenuCoalition(coalition.side.RED)</code> ou <code>"all"</code>.</p>
 <hr />
 <h2 id="fonctionnement">Fonctionnement<a class="headerlink" href="#fonctionnement" title="Permanent link">&para;</a></h2>
-<p>Placez toutes les unités qui doivent apparaître dans la zone directement dans l'éditeur de mission DCS, à l'intérieur de la trigger zone. Au démarrage de la mission, VEAF les retire toutes — la zone est vide. Quand un joueur active la zone via le menu F10, toutes les unités réapparaissent à des positions aléatoires dans le rayon de la zone. Quand toutes les unités ennemies sont détruites, la zone est marquée comme terminée (un callback optionnel se déclenche, les zones chaînées optionnelles s'activent).</p>
+<p>Placez toutes les unités qui doivent apparaître dans la zone directement dans l'éditeur de mission DCS, à l'intérieur de la trigger zone, <strong>et nommez leurs groupes en commençant par le nom de la zone</strong> — c'est <a href="#zone-membership">la règle du préfixe</a>, la seule qui décide de ce que la zone contient. Au démarrage de la mission, VEAF les retire toutes — la zone est vide. Quand un joueur active la zone via le menu F10, toutes les unités réapparaissent à des positions aléatoires dans le rayon de la zone. Quand toutes les unités ennemies sont détruites, la zone est marquée comme terminée (un callback optionnel se déclenche, les zones chaînées optionnelles s'activent).</p>
 <p>Cette approche vous donne une conception entièrement visuelle dans l'éditeur tout en gardant la zone inactive au démarrage de la mission.</p>
 <h3 id="mise-en-place-dans-léditeur-de-mission-dcs">Mise en place dans l'éditeur de mission DCS<a class="headerlink" href="#mise-en-place-dans-léditeur-de-mission-dcs" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Créez une trigger zone</strong> — définissez la zone de combat. Nommez-la, par exemple <code>ZONE-ALPHA</code>.</li>
-<li><strong>Placez des groupes d'unités</strong> à l'intérieur de la zone. Mettez-les dans n'importe quelle coalition — VEAF gère leur cycle de vie.</li>
+<li><strong>Créez une trigger zone</strong> — définissez la zone de combat. Nommez-la, par exemple <code>CZ-Alpha</code>.</li>
+<li><strong>Placez des groupes d'unités</strong> à l'intérieur de la zone, <strong>en préfixant leur nom du nom de la zone</strong> — <code>CZ-Alpha-ARMOR</code>, <code>CZ-Alpha-AAA</code>. Mettez-les dans n'importe quelle coalition — VEAF gère leur cycle de vie.</li>
 <li><strong>Utilisez les tags de nom d'unité ou de groupe</strong> (voir ci-dessous) pour personnaliser le comportement d'apparition par groupe.</li>
 <li><strong>Enregistrez la zone</strong> dans <code>mission-script.lua</code> :</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- nom de la trigger zone DCS</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;CZ-Alpha&quot;</span><span class="p">)</span><span class="w">        </span><span class="c1">-- nom de la trigger zone DCS</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span><span class="w">                    </span><span class="c1">-- libellé du menu radio</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Strike Alpha — Colonne blindée&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p><code>veafCombatZone.initialize()</code> doit d'abord être appelé au niveau du module.</p>
 <hr />
+<h3 id="zone-membership">La règle du préfixe — ce que la zone ramasse<a class="headerlink" href="#zone-membership" title="Permanent link">&para;</a></h3>
+<p><strong>Un groupe appartient à la zone si, et seulement si, son nom commence par le nom de la trigger
+zone.</strong> La casse est ignorée, et rien d'autre n'est examiné. Se trouver dans le cercle est
+nécessaire, mais ne suffit pas.</p>
+<p>Le nom qui compte est celui de la <strong>trigger zone DCS</strong> — <code>zone_name</code> en YAML,
+<code>:setMissionEditorZoneName(...)</code> en Lua. Ce n'est pas le <code>friendly_name</code> affiché dans le menu radio,
+qui n'est qu'un libellé.</p>
+<p>Pour une zone nommée <code>CZ-Alpha</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Nom du groupe dans l'éditeur</th>
+<th>Ramassé ?</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CZ-Alpha-ARMOR</code></td>
+<td>oui</td>
+<td>commence par <code>CZ-Alpha</code></td>
+</tr>
+<tr>
+<td><code>CZ-Alpha-AAA</code></td>
+<td>oui</td>
+<td>commence par <code>CZ-Alpha</code></td>
+</tr>
+<tr>
+<td><code>cz-alpha-manpads</code></td>
+<td>oui</td>
+<td>la casse est ignorée</td>
+</tr>
+<tr>
+<td><code>CZ-AlphaSAM</code></td>
+<td>oui</td>
+<td>c'est un préfixe, pas un segment : le tiret n'est pas exigé</td>
+</tr>
+<tr>
+<td><code>ARMOR-1</code></td>
+<td><strong>non</strong></td>
+<td>ne commence pas par <code>CZ-Alpha</code>, même posé au centre du cercle</td>
+</tr>
+<tr>
+<td><code>Alpha-ARMOR</code></td>
+<td><strong>non</strong></td>
+<td>il manque <code>CZ-</code></td>
+</tr>
+</tbody>
+</table>
+<p>Un objet statique est son propre groupe : la règle s'applique alors à <strong>son</strong> nom.</p>
+<div class="admonition danger">
+<p class="admonition-title">Un groupe mal nommé échoue en silence</p>
+<p>Rien ne le signale, ni en jeu ni dans le log. La zone s'active normalement et annonce sa
+réussite ; le groupe, lui, reste exactement où vous l'avez posé — jamais retiré au démarrage,
+jamais recréé à l'activation, jamais compté dans le rapport de zone. C'est indébogable depuis le
+jeu : <strong>une zone « qui ne fait rien apparaître » est presque toujours une zone dont les groupes
+ne portent pas son nom.</strong> Vérifiez le préfixe avant de chercher ailleurs.</p>
+</div>
+<p>Le corollaire vaut dans l'autre sens, et il est tout aussi silencieux : un groupe qui n'a rien à
+voir avec la zone, mais qui est posé dans le cercle <strong>et</strong> nommé <code>CZ-Alpha-…</code>, en fait partie — il
+sera donc détruit au démarrage de la mission avec les autres.</p>
+<hr />
 <h3 id="out-of-action">Groupes hors de combat<a class="headerlink" href="#out-of-action" title="Permanent link">&para;</a></h3>
 <p>Un groupe n'est pas seulement vivant ou mort. Une batterie S-300 dont le radar de tir est détruit garde ses lanceurs, ses camions et son équipage — mais elle ne peut plus tirer.</p>
 <p>Le rapport de zone le signale désormais :</p>
-<div class="highlight"><pre><span></span><code>HORS DE COMBAT (ne peuvent plus tirer) : ALPHA-SA10
+<div class="highlight"><pre><span></span><code>HORS DE COMBAT (ne peuvent plus tirer) : CZ-Alpha-SA10
 </code></pre></div>
 <p>Un groupe entièrement détruit n'apparaît pas là : il est simplement absent des effectifs restants. Cette ligne ne concerne que les groupes <strong>encore debout</strong> et devenus inoffensifs.</p>
 <div class="admonition note">
@@ -4163,7 +4247,7 @@ monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit
 <p>Depuis la 6.15.21, l'ancrage est toujours la <strong>première unité du groupe</strong>, qu'elle soit dans le cercle ou non. Un groupe à cheval sur le bord apparaît donc à l'endroit où vous l'avez dessiné. Si vous aviez compensé ce décalage à la main en déplaçant vos unités, retirez la compensation.</p>
 <h4 id="tag-ranges">Une valeur au hasard dans un intervalle<a class="headerlink" href="#tag-ranges" title="Permanent link">&para;</a></h4>
 <p>Les quatre tags qui portent un nombre — <code>#spawnradius</code>, <code>#spawnchance</code>, <code>#spawncount</code>, <code>#spawndelay</code> — acceptent un intervalle au lieu d'une valeur fixe, avec la même écriture que dans les commandes de marqueur :</p>
-<div class="highlight"><pre><span></span><code>ALPHA-CONVOY #spawnradius=100-300 #spawndelay=30-90
+<div class="highlight"><pre><span></span><code>CZ-Alpha-CONVOY #spawnradius=100-300 #spawndelay=30-90
 </code></pre></div>
 <p>La valeur est tirée <strong>une fois par mission</strong>, à la lecture des noms au démarrage. Toutes les activations de la zone utilisent donc la même valeur : c'est un placement varié d'une partie à l'autre, pas un placement qui bouge à chaque réactivation.</p>
 <div class="admonition warning">
@@ -4215,9 +4299,9 @@ monde : un groupe radio peut contenir des zones des deux camps. Chaque camp voit
 </tbody>
 </table>
 <p><code>#alarm=N</code> reste maître et l'emporte dans les deux sens — pour clouer un convoi sur place (<code>#alarm=2</code>) comme pour laisser une défense discrète jusqu'au premier contact (<code>#alarm=0</code>) :</p>
-<div class="highlight"><pre><span></span><code>ALPHA-SA6-BATTERY              ← ROUGE, sans rien écrire
-ALPHA-SUPPLY-CONVOY            ← AUTO, sans rien écrire
-ALPHA-SA6-AMBUSH #alarm=0      ← discrète volontairement
+<div class="highlight"><pre><span></span><code>CZ-Alpha-SA6-BATTERY              ← ROUGE, sans rien écrire
+CZ-Alpha-SUPPLY-CONVOY            ← AUTO, sans rien écrire
+CZ-Alpha-SA6-AMBUSH #alarm=0      ← discrète volontairement
 </code></pre></div>
 <p>Une valeur illisible ou hors bornes (<code>#alarm=7</code>, <code>#alarm=x</code>) retombe sur ROUGE et l'écrit dans le log, plutôt que de faire échouer la zone.</p>
 <div class="admonition note">
@@ -4232,10 +4316,10 @@ ALPHA-SA6-AMBUSH #alarm=0      ← discrète volontairement
 <p>Ces deux tags répondent à deux questions différentes, et il faut choisir laquelle vous posez.</p>
 <p><code>#spawnchance=N</code> est une <strong>probabilité</strong>, tirée une fois par groupe à l'activation de la zone. <code>#spawnchance=50</code> fait apparaître le groupe une fois sur deux ; <code>#spawnchance=0</code> ne le fait jamais apparaître ; sans tag, il apparaît toujours (le défaut est 100).</p>
 <p><code>#spawncount=N</code>, associé à <code>#spawngroup</code>, est une <strong>garantie de nombre</strong> : « exactement N de ces groupes-là, à chaque fois ». La zone tire au sort qui, puis retire tant qu'il faut pour atteindre N — donc <code>#spawnchance</code> n'y décide plus que <em>lesquels</em>, plus <em>combien</em>.</p>
-<div class="highlight"><pre><span></span><code>ALPHA-SA6-A #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
-ALPHA-SA6-B #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
-ALPHA-SA6-C #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
-ALPHA-SA6-D #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
+<div class="highlight"><pre><span></span><code>CZ-Alpha-SA6-A #spawngroup=&quot;CZ-Alpha-SAM&quot; #spawncount=2
+CZ-Alpha-SA6-B #spawngroup=&quot;CZ-Alpha-SAM&quot; #spawncount=2
+CZ-Alpha-SA6-C #spawngroup=&quot;CZ-Alpha-SAM&quot; #spawncount=2
+CZ-Alpha-SA6-D #spawngroup=&quot;CZ-Alpha-SAM&quot; #spawncount=2
 </code></pre></div>
 <p>Deux des quatre batteries, toujours deux, tirées au hasard à chaque activation.</p>
 <p>Sans <code>#spawngroup</code>, <strong>chaque groupe est seul dans le sien</strong> : sa probabilité est tirée pour lui et pour rien d'autre. Un <code>#spawngroup</code> sans <code>#spawncount</code> continue de signifier « un seul de ceux-là », mais chaque candidat tire désormais sa chance au lieu que la place soit attribuée d'office.</p>
@@ -4245,18 +4329,21 @@ ALPHA-SA6-D #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
 </div>
 <h3 id="exemple-pratique--embuscade-manpads">Exemple pratique — embuscade MANPADS<a class="headerlink" href="#exemple-pratique--embuscade-manpads" title="Permanent link">&para;</a></h3>
 <p>Vous voulez quatre positions de MANPADS dans une zone, mais seules deux environ devraient réellement être occupées. Placez quatre unités d'infanterie factices nommées :</p>
-<div class="highlight"><pre><span></span><code>ALPHA-MANPAD-1 #spawnchance=50
-ALPHA-MANPAD-2 #spawnchance=50
-ALPHA-MANPAD-3 #spawnchance=50
-ALPHA-MANPAD-4 #spawnchance=50
+<div class="highlight"><pre><span></span><code>CZ-Alpha-MANPAD-1 #spawnchance=50
+CZ-Alpha-MANPAD-2 #spawnchance=50
+CZ-Alpha-MANPAD-3 #spawnchance=50
+CZ-Alpha-MANPAD-4 #spawnchance=50
 </code></pre></div>
 <p>Chaque position a 50 % de chances d'apparaître, indépendamment des autres — statistiquement, environ deux seront actives à chaque déclenchement de la zone. « Environ » est le mot juste : il arrivera qu'aucune n'apparaisse, et qu'elles apparaissent toutes les quatre. Si vous voulez <strong>exactement deux</strong> à chaque fois, c'est <code>#spawncount</code> qu'il faut, comme ci-dessus.</p>
 <h3 id="command--apparition-via-la-syntaxe-de-marqueur-veaf"><code>#command</code> — apparition via la syntaxe de marqueur VEAF<a class="headerlink" href="#command--apparition-via-la-syntaxe-de-marqueur-veaf" title="Permanent link">&para;</a></h3>
 <p>Le tag <code>#command</code> transforme une unité en déclencheur à usage unique. À l'activation de la zone, VEAF exécute la commande à la position de l'unité et détruit l'unité. C'est l'équivalent du dépôt d'un marqueur de carte à cet endroit.</p>
-<div class="highlight"><pre><span></span><code>SPAWN-SA11 #command=&quot;-spawn sa-11, side red&quot;
-CONVOY-TRIGGER #command=&quot;-convoy from ZONE-ALPHA to ZONE-BRAVO&quot;
+<div class="highlight"><pre><span></span><code>CZ-Alpha-SPAWN-SA11 #command=&quot;-spawn sa-11, side red&quot;
+CZ-Alpha-CONVOY-TRIGGER #command=&quot;-convoy from ZONE-DEPOT to ZONE-FRONT&quot;
 </code></pre></div>
 <p>Cela permet de monter des apparitions complexes (batterie SA-11, convois avec routes IA) sans aucun code Lua.</p>
+<p>L'unité déclencheur est un membre de la zone comme un autre : son nom doit donc lui aussi
+<a href="#zone-membership">commencer par le nom de la zone</a>. Une unité nommée <code>SPAWN-SA11</code> posée dans
+<code>CZ-Alpha</code> n'est jamais lue, et sa commande n'est jamais exécutée.</p>
 <p><strong>Les commandes retardées sont rattachées à leur zone.</strong> Une commande peut porter un délai, de trois façons — <code>-samsr!30</code> (délai d'alias), l'option <code>delay</code> d'un <code>-spawn</code>, ou une répétition. Dans ces cas, la commande rend la main <strong>avant</strong> d'avoir fait apparaître quoi que ce soit. Ce qui apparaît ensuite appartient bien à la zone : désactiver la zone détruit ces groupes comme les autres.</p>
 <p>Avant la 6.15.9, ce n'était pas le cas : la zone lisait la liste de ce qu'elle avait créé trop tôt, donc un groupe retardé n'était enregistré nulle part et <strong>survivait à la désactivation de sa zone</strong>.</p>
 <blockquote>
@@ -4351,17 +4438,17 @@ restent dans les deux cas.</p>
 <h2 id="définir-une-zone">Définir une zone<a class="headerlink" href="#définir-une-zone" title="Permanent link">&para;</a></h2>
 <p>Dans le cas le plus courant, les éléments sont peuplés automatiquement à partir des unités placées dans la trigger zone DCS via <code>:addZoneElementsFromZoneNamed(...)</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">strikeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">-- nom de la trigger zone DCS</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;CZ-Strike-Alpha&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- nom de la trigger zone DCS</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- libellé du menu radio</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Détruire tous les véhicules. Prévoir de l&#39;AAA et des MANPADS.&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElementsFromZoneNamed</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElementsFromZoneNamed</span><span class="p">(</span><span class="s2">&quot;CZ-Strike-Alpha&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p>On peut aussi construire et attacher un élément manuellement avec <code>:addZoneElement(...)</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;CZ-Strike-Alpha-ARMOR&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setDcsGroup</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">)</span><span class="w">    </span><span class="c1">-- nom du groupe DCS à faire apparaître</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;CZ-Strike-Alpha-ARMOR&quot;</span><span class="p">)</span><span class="w">    </span><span class="c1">-- nom du groupe DCS à faire apparaître</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setSpawnRadius</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 
 <span class="nv">strikeZone</span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">element</span><span class="p">)</span>
@@ -4556,7 +4643,7 @@ restent dans les deux cas.</p>
 <h2 id="chaînage-de-zones">Chaînage de zones<a class="headerlink" href="#chaînage-de-zones" title="Permanent link">&para;</a></h2>
 <p>Une zone peut activer automatiquement une ou plusieurs zones suivantes lorsqu'elle est terminée. Cela permet de construire des progressions de campagne dynamiques sans scripting manuel :</p>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-ALPHA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;CZ-Alpha&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Bravo&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">-- se déclenche quand Alpha est terminée</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">addChainedCombatZone</span><span class="p">(</span><span class="s2">&quot;Strike Charlie&quot;</span><span class="p">)</span><span class="w">   </span><span class="c1">-- l&#39;une est choisie au hasard</span>
