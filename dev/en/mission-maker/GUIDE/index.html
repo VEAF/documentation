@@ -4362,14 +4362,24 @@ If you need to run a single step in isolation (e.g. inject weather only, without
 <span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="combat-zone">Combat Zone<a class="headerlink" href="#combat-zone" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">strikeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Armoured column advancing on Senaki. Destroy all armoured vehicles; expect AAA.&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;ARMOR&quot;</span><span class="p">):</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">))</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">):</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-AAA&quot;</span><span class="p">))</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<p>A combat zone is declared in <code>mission.yaml</code>. Its contents are <strong>not listed here</strong>: the zone adopts every group standing inside the DCS trigger zone it names. You draw the circle in the Mission Editor, put the armour and the AAA inside it, and the zone destroys and respawns them on activation.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZONE-STRIKE-ALPHA</span><span class="w">    </span><span class="c1"># the DCS trigger zone the groups stand in</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Strike Alpha</span><span class="w">     </span><span class="c1"># label in the F10 menu</span>
+<span class="w">        </span><span class="nt">briefing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Armoured column advancing on Senaki. Destroy all armoured vehicles; expect AAA.</span>
+<span class="w">        </span><span class="nt">training</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<p>How each group appears — its dispersion, its probability, its delay — is written in the <strong>unit names</strong>, with the <code>#spawnradius</code>, <code>#spawnchance</code>, <code>#spawncount</code>, <code>#spawndelay</code> and <code>#alarm</code> tags. See <a href="../scripts/veafCombatZone/">veafCombatZone</a> for the full field list and for those tags.</p>
+<div class="admonition note">
+<p class="admonition-title">Lua is for what YAML has no key for</p>
+<p><code>VeafCombatZone:new():…:initialize()</code> is still the API underneath, and <code>mission.yaml</code> generates exactly those calls — so writing it by hand buys nothing for a plain zone. Use it for what has no YAML key, in <code>src/scripts/mission-script.lua</code>, once the zone is declared:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafCombatZone</span><span class="p">.</span><span class="nf">GetZone</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">):</span><span class="nf">setOnCompletedHook</span><span class="p">(</span><span class="nv">myCallback</span><span class="p">)</span>
+</code></pre></div>
+</div>
 <h3 id="air-waves-zone">Air Waves Zone<a class="headerlink" href="#air-waves-zone" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">defenseZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">AirWaveZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AW-Defense&quot;</span><span class="p">)</span>

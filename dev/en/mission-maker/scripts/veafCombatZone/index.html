@@ -1480,6 +1480,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spawn-chance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnchance and #spawncount — the odds, or the number
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#practical-example--manpads-ambush" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3053,6 +3064,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spawn-chance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #spawnchance and #spawncount — the odds, or the number
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#practical-example--manpads-ambush" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3670,12 +3692,12 @@ other side's zones under it.</p>
 <tr>
 <td><code>#spawnchance=N</code></td>
 <td><code>#spawnchance=50</code></td>
-<td>Percentage chance (0–100) this group will actually spawn</td>
+<td>Percentage chance (0–100) this group will actually spawn. See <a href="#spawn-chance"><code>#spawnchance</code></a></td>
 </tr>
 <tr>
 <td><code>#spawncount=N</code></td>
-<td><code>#spawncount=3</code></td>
-<td>Number of instances to spawn (can be &gt;1 for repeated units)</td>
+<td><code>#spawncount=2</code></td>
+<td>How many elements of one <code>#spawngroup</code> are <strong>guaranteed</strong> to spawn. See <a href="#spawn-chance"><code>#spawncount</code></a></td>
 </tr>
 <tr>
 <td><code>#spawngroup="name"</code></td>
@@ -3803,14 +3825,29 @@ ALPHA-SA6-AMBUSH #alarm=0      ← quiet on purpose
 <p class="admonition-title">How this behaved before</p>
 <p>Up to 6.15.4 zones spawned <strong>every</strong> group on RED, which is why a convoy placed in a zone never moved (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/290">#290</a>). The fix went through a single AUTO default, which sorted the convoys <strong>and made the zones' air defences go silent</strong> — a battery on AUTO does not light its radars. Hence the per-nature choice above. If you added <code>#alarm=2</code> to your batteries in the meantime, they still work and are now redundant: the default does the same thing.</p>
 </div>
+<h3 id="spawn-chance"><code>#spawnchance</code> and <code>#spawncount</code> — the odds, or the number<a class="headerlink" href="#spawn-chance" title="Permanent link">&para;</a></h3>
+<p>These two tags answer two different questions, and you have to pick which one you are asking.</p>
+<p><code>#spawnchance=N</code> is a <strong>probability</strong>, drawn once per group when the zone activates. <code>#spawnchance=50</code> spawns the group half the time; <code>#spawnchance=0</code> never spawns it; with no tag it always spawns (the default is 100).</p>
+<p><code>#spawncount=N</code>, paired with <code>#spawngroup</code>, is a <strong>guarantee of a number</strong>: "exactly N of these groups, every time". The zone draws which ones, then redraws as often as needed to reach N — so <code>#spawnchance</code> there only decides <em>which</em>, no longer <em>how many</em>.</p>
+<div class="highlight"><pre><span></span><code>ALPHA-SA6-A #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
+ALPHA-SA6-B #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
+ALPHA-SA6-C #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
+ALPHA-SA6-D #spawngroup=&quot;ALPHA-SAM&quot; #spawncount=2
+</code></pre></div>
+<p>Two of the four batteries, always two, drawn at random on every activation.</p>
+<p>Without a <code>#spawngroup</code>, <strong>each group is alone in its own</strong>: its probability is drawn for it and for nothing else. A <code>#spawngroup</code> with no <code>#spawncount</code> goes on meaning "one of these", but every candidate now draws for the slot instead of being handed it.</p>
+<div class="admonition warning">
+<p class="admonition-title">This changes existing missions</p>
+<p>Up to and including 6.17.0, <code>#spawnchance</code> could <strong>not</strong> deny a spawn. The zone redrew up to ten times and forced the draw on the last try, so a lone group always ended up spawning: the tag changed <em>when</em>, never <em>whether</em>. Even <code>#spawnchance=0</code> spawned. Redraws and the forced draw are now reserved for a <code>#spawncount</code> actually written, where they keep a promise of a number. <strong>A mission in service that uses <code>#spawnchance</code> will therefore spawn fewer groups than before</strong> — which is the behaviour this page has always described. If a group must spawn for certain, drop its tag or write <code>#spawnchance=100</code>.</p>
+</div>
 <h3 id="practical-example--manpads-ambush">Practical example — MANPADS ambush<a class="headerlink" href="#practical-example--manpads-ambush" title="Permanent link">&para;</a></h3>
-<p>You want four MANPADS positions in a zone, but only two should actually be occupied. Place four dummy infantry units named:</p>
+<p>You want four MANPADS positions in a zone, but only about two should actually be occupied. Place four dummy infantry units named:</p>
 <div class="highlight"><pre><span></span><code>ALPHA-MANPAD-1 #spawnchance=50
 ALPHA-MANPAD-2 #spawnchance=50
 ALPHA-MANPAD-3 #spawnchance=50
 ALPHA-MANPAD-4 #spawnchance=50
 </code></pre></div>
-<p>Each position has a 50% chance of spawning — statistically, around two will be active each time the zone is triggered.</p>
+<p>Each position has a 50% chance of spawning, independently of the others — statistically, around two will be active each time the zone is triggered. "Around" is the right word: sometimes none will spawn, and sometimes all four. If you want <strong>exactly two</strong> every time, <code>#spawncount</code> is the tag, as above.</p>
 <h3 id="command--spawning-via-veaf-marker-syntax"><code>#command</code> — spawning via VEAF marker syntax<a class="headerlink" href="#command--spawning-via-veaf-marker-syntax" title="Permanent link">&para;</a></h3>
 <p>The <code>#command</code> tag turns a unit into a one-shot trigger. When the zone activates, VEAF executes the command at the unit's position and destroys the unit. This is equivalent to dropping a map marker at that location.</p>
 <div class="highlight"><pre><span></span><code>SPAWN-SA11 #command=&quot;-spawn sa-11, side red&quot;

@@ -4367,14 +4367,24 @@ Si vous devez exécuter une seule étape en isolation (ex : injecter la météo 
 <span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="zone-de-combat">Zone de combat<a class="headerlink" href="#zone-de-combat" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">strikeZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafCombatZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setMissionEditorZoneName</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setFriendlyName</span><span class="p">(</span><span class="s2">&quot;Strike Alpha&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">setBriefing</span><span class="p">(</span><span class="s2">&quot;Colonne blindée avançant sur Senaki. Détruisez tous les véhicules blindés ; attendez-vous à de la DCA.&quot;</span><span class="p">)</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;ARMOR&quot;</span><span class="p">):</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-ARMOR&quot;</span><span class="p">))</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">addZoneElement</span><span class="p">(</span><span class="nv">VeafCombatZoneElement</span><span class="p">:</span><span class="nf">new</span><span class="p">():</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">):</span><span class="nf">setSpawnGroup</span><span class="p">(</span><span class="s2">&quot;STRIKE-ALPHA-AAA&quot;</span><span class="p">))</span>
-<span class="w">  </span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
+<p>Une zone de combat se déclare dans <code>mission.yaml</code>. Son contenu <strong>ne se liste pas ici</strong> : la zone adopte tous les groupes situés à l'intérieur de la trigger zone DCS qu'elle nomme. Vous tracez le cercle dans l'éditeur de mission, vous y placez les blindés et la DCA, et la zone les détruit puis les fait réapparaître à l'activation.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZONE-STRIKE-ALPHA</span><span class="w">    </span><span class="c1"># la trigger zone DCS où se trouvent les groupes</span>
+<span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Strike Alpha</span><span class="w">     </span><span class="c1"># libellé dans le menu F10</span>
+<span class="w">        </span><span class="nt">briefing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Colonne blindée avançant sur Senaki. Détruisez tous les véhicules blindés ; attendez-vous à de la DCA.</span>
+<span class="w">        </span><span class="nt">training</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<p>La façon dont chaque groupe apparaît — sa dispersion, sa probabilité, son délai — s'écrit dans les <strong>noms d'unités</strong>, avec les tags <code>#spawnradius</code>, <code>#spawnchance</code>, <code>#spawncount</code>, <code>#spawndelay</code> et <code>#alarm</code>. Voir <a href="../scripts/veafCombatZone/">veafCombatZone</a> pour la liste complète des champs et pour ces tags.</p>
+<div class="admonition note">
+<p class="admonition-title">Le Lua sert à ce que le YAML ne sait pas dire</p>
+<p><code>VeafCombatZone:new():…:initialize()</code> reste l'API sous-jacente, et <code>mission.yaml</code> génère exactement ces appels — l'écrire à la main n'apporte donc rien pour une zone ordinaire. Servez-vous en pour ce qui n'a pas de clé YAML, dans <code>src/scripts/mission-script.lua</code>, une fois la zone déclarée :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafCombatZone</span><span class="p">.</span><span class="nf">GetZone</span><span class="p">(</span><span class="s2">&quot;ZONE-STRIKE-ALPHA&quot;</span><span class="p">):</span><span class="nf">setOnCompletedHook</span><span class="p">(</span><span class="nv">myCallback</span><span class="p">)</span>
+</code></pre></div>
+</div>
 <h3 id="zone-air-waves">Zone Air Waves<a class="headerlink" href="#zone-air-waves" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">defenseZone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">AirWaveZone</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
 <span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;AW-Defense&quot;</span><span class="p">)</span>
