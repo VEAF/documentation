@@ -2518,6 +2518,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#dynslot-offered-aircraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does a base's list of offered aircraft come from?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynslot-parking-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCS only offers what the airfield can park
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3187,6 +3209,28 @@
     <span class="md-ellipsis">
       
         Minimal example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynslot-offered-aircraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does a base's list of offered aircraft come from?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynslot-parking-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCS only offers what the airfield can park
       
     </span>
   </a>
@@ -3907,6 +3951,70 @@ template group via <code>linkDynTempl</code>.</p>
 <span class="w">  </span><span class="nt">airports</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">Senaki-Kolkhi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </code></pre></div>
+<h3 id="dynslot-offered-aircraft">Where does a base's list of offered aircraft come from?<a class="headerlink" href="#dynslot-offered-aircraft" title="Permanent link">&para;</a></h3>
+<p>This is the most frequent question about dynamic slots, and the answer is <strong>written nowhere in
+<code>warehouses.yaml</code></strong>: the list is computed at build time.</p>
+<p>A base offers the aircraft that have, <strong>in the mission</strong>, a dynamic-slot template group
+(<code>dynSpawnTemplate</code>) of <strong>its own coalition</strong>. In practice:</p>
+<ol>
+<li>you place one group per aircraft type in the Mission Editor, ticked as a dynamic-slot template
+   (or you let step 3, <code>dynamic-slot-templates.yaml</code>, do it for you);</li>
+<li>at build time, the <code>warehouses</code> step collects those template groups per coalition;</li>
+<li>every selected airbase gets <strong>all</strong> of its coalition's ones, stocked unlimited, plus a
+   <code>linkDynTempl</code> link to the matching template group.</li>
+</ol>
+<p>That is why a three-line <code>warehouses.yaml</code> is enough to open the whole map: the list does not come
+from the file, it comes from the template groups present in the mission. To add an aircraft, add its
+template group; to remove one, remove the template group.</p>
+<p>An explicit <code>aircrafts:</code> list (in <code>defaults:</code> or in an airport override) <strong>replaces</strong> that automatic
+choice: only the types you list are stocked.</p>
+<h3 id="dynslot-parking-limit">DCS only offers what the airfield can park<a class="headerlink" href="#dynslot-parking-limit" title="Permanent link">&para;</a></h3>
+<p>Even with the right stock and a linked template group, <strong>DCS only offers an aircraft when a parking
+spot able to take it exists</strong>. This is a terrain limit, not a tool limit: a field with nothing but
+helicopter pads will never offer a plane, whatever the stock says.</p>
+<p>Measured on the Open Training Syria mission (2026-08-31), all of them blue bases with
+<code>dynamicSpawn</code> on and the templates linked:</p>
+<table>
+<thead>
+<tr>
+<th>Airfield</th>
+<th>Parking spots</th>
+<th>Offered</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Akrotiri</td>
+<td>41 plane spots + 4 helipads</td>
+<td>planes <strong>and</strong> helicopters (in game)</td>
+</tr>
+<tr>
+<td>Lakatamia</td>
+<td>8 helipads only</td>
+<td>helicopters only (in game)</td>
+</tr>
+<tr>
+<td>Naqoura</td>
+<td>9 helipads only (no runway)</td>
+<td>helicopters only (in game)</td>
+</tr>
+<tr>
+<td>Taftanaz</td>
+<td>48 helipads only</td>
+<td>helicopters only (from the parking data)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What the tool does.</strong> It asks the terrain before filling: an airbase is stocked only with the
+categories it can park, and stock that has become unplayable (written by an earlier build) is
+removed. This applies to an explicit <code>aircrafts:</code> list too — DCS would ignore what it cannot park
+anyway. The filtering is <strong>silent</strong>: no build warning.</p>
+<p><strong>Reach.</strong> Parking data ships for <strong>Caucasus, Persian Gulf and Syria</strong> only. On any other theatre —
+and on an airfield absent from the data — nothing is filtered and the behaviour is unchanged.</p>
+<p><strong>How to check it in game.</strong> Start the mission, pick the side, open the slot picker on the airfield
+in question: the list shown is what DCS can actually spawn. If a plane is missing on a field that
+only has helipads, that is the expected behaviour; the fix is to pick another airfield, not to edit
+the stock.</p>
 <hr />
 <h2 id="pipeline-step-5-spawn-data">Step 5 — Spawn Data (<code>spawn-groups.yaml</code>)<a class="headerlink" href="#pipeline-step-5-spawn-data" title="Permanent link">&para;</a></h2>
 <p>The <code>_spawn unit &lt;alias&gt;</code> and <code>_spawn group &lt;alias&gt;</code> marker commands rely on two Lua tables (<code>veafUnits.UnitsDatabase</code> and <code>veafUnits.GroupsDatabase</code>). Since v6 these are no longer hard-coded in <code>veafUnits.lua</code>: they come from YAML, are rendered to Lua, and <strong>injected into the <code>.miz</code> at mission build</strong> (DCS cannot parse YAML at runtime). See <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0005-spawn-data-externalization.md">ADR 0005</a>.</p>

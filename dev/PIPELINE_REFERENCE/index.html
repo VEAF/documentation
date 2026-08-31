@@ -2518,6 +2518,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#dynslot-offered-aircraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D'où vient la liste d'appareils proposés sur une base ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynslot-parking-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCS ne propose que ce que l'aérodrome peut garer
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3187,6 +3209,28 @@
     <span class="md-ellipsis">
       
         Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynslot-offered-aircraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D'où vient la liste d'appareils proposés sur une base ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynslot-parking-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCS ne propose que ce que l'aérodrome peut garer
       
     </span>
   </a>
@@ -3908,6 +3952,71 @@ carburant / munitions et le stock d'aéronefs, et lie chaque type d'aéronef pro
 <span class="w">  </span><span class="nt">airports</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">Senaki-Kolkhi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </code></pre></div>
+<h3 id="dynslot-offered-aircraft">D'où vient la liste d'appareils proposés sur une base ?<a class="headerlink" href="#dynslot-offered-aircraft" title="Permanent link">&para;</a></h3>
+<p>C'est la question la plus fréquente sur les slots dynamiques, et la réponse n'est <strong>écrite nulle
+part dans <code>warehouses.yaml</code></strong> : la liste est calculée au build.</p>
+<p>Une base propose les appareils qui possèdent, <strong>dans la mission</strong>, un groupe-modèle de slot
+dynamique (<code>dynSpawnTemplate</code>) de <strong>sa coalition</strong>. Concrètement :</p>
+<ol>
+<li>vous placez dans l'éditeur de mission un groupe par type d'appareil, coché « modèle de slot
+   dynamique » (ou vous le laissez faire par l'étape 3, <code>dynamic-slot-templates.yaml</code>) ;</li>
+<li>au build, l'étape <code>warehouses</code> recense ces groupes-modèles par coalition ;</li>
+<li>chaque aérodrome sélectionné reçoit <strong>tous</strong> ceux de sa coalition, en stock illimité, et un
+   lien <code>linkDynTempl</code> vers le groupe-modèle correspondant.</li>
+</ol>
+<p>C'est pourquoi un <code>warehouses.yaml</code> de trois lignes suffit à ouvrir toute la carte : la liste ne
+vient pas du fichier, elle vient des groupes-modèles présents dans la mission. Pour ajouter un
+appareil, ajoutez son groupe-modèle ; pour en retirer un, retirez le groupe-modèle.</p>
+<p>Une liste <code>aircrafts:</code> explicite (dans <code>defaults:</code> ou dans l'override d'un aérodrome) <strong>remplace</strong>
+ce choix automatique : seuls les types que vous listez sont mis en stock.</p>
+<h3 id="dynslot-parking-limit">DCS ne propose que ce que l'aérodrome peut garer<a class="headerlink" href="#dynslot-parking-limit" title="Permanent link">&para;</a></h3>
+<p>Même avec un stock et un groupe-modèle corrects, <strong>DCS ne propose un appareil que s'il existe une
+place de parking capable de l'accueillir</strong>. C'est une limite du terrain, pas de l'outil : un terrain
+qui n'a que des plots hélicoptères ne proposera jamais un avion, quoi que dise le stock.</p>
+<p>Exemple mesuré sur la Open Training Syria (2026-08-31), toutes bases bleues avec <code>dynamicSpawn</code>
+actif et les modèles liés :</p>
+<table>
+<thead>
+<tr>
+<th>Aérodrome</th>
+<th>Places de parking</th>
+<th>Proposé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Akrotiri</td>
+<td>41 places avion + 4 plots hélico</td>
+<td>avions <strong>et</strong> hélicoptères (vu en jeu)</td>
+</tr>
+<tr>
+<td>Lakatamia</td>
+<td>8 plots hélico seulement</td>
+<td>hélicoptères seulement (vu en jeu)</td>
+</tr>
+<tr>
+<td>Naqoura</td>
+<td>9 plots hélico seulement (pas de piste)</td>
+<td>hélicoptères seulement (vu en jeu)</td>
+</tr>
+<tr>
+<td>Taftanaz</td>
+<td>48 plots hélico seulement</td>
+<td>hélicoptères seulement (d'après les données)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ce que fait l'outil.</strong> Il interroge le terrain avant de remplir : un aérodrome ne reçoit en stock
+que les catégories qu'il peut garer, et le stock devenu injouable (écrit par un build précédent)
+est retiré. Cela vaut aussi pour une liste <code>aircrafts:</code> explicite — DCS ignorerait de toute façon
+ce qu'il ne peut pas garer. Le filtrage est <strong>silencieux</strong> : aucun avertissement au build.</p>
+<p><strong>Portée.</strong> Les données de parking ne sont embarquées que pour <strong>Caucasus, Persian Gulf et Syria</strong>.
+Sur tout autre théâtre — et sur un aérodrome absent des données — rien n'est filtré, le
+comportement est inchangé.</p>
+<p><strong>Comment le vérifier en jeu.</strong> Lancez la mission, choisissez le camp, ouvrez le sélecteur de slot
+sur l'aérodrome concerné : la liste proposée est celle que DCS peut réellement faire apparaître. Si
+un avion manque sur un terrain qui n'a que des plots hélicoptères, c'est le comportement attendu ;
+la solution est de choisir un autre aérodrome, pas de modifier le stock.</p>
 <hr />
 <h2 id="pipeline-step-5-spawn-data">Étape 5 — Données de spawn (<code>spawn-groups.yaml</code>)<a class="headerlink" href="#pipeline-step-5-spawn-data" title="Permanent link">&para;</a></h2>
 <p>Les commandes marqueurs <code>_spawn unit &lt;alias&gt;</code> et <code>_spawn group &lt;alias&gt;</code> s'appuient sur deux tables Lua (<code>veafUnits.UnitsDatabase</code> et <code>veafUnits.GroupsDatabase</code>). Depuis la v6, ces tables ne sont plus codées en dur dans <code>veafUnits.lua</code> : elles proviennent d'un YAML, sont rendues en Lua et <strong>injectées dans le <code>.miz</code> au build de la mission</strong> (DCS ne sait pas lire du YAML à l'exécution). Voir <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0005-spawn-data-externalization.md">ADR 0005</a>.</p>
