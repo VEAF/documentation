@@ -4297,9 +4297,13 @@ ou un <code>.miz</code> (transitoire).</p>
 <li><strong><code>parking_id</code> = <code>parking</code>.</strong> Établi en jeu le 2026-08-15 : <code>parking</code> est le <code>Term_Index</code> de la
   capture, l'appareil se cale sur la position exacte, et le <code>parking_id</code> propre à l'éditeur — absent de
   la capture — n'est <strong>pas</strong> porteur. Il est donc écrit égal à <code>parking</code>.</li>
-<li><strong>Seuls les types de terminal 104 et 68</strong> sont proposés comme parking (mesuré : les avions parkés des
-  vraies missions Caucasus n'occupent qu'eux). Un aérodrome sans place de ce type est <strong>refusé</strong> plutôt
-  que de poser un appareil sur un seuil de piste.</li>
+<li><strong>Seuls les types de terminal 68, 72 et 104</strong> sont proposés comme parking — le masque
+  <code>FighterAircraft</code> (244) de DCS lui-même. Le <code>100</code> (SmallSizeFighter) est exclu volontairement : DCS
+  le documente comme une place étroite réservée aux petits appareils, et il ne débloque aucun
+  aérodrome que les trois autres ne couvrent pas déjà. Un aérodrome sans place d'aucun de ces trois
+  types est <strong>refusé</strong> plutôt que de poser un appareil sur un seuil de piste ou une hélisurface. La
+  mesure qui fonde cet ensemble, et les sept aérodromes qu'elle a débloqués, sont consignées à côté de
+  <code>AIRCRAFT_STAND_TYPES</code> dans <code>veaf_libs/dcs_parking.py</code>.</li>
 <li><strong>Collision refusée.</strong> Une place déjà occupée dans la mission (un groupe avion dont le premier
   waypoint vise cet aérodrome et dont une unité déclare cette place) est refusée <strong>en nommant</strong> le
   groupe qui la tient ; la sélection automatique <strong>saute</strong> les places occupées.</li>
