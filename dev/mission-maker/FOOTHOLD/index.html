@@ -2828,6 +2828,10 @@ l'archive, pas son nom) :</p>
 </code></pre></div>
 <p>Aux releases suivantes, ajoutez <code>-Update</code> : les scripts sont rafraîchis et chaque
 <code>mission.yaml</code> réglé est préservé. Comptez environ une minute par mission.</p>
+<p>Vos dossiers de mission n'ont pas besoin de porter le nom des archives : le script
+apparie chaque archive au dossier <strong>de la même carte</strong> (il lit le théâtre des deux
+côtés), donc <code>Foothold_CA_4.7.0_Multi_Language….zip</code> rafraîchit bien
+<code>VEAF-Foothold-Caucasus</code>. Il annonce pour chaque mission le dossier retenu et pourquoi.</p>
 </blockquote>
 <h3 id="quel-profil-pour-quelle-carte">Quel profil pour quelle carte<a class="headerlink" href="#quel-profil-pour-quelle-carte" title="Permanent link">&para;</a></h3>
 <table>
@@ -3026,15 +3030,24 @@ l'ère). C'est l'étape de validation finale avant de publier le dossier mission
 <div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert<span class="w"> </span>other<span class="w"> </span>&lt;nouvelle_release.zip&gt;<span class="w"> </span>&lt;dossier-mission&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
 </code></pre></div>
 <p><code>--update</code> rafraîchit les scripts tiers et la base de mission, <strong>préserve votre
-<code>mission.yaml</code> réglé</strong>, normalise les noms versionnés (<code>Moose_&lt;date&gt;.lua</code> → <code>Moose.lua</code>,
-<code>Splash_Damage_&lt;version&gt;_leka.lua</code> → <code>Splash_Damage.lua</code>), et <strong>rapporte les scripts
-ajoutés / mis à jour / retirés</strong> en amont. Relisez le rapport, réconciliez
-<code>custom_scripts:</code> / <code>strip_native_triggers:</code> au besoin, puis revalidez et reconstruisez.
-Voir <a href="../CONVERT_OTHER/">CONVERT_OTHER</a>.</p>
+<code>mission.yaml</code> réglé</strong>, et normalise les noms versionnés (<code>Moose_&lt;date&gt;.lua</code> → <code>Moose.lua</code>,
+<code>Splash_Damage_&lt;version&gt;_leka.lua</code> → <code>Splash_Damage.lua</code>).</p>
+<p>Il <strong>aligne aussi les <code>delay_seconds:</code> sur l'étalement de la nouvelle version</strong> et
+<strong>supprime les scripts que Lekaa ne fournit plus</strong> — c'est le cas du renommage du setup
+Syrie en 4.7.0 (<code>footholdSyriaSetup.lua</code> → <code>footholdSyriaSetupv2.lua</code>), où l'ancien
+fichier restait sur disque et se retrouvait embarqué à la place du nouveau. L'entrée
+correspondante reste dans <code>custom_scripts:</code>, donc <strong><code>validate</code> échoue</strong> jusqu'à ce que
+vous l'ôtiez : c'est le signal, pas un défaut.</p>
+<p>Le rapport (<code>convert-other-report.md</code>) énumère tout : scripts ajoutés, mis à jour,
+supprimés, et chaque délai écrit. Relisez-le, ajoutez les scripts nouveaux à
+<code>custom_scripts:</code>, puis revalidez et reconstruisez. Voir
+<a href="../CONVERT_OTHER/">CONVERT_OTHER</a>.</p>
 <blockquote>
-<p>Surveillez dans le rapport l'apparition d'un <strong>nouveau script</strong> en amont : il n'est pas
-ajouté à <code>custom_scripts:</code> à votre place, justement parce que sa position dans l'ordre de
-chargement est une décision qui revient à un humain.</p>
+<p>Un <strong>nouveau script</strong> amont n'est pas ajouté à <code>custom_scripts:</code> à votre place :
+sa position dans l'ordre de chargement est une décision qui revient à un humain.</p>
+<p><code>convert-other-state.yaml</code> apparaît dans le dossier de mission : c'est la liste des
+scripts que la version amont charge, et c'est elle qui permet de distinguer un script
+abandonné par Lekaa d'un script que vous avez ajouté. <strong>Versionnez-le avec la mission.</strong></p>
 </blockquote>
 
 

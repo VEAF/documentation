@@ -2827,6 +2827,10 @@ not at its name):</p>
 </code></pre></div>
 <p>On later releases add <code>-Update</code>: the scripts are refreshed and every tuned <code>mission.yaml</code> is
 preserved. Budget roughly a minute per mission.</p>
+<p>Your mission folders need not be named after the archives: the script matches each archive
+to the folder <strong>of the same map</strong> (it reads the theatre on both sides), so
+<code>Foothold_CA_4.7.0_Multi_Language….zip</code> does refresh <code>VEAF-Foothold-Caucasus</code>. It prints
+the folder it picked, and why, for each mission.</p>
 </blockquote>
 <h3 id="which-profile-for-which-map">Which profile for which map<a class="headerlink" href="#which-profile-for-which-map" title="Permanent link">&para;</a></h3>
 <table>
@@ -3023,15 +3027,22 @@ folder</strong>:</p>
 <div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>convert<span class="w"> </span>other<span class="w"> </span>&lt;new_release.zip&gt;<span class="w"> </span>&lt;mission-folder&gt;<span class="w"> </span>--profile<span class="w"> </span>foothold<span class="w"> </span>--update
 </code></pre></div>
 <p><code>--update</code> refreshes the third-party scripts and mission base, <strong>preserves your
-tuned <code>mission.yaml</code></strong>, normalises versioned names (<code>Moose_&lt;date&gt;.lua</code> → <code>Moose.lua</code>,
-<code>Splash_Damage_&lt;version&gt;_leka.lua</code> → <code>Splash_Damage.lua</code>), and <strong>reports the scripts
-added / updated / removed</strong> upstream. Review the report, reconcile <code>custom_scripts:</code> /
-<code>strip_native_triggers:</code> if needed, then re-validate and rebuild. See
-<a href="../CONVERT_OTHER/">CONVERT_OTHER</a>.</p>
+tuned <code>mission.yaml</code></strong>, and normalises versioned names (<code>Moose_&lt;date&gt;.lua</code> → <code>Moose.lua</code>,
+<code>Splash_Damage_&lt;version&gt;_leka.lua</code> → <code>Splash_Damage.lua</code>).</p>
+<p>It also <strong>reconciles <code>delay_seconds:</code> with the new release's staging</strong> and <strong>deletes the
+scripts Lekaa no longer ships</strong> — as with the 4.7.0 Syria setup rename
+(<code>footholdSyriaSetup.lua</code> → <code>footholdSyriaSetupv2.lua</code>), where the old file stayed on disk
+and got embedded instead of the new one. Its <code>custom_scripts:</code> entry stays, so <strong><code>validate</code>
+fails</strong> until you remove it: that is the signal, not a defect.</p>
+<p>The report (<code>convert-other-report.md</code>) lists all of it: scripts added, updated, deleted,
+and every delay written. Review it, add any new script to <code>custom_scripts:</code>, then
+re-validate and rebuild. See <a href="../CONVERT_OTHER/">CONVERT_OTHER</a>.</p>
 <blockquote>
-<p>Watch the report for a <strong>new script</strong> appearing upstream: it is not added to
-<code>custom_scripts:</code> for you, precisely because its position in the load order is a decision
-only a human can make.</p>
+<p>A <strong>new upstream script</strong> is not added to <code>custom_scripts:</code> for you: its position in the
+load order is a decision only a human can make.</p>
+<p><code>convert-other-state.yaml</code> appears in the mission folder: it is the list of scripts the
+upstream release loads, and it is what tells a script Lekaa dropped from one you added
+yourself. <strong>Commit it with the mission.</strong></p>
 </blockquote>
 
 

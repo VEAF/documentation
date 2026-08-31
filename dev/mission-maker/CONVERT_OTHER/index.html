@@ -878,6 +878,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Mettre à jour vers un .miz upstream plus récent (--update)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui vous appartient, et ce qui appartient à l'amont
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étalement du chargement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2579,6 +2607,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Mettre à jour vers un .miz upstream plus récent (--update)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui vous appartient, et ce qui appartient à l'amont
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étalement du chargement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2770,14 +2826,41 @@ Foothold de Lekaa), ré-importez-la dans votre dossier déjà adopté avec <code
   <code>Moose_&lt;nouvelle-date&gt;.lua</code> → <code>Moose.lua</code>) ;</li>
 <li><strong>préserve votre <code>mission.yaml</code> réglé</strong> — il n'est jamais régénéré, donc vos
   modules, votre <code>config_override</code> et vos <code>custom_scripts</code> survivent ;</li>
-<li><strong>rapporte les scripts ajoutés, mis à jour et retirés en amont</strong> dans le rapport
-  de conversion, pour que vous ajustiez <code>custom_scripts:</code> (et
-  <code>strip_native_triggers:</code>) pour tout script nouveau ou disparu. Un script retiré
-  en amont est signalé mais laissé sur disque — retirez-le de <code>custom_scripts:</code>
-  vous-même s'il ne sert plus.</li>
+<li><strong>supprime les scripts que la nouvelle version ne fournit plus</strong>, à condition
+  qu'ils viennent bien de l'amont (voir ci-dessous) ; leur entrée reste dans
+  <code>custom_scripts:</code>, donc <code>validate</code> échoue jusqu'à ce que vous l'ôtiez — c'est
+  voulu : sans ça, le build embarquait la copie de la version précédente ;</li>
+<li><strong>aligne <code>delay_seconds:</code> sur l'étalement de la version amont</strong> — voir
+  <a href="#load-staging">Étalement du chargement</a> ;</li>
+<li><strong>rapporte tout ce qu'il a fait</strong> : scripts ajoutés, mis à jour, supprimés, et
+  chaque délai écrit.</li>
 </ul>
-<p>Relisez le rapport, réconciliez <code>custom_scripts:</code> / <code>strip_native_triggers:</code> avec
-les scripts ajoutés/retirés, puis reconstruisez et testez dans DCS.</p>
+<p>Relisez le rapport, ajoutez au besoin les scripts nouveaux à <code>custom_scripts:</code> (leur
+position dans l'ordre de chargement est une décision humaine), puis reconstruisez et
+testez dans DCS.</p>
+<h3 id="ownership">Ce qui vous appartient, et ce qui appartient à l'amont<a class="headerlink" href="#ownership" title="Permanent link">&para;</a></h3>
+<p>Un script que la nouvelle version ne fournit plus n'est pas forcément périmé : ce peut
+être un script que <strong>vous</strong> avez écrit et déclaré dans <code>custom_scripts:</code>. Vu du dossier,
+les deux sont identiques.</p>
+<p>La conversion écrit donc <code>convert-other-state.yaml</code> dans le dossier de mission : la liste
+des scripts que la version amont charge. <strong>Versionnez-le avec la mission.</strong> À la mise à
+jour suivante, un script absent de la nouvelle version <em>et</em> présent dans cette liste est
+un script amont abandonné (supprimé) ; tout le reste est à vous (laissé strictement
+intact).</p>
+<p>Un dossier converti avant l'apparition de ce fichier n'a pas cette liste : rien n'y est
+supprimé, tout est signalé, exactement comme avant.</p>
+<h3 id="load-staging">Étalement du chargement<a class="headerlink" href="#load-staging" title="Permanent link">&para;</a></h3>
+<p>Les missions tierces échelonnent souvent le chargement de leurs scripts (Foothold charge
+AIEN 12 s après les autres). L'amont décide de cet étalement, pas vous : <code>--update</code> écrit
+donc les <code>delay_seconds:</code> de la version amont dans votre <code>mission.yaml</code>, et le rapport
+nomme chaque ligne écrite.</p>
+<p>Seules ces lignes-là changent — commentaires, ordre, guillemets et fins de ligne du reste
+du fichier sont laissés tels quels. Un script que l'amont ne connaît pas garde le délai
+que vous lui avez donné.</p>
+<blockquote>
+<p>Si vous teniez à un délai différent de celui de l'amont, il sera réécrit à la prochaine
+mise à jour. Le rapport vous le dira.</p>
+</blockquote>
 
 
 
