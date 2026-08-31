@@ -2936,8 +2936,8 @@ jeu.</p>
 <span class="w">  </span><span class="nt">SHORTCUTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">     </span><span class="c1"># les alias intégrés (-shilka, -sa2, …)</span>
 <span class="w">  </span><span class="nt">INTERPRETER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>C'est exactement ce que produit <code>prepare --template minimal</code>. Un module absent du bloc n'est pas
-embarqué du tout.</p>
+<p>C'est exactement ce que produit <code>prepare --template minimal</code>. Un module VEAF absent du bloc n'est
+pas embarqué du tout — <strong>les scripts communautaires font exception, voir <a href="#gotcha">le piège</a></strong>.</p>
 <h2 id="three-forms">Les trois formes d'un module<a class="headerlink" href="#three-forms" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2977,6 +2977,12 @@ besoin de <code>SPAWN</code> <strong>et</strong> de <code>GROUNDAI</code>. Si vo
 build l'active pour vous et le dit dans un avertissement — même si vous l'aviez explicitement mise
 à <code>false</code>. Le <code>modules:</code> que vous écrivez n'est donc pas exactement celui qui tourne : lisez les
 avertissements du build.</p>
+<p><strong>Les scripts communautaires sont là même si vous ne les nommez pas.</strong> <code>STTS</code>, <code>CTLD</code>, <code>AIEN</code>,
+<code>CSAR</code> et <code>SKYNET</code> sont <em>opt-out</em> : ils sont embarqués tant que vous n'écrivez pas <code>CTLD: false</code>.
+Un <code>modules:</code> minimal, qui ne les mentionne nulle part, les embarque quand même — c'est pourquoi le
+build peut vous parler de CTLD dans une mission où vous n'avez jamais écrit ce mot. Rien n'est
+cassé ; pour vous en débarrasser, mettez-les explicitement à <code>false</code>. Les deux exceptions sont
+<code>MIST</code> et <code>TUM</code>, <em>opt-in</em> : absents du bloc, ils restent éteints.</p>
 <p>Et un piège de YAML : <code>MODULE:</code> (rien après le deux-points) et <code>MODULE: false</code> ne veulent pas dire
 la même chose. Le premier est « infrastructure, active » ; le second, « éteinte ».</p>
 <h2 id="more">Pour aller plus loin<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
