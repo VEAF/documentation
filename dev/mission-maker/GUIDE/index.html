@@ -909,6 +909,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mist-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiST : injecté seulement si vous en avez besoin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#security-tiers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3160,6 +3171,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mist-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiST : injecté seulement si vous en avez besoin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#security-tiers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3881,6 +3903,33 @@ par injection dans le <code>.miz</code>, et les <code>scripts/*.lua</code> par l
 <span class="c1">-- Note : rien à écrire ici pour CTLD — il se configure dans ctld-config.yaml</span>
 <span class="c1">-- (voir la section Intégration CTLD et CSAR)</span>
 </code></pre></div>
+<h3 id="mist-injection">MiST : injecté seulement si vous en avez besoin<a class="headerlink" href="#mist-injection" title="Permanent link">&para;</a></h3>
+<p>MiST était chargé dans <strong>toutes</strong> les missions, parce que les scripts VEAF s'en servaient partout.
+Ils ne l'appellent plus du tout, et aucun script communautaire livré ici non plus. Une mission qui
+n'en a pas besoin n'emporte donc plus ses <strong>336 Ko</strong>.</p>
+<p>Vous n'avez rien à faire : au build, VEAF lit vos propres scripts dans <code>src/scripts/</code> et, s'il en
+trouve un qui appelle <code>mist.</code>, il réinjecte MiST en vous disant lequel :</p>
+<div class="highlight"><pre><span></span><code>MiST n&#39;est plus injecté par défaut, mais &#39;src/scripts/HoundElint.lua&#39; l&#39;utilise :
+il est injecté pour cette mission.
+</code></pre></div>
+<p>C'est le cas courant : un script tiers comme HoundElint appelle MiST, la détection le voit, tout
+continue de fonctionner. La conversion depuis la v5 fait la même lecture, donc une mission convertie
+garde MiST si et seulement si elle s'en sert.</p>
+<p>Ce que la détection <strong>ne peut pas</strong> voir : un script qui en charge un autre, ou qui atteint MiST par
+<code>_G["mist"]</code>. Dans ce cas seulement, demandez-le explicitement :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MIST</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Un <code>MIST: false</code> ne l'emporte pas sur la détection : si l'un de vos scripts appelle MiST, il est
+injecté quand même. Honorer le drapeau reviendrait à casser la mission en vol pour respecter une
+ligne de configuration.</p>
+<blockquote>
+<p><strong>Si votre <code>mission.yaml</code> contient déjà une ligne <code>MIST:</code> sans valeur</strong>, elle voulait dire
+« module obligatoire, toujours actif » ; elle veut maintenant dire « pas demandé ». C'est le cas
+de toutes les missions créées jusqu'ici, puisque le modèle livré contenait cette ligne. Vous
+n'avez rien à changer : votre mission s'allège de 336 Ko, et si l'un de vos scripts appelle MiST,
+la détection le réinjecte.</p>
+</blockquote>
 <h3 id="security-tiers">Niveaux de sécurité<a class="headerlink" href="#security-tiers" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

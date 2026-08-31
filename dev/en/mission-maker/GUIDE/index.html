@@ -909,6 +909,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mist-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiST: injected only when you need it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#security-tiers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3160,6 +3171,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mist-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiST: injected only when you need it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#security-tiers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3881,6 +3903,31 @@ injection, and the <code>scripts/*.lua</code> files by script loading.</p>
 <span class="c1">-- Note: nothing to write here for CTLD — it is configured in ctld-config.yaml</span>
 <span class="c1">-- (see CTLD and CSAR Integration)</span>
 </code></pre></div>
+<h3 id="mist-injection">MiST: injected only when you need it<a class="headerlink" href="#mist-injection" title="Permanent link">&para;</a></h3>
+<p>MiST used to be loaded into <strong>every</strong> mission, because the VEAF scripts called it everywhere. They
+no longer call it at all, and neither does any community script shipped here. A mission that does
+not need it therefore stops carrying its <strong>336 KB</strong>.</p>
+<p>There is nothing to do: at build time VEAF reads your own scripts under <code>src/scripts/</code> and, if one
+of them calls <code>mist.</code>, injects MiST and tells you which file asked for it:</p>
+<div class="highlight"><pre><span></span><code>MiST is no longer injected by default, but &#39;src/scripts/HoundElint.lua&#39; calls it:
+injecting it for this mission.
+</code></pre></div>
+<p>That is the common case: a third-party script such as HoundElint calls MiST, the scan sees it, and
+everything keeps working. Converting from v5 reads the same way, so a converted mission keeps MiST
+if and only if it actually uses it.</p>
+<p>What the scan <strong>cannot</strong> see: a script that loads another script, or one that reaches MiST through
+<code>_G["mist"]</code>. Only in that case, ask for it explicitly:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MIST</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>A <code>MIST: false</code> does not win against the scan: if one of your scripts calls MiST, it is injected
+anyway. Honouring the flag would mean breaking the mission in flight to respect a config line.</p>
+<blockquote>
+<p><strong>If your <code>mission.yaml</code> already carries a bare <code>MIST:</code> line</strong>, it used to mean "mandatory module,
+always on"; it now means "not asked for". That is every mission written so far, since the shipped
+template carried that line. There is nothing to change: your mission gets 336 KB lighter, and if
+one of your scripts calls MiST, the scan injects it back.</p>
+</blockquote>
 <h3 id="security-tiers">Security Levels<a class="headerlink" href="#security-tiers" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
