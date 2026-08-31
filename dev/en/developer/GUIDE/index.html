@@ -4050,7 +4050,10 @@ directly. <code>veaf.mist.getUnitData</code> was removed: it had no caller.</p>
 <ol>
 <li>Create <code>src/python/veaf-tools/new_feature_injector/</code></li>
 <li>Implement <code>new_feature_worker.py</code> with a <code>run()</code> method</li>
-<li>Register the command in <code>veaf-tools.py</code> using <code>typer</code></li>
+<li>Register the command with <code>typer</code> under <code>veaf_tools/commands/</code>, then file it in a group in
+   <code>veaf_tools/command_tree.py</code> — an unplaced command fails the tests, because it would vanish from
+   <code>--help</code>. Nothing goes into <code>veaf-tools.py</code>: that entry point delegates to
+   <code>veaf_tools.app.main()</code> and knows no commands.</li>
 <li>Add YAML config schema in <code>models.py</code></li>
 </ol>
 <h3 id="shared-test-helpers">Shared Test Helpers<a class="headerlink" href="#shared-test-helpers" title="Permanent link">&para;</a></h3>
