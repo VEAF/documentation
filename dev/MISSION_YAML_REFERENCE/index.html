@@ -4252,8 +4252,8 @@ en commentaire dans le <code>mission-script.lua</code> généré, sous « Settin
 <span class="w">    </span><span class="nt">init</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">create_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># pas de menu radio VEAF ; commandes via marqueurs</span>
 </code></pre></div>
-<p><strong>Les scripts communautaires</strong> se déclarent dans le même bloc, via leurs IDs (la casse est indifférente : <code>CTLD:</code> et <code>ctld:</code> sont équivalents). Lorsqu'un script est absent de <code>modules:</code>, il garde son état par défaut (inclus). Mettez-le à <code>false</code> pour l'exclure — sauf <code>MIST</code>, dépendance obligatoire des scripts VEAF : un <code>MIST: false</code> explicite est ignoré avec un avertissement au build, le script est injecté quand même.</p>
-<p>Comme cette absence vaut « activé », les fichiers générés (<code>prepare --template</code>, <code>convert-v5</code>) et le <code>mission.yaml</code> livré écrivent <strong>toujours</strong> les cinq scripts <em>opt-out</em> (<code>STTS</code>, <code>CTLD</code>, <code>AIEN</code>, <code>CSAR</code>, <code>SKYNET</code>), à <code>true</code> ou à <code>false</code> : l'état d'un script communautaire ne se déduit jamais d'un silence.</p>
+<p><strong>Les scripts communautaires</strong> se déclarent dans le même bloc, via leurs IDs (la casse est indifférente : <code>CTLD:</code> et <code>ctld:</code> sont équivalents). Lorsqu'un script est absent de <code>modules:</code>, il garde son état par défaut — inclus pour les scripts <em>opt-out</em>, exclu pour les deux <em>opt-in</em> (<code>MIST</code> et <code>TUM</code>, voir plus bas). Mettez un script à <code>false</code> pour l'exclure :</p>
+<p>Comme ce défaut se lit mal, les fichiers générés (<code>prepare --template</code>, <code>convert-v5</code>) et le <code>mission.yaml</code> livré écrivent <strong>toujours</strong> les cinq scripts <em>opt-out</em> (<code>STTS</code>, <code>CTLD</code>, <code>AIEN</code>, <code>CSAR</code>, <code>SKYNET</code>), à <code>true</code> ou à <code>false</code> : l'état d'un script communautaire ne se déduit jamais d'un silence.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -4269,7 +4269,7 @@ en commentaire dans le <code>mission-script.lua</code> généré, sous « Settin
 <tbody>
 <tr>
 <td><code>MIST</code></td>
-<td>MIST (Mission Scripting Tools) — <strong>obligatoire, non désactivable</strong></td>
+<td>MIST (Mission Scripting Tools) — <strong>opt-in</strong>, et activé tout seul si l'un de vos scripts appelle <code>mist.</code></td>
 </tr>
 <tr>
 <td><code>STTS</code></td>
@@ -4299,10 +4299,21 @@ en commentaire dans le <code>mission-script.lua</code> généré, sous « Settin
 </table>
 <blockquote>
 <p>Un identifiant inconnu dans <code>modules:</code> est une <strong>erreur bloquante</strong> : le build s'arrête avec un message indiquant la clé fautive.</p>
+<p><strong><code>MIST</code> — opt-in, et injecté seulement si quelque chose en a besoin.</strong> MiST était injecté dans
+<strong>toutes</strong> les missions, parce que les scripts VEAF s'en servaient partout. Ils ne l'appellent plus
+du tout : il est donc <strong>éteint par défaut</strong>, et les 336 Ko qu'il pèse ne partent plus dans votre
+<code>.miz</code>. Avant l'empaquetage, le build parcourt vos propres <code>src/scripts/*.lua</code> ; si l'un d'eux
+appelle <code>mist.</code>, MiST est injecté et le log du build nomme le fichier qui l'a réclamé. Un
+<code>MIST: false</code> ne l'emporte <strong>pas</strong> sur cette détection — un script qui appelle MiST reçoit MiST,
+sans quoi il casserait en vol. Ne mettez <code>MIST: true</code> que si quelque chose atteint MiST
+indirectement, ce que la détection ne peut pas voir (via <code>_G["mist"]</code>, ou depuis un script chargé
+par un autre script). Une ligne <code>MIST:</code> sans valeur héritée d'un ancien <code>mission.yaml</code> se lit
+désormais « désactivé », ce qui est la bonne réponse pour presque toutes les missions. Voir
+<a href="../mission-maker/GUIDE/#mist-injection">MiST : injecté seulement si vous en avez besoin</a>.</p>
 <p><strong><code>TUM</code> (The Universal Mission) — prérequis de mission.</strong> TUM est un générateur de mission PvE autonome (script communautaire tiers) qui prend le contrôle de toute la carte à l'initialisation : il rend tous les aérodromes neutres, puis attribue les zones et aérodromes aux camps d'après les <strong>zones de déclencheur</strong> (<em>trigger zones</em>) de l'éditeur de mission. Si vous activez <code>TUM: true</code> sur une mission qui n'a pas été conçue pour TUM, le script s'interrompt au démarrage avec une erreur du type :</p>
 <p><code>Coalition red has no territory zones and/or controls no airfields. Please add zone with a name starting with REDFOR…</code></p>
 <p>Ce n'est <strong>pas un bug VEAF</strong> : c'est un prérequis de design de TUM. Pour l'utiliser, créez dans l'éditeur de mission une zone dont le nom commence par <code>BLUFOR</code> et une autre commençant par <code>REDFOR</code>, chacune contenant <strong>au moins un aérodrome</strong>, plus au moins une autre zone de mission. N'activez <code>TUM</code> que pour une mission de type TUM.</p>
-<p><strong>Opt-in (contrairement aux autres scripts communautaires).</strong> TUM est le seul script communautaire <strong>désactivé par défaut</strong> : une mission vanilla, une mission fraîchement convertie depuis la v5, ou un bloc <code>modules:</code> qui ne mentionne pas <code>TUM</code> le laissent <strong>éteint</strong>. Seul un <code>TUM: true</code> explicite l'active. Les autres scripts communautaires sont <em>opt-out</em> (actifs sauf si vous les passez à <code>false</code>). Quand <code>TUM: true</code>, le build appelle automatiquement <code>TUM.initialize()</code> au démarrage — vous n'avez rien à ajouter dans <code>mission-script.lua</code>.</p>
+<p><strong>Opt-in (comme <code>MIST</code>, contrairement aux autres scripts communautaires).</strong> TUM est <strong>désactivé par défaut</strong> : une mission vanilla, une mission fraîchement convertie depuis la v5, ou un bloc <code>modules:</code> qui ne mentionne pas <code>TUM</code> le laissent <strong>éteint</strong>. Seul un <code>TUM: true</code> explicite l'active. <code>MIST</code> est opt-in lui aussi, pour une autre raison (voir la note ci-dessus) ; les autres scripts communautaires sont <em>opt-out</em> (actifs sauf si vous les passez à <code>false</code>). Quand <code>TUM: true</code>, le build appelle automatiquement <code>TUM.initialize()</code> au démarrage — vous n'avez rien à ajouter dans <code>mission-script.lua</code>.</p>
 </blockquote>
 <p><strong>IDs de modules VEAF :</strong></p>
 <table>

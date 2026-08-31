@@ -4115,10 +4115,13 @@ adjusting a VEAF combat zone — which <em>is</em> a trigger zone — meant dele
   <code>verticies</code> list — DCS's own spelling, kept verbatim because correcting the typo would write a field
   DCS ignores — while <code>x</code>, <code>y</code> and <code>radius</code> <strong>stay present</strong>. A polygon is therefore not a circle with
   extra fields.</li>
-<li><strong>What the VEAF runtime handles.</strong> <code>veafCombatZone.lua</code> branches on exactly two types: <code>0</code> →
-  <code>mist.getUnitsInZones</code>, <code>2</code> → <code>mist.getUnitsInPolygon(triggerZone.verticies)</code>. There is <strong>no
+<li><strong>What the VEAF runtime handles.</strong> At the time, <code>veafCombatZone.lua</code> branched on exactly two types:
+  <code>0</code> → <code>mist.getUnitsInZones</code>, <code>2</code> → <code>mist.getUnitsInPolygon(triggerZone.verticies)</code>. There was <strong>no
   <code>else</code></strong>, so a zone of any other type would contain no units, in silence — worse than not offering
-  the shape. The action therefore writes only 0 and 2.</li>
+  the shape. The action therefore writes only 0 and 2. Since <code>DROP-MIST</code>, the branch lives in
+  <code>veaf.getUnitsInTriggerZone</code> and calls VEAF's own <code>veaf.getUnitsInCircularZone</code> /
+  <code>veaf.getUnitsInPolygon</code>; it still accepts only 0 and 2, but an unexpected type now logs an error
+  and returns <code>nil</code> instead of an empty list, so the silence is gone. The action's rule is unchanged.</li>
 </ul>
 <p><strong>David's call on the vertex count (2026-08-12)</strong>: accept three or more, since "follow the ridge line"
 is the real use case and mist handles an arbitrary polygon — but <strong>warn</strong> whenever the count is not
