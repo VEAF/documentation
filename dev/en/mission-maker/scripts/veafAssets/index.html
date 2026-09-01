@@ -1588,6 +1588,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Escorting an asset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#respawn-and-escorts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a respawn does to an escort
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3013,6 +3030,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Escorting an asset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#respawn-and-escorts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a respawn does to an escort
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3282,11 +3316,29 @@ invalidates every time the escorted group is recreated — by a respawn as much 
 (<code>_move tanker … teleport</code>).</p>
 <p>In practice: set the <code>Escort</code> task on <strong>any waypoint</strong> of the escort's route, in the Mission
 Editor, as you normally would. The rest is automatic.</p>
+<h3 id="respawn-and-escorts">What a respawn does to an escort<a class="headerlink" href="#respawn-and-escorts" title="Permanent link">&para;</a></h3>
+<p>Respawning an asset (<strong>F10 → ASSETS → Respawn</strong>) <strong>respawns its escort too</strong>, and then repairs the
+<code>Escort</code> task. Both halves are needed, and neither replaces the other:</p>
+<ul>
+<li><strong>The escort comes back with its charge</strong>, because the asset reappears where the Mission Editor
+  drew it while its escort has kept flying. Measured in game on 2026-08-28 on the demo mission's
+  tanker, minutes after a respawn: <strong>78 km and 82 km</strong> between the two, one escort already landed —
+  against an <code>engagementDistMax</code> of <strong>60 km</strong> declared by the <code>Escort</code> task itself. Repairing the
+  task alone therefore achieved nothing: it handed the escort a charge outside its own engagement
+  distance.</li>
+<li><strong>The task is repaired all the same</strong>, because what breaks it is the <strong>escorted</strong> group's id
+  changing, not the escort's.</li>
+</ul>
+<p>Worth knowing: the escort that comes back is a <strong>fresh</strong> one. An escort that was engaged, damaged or
+low on fuel is replaced, exactly like the asset itself — and an escort that was shot down comes back
+too.</p>
 <blockquote>
-<p>⚠️ <strong><code>linked</code> is not what makes a group an escort.</strong> The two mechanisms are independent: <code>linked</code>
-lists groups to <strong>respawn along with</strong> the asset, while the naming convention is what allows the
-escort task to be repaired. An escort need not be in <code>linked</code> — and its task still has to be
-repaired, because what breaks it is the <strong>escorted</strong> group's id changing, not the escort's.</p>
+<p>⚠️ <strong><code>linked</code> is not what makes a group an escort.</strong> The two mechanisms are still declared
+separately: <code>linked</code> lists arbitrary groups to respawn along with the asset, while the naming
+convention is what identifies the escort. So an escort need not be listed in <code>linked</code>: it comes
+back with its charge anyway, and its task is repaired. The two end up having the same effect on the
+escort at respawn time, but it is the naming convention — and only that — which allows the <code>Escort</code>
+task to be repaired.</p>
 </blockquote>
 <p><strong>The symptom when the name does not follow the convention</strong>: the escort takes off with its charge,
 holds for a while, then <strong>leaves to land after about ten minutes</strong>. That is not the AI giving up: it

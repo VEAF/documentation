@@ -1588,6 +1588,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Escorter une ressource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#respawn-and-escorts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce que fait une réapparition à une escorte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3013,6 +3030,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Escorter une ressource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#respawn-and-escorts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce que fait une réapparition à une escorte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3282,12 +3316,30 @@ décoratif : c'est ce qui permet au framework de retrouver l'escorte pour <stron
 (<em>Respawn</em>) comme téléportation (<code>_move tanker … teleport</code>).</p>
 <p>Concrètement : configurez la tâche <code>Escort</code> sur <strong>n'importe quel waypoint</strong> de la route de l'escorte,
 dans l'éditeur de mission, comme d'habitude. Le reste est automatique.</p>
+<h3 id="respawn-and-escorts">Ce que fait une réapparition à une escorte<a class="headerlink" href="#respawn-and-escorts" title="Permanent link">&para;</a></h3>
+<p>Faire réapparaître une ressource (<strong>F10 → ASSETS → Respawn</strong>) fait <strong>aussi réapparaître son
+escorte</strong>, puis répare la tâche <code>Escort</code>. Les deux moitiés sont nécessaires, et aucune ne remplace
+l'autre :</p>
+<ul>
+<li><strong>L'escorte revient avec sa protégée</strong>, parce que la ressource, elle, réapparaît là où l'éditeur de
+  mission l'avait posée pendant que son escorte a continué à voler. Mesuré en jeu le 28/08/2026 sur
+  le ravitailleur de la mission de démonstration, quelques minutes après une réapparition :
+  <strong>78 km et 82 km</strong> entre les deux, une escorte déjà posée au sol — alors que la tâche <code>Escort</code>
+  déclare un <code>engagementDistMax</code> de <strong>60 km</strong>. Réparer la tâche seule ne servait donc à rien : elle
+  confiait à l'escorte une protégée hors de sa propre portée d'engagement.</li>
+<li><strong>La tâche est réparée malgré tout</strong>, parce que ce qui la casse est le changement d'identifiant du
+  groupe <strong>escorté</strong>, pas celui de l'escorte.</li>
+</ul>
+<p>À savoir : l'escorte qui revient est <strong>neuve</strong>. Une escorte engagée, endommagée ou à court de
+carburant est remplacée, exactement comme la ressource elle-même — et une escorte abattue revient
+aussi.</p>
 <blockquote>
-<p>⚠️ <strong><code>linked</code> n'est pas ce qui fait d'un groupe une escorte.</strong> Les deux mécanismes sont
-indépendants : <code>linked</code> liste les groupes à faire <strong>réapparaître en même temps</strong> que la ressource,
-alors que la convention de nom est ce qui permet de réparer la tâche d'escorte. Une escorte n'a pas
-besoin d'être dans <code>linked</code> — et il faut malgré tout réparer sa tâche, puisque c'est le changement
-d'identifiant du groupe <strong>escorté</strong> qui la casse, pas celui de l'escorte.</p>
+<p>⚠️ <strong><code>linked</code> n'est pas ce qui fait d'un groupe une escorte.</strong> Les deux mécanismes restent déclarés
+séparément : <code>linked</code> liste des groupes quelconques à faire réapparaître en même temps que la
+ressource, alors que la convention de nom est ce qui identifie l'escorte. Une escorte n'a donc pas
+besoin d'être listée dans <code>linked</code> : elle réapparaît de toute façon avec sa protégée, et sa tâche
+est réparée. Les deux finissent par avoir le même effet sur l'escorte au moment de la réapparition,
+mais c'est bien la convention de nom — et elle seule — qui permet de réparer la tâche <code>Escort</code>.</p>
 </blockquote>
 <p><strong>Symptôme si le nom ne suit pas la convention</strong> : l'escorte décolle avec sa protégée, tient un
 moment, puis <strong>part atterrir au bout d'une dizaine de minutes</strong>. Ce n'est pas un abandon de l'IA :
