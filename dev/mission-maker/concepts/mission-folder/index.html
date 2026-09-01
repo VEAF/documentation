@@ -2918,7 +2918,12 @@
 vos scripts, et les outils. C'est votre unité de travail — le <code>.miz</code> n'est plus qu'un produit du
 build.</p>
 <h2 id="create-it">Le créer<a class="headerlink" href="#create-it" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">prepare</span> <span class="p">-</span><span class="n">-template</span> <span class="n">minimal</span> <span class="p">-</span><span class="n">-theatre</span> <span class="n">Caucasus</span>
+<blockquote>
+<p><strong>Le <code>.\</code> est obligatoire.</strong> Le terminal Windows par défaut est PowerShell, qui ne cherche pas
+dans le dossier courant — exprès. <code>cmd.exe</code> accepte les deux formes, donc <code>.\</code> marche partout.
+Voir <a href="../../GUIDE/#powershell-vs-cmd">PowerShell ou invite de commandes ?</a>.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">prepare</span> <span class="p">-</span><span class="n">-template</span> <span class="n">minimal</span> <span class="p">-</span><span class="n">-theatre</span> <span class="n">Caucasus</span>
 </code></pre></div>
 <p>Douze fichiers apparaissent :</p>
 <div class="highlight"><pre><span></span><code>ma-mission/
@@ -2947,14 +2952,14 @@ quel. Quel que soit le palier, les cinq scripts communautaires <em>opt-out</em> 
 <code>CSAR</code>, <code>SKYNET</code>) sont écrits explicitement à <code>true</code> ou <code>false</code> : les omettre les activerait
 (voir <a href="../mission-yaml/#gotcha">le piège du <code>mission.yaml</code></a>).</p>
 <h2 id="from-a-miz">Le remplir depuis un <code>.miz</code> existant<a class="headerlink" href="#from-a-miz" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span>
 </code></pre></div>
 <p>Le <code>.miz</code> est décompressé dans <code>src/mission/</code>. L'aller-retour est <strong>rejouable</strong> : ouvrir le <code>.miz</code>
 construit dans l'éditeur DCS, sauvegarder, ré-extraire, reconstruire ne duplique pas les
 déclencheurs VEAF — le build les retire avant de les réinjecter.</p>
 <h2 id="gotcha">Le piège<a class="headerlink" href="#gotcha" title="Permanent link">&para;</a></h2>
 <p><strong>Le <code>.miz</code> produit et les scripts sont résolus depuis le dossier courant, pas depuis l'argument.</strong>
-Lancez toujours <code>veaf-tools.exe</code> <strong>depuis</strong> le dossier de mission ; lancé d'ailleurs avec le dossier
+Lancez toujours <code>.\veaf-tools.exe</code> <strong>depuis</strong> le dossier de mission ; lancé d'ailleurs avec le dossier
 en argument, il cherche <code>published/</code> au mauvais endroit et écrit le <code>.miz</code> à côté.</p>
 <p>Et <code>.gitignore</code> n'est <strong>jamais</strong> écrasé, même avec <code>--force</code> : c'est votre fichier.</p>
 <h2 id="more">Pour aller plus loin<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>

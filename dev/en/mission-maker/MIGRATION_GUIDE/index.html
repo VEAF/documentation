@@ -3648,6 +3648,9 @@
 <li>Have your v5 mission folder on hand</li>
 </ol>
 <blockquote>
+<p><strong>The <code>.\</code> is required.</strong> The default Windows terminal is PowerShell, which does not search the
+current directory — on purpose. <code>cmd.exe</code> accepts both forms, so <code>.\</code> works everywhere. See
+<a href="../GUIDE/#powershell-vs-cmd">PowerShell or Command Prompt?</a>.</p>
 <p><strong>Tip — Global User Configuration:</strong> Before starting, create <code>~/veafmct.yaml</code> (i.e. <code>C:\Users\YourName\veafmct.yaml</code> on Windows) to set persistent defaults for all your VEAF projects on this machine — for example your language preference (<code>lang: fr</code>). See <a href="../GUIDE/#global-user-configuration">Global User Configuration</a> for the full reference and CLI commands.</p>
 </blockquote>
 <hr />
@@ -3670,12 +3673,12 @@
 <tr>
 <td><strong>Build toolchain</strong></td>
 <td>No build step — scripts loaded directly from disk at mission start</td>
-<td><code>veaf-tools.exe mission build</code> assembles the <code>.miz</code> from <code>src/mission/</code> + <code>src/scripts/</code></td>
+<td><code>.\veaf-tools.exe mission build</code> assembles the <code>.miz</code> from <code>src/mission/</code> + <code>src/scripts/</code></td>
 </tr>
 <tr>
 <td><strong>Build script</strong></td>
 <td>Complex <code>build.cmd</code> with one line per inject command</td>
-<td>No <code>build.cmd</code> — just run <code>veaf-tools-updater.exe</code> then <code>veaf-tools.exe mission build</code></td>
+<td>No <code>build.cmd</code> — just run <code>.\veaf-tools-updater.exe</code> then <code>.\veaf-tools.exe mission build</code></td>
 </tr>
 <tr>
 <td><strong>Auto-inject pipeline</strong></td>
@@ -3715,7 +3718,7 @@
 <tr>
 <td><strong>Config migration</strong></td>
 <td>Manual rewrite</td>
-<td><code>veaf-tools.exe convert v5</code> — one command converts <code>missionConfig.lua</code>, pipeline files (presets, waypoints, weather, aircraft groups), and generates <code>mission.yaml</code> + <code>mission-script.lua</code>. Use <code>migrate-config</code> only to migrate <code>missionConfig.lua</code> alone.</td>
+<td><code>.\veaf-tools.exe convert v5</code> — one command converts <code>missionConfig.lua</code>, pipeline files (presets, waypoints, weather, aircraft groups), and generates <code>mission.yaml</code> + <code>mission-script.lua</code>. Use <code>migrate-config</code> only to migrate <code>missionConfig.lua</code> alone.</td>
 </tr>
 <tr>
 <td><strong>Module log levels</strong></td>
@@ -3764,7 +3767,7 @@
 <p>Old DCS <code>DO SCRIPT FILE</code> triggers are removed automatically by <code>veaf-tools mission build</code> in the next step — no manual action needed.</p>
 <blockquote>
 <p><strong><code>src/mission/</code> promotion to v6 (on by default)</strong>: <code>convert-v5</code> finishes by rewriting <code>src/mission/</code> to v6 (base build + extract), making the v6 switch definitive and avoiding a re-migration of the v5 triggers on every build. The original is backed up to <code>backup_v5/src/mission/</code>. If you'd rather review the generated configs and build yourself first, disable the step with <code>--no-promote</code>; you can re-run <code>convert-v5</code> later to promote.</p>
-<p><strong>If you only need to migrate <code>missionConfig.lua</code></strong> without converting pipeline files, use <code>veaf-tools.exe convert migrate-config src\scripts\missionConfig.lua</code> directly.</p>
+<p><strong>If you only need to migrate <code>missionConfig.lua</code></strong> without converting pipeline files, use <code>.\veaf-tools.exe convert migrate-config src\scripts\missionConfig.lua</code> directly.</p>
 </blockquote>
 <h4 id="4-check-removed-v5-patterns">4. Check removed v5 patterns<a class="headerlink" href="#4-check-removed-v5-patterns" title="Permanent link">&para;</a></h4>
 <p>What each v5 construct becomes — some were renamed, others are unchanged and therefore need no migration at all:</p>
@@ -3935,7 +3938,7 @@ expected.</p>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>Rebuild with <code>veaf-tools.exe mission build</code> after any <code>mission.yaml</code> change.</p>
+<p>Rebuild with <code>.\veaf-tools.exe mission build</code> after any <code>mission.yaml</code> change.</p>
 <h3 id="marker-commands-dont-work">Marker commands don't work<a class="headerlink" href="#marker-commands-dont-work" title="Permanent link">&para;</a></h3>
 <p>Confirm <code>SPAWN</code> is enabled in <code>mission.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -3950,7 +3953,7 @@ expected.</p>
 <li><strong>Notepad++</strong>: open <code>dcs.log</code> → Search → Find (<code>Ctrl+F</code>) → search for <code>VEAF</code>.</li>
 </ul>
 <h3 id="build-fails-with-veaf-scripts-file-not-found">Build fails with "VEAF scripts file not found"<a class="headerlink" href="#build-fails-with-veaf-scripts-file-not-found" title="Permanent link">&para;</a></h3>
-<p>Run <code>veaf-tools-updater.exe</code> first — the <code>published/</code> folder is missing or outdated.</p>
+<p>Run <code>.\veaf-tools-updater.exe</code> first — the <code>published/</code> folder is missing or outdated.</p>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>

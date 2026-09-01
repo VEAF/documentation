@@ -3648,6 +3648,9 @@
 <li>Ayez votre dossier de mission v5 sous la main</li>
 </ol>
 <blockquote>
+<p><strong>Le <code>.\</code> est obligatoire.</strong> Le terminal Windows par défaut est PowerShell, qui ne cherche pas dans
+le dossier courant — exprès. <code>cmd.exe</code> accepte les deux formes, donc <code>.\</code> marche partout. Voir
+<a href="../GUIDE/#powershell-vs-cmd">PowerShell ou invite de commandes ?</a>.</p>
 <p><strong>Conseil — configuration globale utilisateur :</strong> Avant de commencer, créez <code>~/veafmct.yaml</code> (soit <code>C:\Users\VotreNom\veafmct.yaml</code> sous Windows) pour définir des préférences persistantes sur cette machine — notamment la langue (<code>lang: fr</code>) afin que tous les outils s'affichent en français. Voir <a href="../GUIDE/#global-user-configuration">Configuration globale utilisateur</a> pour le détail et les commandes disponibles.</p>
 </blockquote>
 <hr />
@@ -3670,12 +3673,12 @@
 <tr>
 <td><strong>Chaîne de build</strong></td>
 <td>Pas d'étape de build — scripts chargés directement depuis le disque au démarrage de la mission</td>
-<td><code>veaf-tools.exe mission build</code> assemble le <code>.miz</code> depuis <code>src/mission/</code> + <code>src/scripts/</code></td>
+<td><code>.\veaf-tools.exe mission build</code> assemble le <code>.miz</code> depuis <code>src/mission/</code> + <code>src/scripts/</code></td>
 </tr>
 <tr>
 <td><strong>Script de build</strong></td>
 <td><code>build.cmd</code> complexe avec une ligne par commande d'injection</td>
-<td>Pas de <code>build.cmd</code> — lancez simplement <code>veaf-tools-updater.exe</code> puis <code>veaf-tools.exe mission build</code></td>
+<td>Pas de <code>build.cmd</code> — lancez simplement <code>.\veaf-tools-updater.exe</code> puis <code>.\veaf-tools.exe mission build</code></td>
 </tr>
 <tr>
 <td><strong>Pipeline d'auto-injection</strong></td>
@@ -3715,7 +3718,7 @@
 <tr>
 <td><strong>Migration de la config</strong></td>
 <td>Réécriture manuelle</td>
-<td><code>veaf-tools.exe convert v5</code> — une seule commande migre <code>missionConfig.lua</code>, convertit les fichiers pipeline (préréglages, waypoints, météo, groupes d'aéronefs) et génère <code>mission.yaml</code> + <code>mission-script.lua</code>. Utilisez <code>migrate-config</code> uniquement pour migrer <code>missionConfig.lua</code> seul.</td>
+<td><code>.\veaf-tools.exe convert v5</code> — une seule commande migre <code>missionConfig.lua</code>, convertit les fichiers pipeline (préréglages, waypoints, météo, groupes d'aéronefs) et génère <code>mission.yaml</code> + <code>mission-script.lua</code>. Utilisez <code>migrate-config</code> uniquement pour migrer <code>missionConfig.lua</code> seul.</td>
 </tr>
 <tr>
 <td><strong>Niveaux de log des modules</strong></td>
@@ -3764,7 +3767,7 @@
 <p>Les anciens triggers DCS <code>DO SCRIPT FILE</code> sont supprimés automatiquement par <code>veaf-tools mission build</code> à l'étape suivante — aucune action manuelle requise.</p>
 <blockquote>
 <p><strong>Promotion de <code>src/mission/</code> en v6 (activée par défaut)</strong> : <code>convert-v5</code> termine en réécrivant <code>src/mission/</code> au format v6 (build de base + extraction), ce qui rend la bascule v6 définitive et évite de re-migrer les triggers v5 à chaque build. L'original est sauvegardé dans <code>backup_v5/src/mission/</code>. Si vous préférez d'abord vérifier les configs générées et builder vous-même, désactivez l'étape avec <code>--no-promote</code> ; vous pourrez relancer <code>convert-v5</code> plus tard pour promouvoir.</p>
-<p><strong>Si vous n'avez besoin de migrer que <code>missionConfig.lua</code></strong> sans convertir les fichiers pipeline, utilisez <code>veaf-tools.exe convert migrate-config src\scripts\missionConfig.lua</code> directement.</p>
+<p><strong>Si vous n'avez besoin de migrer que <code>missionConfig.lua</code></strong> sans convertir les fichiers pipeline, utilisez <code>.\veaf-tools.exe convert migrate-config src\scripts\missionConfig.lua</code> directement.</p>
 </blockquote>
 <h4 id="4-vérifier-les-patterns-v5-supprimés">4. Vérifier les patterns v5 supprimés<a class="headerlink" href="#4-vérifier-les-patterns-v5-supprimés" title="Permanent link">&para;</a></h4>
 <p>Ce que devient chaque construction v5 — certaines ont été renommées, d'autres sont inchangées et n'ont donc rien à migrer :</p>
@@ -3937,7 +3940,7 @@ ce qu'il attendait.</p>
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>Reconstruisez avec <code>veaf-tools.exe mission build</code> après toute modification de <code>mission.yaml</code>.</p>
+<p>Reconstruisez avec <code>.\veaf-tools.exe mission build</code> après toute modification de <code>mission.yaml</code>.</p>
 <h3 id="les-commandes-de-marqueurs-ne-fonctionnent-pas">Les commandes de marqueurs ne fonctionnent pas<a class="headerlink" href="#les-commandes-de-marqueurs-ne-fonctionnent-pas" title="Permanent link">&para;</a></h3>
 <p>Vérifiez que <code>SPAWN</code> est activé dans <code>mission.yaml</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -3952,7 +3955,7 @@ ce qu'il attendait.</p>
 <li><strong>Notepad++</strong> : ouvrez <code>dcs.log</code> → Recherche → Rechercher (<code>Ctrl+F</code>) → cherchez <code>VEAF</code>.</li>
 </ul>
 <h3 id="le-build-échoue-avec-veaf-scripts-file-not-found">Le build échoue avec "VEAF scripts file not found"<a class="headerlink" href="#le-build-échoue-avec-veaf-scripts-file-not-found" title="Permanent link">&para;</a></h3>
-<p>Exécutez <code>veaf-tools-updater.exe</code> d'abord — le dossier <code>published/</code> est manquant ou obsolète.</p>
+<p>Exécutez <code>.\veaf-tools-updater.exe</code> d'abord — le dossier <code>published/</code> est manquant ou obsolète.</p>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>
