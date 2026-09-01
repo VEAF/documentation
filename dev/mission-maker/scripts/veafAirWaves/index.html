@@ -1607,7 +1607,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#commandes-veaf-comme-groupes" class="md-nav__link">
+  <a href="#spawn-offset" class="md-nav__link">
     <span class="md-ellipsis">
       
         Commandes VEAF comme groupes
@@ -3215,7 +3215,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#commandes-veaf-comme-groupes" class="md-nav__link">
+  <a href="#spawn-offset" class="md-nav__link">
     <span class="md-ellipsis">
       
         Commandes VEAF comme groupes
@@ -3661,7 +3661,7 @@
 </tr>
 <tr>
 <td><code>:setRespawnDefaultOffset(lat, lon)</code></td>
-<td>Décalage par rapport au centre de zone pour les spawns</td>
+<td>Décalage par rapport au centre de zone pour les spawns (mètres) — premier nombre vers le nord, second vers l'est ; voir <a href="#spawn-offset">plus bas</a></td>
 </tr>
 <tr>
 <td><code>:setMaxSecondsOutsideOfZoneIA(n)</code></td>
@@ -3810,15 +3810,20 @@
 <div class="highlight"><pre><span></span><code><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;Fighter Escort&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nv">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="p">})</span><span class="w">  </span><span class="c1">-- décolle en même temps que...</span>
 <span class="p">:</span><span class="nf">addWave</span><span class="p">({</span><span class="w"> </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;Strike Package&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">})</span><span class="w">              </span><span class="c1">-- ...cette vague</span>
 </code></pre></div>
-<h3 id="commandes-veaf-comme-groupes">Commandes VEAF comme groupes<a class="headerlink" href="#commandes-veaf-comme-groupes" title="Permanent link">&para;</a></h3>
-<p>Au lieu d'un nom de groupe DCS, vous pouvez utiliser n'importe quelle commande de spawn VEAF (la même syntaxe qu'un marqueur de la carte F10). La commande est exécutée à la position d'apparition, ajustable avec un préfixe <code>[latDelta,lonDelta]</code> (en mètres, relatif au centre de la zone) :</p>
+<h3 id="spawn-offset">Commandes VEAF comme groupes<a class="headerlink" href="#spawn-offset" title="Permanent link">&para;</a></h3>
+<p>Au lieu d'un nom de groupe DCS, vous pouvez utiliser n'importe quelle commande de spawn VEAF (la même syntaxe qu'un marqueur de la carte F10). La commande est exécutée à la position d'apparition, ajustable avec un préfixe <code>[latDelta,lonDelta]</code> (en mètres, relatif au centre de la zone).</p>
+<p>Le <strong>premier</strong> nombre déplace l'apparition sur l'axe nord-sud, le <strong>second</strong> sur l'axe est-ouest. Les deux sont positifs vers le nord et vers l'est :</p>
 <div class="highlight"><pre><span></span><code><span class="p">:</span><span class="nf">addWave</span><span class="p">({</span>
 <span class="w">  </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;[0,5000]-spawn su-27, country russia&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">-- 5 km au nord du centre de la zone</span>
-<span class="w">    </span><span class="s2">&quot;[-3000,0]-spawn su-25, alt 100, country russia&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">-- 3 km au sud, basse altitude</span>
+<span class="w">    </span><span class="s2">&quot;[5000,0]-spawn su-27, country russia&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">-- 5 km au nord du centre de la zone</span>
+<span class="w">    </span><span class="s2">&quot;[0,-3000]-spawn su-25, alt 100, country russia&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">-- 3 km à l&#39;ouest, basse altitude</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">})</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Changement de comportement</p>
+<p>Jusqu'à la correction de ce défaut, les deux nombres étaient appliqués aux mauvais axes : le premier déplaçait l'apparition vers l'<strong>est</strong> et le second vers le <strong>sud</strong>, quels que soient leurs noms. Si votre mission utilise un décalage non nul — par ce préfixe ou par <code>setRespawnDefaultOffset</code> —, son point d'apparition change lors de la mise à jour qui apporte ce correctif, et un décalage que vous aviez réglé à l'œil sur l'ancien comportement doit être réécrit tel qu'il se lit.</p>
+</div>
 <p>Cela permet de monter facilement des menaces étagées venant de directions différentes, sans pré-placer de groupes dans l'éditeur de mission DCS.</p>
 <hr />
 <h2 id="exemples">Exemples<a class="headerlink" href="#exemples" title="Permanent link">&para;</a></h2>
