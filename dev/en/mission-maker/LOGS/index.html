@@ -1279,6 +1279,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#search-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context lines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-a-whole-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a whole line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copying
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2923,6 +2962,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#search-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context lines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-a-whole-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a whole line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copying
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3044,8 +3122,8 @@ poetry run veaf-logs
 <p>Context mode is what makes a log readable. Setting <code>INFO</code> to ◐ with ±3 lines
 keeps only errors and warnings, surrounded by what explains them. Each category
 can have its own span: the <code>±</code> field appears beside it as soon as it switches to
-◐, and leaving that field empty falls back to the shared value set at the top of
-the panel.</p>
+◐, and leaving that field empty falls back to the <strong>Contexte des catégories</strong>
+value set at the top of the panel.</p>
 <p>Dropping the ED noise changes the scale of what is left to read:</p>
 <table>
 <thead>
@@ -3118,11 +3196,62 @@ stacks the current criterion: filters combine, and show up as chips you can
 remove with one click.</p>
 <p>Search covers the line <strong>and</strong> the stack trace under it: looking for a symbol
 that only appears in the trace brings back the error that produced it.</p>
+<h3 id="search-context">Context lines<a class="headerlink" href="#search-context" title="Permanent link">&para;</a></h3>
+<p>A hit on its own says little; what surrounds it is usually what explains it.
+<strong>Contexte de recherche</strong>, in the side panel, keeps ±N lines on each side of
+every hit, the way <code>grep -C</code> does. It is 0 by default: until you change it, a
+search returns exactly its own lines.</p>
+<p>The <code>±</code> field in the search bar gives one criterion a span of its own; left
+empty, it follows the shared value. With several criteria active, the widest
+span applies. An inverted criterion (<code>≠</code>) has no hit to surround and does not
+count.</p>
+<p><strong>Filters still win.</strong> A line hidden by its level, its source or its noise family
+stays hidden even right next to a hit: context widens the search, it does not
+undo a filter. Searching <code>ERROR</code> with ±2 while <code>INFO</code> is set to ✕ does not bring
+the neighbouring <code>INFO</code> lines back.</p>
+<p>The two contexts compose: a category in ◐ shows up around a search hit according
+to <strong>its own</strong> span.</p>
+<h2 id="reading-a-whole-line">Reading a whole line<a class="headerlink" href="#reading-a-whole-line" title="Permanent link">&para;</a></h2>
+<p><strong>The detail pane, under the table.</strong> Clicking a line — any line, not only an
+error — shows it in full underneath, stack trace included. The divider is
+draggable, and <code>Ctrl+I</code> closes the pane when you want the full height for the
+table.</p>
+<p><strong>The horizontal scrollbar.</strong> The Message column is sized on the longest message
+in the log, so a line wider than the window is read by scrolling right. Dragging
+the column by hand pins the width you chose; changing the font hands control
+back.</p>
+<p><strong>Text size.</strong> The <code>A−</code> / <code>A+</code> buttons at the top right, <code>Ctrl++</code> / <code>Ctrl+-</code>, or
+<code>Ctrl</code>+wheel over the table. <code>Ctrl+0</code> restores the original size and
+<strong>Affichage → Police…</strong> picks another monospaced font. The choice applies to
+every tab and comes back with the next session.</p>
+<h2 id="copying">Copying<a class="headerlink" href="#copying" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A block of lines</td>
+<td>select them in the table (<code>Shift</code>+click, <code>Ctrl</code>+click), then <code>Ctrl+C</code></td>
+</tr>
+<tr>
+<td>Part of one line</td>
+<td>select it character by character in the detail pane, then <code>Ctrl+C</code></td>
+</tr>
+</tbody>
+</table>
+<p>A copied line brings its stack trace along: pasting a <code>Mission script error</code>
+without it would give an error nothing explains. The right-click menu also offers
+the message <strong>without the DCS header</strong>, for when you want neither the timestamp
+nor the subsystem.</p>
 <h2 id="what-it-understands-of-the-log">What it understands of the log<a class="headerlink" href="#what-it-understands-of-the-log" title="Permanent link">&para;</a></h2>
 <p><strong>Stack traces stay with their error.</strong> A <code>Mission script error</code> followed by its
 <code>stack traceback</code> forms a single entry, so filtering on errors no longer hides
-the explanation. The line then carries a <code>[+3]</code> marker, and the detail shows at
-the bottom when you select it.</p>
+the explanation. The line then carries a <code>[+3]</code> marker saying how many lines are
+folded behind it.</p>
 <p><strong>The level shown is the real one.</strong> DCS logs all Lua as <code>INFO SCRIPTING</code>,
 including a <code>VEAF|W|</code> that is a warning. <code>veaf-logs</code> reads it from the prefix:
 filtering on WARNING does bring up VEAF, CTLD and CSAR warnings.</p>
@@ -3188,6 +3317,18 @@ button to stop it — whatever is already indexed stays usable.</p>
 <td>search</td>
 </tr>
 <tr>
+<td><code>Ctrl+C</code></td>
+<td>copy the selection</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+C</code></td>
+<td>copy without the DCS header</td>
+</tr>
+<tr>
+<td><code>Ctrl+A</code></td>
+<td>select everything</td>
+</tr>
+<tr>
 <td><code>F</code></td>
 <td>follow the end of the file / pause</td>
 </tr>
@@ -3198,6 +3339,22 @@ button to stop it — whatever is already indexed stays usable.</p>
 <tr>
 <td><code>Ctrl+S</code></td>
 <td>save the profile</td>
+</tr>
+<tr>
+<td><code>Ctrl++</code> / <code>Ctrl+-</code></td>
+<td>grow / shrink the font</td>
+</tr>
+<tr>
+<td><code>Ctrl+0</code></td>
+<td>default font size</td>
+</tr>
+<tr>
+<td><code>Ctrl</code>+wheel</td>
+<td>grow / shrink the font</td>
+</tr>
+<tr>
+<td><code>Ctrl+I</code></td>
+<td>show or hide the detail pane</td>
 </tr>
 <tr>
 <td><code>F5</code></td>
@@ -3241,7 +3398,7 @@ ASCII. The number of noise families is capped at 64.</p>
 </thead>
 <tbody>
 <tr>
-<td>Session (open files, filters, geometry)</td>
+<td>Session (open files, filters, geometry, font)</td>
 <td><code>%APPDATA%\veaf-logs\session.json</code></td>
 </tr>
 <tr>
