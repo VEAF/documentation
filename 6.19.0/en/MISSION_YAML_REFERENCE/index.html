@@ -1,0 +1,5141 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.19.0/en/MISSION_YAML_REFERENCE/">
+      
+      
+        <link rel="prev" href="../TESTING/">
+      
+      
+        <link rel="next" href="../PIPELINE_REFERENCE/">
+      
+      
+        
+          <link rel="alternate" href="../../MISSION_YAML_REFERENCE/" hreflang="fr">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>mission.yaml Reference - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#missionyaml-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mission.yaml Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../MISSION_YAML_REFERENCE/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../pilot/" class="md-tabs__link">
+          
+  
+  
+  Pilot Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../mission-maker/" class="md-tabs__link">
+          
+  
+  
+  Mission Maker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../developer/" class="md-tabs__link">
+          
+  
+  
+  Developer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  References
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pilot Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pilot Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aliases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission Maker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mission Maker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/DISCOVER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Discover VMCT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/TUTORIAL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial — your first mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/mission-folder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The mission folder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/mission-yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mission.yaml and its modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/custom-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom scripts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/radio-presets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio presets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/combat-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Combat zones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/dynamic-slots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dynamic slots
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/spawnables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spawnable groups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/concepts/weather-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Weather variants
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/LOGS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Read the DCS logs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aliases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_13" id="__nav_3_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guided checklists (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Missions menu (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ground AI (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capture a map's airbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    References
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    References
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mission.yaml Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mission.yaml Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-yaml-file-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the YAML file landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the YAML file landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#category-a--build-pipeline-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category A — Build pipeline files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#category-b--runtime-module-configuration-this-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category B — Runtime module configuration (this file)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimal-working-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal working example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#syntax-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syntax errors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-level-sections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top-level sections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Top-level sections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global_log_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        global_log_level
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mission:
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mission:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#icao-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The .miz file name is an interface — _ICAO_&lt;code&gt; and real weather
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        security:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        settings:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        module_settings:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Third-party modules: SKYNET / CTLD / CSAR (under modules:)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Third-party modules: SKYNET / CTLD / CSAR (under modules:)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modulesskynet-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.SKYNET fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulescsar-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.CSAR fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulesctld-a-boolean-nothing-else" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.CTLD: a boolean, nothing else
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veaf_tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf_tools:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulesradiouser_menus--f10-radio-menus-in-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.RADIO.user_menus — F10 radio menus in YAML
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulesqra-cap_missions-combat_missions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.QRA, cap_missions:, combat_missions:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_scripts: (legacy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom_scripts:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pipeline:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        profiles:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_variants:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys-documented-elsewhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys documented elsewhere
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-by-category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index by category
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index by category">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#air-defense" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Air Defense
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assets--support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assets &amp; Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-by-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index by module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lua API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Updater & release tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-yaml-file-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the YAML file landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the YAML file landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#category-a--build-pipeline-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category A — Build pipeline files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#category-b--runtime-module-configuration-this-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category B — Runtime module configuration (this file)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimal-working-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal working example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#syntax-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syntax errors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-level-sections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top-level sections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Top-level sections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global_log_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        global_log_level
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mission:
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mission:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#icao-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The .miz file name is an interface — _ICAO_&lt;code&gt; and real weather
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        security:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        settings:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        module_settings:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Third-party modules: SKYNET / CTLD / CSAR (under modules:)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Third-party modules: SKYNET / CTLD / CSAR (under modules:)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modulesskynet-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.SKYNET fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulescsar-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.CSAR fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulesctld-a-boolean-nothing-else" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.CTLD: a boolean, nothing else
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veaf_tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf_tools:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulesradiouser_menus--f10-radio-menus-in-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.RADIO.user_menus — F10 radio menus in YAML
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulesqra-cap_missions-combat_missions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        modules.QRA, cap_missions:, combat_missions:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_scripts: (legacy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom_scripts:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pipeline:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        profiles:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_variants:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys-documented-elsewhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys documented elsewhere
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-by-category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index by category
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index by category">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#air-defense" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Air Defense
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assets--support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assets &amp; Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-by-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index by module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="missionyaml-reference">mission.yaml Reference<a class="headerlink" href="#missionyaml-reference" title="Permanent link">&para;</a></h1>
+<p><code>mission.yaml</code> is the optional build-time configuration file for veaf-tools. Place it at the root of your mission folder, next to <code>veaf-tools-updater.exe</code>. If absent, <code>veaf-tools mission build</code> works with default settings.</p>
+<p>This page covers the <strong>top-level sections</strong> of <code>mission.yaml</code>. Configuration for individual Lua modules is documented in each module's own page (see the <a href="#index-by-module">index by module</a> below).</p>
+<hr />
+<h2 id="understanding-the-yaml-file-landscape">Understanding the YAML file landscape<a class="headerlink" href="#understanding-the-yaml-file-landscape" title="Permanent link">&para;</a></h2>
+<p>A VEAF mission folder uses <strong>two distinct categories</strong> of YAML files. Understanding the difference helps you know which file to edit for a given task.</p>
+<h3 id="category-a--build-pipeline-files">Category A — Build pipeline files<a class="headerlink" href="#category-a--build-pipeline-files" title="Permanent link">&para;</a></h3>
+<p>These files drive the <strong>design-time injection</strong> steps that <code>veaf-tools mission build</code> performs before writing the final <code>.miz</code>. Each step reads its own YAML file and injects data into the mission. They are listed under the <code>pipeline:</code> section of <code>mission.yaml</code>.</p>
+<table>
+<thead>
+<tr>
+<th>File (in <code>src/</code>)</th>
+<th>Pipeline step</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>waypoints.yaml</code></td>
+<td><code>waypoints</code></td>
+<td>Injects named waypoints into the mission</td>
+</tr>
+<tr>
+<td><code>presets.yaml</code></td>
+<td><code>presets</code></td>
+<td>Configures radio presets for each aircraft group</td>
+</tr>
+<tr>
+<td><code>spawnables.yaml</code></td>
+<td><code>spawnable_aircrafts</code></td>
+<td>Spawnable aircraft groups (<code>veafSpawn-</code> prefix)</td>
+</tr>
+<tr>
+<td><code>dynamic-slot-templates.yaml</code></td>
+<td><code>dynamic_slot_templates</code></td>
+<td>Dynamic-slot templates (<code>dynSpawnTemplate=true</code>)</td>
+</tr>
+<tr>
+<td><code>warehouses.yaml</code></td>
+<td><code>warehouses</code></td>
+<td>Dynamic-Slot warehouses: <code>dynamicSpawn</code>, stock, fuel, template links</td>
+</tr>
+<tr>
+<td><code>spawn-groups.yaml</code></td>
+<td><code>spawn_data</code></td>
+<td>Spawn database for <code>_spawn unit</code> / <code>_spawn group</code> — <strong>optional</strong>: the step always runs, the framework data being embedded, and this file only adds to it</td>
+</tr>
+<tr>
+<td><code>versions.yaml</code></td>
+<td><code>weather</code></td>
+<td>Generates one <code>.miz</code> variant per weather preset</td>
+</tr>
+</tbody>
+</table>
+<p>These files are <strong>not</strong> loaded at DCS runtime — they are consumed by <code>veaf-tools mission build</code> and then compiled into the <code>.miz</code>.</p>
+<h3 id="category-b--runtime-module-configuration-this-file">Category B — Runtime module configuration (this file)<a class="headerlink" href="#category-b--runtime-module-configuration-this-file" title="Permanent link">&para;</a></h3>
+<p><code>mission.yaml</code> itself configures <strong>how VEAF Lua modules behave at DCS runtime</strong>. It is translated at build time into <code>veaf-config.lua</code>, which is injected into the mission and executed when DCS loads the mission.</p>
+<p>The <code>modules:</code> section describes runtime module behaviour (QRA, assets or shortcuts configuration lives under the relevant module, e.g. <code>modules.QRA</code>).</p>
+<div class="highlight"><pre><span></span><code>mission folder/
+├── mission.yaml          ← runtime module config (THIS FILE)
+│   └── pipeline:
+│       ├── waypoints: true  ──► src/waypoints.yaml     (build-time injection)
+│       ├── presets:  true   ──► src/presets.yaml        (build-time injection)
+│       ├── spawnable_aircrafts: true     ──► src/spawnables.yaml
+│       ├── dynamic_slot_templates: true  ──► src/dynamic-slot-templates.yaml
+│       ├── warehouses: true  ──► src/warehouses.yaml
+│       ├── spawn_data: true  ──► src/spawn-groups.yaml  (optional)
+│       └── weather:  true   ──► src/versions.yaml
+└── src/
+    ├── waypoints.yaml
+    ├── presets.yaml
+    ├── spawnables.yaml
+    ├── dynamic-slot-templates.yaml
+    ├── warehouses.yaml
+    ├── spawn-groups.yaml
+    └── versions.yaml
+</code></pre></div>
+<hr />
+<h2 id="minimal-working-example">Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># mission.yaml — minimum viable configuration</span>
+<span class="nt">global_log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">           </span><span class="c1"># remove before deploying to players</span>
+
+<span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My-Mission&quot;</span>
+
+<span class="nt">security</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">ASSETS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">assets</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Texaco&quot;</span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Texaco</span><span class="nv"> </span><span class="s">(KC-135)&quot;</span>
+<span class="w">        </span><span class="nt">information</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Tacan</span><span class="nv"> </span><span class="s">51Y\nU251.00</span><span class="nv"> </span><span class="s">(21)&#39;</span>
+</code></pre></div>
+<hr />
+<h2 id="syntax-errors">Syntax errors<a class="headerlink" href="#syntax-errors" title="Permanent link">&para;</a></h2>
+<p>If <code>mission.yaml</code> contains a YAML syntax error (wrong indentation, a missing colon, a tab character…), <code>veaf-tools mission build</code> stops immediately and displays a clear message indicating the file name, the line and column of the problem, and a plain-language hint on how to fix it:</p>
+<div class="highlight"><pre><span></span><code>Syntax error in mission.yaml, line 81, column 4.
+  The error starts near line 34, column 3.
+  → Check the indentation around these lines. YAML uses spaces only (never tabs).
+    All items in the same block must be aligned at the same column.
+</code></pre></div>
+<p>Common causes:</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>indentation</code> hint</td>
+<td>A block is indented differently from the rest</td>
+<td>Align the key with its siblings</td>
+</tr>
+<tr>
+<td><code>tab</code> hint</td>
+<td>A tab character was used instead of spaces</td>
+<td>Replace all tabs with spaces in your editor</td>
+</tr>
+<tr>
+<td><code>colon</code> hint</td>
+<td>A key is missing its <code>:</code> separator</td>
+<td>Write <code>key: value</code>, not <code>key value</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Most text editors can visualise whitespace characters — enable this option to quickly spot tab/space mix-ups.</p>
+</div>
+<hr />
+<h2 id="top-level-sections">Top-level sections<a class="headerlink" href="#top-level-sections" title="Permanent link">&para;</a></h2>
+<h3 id="global_log_level"><code>global_log_level</code><a class="headerlink" href="#global_log_level" title="Permanent link">&para;</a></h3>
+<p>Forces a log level on all VEAF modules. Remove before deploying to players.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">global_log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">     </span><span class="c1"># error | warning | info | debug | trace</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>error</code></td>
+<td>Errors only</td>
+</tr>
+<tr>
+<td><code>warning</code></td>
+<td>Errors and warnings</td>
+</tr>
+<tr>
+<td><code>info</code></td>
+<td>Standard operational messages <em>(production default)</em></td>
+</tr>
+<tr>
+<td><code>debug</code></td>
+<td>Detailed module activity — use during development</td>
+</tr>
+<tr>
+<td><code>trace</code></td>
+<td>Extremely verbose — use when tracking specific issues</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="mission"><code>mission:</code><a class="headerlink" href="#mission" title="Permanent link">&para;</a></h3>
+<p>Mission identity (name, export path, era) <strong>and</strong> mission-wide options (e.g. <code>silence_atc_on_all_airbases</code>) — used in radio menus, log messages, and export paths. This block holds mission-level settings, not just identity.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My-Mission&quot;</span><span class="w">          </span><span class="c1"># shown in radio menus and log messages</span>
+<span class="w">  </span><span class="nt">export_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">           </span><span class="c1"># null = default DCS Saved Games path</span>
+<span class="w">  </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span><span class="w">                 </span><span class="c1"># MODERN | COLD_WAR | WW2</span>
+<span class="w">  </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span><span class="w">                </span><span class="c1"># in-game VEAF message language: fr | en (default: the tools&#39; language)</span>
+<span class="w">  </span><span class="nt">silence_atc_on_all_airbases</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># mission-wide option: mute DCS ATC at every airbase</span>
+<span class="w">  </span><span class="nt">third_party_mods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w">        </span><span class="c1"># third-party DCS mods to make non-blocking (see below)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Mission name shown in menus and logs, <strong>and the name of the built <code>.miz</code></strong> — see the naming note below</td>
+</tr>
+<tr>
+<td><code>export_path</code></td>
+<td>string | null</td>
+<td><code>null</code></td>
+<td>No</td>
+<td>Override DCS Saved Games export path</td>
+</tr>
+<tr>
+<td><code>era</code></td>
+<td>string</td>
+<td><em>inferred</em></td>
+<td>No</td>
+<td><code>MODERN</code> | <code>COLD_WAR</code> | <code>WW2</code> — affects available spawn groups. <strong>When absent it is inferred at every build</strong> from the base mission's content: a WW2 unit type or a year ≤ 1945 gives <code>WW2</code>, a year ≤ 1991 <code>COLD_WAR</code>, otherwise <code>MODERN</code> (<code>era_detector.py</code>). The inferred value is <strong>not</strong> written back into your <code>mission.yaml</code> — it is recomputed; set the key to pin it.</td>
+</tr>
+<tr>
+<td><code>silence_atc_on_all_airbases</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td>Mission-wide option: mute DCS ATC at every airbase (emits <code>veaf.silenceAtcOnAllAirbases()</code>). <code>convert-v5</code> migrates it from an active call and annotates its provenance</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>string</td>
+<td><em>tools' language</em></td>
+<td>No</td>
+<td>Language of in-game VEAF messages (<code>fr</code> | <code>en</code>); emitted into <code>veaf-config.lua</code> as <code>veaf.config.language</code> and read by <code>veaf.t()</code>. When omitted, the build uses the tools' language (<code>--lang</code> &gt; <code>VEAF_LANG</code> &gt; user config &gt; OS locale &gt; <code>en</code>)</td>
+</tr>
+<tr>
+<td><code>third_party_mods</code></td>
+<td>list of strings</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td><strong>Third-party</strong> DCS mods (paid/community aircraft) to make <strong>non-blocking</strong>: their ids are removed from the <code>.miz</code>'s <code>requiredModules</code> table at build, so a pilot who does not own the mod can still <strong>load</strong> the mission (that slot is simply unavailable). The list is <strong>unioned</strong> with a VEAF default list covering the common mods (Hercules, UH-60L, A-4E-C, T-45, AM2, SU-30/FlankerEx, Bronco-OV-10A) — only declare mods not already handled. Not to be confused with VEAF <em>Modules</em> (the <code>modules:</code> block, which are capabilities, not DCS add-ons)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="icao-naming">The <code>.miz</code> file name is an interface — <code>_ICAO_&lt;code&gt;</code> and real weather<a class="headerlink" href="#icao-naming" title="Permanent link">&para;</a></h4>
+<p><code>mission.name</code> becomes the built file name: <code>&lt;name&gt;_&lt;YYYYMMDD&gt;.miz</code>, plus a <code>_&lt;VARIANT&gt;</code> suffix
+when <a href="#build-variants"><code>build_variants:</code></a> is used. Give a name ending in <code>.miz</code> instead and the
+name is taken <strong>verbatim</strong>, with no date.</p>
+<p>That matters because <strong>server-side tooling reads the file name</strong>. On the VEAF servers, the
+RealWeather extension of <a href="https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot">DCSServerBot</a>
+looks for <strong><code>_ICAO_&lt;code&gt;</code></strong> in the mission's file name and fetches that airfield's live METAR at
+mission start — so the weather follows reality without rebuilding. Name the mission accordingly:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VEAF_Foothold_Caucasus_ICAO_URSS</span><span class="w">   </span><span class="c1"># -&gt; VEAF_Foothold_Caucasus_ICAO_URSS_20260728.miz</span>
+</code></pre></div>
+<p>Two rules when picking the code:</p>
+<ul>
+<li>it must be <strong>an airfield on that theatre</strong> (any one; a large one is better);</li>
+<li>it must have a <strong>live METAR station</strong>. Check before trusting it — a station can exist and be
+  stale, which is worse than no real weather at all, since the mission then advertises a
+  "real" weather that is days old. A one-line check:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://tgftp.nws.noaa.gov/data/observations/metar/stations/URSS.TXT
+</code></pre></div>
+<p>The first two digits of the <code>DDHHMMZ</code> group are the day of observation — compare them with today.</p>
+<p>When a whole theatre is degraded, there are two defensible answers, and the choice belongs to
+whoever runs the server. Measured on Afghanistan, <strong>every</strong> station lags (Kabul a month, Herat
+sixteen days, Bagram a day; six airfields have no station at all): either <strong>omit</strong> the marker, so
+RealWeather leaves the mission alone and the authored weather stands, or <strong>take the least bad</strong>
+and know what you are getting. The VEAF Foothold Afghanistan uses <code>OAIX</code> (Bagram, about a day
+behind) — a deliberate choice, not an oversight.</p>
+<hr />
+<h3 id="security"><code>security:</code><a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<p>Controls the VEAF security system. <strong>Security is active by default</strong> (<code>veaf.SecurityDisabled = false</code> in <code>veaf.lua</code>): with no <code>security:</code> block nothing is emitted and the sensitive commands require a pilot level or a password. <code>disabled: true</code> turns it off for the whole mission.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                   </span><span class="c1"># false = a password is required</span>
+<span class="w">  </span><span class="nt">password_hashes</span><span class="p">:</span><span class="w">                  </span><span class="c1"># SHA-1 hashes granting player/JTF access</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;2a4efd2397e081bcacb82b3e447c584c65cc83ee&quot;</span>
+<span class="w">  </span><span class="nt">password_mm_hashes</span><span class="p">:</span><span class="w">               </span><span class="c1"># SHA-1 hashes granting Mission Master access</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;99685b3c7cb1fb08a829fc97d4a8564fc5f9435a&quot;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>disabled</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td><code>true</code> = no password required</td>
+</tr>
+<tr>
+<td><code>password_hashes</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td><strong>SHA-1</strong> hashes granting player access. Emitted at levels <strong>L1 and L9</strong>, so the password opens marker authentication and the sensitive spawns, not only the L9 gates</td>
+</tr>
+<tr>
+<td><code>password_mm_hashes</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td><strong>SHA-1</strong> hashes granting Mission Master access (its own table, no level cascade)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>SHA-1, not SHA-256.</strong> <code>veafSecurity._checkPassword</code> hashes what the player types with
+<code>sha1.hex(password)</code> and looks it up in the table, so a SHA-256 hash never matches and the
+password silently never works.</p>
+<p>To generate one: <code>echo -n "yourpassword" | sha1sum</code> (Linux/macOS), or
+<code>python -c "import hashlib,sys; print(hashlib.sha1(sys.argv[1].encode()).hexdigest())" yourpassword</code>.</p>
+</blockquote>
+<hr />
+<h3 id="settings"><code>settings:</code><a class="headerlink" href="#settings" title="Permanent link">&para;</a></h3>
+<p>Arbitrary key-value pairs injected into the mission as <code>veaf.config.KEY = value</code>. Use this to pass mission-specific constants to Lua scripts.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MY_MISSION_FLAG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">42</span>
+<span class="w">  </span><span class="nt">ENABLE_CONVOY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">MISSION_PHASE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;alpha&quot;</span>
+</code></pre></div>
+<p>Each key becomes <code>veaf.config.MY_MISSION_FLAG = 42</code> in the generated <code>veaf-config.lua</code>.</p>
+<hr />
+<h3 id="module-settings"><code>module_settings:</code><a class="headerlink" href="#module-settings" title="Permanent link">&para;</a></h3>
+<p>Scalar settings written <strong>straight onto a VEAF module's table</strong> in the generated <code>veaf-config.lua</code>. Where <code>settings:</code> can only write <code>veaf.config.KEY</code>, this section targets any VEAF table.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">module_settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">veafSkynet.DelayForStartup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span><span class="w">     </span><span class="c1"># IADS start-up delay</span>
+<span class="w">  </span><span class="nt">veafSkynet.DynamicSpawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">veafRadio.RadioMenuName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BFR&quot;</span><span class="w">      </span><span class="c1"># root radio menu name, seen by players</span>
+<span class="w">  </span><span class="nt">veaf.DEFAULT_GROUND_SPEED_KPH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+</code></pre></div>
+<p>Each entry becomes the matching Lua assignment, here <code>veafSkynet.DelayForStartup = 150</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(key)</em></td>
+<td>string</td>
+<td>—</td>
+<td>—</td>
+<td>The full Lua target, <code>veafXxx.Field</code>. A key that does not start with <code>veaf</code> is <strong>refused at generation time</strong>: this section is a migration path for VEAF settings, not a hatch for writing anywhere in the runtime</td>
+</tr>
+<tr>
+<td><em>(value)</em></td>
+<td>boolean | number | string</td>
+<td>—</td>
+<td>—</td>
+<td>A scalar. Tables and functions cannot be expressed here</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>A documented field beats a migration leftover.</strong> When a setting now has its own field in
+<code>mission.yaml</code> <strong>and</strong> a <code>module_settings:</code> entry targets the same Lua variable, the <strong>documented
+field</strong> is what applies: the <code>module_settings:</code> entry is dropped, and the build says so, naming both.
+This section is a migration path, not a permanent override — delete the line that is no longer
+needed.</p>
+<p>One setting is in that position today: <code>veaf.HideNamesFromSpawnedGroups</code>, superseded by
+<code>mission.hide_names_from_spawned_groups</code>.</p>
+<p><strong>Where it comes from.</strong> <code>convert-v5</code> fills this section automatically: under v5, half of these
+settings reached neither <code>mission.yaml</code> nor the generated Lua, and nothing reported it. Whatever
+the conversion still cannot carry — a table, a function — is now listed as comments in the
+generated <code>mission-script.lua</code>, under "Settings NOT migrated".</p>
+</blockquote>
+<hr />
+<h3 id="third-party-modules">Third-party modules: <code>SKYNET</code> / <code>CTLD</code> / <code>CSAR</code> (under <code>modules:</code>)<a class="headerlink" href="#third-party-modules" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>v6 change (hard break)</strong>: the <code>external_modules:</code> and <code>qra:</code> sections no longer exist. All of their configuration now lives under the <code>modules:</code> block, the single source of truth. See <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0001-modules-single-source-of-truth.md">ADR 0001</a>.</p>
+</blockquote>
+<p>Skynet IADS, CTLD and CSAR are configured like any other module, directly under <code>modules:</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">include_red_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># add RED IADS status to F10 menu</span>
+<span class="w">    </span><span class="nt">debug_red</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                 </span><span class="c1"># verbose Skynet debug for RED</span>
+<span class="w">    </span><span class="nt">include_blue_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1"># add BLUE IADS status to F10 menu</span>
+<span class="w">    </span><span class="nt">debug_blue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                </span><span class="c1"># verbose Skynet debug for BLUE</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                         </span><span class="c1"># configured in ctld-config.yaml, not here</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">settings</span><span class="p">:</span><span class="w">                        </span><span class="c1"># csar.xxx = value pairs</span>
+<span class="w">      </span><span class="nt">enableAllslots</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<h4 id="modulesskynet-fields"><code>modules.SKYNET</code> fields<a class="headerlink" href="#modulesskynet-fields" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Enable Skynet IADS integration</td>
+</tr>
+<tr>
+<td><code>include_red_in_radio</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Add RED IADS status to F10 radio menu</td>
+</tr>
+<tr>
+<td><code>debug_red</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Enable verbose Skynet debug for RED coalition</td>
+</tr>
+<tr>
+<td><code>include_blue_in_radio</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Add BLUE IADS status to F10 radio menu</td>
+</tr>
+<tr>
+<td><code>debug_blue</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Enable verbose Skynet debug for BLUE coalition</td>
+</tr>
+</tbody>
+</table>
+<h4 id="modulescsar-fields"><code>modules.CSAR</code> fields<a class="headerlink" href="#modulescsar-fields" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Enable CSAR integration</td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td>mapping</td>
+<td>—</td>
+<td><code>csar.xxx</code> pairs (e.g. <code>enableAllslots: true</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>VEAF generates the <code>csar.xxx = value</code> assignments and the <code>csar.initialize()</code> call in <code>veaf-config.lua</code>. On <code>convert-v5</code>, these settings are extracted automatically from <code>missionConfig.lua</code>. For complex settings such as <code>aircraftType</code> (a per-aircraft table), continue using the Lua callback pattern in <code>mission-script.lua</code>.</p>
+<h4 id="modulesctld-a-boolean-nothing-else"><code>modules.CTLD</code>: a boolean, nothing else<a class="headerlink" href="#modulesctld-a-boolean-nothing-else" title="Permanent link">&para;</a></h4>
+<p>CTLD 2 is configured <strong>outside <code>mission.yaml</code></strong>, in a <code>ctld-config.yaml</code> file sitting next to it and edited with <code>ctld-tools.exe</code>. A <code>settings:</code> block under <code>CTLD</code> is <strong>rejected by <code>validate</code></strong>: it was no longer read, and letting it pass in silence is exactly the defect this change removes. Exactly one key is read here besides the switch: <code>manage_logistics</code> (boolean, default <code>true</code>). With it on, the build <strong>adds</strong> the carriers and FARP ammo dumps VEAF has always recognised to the <code>logisticUnitTypes</code> / <code>troopZoneShipTypes</code> lists in your <code>ctld-config.yaml</code> — it adds, it does not replace.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">manage_logistics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>See <a href="../mission-maker/GUIDE/#ctld-and-csar-integration">CTLD and CSAR Integration</a> — including <a href="../mission-maker/GUIDE/#getting-ctld-tools">where to get <code>ctld-tools</code></a>, which does not ship with VEAF MCT, and <a href="../mission-maker/GUIDE/#ctld-manage-logistics">FARPs placed in the editor</a>.</p>
+<blockquote>
+<p><strong>Sounds.</strong> CTLD and CSAR play sounds by filename at runtime (<code>beacon.ogg</code>, <code>beaconsilent.ogg</code>, <code>CSAR.ogg</code>). When CTLD or CSAR is enabled, the build automatically injects the required sounds it ships (<code>src/scripts/community/sounds/</code>) into the mission's <code>l10n/DEFAULT/</code>, without overwriting any sound your mission already provides. A required sound shipped by neither the tools nor your mission is reported with a build warning — add it to <code>src/mission/l10n/DEFAULT/</code> (e.g. <code>radiobeep.ogg</code>, the JTAC fallback beep, is not redistributed).</p>
+<p>The build then <strong>declares</strong> every sound the mission carries in <code>mapResource</code>, through a "Declare mission sounds" trigger that plays it to a country no coalition uses — so nothing is audible. Without that declaration the DCS Mission Editor treats these files as orphans (it cannot know a script plays them by name) and <strong>deletes them the moment you save the mission in the editor</strong>, with no message at all.</p>
+</blockquote>
+<hr />
+<h3 id="veaf_tools"><code>veaf_tools:</code><a class="headerlink" href="#veaf_tools" title="Permanent link">&para;</a></h3>
+<p>Version compatibility constraint for <code>veaf-tools-updater.exe</code>. The updater skips releases that don't match.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">veaf_tools</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;6&quot;</span><span class="w">          </span><span class="c1"># accept any 6.x.x</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Example</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Major only</td>
+<td><code>"6"</code></td>
+<td>Any <code>6.x.x</code></td>
+</tr>
+<tr>
+<td>Major.Minor</td>
+<td><code>"6.1"</code></td>
+<td>Any <code>6.1.x</code></td>
+</tr>
+<tr>
+<td>Exact</td>
+<td><code>"6.1.3"</code></td>
+<td>Exactly <code>6.1.3</code></td>
+</tr>
+<tr>
+<td>Compatible</td>
+<td><code>"^6.1.3"</code></td>
+<td><code>&gt;=6.1.3, &lt;7.0.0</code></td>
+</tr>
+<tr>
+<td>Approximate</td>
+<td><code>"~6.1.3"</code></td>
+<td><code>&gt;=6.1.3, &lt;6.2.0</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="modules"><code>modules:</code><a class="headerlink" href="#modules" title="Permanent link">&para;</a></h3>
+<p>The unified <code>modules:</code> block enables, disables, or configures every VEAF Lua module <strong>and</strong> every community script in a single place. Modules not listed are enabled with their default settings.</p>
+<blockquote>
+<p><strong>Migration note.</strong> <code>modules:</code> replaces the older <code>lua_modules:</code> + <code>community_scripts:</code> keys. The legacy keys still work but emit a deprecation warning at build time. <code>enabled:</code> replaces the old <code>enable:</code> key.</p>
+</blockquote>
+<p>Each entry can take <strong>three forms</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># 1. Shorthand — just enable an optional module with default settings:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="c1"># 2. Block — enable and configure:</span>
+<span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w">           </span><span class="c1"># optional per-module log level override</span>
+<span class="w">    </span><span class="nt">init</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">help_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="c1"># 3. Bare null — mandatory infrastructure module, configure only:</span>
+<span class="w">  </span><span class="nt">UNITS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Infrastructure modules are always active.</strong>
+<code>UNITS</code>, <code>TIME</code>, <code>CACHE</code>, <code>EVENTS</code>, <code>MARKERS</code>, and <code>COMMANDS</code> are mandatory and always loaded. Do <strong>not</strong> set <code>enabled:</code> on them — it is a build error. They may still appear in <code>modules:</code> to configure other fields such as <code>logLevel</code>.</p>
+</blockquote>
+<p><strong>Common fields (all modules):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>Enable or disable this module <em>(optional modules only — not allowed on Infrastructure modules)</em></td>
+</tr>
+<tr>
+<td><code>logLevel</code></td>
+<td>string</td>
+<td><em>(global)</em></td>
+<td>Override log level for this module only</td>
+</tr>
+</tbody>
+</table>
+<p>Additional <code>init:</code> or data fields are module-specific — see each module's documentation page.</p>
+<p><strong><code>RADIO</code> <code>init:</code> fields:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>help_menus</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>Passed to <code>veafRadio.initialize</code> as <code>skipHelpMenus</code></td>
+</tr>
+<tr>
+<td><code>create_menus</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td><code>false</code> builds <strong>no VEAF F10 menu at all</strong> (<code>dontCreateMenus</code>). Combined with <code>security:</code>, that is how a public mission keeps the VEAF commands reachable only through password-protected map markers. Omit the key to keep today's behaviour</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">init</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">create_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># no VEAF radio menu; commands via markers only</span>
+</code></pre></div>
+<p><strong>Community scripts</strong> are listed in the same block, using their IDs (case does not matter: <code>CTLD:</code> and <code>ctld:</code> are equivalent). When a script is absent from <code>modules:</code>, it keeps its default state — included for the <em>opt-out</em> scripts, excluded for the two <em>opt-in</em> ones (<code>MIST</code> and <code>TUM</code>, see below). Set a script to <code>false</code> to exclude it:</p>
+<p>Because that default is easy to misread, generated files (<code>prepare --template</code>, <code>convert-v5</code>) and the shipped <code>mission.yaml</code> <strong>always</strong> write the five <em>opt-out</em> scripts (<code>STTS</code>, <code>CTLD</code>, <code>AIEN</code>, <code>CSAR</code>, <code>SKYNET</code>) out, at <code>true</code> or <code>false</code>: the state of a community script is never inferred from silence.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">               </span><span class="c1"># excluded from this mission</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Community ID</th>
+<th>Script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MIST</code></td>
+<td>MIST (Mission Scripting Tools) — <strong>opt-in</strong>, and auto-enabled when one of your own scripts calls <code>mist.</code></td>
+</tr>
+<tr>
+<td><code>STTS</code></td>
+<td>DCS-SimpleTextToSpeech</td>
+</tr>
+<tr>
+<td><code>CTLD</code></td>
+<td>CTLD (Combat Transport &amp; Logistics Dispatcher)</td>
+</tr>
+<tr>
+<td><code>AIEN</code></td>
+<td>AIEN (AI Enhancement)</td>
+</tr>
+<tr>
+<td><code>CSAR</code></td>
+<td>CSAR (Combat Search and Rescue)</td>
+</tr>
+<tr>
+<td><code>SKYNET</code></td>
+<td>Skynet IADS</td>
+</tr>
+<tr>
+<td><code>TUM</code></td>
+<td>The Universal Mission (TUM)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>An unknown identifier in <code>modules:</code> is a <strong>blocking error</strong>: the build stops with a message naming the offending key.</p>
+<p><strong><code>MIST</code> — opt-in, and injected only when something needs it.</strong> MiST used to be injected into every
+mission, because the VEAF scripts called it everywhere. They no longer call it at all, so it is now
+<strong>off by default</strong> and the 336 KB it weighs stay out of your <code>.miz</code>. Before packaging, the build
+scans your own <code>src/scripts/*.lua</code>; if one of them calls <code>mist.</code>, MiST is injected and the build log
+names the file that asked for it. A <code>MIST: false</code> does <strong>not</strong> win against that scan — a script that
+calls MiST gets MiST, otherwise it would break in flight. Set <code>MIST: true</code> only when something
+reaches MiST indirectly, which the scan cannot see (through <code>_G["mist"]</code>, or from a script loaded by
+another script). A bare <code>MIST:</code> line inherited from an older <code>mission.yaml</code> now reads as
+"disabled", which is the right answer for almost every mission. See
+<a href="../mission-maker/GUIDE/#mist-injection">MiST: injected only when you need it</a>.</p>
+<p><strong><code>TUM</code> (The Universal Mission) — mission prerequisite.</strong> TUM is a self-contained PvE mission generator (third-party community script) that takes over the whole map at start-up: it makes every airbase neutral, then assigns zones and airfields to the coalitions based on the <strong>trigger zones</strong> defined in the mission editor. If you enable <code>TUM: true</code> on a mission that was not authored for TUM, the script aborts at start-up with an error such as:</p>
+<p><code>Coalition red has no territory zones and/or controls no airfields. Please add zone with a name starting with REDFOR…</code></p>
+<p>This is <strong>not a VEAF bug</strong>: it is a TUM design prerequisite. To use it, create in the mission editor a trigger zone whose name starts with <code>BLUFOR</code> and another starting with <code>REDFOR</code>, each containing <strong>at least one airbase</strong>, plus at least one other mission zone. Only enable <code>TUM</code> for a TUM-style mission.</p>
+<p><strong>Opt-in (like <code>MIST</code>, unlike the other community scripts).</strong> TUM is <strong>off by default</strong>: a vanilla mission, a freshly v5-converted mission, or a <code>modules:</code> block that does not mention <code>TUM</code> all leave it <strong>disabled</strong>. Only an explicit <code>TUM: true</code> turns it on. <code>MIST</code> is opt-in too, for a different reason (see the note above); the remaining community scripts are <em>opt-out</em> (active unless you set them to <code>false</code>). When <code>TUM: true</code>, the build automatically calls <code>TUM.initialize()</code> at start-up — you do not need to add anything to <code>mission-script.lua</code>.</p>
+</blockquote>
+<p><strong>VEAF module IDs:</strong></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Module</th>
+<th>Doc page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RADIO</code></td>
+<td>veafRadio</td>
+<td><a href="../mission-maker/scripts/veafRadio/">veafRadio</a></td>
+</tr>
+<tr>
+<td><code>SHORTCUTS</code></td>
+<td>veafShortcuts</td>
+<td><a href="../mission-maker/scripts/veafShortcuts/">veafShortcuts</a></td>
+</tr>
+<tr>
+<td><code>NAMEDPOINTS</code></td>
+<td>veafNamedPoints</td>
+<td><a href="../mission-maker/scripts/veafNamedPoints/">veafNamedPoints</a></td>
+</tr>
+<tr>
+<td><code>ASSETS</code></td>
+<td>veafAssets</td>
+<td><a href="../mission-maker/scripts/veafAssets/">veafAssets</a></td>
+</tr>
+<tr>
+<td><code>CARRIER</code></td>
+<td>veafCarrierOperations</td>
+<td><a href="../mission-maker/scripts/veafCarrierOperations/">veafCarrierOperations</a></td>
+</tr>
+<tr>
+<td><code>ASSIST</code></td>
+<td>veafAssist</td>
+<td><a href="../mission-maker/scripts/veafAssist/">veafAssist</a></td>
+</tr>
+<tr>
+<td><code>SANCTUARY</code></td>
+<td>veafSanctuary</td>
+<td><a href="../mission-maker/scripts/veafSanctuary/">veafSanctuary</a></td>
+</tr>
+<tr>
+<td><code>COMBATZONE</code></td>
+<td>veafCombatZone</td>
+<td><a href="../mission-maker/scripts/veafCombatZone/">veafCombatZone</a></td>
+</tr>
+<tr>
+<td><code>AIRWAVES</code></td>
+<td>veafAirWaves</td>
+<td><a href="../mission-maker/scripts/veafAirWaves/">veafAirWaves</a></td>
+</tr>
+<tr>
+<td><code>QRA</code></td>
+<td>veafQraManager</td>
+<td><a href="../mission-maker/scripts/veafQraManager/">veafQraManager</a></td>
+</tr>
+<tr>
+<td><code>CASMISSION</code></td>
+<td>veafCasMission</td>
+<td><a href="../mission-maker/scripts/veafCasMission/">veafCasMission</a></td>
+</tr>
+<tr>
+<td><code>COMBATMISSION</code></td>
+<td>veafCombatMission</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SPAWN</code></td>
+<td>veafSpawn</td>
+<td><a href="../mission-maker/scripts/veafSpawn/">veafSpawn</a></td>
+</tr>
+<tr>
+<td><code>MOVE</code></td>
+<td>veafMove</td>
+<td><a href="../mission-maker/scripts/veafMove/">veafMove</a></td>
+</tr>
+<tr>
+<td><code>SECURITY</code></td>
+<td>veafSecurity</td>
+<td><a href="../mission-maker/scripts/veafSecurity/">veafSecurity</a></td>
+</tr>
+<tr>
+<td><code>GRASS</code></td>
+<td>veafGrass</td>
+<td><a href="../mission-maker/scripts/veafGrass/">veafGrass</a></td>
+</tr>
+<tr>
+<td><code>WEATHER</code></td>
+<td>veafWeather</td>
+<td><a href="../mission-maker/scripts/veafWeather/">veafWeather</a></td>
+</tr>
+<tr>
+<td><code>INTERPRETER</code></td>
+<td>veafInterpreter</td>
+<td><a href="../mission-maker/scripts/veafInterpreter/">veafInterpreter</a></td>
+</tr>
+<tr>
+<td><code>MISSILEGUARDIAN</code></td>
+<td>veafMissileGuardian</td>
+<td><a href="../mission-maker/scripts/veafMissileGuardian/">veafMissileGuardian</a></td>
+</tr>
+<tr>
+<td><code>TRANSPORTMISSION</code></td>
+<td>veafTransportMission</td>
+<td><a href="../mission-maker/scripts/veafTransportMission/">veafTransportMission</a></td>
+</tr>
+<tr>
+<td><code>AIRBASES</code></td>
+<td>veafAirbases</td>
+<td><a href="../mission-maker/scripts/veafAirbases/">veafAirbases</a></td>
+</tr>
+<tr>
+<td><code>GROUNDAI</code></td>
+<td>veafGroundAI</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>REMOTE</code></td>
+<td>veafRemote</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SKYNET_MONITOR</code></td>
+<td>veafSkynetMonitor</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>I18N</code></td>
+<td>veafI18n</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="modulesradiouser_menus--f10-radio-menus-in-yaml"><code>modules.RADIO.user_menus</code> — F10 radio menus in YAML<a class="headerlink" href="#modulesradiouser_menus--f10-radio-menus-in-yaml" title="Permanent link">&para;</a></h3>
+<p>Since ADR 0011, a mission maker can declare a custom F10 radio menu (in particular for the Mission Master) <strong>entirely in YAML</strong>, with no Lua, under <code>modules.RADIO.user_menus</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">user_menus</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">   </span><span class="c1"># optional: name of a DCS group; menu restricted to that group. Omitted = global.</span>
+<span class="w">      </span><span class="nt">tree</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">menu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA</span><span class="nv"> </span><span class="s">Control&quot;</span>
+<span class="w">          </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Start</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">North&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">qra.start</span><span class="p p-Indicator">,</span><span class="nt"> qra</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-North&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Stop</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">North&quot;</span><span class="p p-Indicator">,</span><span class="nt">  action</span><span class="p">:</span><span class="w"> </span><span class="nv">qra.stop</span><span class="p p-Indicator">,</span><span class="nt">  qra</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-North&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Global</span><span class="nv"> </span><span class="s">message&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">message</span><span class="p p-Indicator">,</span><span class="nt"> text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;The</span><span class="nv"> </span><span class="s">mission</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">starting!&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Custom</span><span class="nv"> </span><span class="s">function&quot;</span><span class="p p-Indicator">,</span><span class="nt"> action</span><span class="p">:</span><span class="w"> </span><span class="nv">lua</span><span class="p p-Indicator">,</span><span class="nt"> function</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myMission.startEverything&quot;</span><span class="p p-Indicator">,</span><span class="nt"> args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;alpha&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>Each node of <code>tree</code> is either a submenu (<code>{ menu: "...", items: [...] }</code>, recursive) or a command (<code>{ command: "...", action: &lt;verb&gt;, &lt;keys&gt; }</code>). The action vocabulary is closed (<code>qra.start</code>/<code>qra.stop</code>, <code>airwave.start</code>/<code>airwave.stop</code>/<code>airwave.reset</code>, <code>flag.on</code>/<code>flag.off</code>/<code>flag.set</code>/<code>flag.increment</code>/<code>flag.decrement</code>, <code>message</code>, <code>lua</code>). A <code>lua</code> action references a function defined in <code>mission-script.lua</code>: if the function is missing, the build fails.</p>
+<p>See the full schema, the action table and a detailed example in <a href="../mission-maker/scripts/veafRadio/#radio-menus-in-yaml">veafRadio → Radio menus in YAML</a>.</p>
+<hr />
+<h3 id="modulesqra-cap_missions-combat_missions"><code>modules.QRA</code>, <code>cap_missions:</code>, <code>combat_missions:</code><a class="headerlink" href="#modulesqra-cap_missions-combat_missions" title="Permanent link">&para;</a></h3>
+<p>QRA definitions live under <code>modules.QRA</code> (<code>silence_all</code> + <code>definitions:</code>). The <code>cap_missions:</code> / <code>combat_missions:</code> sections remain top-level. All require the corresponding modules enabled under <code>modules:</code>.</p>
+<p>See the respective module pages for full schema:
+- <a href="../mission-maker/scripts/veafQraManager/#configuration-missionyaml"><code>modules.QRA</code></a> — Quick Reaction Alert definitions
+- <a href="../mission-maker/scripts/veafCasMission/#configuration-missionyaml"><code>cap_missions:</code> and <code>combat_missions:</code></a> — CAP and combat mission definitions</p>
+<blockquote>
+<p><strong>Radio menu shortcut (QRA / AirWaves).</strong> A QRA definition (<code>modules.QRA.definitions[]</code>) or an AirWave zone (<code>modules.AIRWAVES.airwave_zones[]</code>) accepts <code>radio_menu: true</code> (and the optional <code>radio_menu_restrict_to_group: "&lt;DCS group&gt;"</code>) to automatically generate an F10 control submenu (start/stop, plus reset for AirWaves). See <a href="../mission-maker/scripts/veafQraManager/#configuration-missionyaml">veafQraManager</a> and <a href="../mission-maker/scripts/veafAirWaves/#configuration-missionyaml">veafAirWaves</a>.</p>
+</blockquote>
+<hr />
+<h3 id="community-scripts"><code>community_scripts:</code> <em>(legacy)</em><a class="headerlink" href="#community-scripts" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Deprecated.</strong> Community scripts are now configured in the unified <a href="#modules"><code>modules:</code></a> block using their uppercase IDs (e.g. <code>CTLD: true</code>). The separate <code>community_scripts:</code> section still works but emits a deprecation warning. See <a href="#modules"><code>modules:</code></a> for the current syntax and the list of community IDs.</p>
+</blockquote>
+<hr />
+<h3 id="custom-scripts"><code>custom_scripts:</code><a class="headerlink" href="#custom-scripts" title="Permanent link">&para;</a></h3>
+<p>Declares custom Lua scripts present in <code>src/scripts/</code> that are not part of the standard VEAF v6 set.<br />
+A declared script is included in the <code>.miz</code> <strong>without</strong> triggering a warning. By default a DCS load trigger is generated for it automatically; setting <code>generate_load_trigger: false</code> disables that trigger (useful when the script is loaded manually from <code>mission-script.lua</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>generate_load_trigger</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Global default: generate a DCS trigger for all scripts in the list</td>
+</tr>
+<tr>
+<td><code>scripts[].path</code></td>
+<td><code>string</code></td>
+<td><em>(required)</em></td>
+<td>Path to the file, relative to the mission folder (e.g. <code>src/scripts/FgMission.lua</code>)</td>
+</tr>
+<tr>
+<td><code>scripts[].generate_load_trigger</code></td>
+<td><code>bool</code></td>
+<td><em>(global default)</em></td>
+<td>Per-script override; if absent, the global default applies</td>
+</tr>
+<tr>
+<td><code>scripts[].delay_seconds</code></td>
+<td><code>number</code></td>
+<td><em>(none)</em></td>
+<td>Load this script <strong>after</strong> this delay (seconds) instead of with the rest. See below</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Loading behaviour</strong></p>
+<ul>
+<li><code>generate_load_trigger: true</code> (default) → the script is loaded at mission start, in <strong>both</strong> loading modes: in <strong>static</strong> builds it is embedded in the <code>.miz</code> and loaded by the VEAF mission-loading trigger; in <strong>dynamic</strong> builds it is loaded from disk by the generated <code>veafDynamicConfig.lua</code>. The same flag governs both modes — there is no per-mode flag.</li>
+<li><code>generate_load_trigger: false</code> → the script is still injected into the <code>.miz</code> but <strong>no</strong> load is generated in either mode; <code>mission-script.lua</code> (or another script) must load it via <code>dofile</code>.</li>
+</ul>
+<p><strong>Load order</strong>: mission scripts always load as <code>veaf-config.lua</code> → <code>mission-script.lua</code> → your <code>custom_scripts</code> (in declaration order). So a custom script can rely on the VEAF config and on <code>mission-script.lua</code> already being loaded.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">generate_load_trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># global default for all scripts below</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgTools.lua</span>
+<span class="w">      </span><span class="nt">generate_load_trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># loaded manually from mission-script.lua</span>
+</code></pre></div>
+<blockquote>
+<p>Any <code>.lua</code> file present in <code>src/scripts/</code> but <strong>absent</strong> from this section (and not one of the standard files) triggers a build warning with a reminder to declare it here.</p>
+</blockquote>
+<p><strong>Loading a script after a delay: <code>delay_seconds</code></strong></p>
+<p>By default every mission script is loaded in one go at start-up. Some scripts need time to pass before
+they start — typically because they <strong>inventory the world once</strong> and must let the scripts before them
+create their units first. AIEN in Foothold is exactly that: loaded 12 seconds after the rest.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/Moose.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/zoneCommander.lua</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/AIEN.lua</span>
+<span class="w">      </span><span class="nt">delay_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span><span class="w">          </span><span class="c1"># its own trigger, 12 s in</span>
+</code></pre></div>
+<ul>
+<li><strong>Absent</strong> (the default) → loaded in the shared trigger, exactly as before.</li>
+<li><strong>Present</strong> → the script leaves the shared trigger for a <code>triggerOnce</code> of its own, gated on
+  <code>c_time_after</code>. Scripts sharing the <strong>same</strong> delay share one trigger, in declaration order.</li>
+<li>The delay must be <strong>greater than zero</strong>. A zero, negative or non-numeric value is refused with a build
+  warning and the script loads in the shared trigger instead — it is never lost.</li>
+</ul>
+<blockquote>
+<p><strong>The delay decides the order, not the position in the list.</strong> A script at <code>delay_seconds: 12</code> loads
+after <strong>every</strong> undelayed one, wherever it is written. If a delayed script is declared before an
+undelayed one, the build warns you — the list then reads in a different order from the one it runs in.</p>
+</blockquote>
+<p><strong>Dynamic builds behave the same way</strong>: <code>veafDynamicConfig.lua</code> schedules the load instead of doing it
+inline. Since <code>generate_load_trigger</code> governs both modes, a delay could not exist in only one of them.</p>
+<p><code>convert-other</code> <strong>detects</strong> these delays in the source mission and writes <code>delay_seconds:</code> for you, so an
+adopted mission reproduces the upstream staging without you having to notice it.</p>
+<p><strong>A script only in one variant (e.g. a dynamic-only debug script)</strong></p>
+<p><code>generate_load_trigger</code> is a single flag — it does not distinguish static from dynamic. To load a script in only one variant (a debug helper you want <strong>only</strong> in your local dynamic dev build, never in the static distribution), use a <a href="#profiles">build profile</a> instead of a per-script flag:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">   </span><span class="c1"># always loaded (both variants)</span>
+
+<span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DEV</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">custom_scripts</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">scripts</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">    </span><span class="c1"># ⚠️ must repeat the base scripts</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgDebug.lua</span><span class="w">      </span><span class="c1"># extra, dev-only</span>
+</code></pre></div>
+<p>Build the dev variant with <code>veaf-tools mission build --profile DEV</code> (it loads <code>FgMission.lua</code> + <code>FgDebug.lua</code>); the default build loads only <code>FgMission.lua</code>.</p>
+<blockquote>
+<p>⚠️ <strong>Pitfall</strong>: profile deep-merge <strong>replaces lists, it does not concatenate them</strong> (see <a href="#profiles"><code>profiles:</code></a>). The profile's <code>custom_scripts.scripts</code> must therefore <strong>repeat</strong> the base scripts and add the variant-specific one — otherwise the base scripts are lost in that profile.</p>
+</blockquote>
+<hr />
+<h3 id="pipeline"><code>pipeline:</code><a class="headerlink" href="#pipeline" title="Permanent link">&para;</a></h3>
+<p>Controls the optional build pipeline steps. See the <a href="../PIPELINE_REFERENCE/">Pipeline Reference</a> for the full schema of each step's config file.</p>
+<p>Each step accepts either a <strong>scalar</strong> value (<code>true</code>/<code>false</code> to enable or skip the step) or a <strong>mapping</strong> of detailed options.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">presets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">spawnable_aircrafts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/my-spawnables.yaml</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace</span>
+<span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>On top of the scalar form, the <code>presets</code> step accepts a mapping that keeps the radio injection while suppressing the PNG kneeboard plates globally:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">presets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># default true — inject radio presets; false = disable the whole step</span>
+<span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># default true — when false, no kneeboard PNG (KNEEBOARD/&lt;type&gt;/IMAGES/presets[-&lt;coalition&gt;].png) is generated</span>
+</code></pre></div>
+<p>The <code>waypoints</code> step takes the same kind of mapping, for the automatic injection of the mission's own
+bullseye (see <a href="../mission-maker/GUIDE/#automatic-bullseye">The bullseye, injected for you</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">waypoints</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># default true — inject flight plans; false = disable the whole step</span>
+<span class="w">    </span><span class="nt">bullseye</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1"># default true — when false, no BULLSEYE waypoint is added automatically</span>
+</code></pre></div>
+<hr />
+<h3 id="build"><code>build:</code><a class="headerlink" href="#build" title="Permanent link">&para;</a></h3>
+<p>Controls how <code>veaf-tools mission build</code> resolves the VEAF scripts bundle.
+These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--scripts-path</code>) and then persisted here automatically.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dev_mode</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>When <code>true</code>, scripts are loaded from <code>&lt;scripts_path&gt;/build/veaf-scripts.lua</code> instead of the published copy</td>
+</tr>
+<tr>
+<td><code>scripts_path</code></td>
+<td><code>string</code></td>
+<td><em>(user config)</em></td>
+<td>Path to a local VEAF-Mission-Creation-Tools clone; required when <code>dev_mode: true</code></td>
+</tr>
+<tr>
+<td><code>dynamic_loading</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>When <code>true</code>, VEAF <strong>and</strong> mission scripts are loaded from disk at runtime (dynamic mode, dev/test) instead of being embedded in the <code>.miz</code>. Profile-overridable. CLI: <code>--dynamic-mode</code> / <code>--no-dynamic-mode</code> (takes precedence)</td>
+</tr>
+</tbody>
+</table>
+<p><code>scripts_path</code> resolution order (first match wins):
+1. <code>--scripts-path &lt;path&gt;</code> CLI option
+2. <code>mission.yaml build.scripts_path</code>
+3. <code>~/veafmct.yaml scripts_path</code></p>
+<p><code>dynamic_loading</code> resolves as: <code>--dynamic-mode</code>/<code>--no-dynamic-mode</code> (CLI) &gt; <code>build.dynamic_loading</code> (profile-overridable) &gt; <code>false</code>.</p>
+<p><strong>Dynamic loading — DEV vs PROD.</strong> When <code>dynamic_loading: true</code>, scripts load from disk at runtime (so they are not exposed inside the <code>.miz</code>/<code>.trk</code>):</p>
+<ul>
+<li><strong>DEV</strong> (<code>dev_mode: true</code>) — <code>scripts_path</code> must point at a VEAF-Mission-Creation-Tools checkout; the framework loads the <strong>individual</strong> <code>veaf/*.lua</code> via <code>VeafDynamicLoader.lua</code> (edit and re-test without rebuilding).</li>
+<li><strong>PROD</strong> (<code>dev_mode: false</code>) — the framework loads the concatenated <strong>bundle</strong> <code>veaf/veaf-scripts.lua</code> from <code>scripts_path</code> (default <code>&lt;mission&gt;/published</code>, installed by the updater).</li>
+</ul>
+<p>In <strong>both</strong> modes the mission scripts — including your <code>custom_scripts:</code> — are loaded from disk via a <strong>generated</strong> <code>src/scripts/veafDynamicConfig.lua</code> (do not edit it by hand; declare scripts in <code>custom_scripts:</code>). The build errors out if the framework loader is missing under <code>scripts_path</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">build</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dev_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">scripts_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">C:/dev/VEAF-Mission-Creation-Tools</span>
+<span class="w">  </span><span class="nt">dynamic_loading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">dynamic_loading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># dynamic loading for the test profile</span>
+</code></pre></div>
+<blockquote>
+<p>See the <a href="../developer/GUIDE/#developer-mode">Developer Mode</a> section of the Developer Guide for the full workflow.</p>
+</blockquote>
+<hr />
+<h3 id="profiles"><code>profiles:</code><a class="headerlink" href="#profiles" title="Permanent link">&para;</a></h3>
+<p>Named build profiles. Each profile is a set of config overrides that deep-merge onto the base <code>mission.yaml</code> when you pass <code>--profile &lt;name&gt;</code> to <code>veaf-tools mission build</code>. Keys absent from the profile retain their base values. Lists are replaced, not concatenated. The <code>profiles:</code> key itself is never written to the built mission.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>profiles.&lt;name&gt;</code></td>
+<td><code>dict</code></td>
+<td>Any top-level <code>mission.yaml</code> key (e.g. <code>global_log_level</code>, <code>security</code>, <code>pipeline</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Merge rules</strong>
+- Nested dicts are merged recursively (only the keys you specify are overridden).
+- Scalar values and lists are replaced wholesale.
+- <code>profiles:</code> is stripped from the effective config — it is never passed to the Lua generator or the pipeline.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">TEST</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">global_log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+<span class="w">    </span><span class="nt">security</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">SERVER</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">global_log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
+<span class="w">    </span><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Usage:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">SERVER</span>
+</code></pre></div>
+<blockquote>
+<p>If the named profile does not exist in <code>mission.yaml</code>, a warning is emitted and the base config is used unchanged.</p>
+</blockquote>
+<hr />
+<h3 id="build-variants"><code>build_variants:</code><a class="headerlink" href="#build-variants" title="Permanent link">&para;</a></h3>
+<p>A list of build profiles to <strong>emit together</strong>: a single <code>veaf-tools mission build</code> then produces <strong>one <code>.miz</code> per variant</strong> (the "moulinette" goal — typically Modern and Cold-War from one mission folder, the variant being only a <strong>config</strong> difference). Each variant builds the full pipeline with its merged profile (see <a href="#profiles"><code>profiles:</code></a>) and its <code>.miz</code> is suffixed with the variant name (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build_variants</code></td>
+<td><code>list[str]</code></td>
+<td>Profile names (declared under <code>profiles:</code>) to each emit as a distinct <code>.miz</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules</strong>
+- Without <code>build_variants:</code> (or an empty list) → a single <code>.miz</code>, behaviour unchanged.
+- <code>--profile &lt;name&gt;</code> is the <strong>escape hatch</strong>: it forces building a single variant (that profile), unsuffixed — <code>build_variants:</code> is ignored.
+- Variants build in declaration order; each name must match a <code>profiles:</code> profile (otherwise a warning + base config, like <code>--profile</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MODERN</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mission</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span>
+<span class="w">  </span><span class="nt">COLD_WAR</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mission</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
+
+<span class="nt">build_variants</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>          <span class="c"># produces &lt;base&gt;_MODERN.miz AND &lt;base&gt;_COLD_WAR.miz</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># produces only the MODERN variant (unsuffixed)</span>
+</code></pre></div>
+<hr />
+<h2 id="keys-documented-elsewhere">Keys documented elsewhere<a class="headerlink" href="#keys-documented-elsewhere" title="Permanent link">&para;</a></h2>
+<p>Four top-level keys are read by the build but explained on the page that introduced them. They are
+listed here so that reading this reference does not miss them.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>What it does</th>
+<th>Page that documents it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>conversion_profile</code></td>
+<td>Names the adoption profile applied to a third-party mission (imposed modules, incompatibilities refused at validation)</td>
+<td><a href="../mission-maker/CONVERT_OTHER/"><code>convert-other</code></a></td>
+</tr>
+<tr>
+<td><code>config_override</code></td>
+<td>Injects raw configuration values over the ones the profile decided</td>
+<td><a href="../mission-maker/CONVERT_OTHER/"><code>convert-other</code></a></td>
+</tr>
+<tr>
+<td><code>strip_native_triggers</code></td>
+<td>Lists the original mission's load triggers to remove, so the VEAF scripts are not loaded twice</td>
+<td><a href="../mission-maker/CONVERT_OTHER/"><code>convert-other</code></a></td>
+</tr>
+<tr>
+<td><code>dcs_bridge</code></td>
+<td>Injects the <code>dcs-bridge.lua</code> bridge into the <code>.miz</code> (<code>enabled</code>, <code>lua_path</code>) — this is what makes data capture from a running DCS possible</td>
+<td><a href="../mission-maker/GUIDE/">Mission maker's guide</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="index-by-category">Index by category<a class="headerlink" href="#index-by-category" title="Permanent link">&para;</a></h2>
+<p>The six domains match the French version, and every top-level section of this page appears in
+exactly one of them.</p>
+<h3 id="core">Core<a class="headerlink" href="#core" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Section / Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#global_log_level"><code>global_log_level</code></a></td>
+<td>Force a log level on all modules</td>
+</tr>
+<tr>
+<td><a href="#mission"><code>mission:</code></a></td>
+<td>Mission name, era, export path</td>
+</tr>
+<tr>
+<td><a href="#settings"><code>settings:</code></a></td>
+<td>Arbitrary <code>veaf.config.KEY = value</code> pairs</td>
+</tr>
+<tr>
+<td><a href="#veaf_tools"><code>veaf_tools:</code></a></td>
+<td>Version compatibility constraint</td>
+</tr>
+<tr>
+<td><a href="#modules"><code>modules:</code></a></td>
+<td>Enable, disable and configure each Lua module</td>
+</tr>
+<tr>
+<td><a href="#keys-documented-elsewhere">Keys documented elsewhere</a></td>
+<td><code>conversion_profile</code>, <code>config_override</code>, <code>strip_native_triggers</code>, <code>dcs_bridge</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="security_1">Security<a class="headerlink" href="#security_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Section / Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#security"><code>security:</code></a></td>
+<td>Enable/disable security, password hashes</td>
+</tr>
+<tr>
+<td><code>modules.SECURITY</code></td>
+<td><a href="../mission-maker/scripts/veafSecurity/">veafSecurity</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="combat">Combat<a class="headerlink" href="#combat" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Section / Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#modulesqra-cap_missions-combat_missions"><code>modules.QRA</code></a></td>
+<td>QRA definitions</td>
+</tr>
+<tr>
+<td><a href="#modulesqra-cap_missions-combat_missions"><code>cap_missions:</code></a></td>
+<td>CAP mission definitions</td>
+</tr>
+<tr>
+<td><a href="#modulesqra-cap_missions-combat_missions"><code>combat_missions:</code></a></td>
+<td>Combat mission definitions</td>
+</tr>
+<tr>
+<td><code>modules.COMBATZONE</code></td>
+<td><a href="../mission-maker/scripts/veafCombatZone/">veafCombatZone</a></td>
+</tr>
+<tr>
+<td><code>modules.AIRWAVES</code></td>
+<td><a href="../mission-maker/scripts/veafAirWaves/">veafAirWaves</a></td>
+</tr>
+<tr>
+<td><code>modules.CASMISSION</code></td>
+<td><a href="../mission-maker/scripts/veafCasMission/">veafCasMission</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="air-defense">Air Defense<a class="headerlink" href="#air-defense" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Section / Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#third-party-modules"><code>modules.SKYNET</code></a></td>
+<td>Skynet IADS integration</td>
+</tr>
+<tr>
+<td><code>modules.SANCTUARY</code></td>
+<td><a href="../mission-maker/scripts/veafSanctuary/">veafSanctuary</a></td>
+</tr>
+<tr>
+<td><code>modules.MISSILEGUARDIAN</code></td>
+<td><a href="../mission-maker/scripts/veafMissileGuardian/">veafMissileGuardian</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="assets--support">Assets &amp; Support<a class="headerlink" href="#assets--support" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Section / Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>modules.ASSETS</code></td>
+<td><a href="../mission-maker/scripts/veafAssets/">veafAssets</a></td>
+</tr>
+<tr>
+<td><code>modules.CARRIER</code></td>
+<td><a href="../mission-maker/scripts/veafCarrierOperations/">veafCarrierOperations</a></td>
+</tr>
+<tr>
+<td><code>modules.NAMEDPOINTS</code></td>
+<td><a href="../mission-maker/scripts/veafNamedPoints/">veafNamedPoints</a></td>
+</tr>
+<tr>
+<td><code>modules.RADIO</code></td>
+<td><a href="../mission-maker/scripts/veafRadio/">veafRadio</a></td>
+</tr>
+<tr>
+<td><a href="#modulesradiouser_menus--f10-radio-menus-in-yaml"><code>modules.RADIO.user_menus</code></a></td>
+<td>F10 radio menus declared in YAML</td>
+</tr>
+<tr>
+<td><code>modules.SHORTCUTS</code></td>
+<td><a href="../mission-maker/scripts/veafShortcuts/">veafShortcuts</a></td>
+</tr>
+<tr>
+<td><code>modules.ASSIST</code></td>
+<td><a href="../mission-maker/scripts/veafAssist/">veafAssist</a></td>
+</tr>
+<tr>
+<td><a href="#third-party-modules"><code>modules.CTLD</code> / <code>modules.CSAR</code></a></td>
+<td>Cargo transport and pilot recovery (third-party sidecars)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="build-pipeline">Build Pipeline<a class="headerlink" href="#build-pipeline" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Section / Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#pipeline"><code>pipeline:</code></a></td>
+<td>Pipeline step control</td>
+</tr>
+<tr>
+<td><code>pipeline.presets</code></td>
+<td><a href="../PIPELINE_REFERENCE/#pipeline-step-1-presets">presets.yaml schema</a></td>
+</tr>
+<tr>
+<td><code>pipeline.waypoints</code></td>
+<td><a href="../PIPELINE_REFERENCE/#pipeline-step-2-waypoints">waypoints.yaml schema</a></td>
+</tr>
+<tr>
+<td><code>pipeline.spawnable_aircrafts</code> / <code>pipeline.dynamic_slot_templates</code></td>
+<td><a href="../PIPELINE_REFERENCE/#pipeline-step-3-aircraft-groups">aircraft groups schema</a></td>
+</tr>
+<tr>
+<td><code>pipeline.weather</code></td>
+<td><a href="../PIPELINE_REFERENCE/#pipeline-step-6-versions">versions.yaml schema</a></td>
+</tr>
+<tr>
+<td><a href="#custom-scripts"><code>custom_scripts:</code></a></td>
+<td>Custom Lua scripts to include in the mission</td>
+</tr>
+<tr>
+<td><a href="#community-scripts"><code>community_scripts:</code></a></td>
+<td>Bundled community scripts <em>(legacy form)</em></td>
+</tr>
+<tr>
+<td><a href="#build"><code>build:</code></a></td>
+<td>Developer mode and scripts path override</td>
+</tr>
+<tr>
+<td><code>build.dev_mode</code></td>
+<td>Use local Lua bundle instead of published scripts</td>
+</tr>
+<tr>
+<td><code>build.scripts_path</code></td>
+<td>Path to local VEAF-Mission-Creation-Tools clone</td>
+</tr>
+<tr>
+<td><a href="#profiles"><code>profiles:</code></a></td>
+<td>Named build profiles (deep-merge overrides for <code>--profile</code>)</td>
+</tr>
+<tr>
+<td><a href="#build-variants"><code>build_variants:</code></a></td>
+<td>Produce one <code>.miz</code> variant per named profile</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="index-by-module">Index by module<a class="headerlink" href="#index-by-module" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>mission.yaml key</th>
+<th>Doc page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>veafRadio</td>
+<td><code>modules.RADIO</code></td>
+<td><a href="../mission-maker/scripts/veafRadio/#configuration-missionyaml">veafRadio</a></td>
+</tr>
+<tr>
+<td>veafShortcuts</td>
+<td><code>modules.SHORTCUTS</code></td>
+<td><a href="../mission-maker/scripts/veafShortcuts/#configuration-missionyaml">veafShortcuts</a></td>
+</tr>
+<tr>
+<td>veafNamedPoints</td>
+<td><code>modules.NAMEDPOINTS</code></td>
+<td><a href="../mission-maker/scripts/veafNamedPoints/#configuration-missionyaml">veafNamedPoints</a></td>
+</tr>
+<tr>
+<td>veafCarrierOperations</td>
+<td><code>modules.CARRIER</code></td>
+<td><a href="../mission-maker/scripts/veafCarrierOperations/#configuration-missionyaml">veafCarrierOperations</a></td>
+</tr>
+<tr>
+<td>veafAssets</td>
+<td><code>modules.ASSETS</code></td>
+<td><a href="../mission-maker/scripts/veafAssets/#configuration-missionyaml">veafAssets</a></td>
+</tr>
+<tr>
+<td>veafAssist</td>
+<td><code>modules.ASSIST</code></td>
+<td><a href="../mission-maker/scripts/veafAssist/#enable">veafAssist</a></td>
+</tr>
+<tr>
+<td>veafSanctuary</td>
+<td><code>modules.SANCTUARY</code></td>
+<td><a href="../mission-maker/scripts/veafSanctuary/#configuration-missionyaml">veafSanctuary</a></td>
+</tr>
+<tr>
+<td>veafCombatZone</td>
+<td><code>modules.COMBATZONE</code></td>
+<td><a href="../mission-maker/scripts/veafCombatZone/#configuration-missionyaml">veafCombatZone</a></td>
+</tr>
+<tr>
+<td>veafAirWaves</td>
+<td><code>modules.AIRWAVES</code></td>
+<td><a href="../mission-maker/scripts/veafAirWaves/#configuration-missionyaml">veafAirWaves</a></td>
+</tr>
+<tr>
+<td>veafQraManager</td>
+<td><code>modules.QRA</code></td>
+<td><a href="../mission-maker/scripts/veafQraManager/#configuration-missionyaml">veafQraManager</a></td>
+</tr>
+<tr>
+<td>veafCasMission</td>
+<td><code>cap_missions:</code> + <code>combat_missions:</code></td>
+<td><a href="../mission-maker/scripts/veafCasMission/#configuration-missionyaml">veafCasMission</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../PIPELINE_REFERENCE/">Pipeline Reference</a> — YAML schemas for presets, waypoints, spawnables, dynamic-slot-templates, warehouses, spawn-groups, versions</li>
+<li><a href="../mission-maker/GUIDE/">Mission Maker Guide</a> — complete workflow</li>
+<li><a href="../LUA_API_REFERENCE/">Lua API Reference</a> — Lua builder chain API for advanced use</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>

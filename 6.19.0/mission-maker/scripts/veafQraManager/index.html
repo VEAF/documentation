@@ -1,0 +1,4254 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.19.0/mission-maker/scripts/veafQraManager/">
+      
+      
+        <link rel="prev" href="../veafNamedPoints/">
+      
+      
+        <link rel="next" href="../veafRadio/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../../en/mission-maker/scripts/veafQraManager/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>veafQraManager - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#veafqramanager--alerte-de-réaction-rapide-qra" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              veafQraManager
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/mission-maker/scripts/veafQraManager/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer/" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DISCOVER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Découvrir VMCT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TUTORIAL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutoriel — votre première mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Les fiches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Les fiches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/mission-folder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Le dossier de mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/mission-yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mission.yaml et ses modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Le build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/custom-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/radio-presets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préréglages radio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/combat-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zones de combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dynamic-slots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slots dynamiques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/spawnables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groupes spawnables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/weather-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variantes météo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LOGS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Read the DCS logs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_13" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_13" id="__nav_3_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_13_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklists guidées (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Menu MISSIONS (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IA au sol (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dépendances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Activation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#via-missionyaml-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Via mission.yaml (recommandé)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#via-mission-scriptlua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Via mission-script.lua
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-modulesqra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de modules.QRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de definitions[]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menu-radio-de-contrôle-raccourci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio de contrôle (raccourci)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#méthodes-du-builder-veafqra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder VeafQRA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Méthodes du builder VeafQRA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#définition-de-la-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définition de la zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#défenseurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Défenseurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coalition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coalition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comportement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comportement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lien-à-une-base-aérienne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lien à une base aérienne
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messages-et-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages et callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logistique--stock-daéronefs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logistique / Stock d'aéronefs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cycle-de-vie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cycle de vie
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonctionnement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#machine-à-états" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Machine à états
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mise-en-place-dans-léditeur-de-mission-dcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mise en place dans l'éditeur de mission DCS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chaîne-logistique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaîne logistique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-globale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration globale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple--plusieurs-zones-qra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple : plusieurs zones QRA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemple : plusieurs zones QRA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple--stock-limité-avec-ravitaillement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple : stock limité avec ravitaillement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mise à jour & publication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dépendances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Activation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#via-missionyaml-recommandé" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Via mission.yaml (recommandé)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#via-mission-scriptlua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Via mission-script.lua
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration (mission.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-modulesqra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de modules.QRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#champs-de-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champs de definitions[]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menu-radio-de-contrôle-raccourci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu radio de contrôle (raccourci)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#méthodes-du-builder-veafqra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodes du builder VeafQRA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Méthodes du builder VeafQRA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#définition-de-la-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définition de la zone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#défenseurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Défenseurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coalition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coalition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comportement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comportement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lien-à-une-base-aérienne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lien à une base aérienne
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messages-et-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages et callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logistique--stock-daéronefs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logistique / Stock d'aéronefs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cycle-de-vie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cycle de vie
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonctionnement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctionnement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#machine-à-états" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Machine à états
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mise-en-place-dans-léditeur-de-mission-dcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mise en place dans l'éditeur de mission DCS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chaîne-logistique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaîne logistique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-globale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration globale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple--plusieurs-zones-qra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple : plusieurs zones QRA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemple : plusieurs zones QRA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple--stock-limité-avec-ravitaillement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple : stock limité avec ravitaillement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="veafqramanager--alerte-de-réaction-rapide-qra">veafQraManager — Alerte de réaction rapide (QRA)<a class="headerlink" href="#veafqramanager--alerte-de-réaction-rapide-qra" title="Permanent link">&para;</a></h1>
+<p><strong>Module ID:</strong> <code>QRA</code> | <strong>Fichier:</strong> <code>veafQraManager.lua</code></p>
+<hr />
+<h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
+<p>Définit des zones d'espace aérien protégées défendues par des intercepteurs IA. Quand un aéronef hostile entre dans la zone, un vol QRA est scramblé. Une fois la QRA détruite, la zone n'est plus défendue jusqu'à la prochaine réinitialisation (quand tous les intrus ont quitté). Supporte plusieurs groupes, le réarmement, la dépendance à une base aérienne, les messages radio de statut, et une chaîne logistique (stock limité d'aéronefs avec ravitaillement optionnel).</p>
+<hr />
+<h2 id="dépendances">Dépendances<a class="headerlink" href="#dépendances" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>veafRadio</code> — messages de statut (optionnel)</li>
+<li><code>veafSpawn</code> — spawn du groupe IA</li>
+</ul>
+<hr />
+<h2 id="activation">Activation<a class="headerlink" href="#activation" title="Permanent link">&para;</a></h2>
+<h3 id="via-missionyaml-recommandé">Via <code>mission.yaml</code> (recommandé)<a class="headerlink" href="#via-missionyaml-recommandé" title="Permanent link">&para;</a></h3>
+<p><code>veafQraManager.initialize()</code> est appelé automatiquement par le framework.</p>
+<h3 id="via-mission-scriptlua">Via <code>mission-script.lua</code><a class="headerlink" href="#via-mission-scriptlua" title="Permanent link">&para;</a></h3>
+<p>Appeler <code>veafQraManager.initialize()</code> <strong>avant</strong> de déclarer les zones :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafQraManager</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Important :</strong> sans cet appel, les événements <code>S_EVENT_BIRTH</code> et <code>S_EVENT_PLAYER_ENTER_UNIT</code> ne sont pas écoutés. Les pilotes qui rejoignent via un slot dynamique seront invisibles des QRA et ne déclencheront aucune interception.</p>
+</blockquote>
+<p>Chaque zone QRA est ensuite créée et activée individuellement avec <code>:start()</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">myQra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;QRA-North&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-QRA-NORTH&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;MiG-29 QRA&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
+<p>Les définitions QRA vivent <strong>sous <code>modules.QRA</code></strong> (<code>silence_all</code> + <code>definitions:</code>). Le module <code>QRA</code> doit être activé dans <code>modules:</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">silence_all</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = supprimer tous les messages radio QRA globalement</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Nord&quot;</span><span class="w">                  </span><span class="c1"># REQUIS — identifiant et préfixe radio</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span><span class="w">                    </span><span class="c1"># REQUIS — RED | BLUE</span>
+<span class="w">        </span><span class="nt">enemy_coalitions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">BLUE</span><span class="p p-Indicator">]</span><span class="w">          </span><span class="c1"># coalitions qui déclenchent le scramble</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-NORD&quot;</span><span class="w">    </span><span class="c1"># zone de trigger DCS définissant l&#39;espace aérien</span>
+<span class="w">        </span><span class="nt">zone_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">               </span><span class="c1"># rayon en mètres (alternative à trigger_zone)</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span><span class="w">                   </span><span class="c1"># noms de groupes DCS à scrambler (inconditionnels)</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Vol</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">MiG-29&quot;</span>
+<span class="w">        </span><span class="nt">groups_by_enemy_count</span><span class="p">:</span><span class="w">           </span><span class="c1"># réponse proportionnelle au nombre d&#39;intrus</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># scramble quand 1 intrus détecté</span>
+<span class="w">            </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Duo-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Duo-2&quot;</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># pool de groupes</span>
+<span class="w">            </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># combien de groupes choisir dans le pool</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">            </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Vol-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Vol-2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">            </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">        </span><span class="nt">delay_before_rearming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># secondes avant réinitialisation après départ des intrus</span>
+<span class="w">        </span><span class="nt">delay_before_activating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">      </span><span class="c1"># secondes après :start() avant mise en ligne de la QRA</span>
+<span class="w">        </span><span class="nt">react_on_helicopters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = déclencher aussi sur les hélicoptères ennemis</span>
+<span class="w">        </span><span class="nt">airport_link</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi&quot;</span><span class="w">           </span><span class="c1"># la QRA se désactive si cette base est détruite</span>
+</code></pre></div>
+<h3 id="champs-de-modulesqra">Champs de <code>modules.QRA</code><a class="headerlink" href="#champs-de-modulesqra" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>silence_all</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Supprimer tous les messages radio QRA globalement</td>
+</tr>
+<tr>
+<td><code>definitions</code></td>
+<td>objet[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Liste des définitions de zones QRA</td>
+</tr>
+</tbody>
+</table>
+<h3 id="champs-de-definitions">Champs de <code>definitions[]</code><a class="headerlink" href="#champs-de-definitions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Requis</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>—</td>
+<td>Oui</td>
+<td>Identifiant interne et préfixe radio</td>
+</tr>
+<tr>
+<td><code>coalition</code></td>
+<td>string</td>
+<td>—</td>
+<td>Oui</td>
+<td>Coalition défensive : <code>RED</code> ou <code>BLUE</code></td>
+</tr>
+<tr>
+<td><code>enemy_coalitions</code></td>
+<td>string[]</td>
+<td><em>(opposée)</em></td>
+<td>Non</td>
+<td>Coalitions qui déclenchent un scramble</td>
+</tr>
+<tr>
+<td><code>trigger_zone</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Nom de la zone de trigger DCS</td>
+</tr>
+<tr>
+<td><code>zone_radius</code></td>
+<td>entier</td>
+<td>—</td>
+<td>Non</td>
+<td>Rayon de zone en mètres (sans zone de trigger)</td>
+</tr>
+<tr>
+<td><code>simple_groups</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Noms de groupes DCS à toujours scrambler</td>
+</tr>
+<tr>
+<td><code>groups_by_enemy_count</code></td>
+<td>objet[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Règles de scramble proportionnel</td>
+</tr>
+<tr>
+<td><code>groups_by_enemy_count[].enemy_count</code></td>
+<td>entier</td>
+<td>—</td>
+<td>Oui</td>
+<td>Nombre d'intrus activant cette règle</td>
+</tr>
+<tr>
+<td><code>groups_by_enemy_count[].groups</code></td>
+<td>string[]</td>
+<td>—</td>
+<td>Oui</td>
+<td>Pool de noms de groupes</td>
+</tr>
+<tr>
+<td><code>groups_by_enemy_count[].random_pick</code></td>
+<td>entier</td>
+<td><code>1</code></td>
+<td>Non</td>
+<td>Combien de groupes choisir dans le pool</td>
+</tr>
+<tr>
+<td><code>delay_before_rearming</code></td>
+<td>entier</td>
+<td><code>0</code></td>
+<td>Non</td>
+<td>Secondes avant réinitialisation après départ des intrus</td>
+</tr>
+<tr>
+<td><code>delay_before_activating</code></td>
+<td>entier</td>
+<td><code>0</code></td>
+<td>Non</td>
+<td>Secondes après le démarrage avant mise en ligne</td>
+</tr>
+<tr>
+<td><code>react_on_helicopters</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Déclencher aussi sur les hélicoptères ennemis</td>
+</tr>
+<tr>
+<td><code>airport_link</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Nom de base aérienne DCS liée — QRA hors ligne si détruite</td>
+</tr>
+<tr>
+<td><code>active_at_start</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td><code>false</code> : la QRA est déclarée mais <strong>pas armée</strong> au démarrage — elle attend un <code>qra.start</code> (menu radio) ou un appel script</td>
+</tr>
+<tr>
+<td><code>radio_menu</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Générer automatiquement un sous-menu radio F10 de contrôle de cette QRA (voir ci-dessous)</td>
+</tr>
+<tr>
+<td><code>radio_menu_restrict_to_group</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Nom d'un groupe DCS ; le sous-menu généré n'apparaît que pour ce groupe</td>
+</tr>
+</tbody>
+</table>
+<h3 id="menu-radio-de-contrôle-raccourci">Menu radio de contrôle (raccourci)<a class="headerlink" href="#menu-radio-de-contrôle-raccourci" title="Permanent link">&para;</a></h3>
+<p>Les commandes de démarrage/arrêt d'une QRA <strong>n'existent pas</strong> dans le menu radio VEAF standard (contrairement à CombatZone ou Carrier). Pour donner au Mission Master un contrôle F10 sur une QRA, ajoutez <code>radio_menu: true</code> à sa définition : le framework génère automatiquement un sous-menu nommé d'après la QRA, avec les commandes « Démarrer &lt;nom&gt; » et « Arrêter &lt;nom&gt; ».</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Nord&quot;</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-NORD&quot;</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">Nord&quot;</span>
+<span class="w">        </span><span class="nt">radio_menu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                         </span><span class="c1"># génère le sous-menu de contrôle</span>
+<span class="w">        </span><span class="nt">radio_menu_restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">  </span><span class="c1"># optionnel : réserver le sous-menu à ce groupe DCS</span>
+</code></pre></div>
+<p>C'est le <strong>mécanisme 1</strong> (raccourci par module). Pour un menu MM personnalisé, structuré ou combinant plusieurs actions (QRA, AirWaves, flags, messages, Lua), utilisez le <strong>mécanisme 2</strong> décrit dans <a href="../veafRadio/#radio-menus-in-yaml">veafRadio → Menus radio en YAML</a>.</p>
+<h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-Sud&quot;</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-SUD&quot;</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Interception</span><span class="nv"> </span><span class="s">Su-27&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="méthodes-du-builder-veafqra">Méthodes du builder VeafQRA<a class="headerlink" href="#méthodes-du-builder-veafqra" title="Permanent link">&para;</a></h2>
+<p>Tous les setters retournent <code>self</code> et peuvent être chaînés. Appeler <code>:start()</code> en fin de chaîne pour activer.</p>
+<h3 id="identification">Identification<a class="headerlink" href="#identification" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setName(name)</code></td>
+<td>Identifiant interne — utilisé comme préfixe des messages si aucune description n'est définie</td>
+</tr>
+<tr>
+<td><code>:setDescription(text)</code></td>
+<td>Libellé lisible utilisé dans les messages radio (défaut : le nom)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="définition-de-la-zone">Définition de la zone<a class="headerlink" href="#définition-de-la-zone" title="Permanent link">&para;</a></h3>
+<p>Utiliser l'une des options suivantes :</p>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setTriggerZone(zoneName)</code></td>
+<td>Nom de la zone trigger DCS (recommandé)</td>
+</tr>
+<tr>
+<td><code>:setZoneCenter(vec3)</code></td>
+<td>Centre manuel (vec3 DCS) — à combiner avec <code>:setZoneRadius()</code></td>
+</tr>
+<tr>
+<td><code>:setZoneCenterFromCoordinates(coordStr)</code></td>
+<td>Centre depuis une chaîne <code>"lat,lon"</code></td>
+</tr>
+<tr>
+<td><code>:setZoneRadius(meters)</code></td>
+<td>Rayon en mètres (quand on n'utilise pas de zone trigger)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="défenseurs">Défenseurs<a class="headerlink" href="#défenseurs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:addGroup(name)</code></td>
+<td>Ajouter un groupe DCS à scrambler (appeler plusieurs fois pour plusieurs groupes)</td>
+</tr>
+<tr>
+<td><code>:addRandomGroup(groups, number, bias)</code></td>
+<td>Piocher aléatoirement <code>number</code> groupes dans une liste</td>
+</tr>
+<tr>
+<td><code>:setGroupsToDeployByEnemyQuantity(n, groups)</code></td>
+<td>Adapter la réponse : déployer <code>groups</code> quand <code>n</code> ennemis sont dans la zone</td>
+</tr>
+<tr>
+<td><code>:setRandomGroupsToDeployByEnemyQuantity(n, groups, number, bias)</code></td>
+<td>Adaptation aléatoire au nombre d'ennemis</td>
+</tr>
+</tbody>
+</table>
+<h3 id="coalition">Coalition<a class="headerlink" href="#coalition" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setCoalition(side)</code></td>
+<td>Coalition qui possède cette QRA (ex. <code>coalition.side.RED</code>)</td>
+</tr>
+<tr>
+<td><code>:addEnnemyCoalition(side)</code></td>
+<td>Ajouter une coalition ennemie (défaut : opposée à la coalition défendante)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="comportement">Comportement<a class="headerlink" href="#comportement" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setSilent(bool)</code></td>
+<td>Supprimer tous les messages radio de cette QRA</td>
+</tr>
+<tr>
+<td><code>:setDrawZone(bool)</code></td>
+<td>Afficher la zone protégée sur la carte</td>
+</tr>
+<tr>
+<td><code>:setReactOnHelicopters()</code></td>
+<td>Déclencher aussi sur les hélicoptères ennemis (avions seulement par défaut)</td>
+</tr>
+<tr>
+<td><code>:setDelayBeforeRearming(seconds)</code></td>
+<td>Délai avant réinitialisation après départ de tous les intrus (<code>-1</code> = pas de délai)</td>
+</tr>
+<tr>
+<td><code>:setNoNeedToLeaveZoneBeforeRearming()</code></td>
+<td>Autoriser le réarmement même si des ennemis sont encore dans la zone</td>
+</tr>
+<tr>
+<td><code>:setResetWhenLeavingZone()</code></td>
+<td>Réinitialiser immédiatement quand tous les ennemis quittent la zone</td>
+</tr>
+<tr>
+<td><code>:setDelayBeforeActivating(seconds)</code></td>
+<td>Délai avant mise en ligne après <code>:start()</code></td>
+</tr>
+<tr>
+<td><code>:setMinimumAltitudeInFeet(feet)</code></td>
+<td>Altitude minimale de l'ennemi pour déclencher un scramble</td>
+</tr>
+<tr>
+<td><code>:setMaximumAltitudeInFeet(feet)</code></td>
+<td>Altitude maximale de l'ennemi pour déclencher un scramble</td>
+</tr>
+<tr>
+<td><code>:setRespawnDefaultOffset(latDelta, lonDelta)</code></td>
+<td>Décalage de spawn depuis le centre de la zone (mètres, lat/lon) — premier nombre vers le nord, second vers l'est ; voir <a href="../veafAirWaves/#spawn-offset">veafAirWaves</a></td>
+</tr>
+<tr>
+<td><code>:setRespawnRadius(meters)</code></td>
+<td>Rayon de dispersion autour du point de spawn (minimum 250 m)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lien-à-une-base-aérienne">Lien à une base aérienne<a class="headerlink" href="#lien-à-une-base-aérienne" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setAirportLink(name)</code></td>
+<td>Lier à une base — la QRA passe hors ligne si la base est détruite</td>
+</tr>
+<tr>
+<td><code>:setAirportMinLifePercent(pct)</code></td>
+<td>Santé minimale de la base pour que la QRA reste active (0–1, défaut <code>0,9</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="messages-et-callbacks">Messages et callbacks<a class="headerlink" href="#messages-et-callbacks" title="Permanent link">&para;</a></h3>
+<p>Les chaînes de message acceptent <code>%s</code> comme token pour le nom/la description de la QRA. Les callbacks reçoivent l'instance QRA en premier argument.</p>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Déclencheur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setMessageStart(text)</code> / <code>:setOnStart(fn)</code></td>
+<td>La QRA se met en ligne</td>
+</tr>
+<tr>
+<td><code>:setMessageDeploy(text)</code> / <code>:setOnDeploy(fn)</code></td>
+<td>La QRA est scramblée</td>
+</tr>
+<tr>
+<td><code>:setMessageDestroyed(text)</code> / <code>:setOnDestroyed(fn)</code></td>
+<td>La QRA est abattue</td>
+</tr>
+<tr>
+<td><code>:setMessageReady(text)</code> / <code>:setOnReady(fn)</code></td>
+<td>La QRA est prête après réarmement</td>
+</tr>
+<tr>
+<td><code>:setMessageOut(text)</code> / <code>:setOnOut(fn)</code></td>
+<td>Plus d'aéronefs disponibles</td>
+</tr>
+<tr>
+<td><code>:setMessageResupplied(text)</code> / <code>:setOnResupplied(fn)</code></td>
+<td>Ravitaillement logistique terminé</td>
+</tr>
+<tr>
+<td><code>:setMessageAirbaseDown(text)</code> / <code>:setOnAirbaseDown(fn)</code></td>
+<td>Base aérienne liée détruite</td>
+</tr>
+<tr>
+<td><code>:setMessageAirbaseUp(text)</code> / <code>:setOnAirbaseUp(fn)</code></td>
+<td>Base aérienne liée restaurée</td>
+</tr>
+<tr>
+<td><code>:setMessageStop(text)</code> / <code>:setOnStop(fn)</code></td>
+<td>La QRA passe hors ligne</td>
+</tr>
+</tbody>
+</table>
+<h3 id="logistique--stock-daéronefs">Logistique / Stock d'aéronefs<a class="headerlink" href="#logistique--stock-daéronefs" title="Permanent link">&para;</a></h3>
+<p>Par défaut, la QRA dispose d'un nombre illimité d'aéronefs. Utiliser ces méthodes pour simuler un stock fini avec ravitaillement optionnel :</p>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:setQRAcount(n)</code></td>
+<td>Nombre total de groupes disponibles (<code>-1</code> = illimité)</td>
+</tr>
+<tr>
+<td><code>:setQRAmaxCount(n)</code></td>
+<td>Nombre maximum de groupes actifs simultanément (<code>-1</code> = illimité)</td>
+</tr>
+<tr>
+<td><code>:setQRAresupplyDelay(seconds)</code></td>
+<td>Secondes avant le déclenchement d'un cycle de ravitaillement</td>
+</tr>
+<tr>
+<td><code>:setQRAmaxResupplyCount(n)</code></td>
+<td>Nombre maximum de cycles de ravitaillement (<code>-1</code> = illimité)</td>
+</tr>
+<tr>
+<td><code>:setQRAminCountforResupply(n)</code></td>
+<td>Stock restant qui déclenche un ravitaillement</td>
+</tr>
+<tr>
+<td><code>:setResupplyAmount(n)</code></td>
+<td>Groupes ajoutés par cycle de ravitaillement (défaut <code>1</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cycle-de-vie">Cycle de vie<a class="headerlink" href="#cycle-de-vie" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:start()</code></td>
+<td>Activer la QRA — diffuse <code>messageStart</code> et démarre le watchdog</td>
+</tr>
+<tr>
+<td><code>:stop(silent)</code></td>
+<td>Désactiver la QRA — diffuse <code>messageStop</code> sauf si <code>silent</code> vaut <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="fonctionnement">Fonctionnement<a class="headerlink" href="#fonctionnement" title="Permanent link">&para;</a></h2>
+<p>Une zone QRA surveille un volume d'espace aérien défini par une trigger zone DCS. Dès qu'un aéronef hostile y pénètre, la QRA décolle — à condition d'être prête. Quand la QRA est abattue, la zone entre en état de réarmement ; elle redevient active une fois les ennemis partis et le minuteur de réarmement expiré.</p>
+<h3 id="machine-à-états">Machine à états<a class="headerlink" href="#machine-à-états" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>STOP ──start()──► READY ──(intrus entre)──► ACTIVE ──(QRA détruite)──► DEAD
+  ▲                 ▲                                                      │
+  │                 └──────────(tous les intrus partis + délai réarm.)─────┘
+  │                                                     │
+  └──────────────────────────stop()────────────────────►┘
+</code></pre></div>
+<p>États complets :</p>
+<table>
+<thead>
+<tr>
+<th>État</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>STOP</code></td>
+<td>Inactive — <code>stop()</code> a été appelé ou la QRA n'a jamais démarré</td>
+</tr>
+<tr>
+<td><code>READY</code></td>
+<td>Armée et en surveillance d'intrus</td>
+</tr>
+<tr>
+<td><code>READY_WAITINGFORMORE</code></td>
+<td>QRA décollée ; des intrus supplémentaires ont déclenché le déploiement de groupes additionnels</td>
+</tr>
+<tr>
+<td><code>ACTIVE</code></td>
+<td>La QRA est en vol et en interception</td>
+</tr>
+<tr>
+<td><code>DEAD</code></td>
+<td>La QRA a été détruite ; en attente des conditions de réarmement</td>
+</tr>
+<tr>
+<td><code>WILLREARM</code></td>
+<td>Le minuteur de réarmement est en cours</td>
+</tr>
+<tr>
+<td><code>OUT</code></td>
+<td>Plus d'aéronefs disponibles (stock épuisé)</td>
+</tr>
+<tr>
+<td><code>NOAIRBASE</code></td>
+<td>La base aérienne liée a été détruite — la QRA se met en retrait</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mise-en-place-dans-léditeur-de-mission-dcs">Mise en place dans l'éditeur de mission DCS<a class="headerlink" href="#mise-en-place-dans-léditeur-de-mission-dcs" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Créez une trigger zone</strong> — dessinez l'espace aérien à protéger. Donnez-lui un nom mémorable, par exemple <code>ZONE-QRA-NORTH</code>.</li>
+<li><strong>Placez le groupe QRA</strong> — créez le groupe d'aéronefs qui décollera. Mettez-le en <strong>Activation différée</strong> (<em>Late Activation</em>) pour qu'il n'apparaisse pas au démarrage (VEAF gère l'activation). Donnez au groupe un nom distinctif, par exemple <code>MiG-29 QRA North</code>.</li>
+<li><strong>Reliez le tout</strong> — l'approche recommandée est <code>mission.yaml</code> (aucun Lua requis) ; l'équivalent <code>mission-script.lua</code> est donné ensuite.</li>
+</ol>
+<p><strong>Via <code>mission.yaml</code></strong> (recommandé) — ajoutez la définition sous <code>modules.QRA</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-North&quot;</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-QRA-NORTH&quot;</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">North&quot;</span>
+</code></pre></div>
+<blockquote>
+<p>Une définition listée sous <code>definitions:</code> est démarrée automatiquement au chargement de la mission. Pour retarder sa mise en ligne, utilisez <code>delay_before_activating</code> ; pour la déclarer <strong>sans l'armer</strong>, mettez <code>active_at_start: false</code> (elle peut ensuite être armée par une commande radio <code>qra.start</code> ou un script) ; pour la supprimer complètement, retirez-la de <code>definitions:</code>.</p>
+</blockquote>
+<p><strong>Via <code>mission-script.lua</code></strong> — appelez le builder après <code>veafQraManager.initialize()</code>, puis <code>:start()</code> explicitement :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;QRA-North&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-QRA-NORTH&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;MiG-29 QRA North&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
+</code></pre></div>
+<p>C'est tout — aucune condition de trigger, aucune fonction planifiée. VEAF gère la détection, le décollage et le réarmement automatiquement.</p>
+<h3 id="chaîne-logistique">Chaîne logistique<a class="headerlink" href="#chaîne-logistique" title="Permanent link">&para;</a></h3>
+<p>Par défaut, une QRA dispose d'aéronefs en nombre illimité. Le système de logistique permet de modéliser un stock d'aérodrome fini avec ravitaillement optionnel — utile pour les missions persistantes de longue durée :</p>
+<table>
+<thead>
+<tr>
+<th>Paramètre</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setQRAcount(n)</code></td>
+<td>Nombre total de groupes disponibles (sert de stock courant)</td>
+</tr>
+<tr>
+<td><code>setQRAmaxCount(n)</code></td>
+<td>Plafond strict de groupes actifs simultanément</td>
+</tr>
+<tr>
+<td><code>setQRAresupplyDelay(s)</code></td>
+<td>Secondes à attendre avant le démarrage d'un ravitaillement</td>
+</tr>
+<tr>
+<td><code>setQRAminCountforResupply(n)</code></td>
+<td>Niveau de stock qui déclenche un ravitaillement</td>
+</tr>
+<tr>
+<td><code>setQRAmaxResupplyCount(n)</code></td>
+<td>Nombre maximum de cycles de ravitaillement (<code>-1</code> = illimité)</td>
+</tr>
+<tr>
+<td><code>setResupplyAmount(n)</code></td>
+<td>Groupes ajoutés par cycle de ravitaillement (défaut <code>1</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Voyez cela comme un entrepôt : <code>QRAcount</code> est ce qui est en rayon, <code>resupplyDelay</code> le délai de livraison du camion, et <code>minCountforResupply</code> le point de recommande.</p>
+<hr />
+<h2 id="configuration-globale">Configuration globale<a class="headerlink" href="#configuration-globale" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Constante</th>
+<th>Valeur par défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafQraManager.WATCHDOG_DELAY</code></td>
+<td><code>5</code></td>
+<td>Intervalle de vérification en secondes</td>
+</tr>
+<tr>
+<td><code>veafQraManager.MINIMUM_LIFE_FOR_QRA_IN_PERCENT</code></td>
+<td><code>10</code></td>
+<td>Vie minimale des unités QRA avant destruction</td>
+</tr>
+<tr>
+<td><code>veafQraManager.DEFAULT_airbaseMinLifePercent</code></td>
+<td><code>0,9</code></td>
+<td>Seuil de santé par défaut de la base</td>
+</tr>
+<tr>
+<td><code>veafQraManager.AllSilence</code></td>
+<td><code>false</code></td>
+<td>Supprimer globalement tous les messages QRA</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exemple--plusieurs-zones-qra">Exemple : plusieurs zones QRA<a class="headerlink" href="#exemple--plusieurs-zones-qra" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zone nord défendue par des MiG-29, liée à la base de Beslan</span>
+<span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;QRA-NORTH&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-NORTH-DEFENSE&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;MiG-29S QRA North-1&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;MiG-29S QRA North-2&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setAirportLink</span><span class="p">(</span><span class="s2">&quot;Beslan&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setDelayBeforeRearming</span><span class="p">(</span><span class="mi">600</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
+
+<span class="c1">-- Zone sud, toujours active, silencieuse</span>
+<span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;QRA-SOUTH&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-SOUTH-DEFENSE&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;Su-27 QRA South&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setSilent</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="exemple--stock-limité-avec-ravitaillement">Exemple : stock limité avec ravitaillement<a class="headerlink" href="#exemple--stock-limité-avec-ravitaillement" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- 4 groupes au total, max 2 actifs simultanément, +1 groupe toutes les 30 min</span>
+<span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;QRA-LIMITED&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setTriggerZone</span><span class="p">(</span><span class="s2">&quot;ZONE-LIMITED&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;F-15C QRA 1&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">addGroup</span><span class="p">(</span><span class="s2">&quot;F-15C QRA 2&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setQRAcount</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setQRAmaxCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setQRAresupplyDelay</span><span class="p">(</span><span class="mi">1800</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">setResupplyAmount</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../veafAirWaves/">veafAirWaves</a> — système d'attaque IA par vagues (vs QRA qui est défensif)</li>
+<li><a href="../../../LUA_API_REFERENCE/">Référence API Lua</a> — API complète de <code>veafQraManager</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>
