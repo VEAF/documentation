@@ -3054,7 +3054,7 @@ needed. If you want the overview first, read
 <p>Allow an hour, half of it inside DCS.</p>
 <hr />
 <h2 id="step-0-install">Step 0 — Install the tools<a class="headerlink" href="#step-0-install" title="Permanent link">&para;</a></h2>
-<p>Create an empty folder for your mission — this will be your Git repository. Download
+<p>Create an empty folder for your mission. Download
 <code>veaf-tools-updater.exe</code> from the
 <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/releases/tag/published-latest">latest release</a>,
 drop it in, and run it:</p>
@@ -3077,16 +3077,27 @@ the other differences between the two shells:
 <p>prints the installed version.</p>
 <hr />
 <h2 id="step-1-prepare">Step 1 — Create the mission folder<a class="headerlink" href="#step-1-prepare" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">prepare</span> <span class="p">-</span><span class="n">-template</span> <span class="n">minimal</span> <span class="p">-</span><span class="n">-theatre</span> <span class="n">Caucasus</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">prepare</span> <span class="p">-</span><span class="n">-template</span> <span class="n">standard</span> <span class="p">-</span><span class="n">-theatre</span> <span class="n">Caucasus</span>
 </code></pre></div>
-<p><strong>What should happen</strong>: twelve files are laid down, and the message ends with</p>
+<p><strong>What should happen</strong>: twelve files are laid down, plus <code>ctld-config.yaml</code>, and the message ends
+with</p>
 <blockquote>
 <p>Mission folder ready: … Next: place/extract your .miz into src/mission, then <code>veaf-tools validate</code>
 and <code>veaf-tools build</code>.</p>
 </blockquote>
 <p><code>--theatre Caucasus</code> lays down a blank Caucasus mission in <code>src/mission</code>: you can build right away,
-with no DCS round-trip. <code>--template minimal</code> picks the smallest module set; <code>standard</code> and <code>full</code>
-turn on more.</p>
+with no DCS round-trip.</p>
+<p><code>--template standard</code> picks this tutorial's module set: the modules you will need are already
+written into <code>mission.yaml</code>, the ones that require configuration being shipped <strong>commented out</strong>,
+ready to enable. <code>minimal</code> lays down fewer — too few for step 8, where you would have a block to
+write from scratch; <code>full</code> lays down more.</p>
+<div class="admonition note">
+<p class="admonition-title">Re-running <code>prepare</code> later</p>
+<p>On a folder that is already prepared, <code>prepare</code> asks file by file whether to <strong>replace</strong> or
+<strong>keep</strong> — with a "replace all" and a "keep all". Answer <em>keep</em> for <code>mission.yaml</code>: it is the
+file you edit by hand, and the only one whose content is yours. The template is then not
+applied, and the tool says so.</p>
+</div>
 <p><strong>How to tell</strong>: <code>src/mission/mission</code> exists, and <code>mission.yaml</code> is at the root.</p>
 <p>→ <a href="../concepts/mission-folder/">card: the mission folder</a></p>
 <hr />
@@ -3108,7 +3119,51 @@ turn on more.</p>
 <span class="w">  </span><span class="nt">SPAWN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">SHORTCUTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># built-in aliases (-shilka, -sa2, …)</span>
 <span class="w">  </span><span class="nt">INTERPRETER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># ── Features ──</span>
+<span class="w">  </span><span class="nt">NAMEDPOINTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">MOVE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">GRASS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">WEATHER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">REMOTE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">AIRBASES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="c1"># ── Combat ──</span>
+<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># ground units AI behaviour (required by CASMISSION)</span>
+<span class="w">  </span><span class="nt">CASMISSION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># `_cas` marker (no config)</span>
+<span class="w">  </span><span class="nt">TRANSPORTMISSION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># `_transport` marker (no config)</span>
+<span class="w">  </span><span class="nt">CARRIER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># carrier-operations radio menus</span>
+<span class="w">  </span><span class="c1">#   COMBATZONE:</span>
+<span class="w">  </span><span class="c1">#     enabled: true</span>
+<span class="w">  </span><span class="c1">#     combat_zones:</span>
+<span class="w">  </span><span class="c1">#       - type: zone</span>
+<span class="w">  </span><span class="c1">#         zone_name: CZ-Alpha</span>
+<span class="w">  </span><span class="c1">#         friendly_name: Alpha Zone</span>
+<span class="w">  </span><span class="c1">#         training: false</span>
 </code></pre></div>
+<p>(A commented <code>QRA</code> block and a <code># ── Community ──</code> section follow — step 8 and step 6 come back to
+those.)</p>
+<p>Three forms of module live side by side, and the difference matters:</p>
+<table>
+<thead>
+<tr>
+<th>Form</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNITS:</code> — nothing after the colon</td>
+<td>infrastructure, always there, nothing to configure</td>
+</tr>
+<tr>
+<td><code>RADIO: true</code></td>
+<td>a switch: the module works as it is</td>
+</tr>
+<tr>
+<td><code>#   COMBATZONE:</code> — a commented block</td>
+<td>the module needs configuration; the example is ready to uncomment</td>
+</tr>
+</tbody>
+</table>
 <p>Change the name, and <strong>switch security off while you learn</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My-First-Flight</span>
@@ -3116,8 +3171,14 @@ turn on more.</p>
 <span class="nt">security</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>Everything else in the file is commented out: those are examples ready to uncomment, not active
-configuration.</p>
+<p>Then, <strong>if you have no SRS server</strong>, switch text to speech off right away: find the <code>STTS: true</code>
+line under <code># ── Community ──</code> and set it to <code>false</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">STTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>Without SRS, STTS has nothing to do — no reason to have it on while you learn. If you do not know
+what SRS is, you do not have it: set <code>false</code>.</p>
+<p>The rest of the file — section headers, <code>mission:</code> options, blocks for modules that need
+configuration — is commented out: those are examples ready to uncomment, not active configuration.</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>security: disabled: true</code> is not optional here</p>
 <p>VEAF security is <strong>on</strong> by default: most marker commands and combat-zone activations then need
@@ -3143,8 +3204,19 @@ Validation: 0 errors, 3 warnings.</p>
 <h2 id="step-4-build">Step 4 — Build<a class="headerlink" href="#step-4-build" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="n">My-First-Flight</span><span class="p">.</span><span class="n">miz</span>
 </code></pre></div>
-<p><strong>What should happen</strong>: the build announces the generation of <code>veaf-config.lua</code>, the trigger
-injection, then the pipeline steps. It ends with "Processing complete!".</p>
+<p><strong>What should happen</strong>: the build announces the generation of <code>veaf-config.lua</code>, <strong>the list of
+modules it read</strong>, the trigger injection, then the pipeline steps. It ends with "Processing
+complete!".</p>
+<blockquote>
+<p>Active VEAF modules (22): AIRBASES, CACHE, CARRIER, CASMISSION, COMMANDS, CSAR, CTLD, EVENTS,
+GRASS, GROUNDAI, INTERPRETER, MARKERS, MOVE, NAMEDPOINTS, RADIO, REMOTE, SHORTCUTS, SPAWN, TIME,
+TRANSPORTMISSION, UNITS, WEATHER</p>
+</blockquote>
+<p>That line is your acknowledgement of receipt: a module you have just added and which is not on it
+was not read. Modules that carry a list show how many entries they hold — you will see
+<code>COMBATZONE (1)</code> appear at step 8.</p>
+<p>The total depends on what you switched off: 22 here because <code>STTS</code> went to <code>false</code> at step 2, 23 if
+you left it on.</p>
 <p><strong>How to tell</strong>: <strong>two</strong> files appeared.</p>
 <table>
 <thead>
@@ -3171,18 +3243,26 @@ injection, then the pipeline steps. It ends with "Processing complete!".</p>
 <p>The scripts and the output file are resolved from the current directory. Run from elsewhere and
 it looks for <code>published/</code> in the wrong place.</p>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Always spell out the <code>.miz</code></p>
+<p>The name you give is kept <strong>only</strong> if it ends in <code>.miz</code>. <code>build My-First-Flight</code> — no extension
+— and a bare <code>build</code> both write <code>My-First-Flight_YYYYMMDD.miz</code>, with today's date. Handy for
+archiving a version, confusing during the tutorial: you would go looking for "the one at the
+root" and not recognise it. Details: <a href="../concepts/build/">card: the build</a>.</p>
+</div>
 <p>This <code>.miz</code> has <strong>no player slot</strong> yet: do not try to fly it, that is what the next step is for.
 What you have just checked is that the build chain works end to end, without launching DCS once.</p>
 <hr />
 <h2 id="step-5-slot">Step 5 — Add a player slot<a class="headerlink" href="#step-5-slot" title="Permanent link">&para;</a></h2>
 <p>The blank mission has nobody in it. This is where DCS enters.</p>
-<p>In the <strong>DCS Mission Editor</strong>, create a Caucasus mission with a flyable flight:</p>
+<p><strong>Do not create a new mission</strong>: open the one you have just built. In the <strong>DCS Mission Editor</strong>,
+open <code>My-First-Flight.miz</code>, at the root of your mission folder, and add a flyable flight to it:</p>
 <ul>
 <li>an aircraft you own, blue coalition;</li>
 <li><strong>on the ramp, engines cold</strong> — an air start makes the later checks awkward;</li>
 <li>skill <strong>Client</strong>.</li>
 </ul>
-<p>Save it as <code>My-First-Flight.miz</code>, <strong>in your mission folder</strong>, then back to the console:</p>
+<p>Save it (same name, same place), then back to the console:</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="n">My-First-Flight</span><span class="p">.</span><span class="n">miz</span>
 <span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">validate</span>
 <span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="n">My-First-Flight</span><span class="p">.</span><span class="n">miz</span>
@@ -3190,7 +3270,8 @@ What you have just checked is that the build chain works end to end, without lau
 <p><code>extract</code> replaces the blank <code>src/mission</code> with your real mission; <code>build</code> rebuilds it with the VEAF
 scripts. This is the loop you will live in: <strong>editor → <code>extract</code> → <code>build</code></strong>. It is repeatable as
 often as you like — the build strips the VEAF triggers before injecting fresh ones, so nothing piles
-up.</p>
+up. That is why you reopen the built <code>.miz</code> rather than making another one: your editor work and the
+build's work stack up without treading on each other.</p>
 <p><strong>How to tell</strong>: <code>validate</code> no longer complains about the missing player slot.</p>
 <div class="admonition tip">
 <p class="admonition-title">Which file to reopen in the editor</p>
@@ -3202,6 +3283,9 @@ build rewrites. The variants under <code>missions/</code> are products — do no
 <p>Launch <code>My-First-Flight.miz</code> in DCS, take the slot, and open the radio menu: <strong>F10 "Other"</strong>.</p>
 <p><strong>What you should see</strong>: a <strong>VEAF</strong> entry. It exists only because <code>RADIO: true</code> is in your
 <code>mission.yaml</code>.</p>
+<p>The menu holds more than that — the <code>standard</code> template also turns on CTLD (helicopter logistics and
+transport) and CSAR (downed-pilot recovery). This tutorial uses the VEAF entry alone; you can switch
+the others off the way you did STTS at step 2, by setting their line to <code>false</code> in <code>mission.yaml</code>.</p>
 <p>Then try a marker: drop a marker on the F10 map and give it the alias</p>
 <div class="highlight"><pre><span></span><code>-shilka
 </code></pre></div>
@@ -3213,8 +3297,11 @@ the security you switched off at step 2. The long form of the same command is
 <p>→ <a href="../../ALIASES/">marker aliases</a> · <a href="../scripts/veafSpawn/">veafSpawn</a></p>
 <hr />
 <h2 id="step-7-presets">Step 7 — Give everyone the same radios<a class="headerlink" href="#step-7-presets" title="Permanent link">&para;</a></h2>
-<p>Open <code>src/presets.yaml</code>: it ships with a complete plan for the Caucasus. To see the mechanism,
-replace it first with the smallest file that works:</p>
+<p>Open <code>src/presets.yaml</code>: it ships with a complete plan for the Caucasus. To see the mechanism you
+are going to replace it with the smallest file that works — so <strong>put it aside first</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Copy-Item</span> <span class="n">src</span><span class="p">\</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span> <span class="n">src</span><span class="p">\</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span><span class="p">.</span><span class="n">bak</span>
+</code></pre></div>
+<p>Then replace its content with:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">channels_collection</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">common</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">Guard</span><span class="p">:</span>
@@ -3231,8 +3318,22 @@ replace it first with the smallest file that works:</p>
 <p>Rebuild, and reopen the mission in game.</p>
 <p><strong>How to tell</strong>: channel 1 of your aircraft's first radio is on 243.0, and a "presets" kneeboard is
 available in the cockpit.</p>
-<p>You can then restore the shipped file (<code>git checkout src/presets.yaml</code>, or a fresh <code>prepare</code>): it
-already carries the Caucasus airfields and the usual agency frequencies.</p>
+<p>Now restore the shipped file — it already carries the Caucasus airfields and the usual agency
+frequencies, and it is the one you will want to work with:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Copy-Item</span> <span class="n">src</span><span class="p">\</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span><span class="p">.</span><span class="n">bak</span> <span class="n">src</span><span class="p">\</span><span class="n">presets</span><span class="p">.</span><span class="n">yaml</span> <span class="n">-Force</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">How real projects do this</p>
+<p>Copying a file before changing it works, but it does not scale: after a few weeks a mission is
+a dozen files that evolve together, and "go back to the day before yesterday" becomes
+impossible by hand. <strong>Version control</strong> tools answer exactly that: they keep the folder's full
+history, let you compare any two states and return to any of them, and make working as a team
+possible.</p>
+<p>The de facto standard is called <strong>Git</strong>. You do not need it to finish this tutorial, and it is
+a tool in its own right that has to be learned for itself — but the moment your mission matters,
+it is the next investment that pays. To start:
+<a href="https://git-scm.com/book/en/v2">Pro Git</a>, free and complete.</p>
+</div>
 <p>→ <a href="../concepts/radio-presets/">card: radio presets</a></p>
 <hr />
 <h2 id="step-8-combat-zone">Step 8 — An objective players activate in game<a class="headerlink" href="#step-8-combat-zone" title="Permanent link">&para;</a></h2>
@@ -3243,15 +3344,32 @@ somebody asks for it.</p>
 <li>create a trigger zone named <code>CZ-Alpha</code>;</li>
 <li>put a red vehicle group inside it, named <code>CZ-Alpha-ARMOR</code>.</li>
 </ol>
-<p><strong>In <code>mission.yaml</code></strong>, uncomment the <code>COMBATZONE</code> block and cut it down to:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<p><strong>In <code>mission.yaml</code></strong>, find the <code>COMBATZONE</code> block under the <code># ── Combat ──</code> heading. It ships
+commented out, with the right example already in it:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="c1">#   COMBATZONE:</span>
+<span class="w">  </span><span class="c1">#     enabled: true</span>
+<span class="w">  </span><span class="c1">#     combat_zones:</span>
+<span class="w">  </span><span class="c1">#       - type: zone</span>
+<span class="w">  </span><span class="c1">#         zone_name: CZ-Alpha</span>
+<span class="w">  </span><span class="c1">#         friendly_name: Alpha Zone</span>
+<span class="w">  </span><span class="c1">#         training: false</span>
+</code></pre></div>
+<p>Uncomment it, then set <code>training</code> to <code>true</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">combat_zones</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CZ-Alpha</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone</span>
+<span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CZ-Alpha</span>
 <span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Alpha Zone</span>
 <span class="w">        </span><span class="nt">training</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Uncommenting means removing the <code>#</code> <strong>and the three spaces after it</strong></p>
+<p>On each line of the block, delete exactly <code>#</code> plus three spaces — never the spaces at the start
+of the line. In YAML the indentation <em>is</em> the structure: <code>COMBATZONE:</code> at two spaces belongs
+to <code>modules:</code>, at zero spaces it becomes a top-level block nothing reads. That is why the
+shipped block is indented the way it is: the subtraction comes out right.</p>
+</div>
 <p>Then the usual loop:</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract</span> <span class="n">My-First-Flight</span><span class="p">.</span><span class="n">miz</span>
 <span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">validate</span>
@@ -3259,6 +3377,17 @@ somebody asks for it.</p>
 </code></pre></div>
 <p><code>validate</code> will tell you if <code>CZ-Alpha</code> does not exist in the mission — exactly the kind of mistake
 it is there to catch.</p>
+<p><strong>How to tell, before launching DCS</strong>: two signs, in this order.</p>
+<ol>
+<li><code>validate</code> reports <strong>0 errors</strong>: the zone you named really is in the mission.</li>
+<li>The build lists your active modules, and <code>COMBATZONE</code> now carries its zone count:</li>
+</ol>
+<blockquote>
+<p>Active VEAF modules (23): AIRBASES, CACHE, CARRIER, CASMISSION, <strong>COMBATZONE (1)</strong>, COMMANDS, …</p>
+</blockquote>
+<p>If you read <code>COMBATZONE (0)</code>, the module is active but your <code>combat_zones:</code> list came to nothing —
+an indentation mistake, almost always. If <code>COMBATZONE</code> does not appear at all, the block is not
+inside <code>modules:</code>.</p>
 <p><strong>In game</strong>: the zone is <strong>empty</strong> at start-up, on purpose. Go to
 <strong>F10 "Other" → COMBAT ZONES → Alpha Zone → Activate zone</strong>.</p>
 <p><strong>What you should see</strong>: the message "VeafCombatZone Alpha Zone has been activated.", then your
@@ -3271,9 +3400,12 @@ right spot but named <code>ARMOR-1</code>, it is ignored. It must be <code>CZ-Al
 <p>→ <a href="../concepts/combat-zones/">card: combat zones</a></p>
 <hr />
 <h2 id="step-9-dynamic-slots">Step 9 — Open an airfield to dynamic slots<a class="headerlink" href="#step-9-dynamic-slots" title="Permanent link">&para;</a></h2>
-<p><strong>In the DCS editor</strong>: give an airfield to the blue coalition. That is the only thing to do there —
-the rest is written by the build.</p>
-<p><code>src/warehouses.yaml</code> is already correct as shipped:</p>
+<p>This step is often <strong>already done</strong>, and that is normal: by placing your blue aircraft on an
+airfield's ramp at step 5, you gave that airfield to the blue coalition. Check it in the DCS editor
+and change nothing if that is the case — it is the only thing to do there, the rest is written by
+the build.</p>
+<p><code>src/warehouses.yaml</code> does not need touching either: as shipped, it enables dynamic slots on
+<strong>every</strong> airfield belonging to a coalition. Under its comments, it comes down to two blocks:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">blue</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span>
@@ -3284,7 +3416,8 @@ the rest is written by the build.</p>
 <span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span>
 <span class="w">    </span><span class="nt">weapons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span>
 </code></pre></div>
-<p>Rebuild.</p>
+<p>If you changed something in the editor, run <code>extract</code> then <code>build</code> again. If everything was
+already in place, there is nothing to rebuild: go straight to the check.</p>
 <p><strong>How to tell</strong>: in DCS, at slot selection, the airfield offers dynamic-spawn aircraft.</p>
 <p><strong>If the list is shorter than expected</strong>: DCS only offers what the airfield's parking can actually
 take. An airfield with helicopter-only spots will not offer aircraft, whatever the stock says.</p>
