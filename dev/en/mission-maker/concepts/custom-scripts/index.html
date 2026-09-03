@@ -994,6 +994,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#generated-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A file the build generated
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2882,6 +2893,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#generated-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A file the build generated
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2958,6 +2980,35 @@ immediate one produces a build warning, because reading the list suggests the op
 happen.</p>
 <p>And <code>generate_load_trigger: false</code> does not exclude the file from the <code>.miz</code> — it embeds it
 <strong>without</strong> loading it. It is up to your <code>mission-script.lua</code> to <code>dofile</code> it.</p>
+<h2 id="generated-artifacts">A file the build generated<a class="headerlink" href="#generated-artifacts" title="Permanent link">&para;</a></h2>
+<p>Some <code>.lua</code> files in <code>src/scripts/</code> come from nobody: the build makes them and injects them into
+the mission every time it runs. They land in the mission folder after extracting a mission that was
+already built.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+<th>Where the content is edited</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veaf-spawn-data.lua</code></td>
+<td>the spawn database (<code>_spawn unit</code> / <code>_spawn group</code>)</td>
+<td><code>src/spawn-groups.yaml</code></td>
+</tr>
+<tr>
+<td><code>dcs-bridge.lua</code></td>
+<td>the runtime bridge used by the tooling</td>
+<td>nothing to edit, it is downloaded</td>
+</tr>
+</tbody>
+</table>
+<p>The build leaves them out and tells you so: nothing is broken, your mission gets the fresh version
+the build injects. <strong>Delete them from your mission folder</strong> to stop seeing the message.</p>
+<p>Do not declare them under <code>custom_scripts:</code> — that would freeze an out-of-date copy of data the
+build regenerates into your mission.</p>
 <h2 id="more">Going further<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../../MISSION_YAML_REFERENCE/#custom-scripts"><code>mission.yaml</code> reference — <code>custom_scripts:</code></a></li>

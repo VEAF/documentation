@@ -994,6 +994,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#generated-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un fichier que le build a généré
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2882,6 +2893,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#generated-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un fichier que le build a généré
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2959,6 +2981,36 @@ retardé avant un script immédiat produit un avertissement de build, parce que 
 suggère le contraire de ce qui va se passer.</p>
 <p>Et <code>generate_load_trigger: false</code> n'exclut pas le fichier du <code>.miz</code> — il l'embarque <strong>sans</strong> le
 charger. C'est à votre <code>mission-script.lua</code> de faire le <code>dofile</code>.</p>
+<h2 id="generated-artifacts">Un fichier que le build a généré<a class="headerlink" href="#generated-artifacts" title="Permanent link">&para;</a></h2>
+<p>Certains <code>.lua</code> de <code>src/scripts/</code> ne viennent de personne : c'est le build qui les fabrique et les
+injecte dans la mission à chaque construction. Ils atterrissent dans le dossier de mission après
+l'extraction d'une mission déjà construite.</p>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Ce que c'est</th>
+<th>Où se modifie le contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veaf-spawn-data.lua</code></td>
+<td>la base de données de spawn (<code>_spawn unit</code> / <code>_spawn group</code>)</td>
+<td><code>src/spawn-groups.yaml</code></td>
+</tr>
+<tr>
+<td><code>dcs-bridge.lua</code></td>
+<td>le pont d'exécution utilisé par l'outillage</td>
+<td>rien à modifier, il est téléchargé</td>
+</tr>
+</tbody>
+</table>
+<p>Le build les laisse de côté et vous le signale : rien n'est cassé, votre mission reçoit la version
+fraîche que la construction injecte. <strong>Supprimez-les de votre dossier de mission</strong> pour ne plus voir
+le message.</p>
+<p>Ne les déclarez pas dans <code>custom_scripts:</code> — cela figerait dans votre mission une copie périmée de
+données que le build régénère.</p>
 <h2 id="more">Pour aller plus loin<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../../MISSION_YAML_REFERENCE/#custom-scripts">Référence <code>mission.yaml</code> — <code>custom_scripts:</code></a></li>
