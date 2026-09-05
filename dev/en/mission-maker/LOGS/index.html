@@ -591,6 +591,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../pilot/dcs-trouble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    When DCS misbehaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../ALIASES/" class="md-nav__link">
         
   
@@ -1360,6 +1388,56 @@
     <span class="md-ellipsis">
       
         Copying
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explaining what is on screen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Explaining what is on screen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explain-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What leaves the machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proposals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring uncatalogued patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparing a report
       
     </span>
   </a>
@@ -2655,6 +2733,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../developer/report-block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Report block format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../developer/smoke-harness/" class="md-nav__link">
         
   
@@ -3078,6 +3184,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explaining what is on screen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Explaining what is on screen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explain-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What leaves the machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proposals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring uncatalogued patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparing a report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-it-understands-of-the-log" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3321,6 +3477,49 @@ every tab and comes back with the next session.</p>
 without it would give an error nothing explains. The right-click menu also offers
 the message <strong>without the DCS header</strong>, for when you want neither the timestamp
 nor the subsystem.</p>
+<h2 id="explain">Explaining what is on screen<a class="headerlink" href="#explain" title="Permanent link">&para;</a></h2>
+<p><strong>Analyse → Expliquer ce qui est affiché</strong>, or <code>Ctrl+E</code>. The answer comes in two
+layers, kept apart on screen, and the order between them is the whole design.</p>
+<p><strong>The catalogue answers first.</strong> Every pattern <code>rules.json</code> recognises is
+rendered with its own wording, as it stands. No model, no cost, no network: this
+layer alone is already an answer, and it is the degraded mode for the rest.</p>
+<p><strong>The model puts it in context second</strong>, only if you press <strong>Analyser en ligne</strong>.
+It receives the excerpt and the patterns already matched locally, and it chains:
+what happened first, what is only a consequence of it, which line to act on.
+Where the catalogue is silent it says <em>pattern not catalogued</em> instead of
+proposing a cause.</p>
+<p>The worst failure of this feature is not silence, it is a plausible wrong answer:
+<em>"it comes from your module X"</em> when it does not. The reader has no way to tell
+it from a right one, and will spend his evening on it. That is why the two layers
+carry their own headings rather than a disclaimer at the bottom nobody reads.</p>
+<p>With no network, no quota left, behind a corporate proxy: the catalogue layer
+answers and no error dialog appears.</p>
+<h3 id="explain-privacy">What leaves the machine<a class="headerlink" href="#explain-privacy" title="Permanent link">&para;</a></h3>
+<p>Nothing, until <strong>Analyser en ligne</strong> is pressed. At that point what leaves is the
+excerpt on screen, <strong>bounded</strong> (a character ceiling, omissions stated) and
+<strong>redacted</strong> by the same code as <code>veaf-tools doctor</code>: Windows account name →
+<code>&lt;user&gt;</code>, IP addresses → <code>&lt;ip&gt;</code>, e-mail addresses → <code>&lt;email&gt;</code>, tokens and
+passwords → <code>&lt;redacted&gt;</code>. Mission, aircraft and payload names are kept: they are
+what says <em>what</em> it crashed on.</p>
+<p>The excerpt header also declares the categories set to ✕. A log filtered down to
+"no errors" because <code>ERROR</code> was unticked must not read as a clean log.</p>
+<h3 id="proposals">Recurring uncatalogued patterns<a class="headerlink" href="#proposals" title="Permanent link">&para;</a></h3>
+<p>A message that recurs and that <code>rules.json</code> does not explain is a <strong>missing
+catalogue entry</strong>. The analysis proposes one, in the file's own shape, with
+identifiers and variable values already replaced by wildcards.</p>
+<p>Nothing is written to <code>rules.json</code>: a proposal stays a proposal, and it is
+precisely because the catalogue is hand-curated that its wording is quotable. The
+generated <code>help</code> deliberately explains nothing — it says it is to be reworded.</p>
+<h2 id="report">Preparing a report<a class="headerlink" href="#report" title="Permanent link">&para;</a></h2>
+<p>The <strong>Préparer un rapport</strong> button assembles into one block the output of
+<code>veaf-tools doctor</code>, the bounded and redacted excerpt, the catalogue matches and
+what the analysis concluded — including what it could not explain — and puts it
+on the clipboard, ready to paste into <code>#support</code> or an issue.</p>
+<p>It is a <strong>paste</strong>, not a transmission: nothing leaves on its own. The block is
+sized to fit one Discord message; when it does not all fit, it states what it
+removed rather than being cut in silence.</p>
+<p>Its format is versioned and documented: see
+<a href="../../developer/report-block/">Report block format</a>.</p>
 <h2 id="what-it-understands-of-the-log">What it understands of the log<a class="headerlink" href="#what-it-understands-of-the-log" title="Permanent link">&para;</a></h2>
 <p><strong>Stack traces stay with their error.</strong> A <code>Mission script error</code> followed by its
 <code>stack traceback</code> forms a single entry, so filtering on errors no longer hides

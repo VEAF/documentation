@@ -591,6 +591,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../pilot/dcs-trouble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS se comporte mal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../ALIASES/" class="md-nav__link">
         
   
@@ -1360,6 +1388,56 @@
     <span class="md-ellipsis">
       
         Copier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expliquer ce qui est affiché
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expliquer ce qui est affiché">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explain-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui part de la machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proposals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motifs récurrents non catalogués
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Préparer un rapport
       
     </span>
   </a>
@@ -2655,6 +2733,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../developer/report-block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Format du bloc de rapport
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../developer/smoke-harness/" class="md-nav__link">
         
   
@@ -3078,6 +3184,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expliquer ce qui est affiché
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expliquer ce qui est affiché">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explain-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui part de la machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proposals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motifs récurrents non catalogués
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Préparer un rapport
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ce-quil-comprend-du-journal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3326,6 +3482,53 @@ pour tous les onglets et se retrouve à la session suivante.</p>
 elle donnerait une erreur que rien n'explique. Le clic droit propose en plus de
 copier le message <strong>sans l'en-tête DCS</strong>, quand on ne veut ni l'horodatage ni le
 sous-système.</p>
+<h2 id="explain">Expliquer ce qui est affiché<a class="headerlink" href="#explain" title="Permanent link">&para;</a></h2>
+<p><strong>Analyse → Expliquer ce qui est affiché</strong>, ou <code>Ctrl+E</code>. La réponse arrive en
+deux couches, séparées à l'écran, et l'ordre entre elles est tout le sujet.</p>
+<p><strong>Le catalogue répond en premier.</strong> Chaque motif reconnu par <code>rules.json</code> est
+rendu avec son propre texte, repris tel quel. Aucun modèle, aucun coût, aucun
+réseau : cette couche seule est déjà une réponse, et c'est le mode dégradé du
+reste.</p>
+<p><strong>Le modèle met en contexte ensuite</strong>, seulement si on appuie sur <strong>Analyser en
+ligne</strong>. Il reçoit l'extrait et les motifs déjà appariés localement, et il
+enchaîne : ce qui s'est passé en premier, ce qui n'en est qu'une conséquence, la
+ligne sur laquelle agir. Là où le catalogue est muet, il dit <em>motif non
+catalogué</em> au lieu de proposer une cause.</p>
+<p>Le pire échec de cette fonction n'est pas le silence, c'est une réponse
+plausible et fausse : <em>« ça vient de votre module X »</em> alors que non. Le lecteur
+n'a aucun moyen de la distinguer d'une bonne, et il y passera sa soirée. C'est
+pourquoi les deux couches sont titrées séparément plutôt que suivies d'un
+avertissement en bas, que personne ne lit.</p>
+<p>Sans réseau, sans quota, derrière un proxy d'entreprise : la couche catalogue
+répond et aucune boîte d'erreur n'apparaît.</p>
+<h3 id="explain-privacy">Ce qui part de la machine<a class="headerlink" href="#explain-privacy" title="Permanent link">&para;</a></h3>
+<p>Rien, tant qu'on n'a pas appuyé sur <strong>Analyser en ligne</strong>. À ce moment-là part
+l'extrait affiché, <strong>borné</strong> (une limite en caractères, les omissions annoncées)
+et <strong>caviardé</strong> par le même code que <code>veaf-tools doctor</code> : nom de compte Windows
+→ <code>&lt;user&gt;</code>, adresses IP → <code>&lt;ip&gt;</code>, adresses e-mail → <code>&lt;email&gt;</code>, jetons et mots de
+passe → <code>&lt;redacted&gt;</code>. Les noms de missions, d'appareils et d'armements sont
+conservés : ce sont eux qui disent <em>sur quoi</em> ça a planté.</p>
+<p>L'en-tête de l'extrait déclare aussi les catégories mises à ✕. Un journal filtré
+jusqu'à « aucune erreur » parce qu'on a décoché <code>ERROR</code> ne doit pas se lire comme
+un journal propre.</p>
+<h3 id="proposals">Motifs récurrents non catalogués<a class="headerlink" href="#proposals" title="Permanent link">&para;</a></h3>
+<p>Un message qui revient et que <code>rules.json</code> n'explique pas est une <strong>entrée
+manquante</strong> du catalogue. L'analyse en propose une, dans la forme du fichier,
+identifiants et valeurs variables déjà remplacés par des jokers.</p>
+<p>Rien n'est écrit dans <code>rules.json</code> : une proposition reste une proposition, et
+c'est précisément parce que le catalogue est tenu à la main que son texte est
+citable. Le <code>help</code> généré n'explique volontairement rien, il dit qu'il est à
+reformuler.</p>
+<h2 id="report">Préparer un rapport<a class="headerlink" href="#report" title="Permanent link">&para;</a></h2>
+<p>Le bouton <strong>Préparer un rapport</strong> assemble en un bloc la sortie de
+<code>veaf-tools doctor</code>, l'extrait borné et caviardé, les motifs du catalogue et ce
+que l'analyse a conclu — y compris ce qu'elle n'a pas su expliquer — et le met
+dans le presse-papier, prêt à coller dans <code>#support</code> ou dans une issue.</p>
+<p>C'est un <strong>collage</strong>, pas un envoi : rien ne part tout seul. Le bloc est taillé
+pour tenir dans un message Discord ; quand tout ne rentre pas, il annonce ce
+qu'il a retiré au lieu d'être coupé en silence.</p>
+<p>Son format est versionné et documenté : voir
+<a href="../../developer/report-block/">Format du bloc de rapport</a>.</p>
 <h2 id="ce-quil-comprend-du-journal">Ce qu'il comprend du journal<a class="headerlink" href="#ce-quil-comprend-du-journal" title="Permanent link">&para;</a></h2>
 <p><strong>Les traces de pile restent avec leur erreur.</strong> Un <code>Mission script error</code> suivi
 de son <code>stack traceback</code> forme une seule entrée : filtrer sur les erreurs ne fait
