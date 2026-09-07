@@ -4572,8 +4572,63 @@ restent dans les deux cas.</p>
 <td><code>50</code></td>
 <td>Rayon de dispersion par défaut (m)</td>
 </tr>
+<tr>
+<td><code>veafCombatZone.DefaultSpawnRadiusForStatics</code></td>
+<td><code>0</code></td>
+<td>Idem pour les objets statiques (m)</td>
+</tr>
+<tr>
+<td id="spawn-radius-levels">## Rayon de dispersion : les trois niveaux</td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
+<p>À l'activation d'une zone, un groupe qui ne dit rien est dispersé autour de sa position. C'est
+souhaitable pour un convoi, mais pas pour une batterie posée dans les emplacements bétonnés que la
+carte fournit : quelques dizaines de mètres suffisent à mettre un lanceur sur le merlon au lieu
+d'être dedans.</p>
+<p>Trois niveaux, du plus précis au plus général — le premier trouvé gagne :</p>
+<table>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Où l'écrire</th>
+<th>Portée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>le groupe</td>
+<td><code>#spawnradius=0</code> dans le nom du groupe ou d'une de ses unités</td>
+<td>ce groupe</td>
+</tr>
+<tr>
+<td>la zone</td>
+<td><code>default_spawn_radius</code> sur une entrée de <code>combat_zones</code></td>
+<td>tous les groupes non tagués de cette zone</td>
+</tr>
+<tr>
+<td>la mission</td>
+<td><code>default_spawn_radius</code> sous <code>combat_zone_settings</code></td>
+<td>toutes les zones</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>0</code> veut dire « exactement là où je les ai placés »</strong> — pas « presque ». Le placement est
+strictement identique à celui de l'éditeur de mission.</p>
+<p>Les objets statiques ont leur propre réglage, <code>default_spawn_radius_statics</code>, parce que leur défaut
+intégré vaut déjà <code>0</code> : un réglage unique pour les deux se mettrait à disperser des statiques
+aujourd'hui immobiles.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">combat_zone_settings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_spawn_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">          </span><span class="c1"># le défaut habituel, pour toute la mission</span>
+<span class="w">  </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CMBT_PALMYRA</span>
+<span class="w">      </span><span class="nt">default_spawn_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">         </span><span class="c1"># ici, tout est placé au mètre : ne rien bouger</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CMBT_TIYAS</span><span class="w">           </span><span class="c1"># celle-ci garde les 50 m</span>
+</code></pre></div>
+<hr />
 <hr />
 <hr />
 <h2 id="définir-une-zone">Définir une zone<a class="headerlink" href="#définir-une-zone" title="Permanent link">&para;</a></h2>

@@ -4567,8 +4567,61 @@ going anywhere near it. That is <code>veaf.HideNamesFromSpawnedGroups</code>, <s
 <td><code>50</code></td>
 <td>Default unit scatter radius (m)</td>
 </tr>
+<tr>
+<td><code>veafCombatZone.DefaultSpawnRadiusForStatics</code></td>
+<td><code>0</code></td>
+<td>Same, for static objects (m)</td>
+</tr>
+<tr>
+<td id="spawn-radius-levels">## Scatter radius: the three levels</td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
+<p>When a zone activates, a group that says nothing is scattered around its position. That suits a
+convoy; it does not suit a battery placed in the hardened emplacements a map provides, where a few
+tens of metres put a launcher on the berm instead of inside it.</p>
+<p>Three levels, most specific first — the first one found wins:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Where you write it</th>
+<th>Applies to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>the group</td>
+<td><code>#spawnradius=0</code> in the group's name, or in one of its units' names</td>
+<td>that group</td>
+</tr>
+<tr>
+<td>the zone</td>
+<td><code>default_spawn_radius</code> on a <code>combat_zones</code> entry</td>
+<td>every untagged group of that zone</td>
+</tr>
+<tr>
+<td>the mission</td>
+<td><code>default_spawn_radius</code> under <code>combat_zone_settings</code></td>
+<td>every zone</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>0</code> means "exactly where I placed them"</strong> — not "nearly". The placement is identical to the
+Mission Editor's, to the metre.</p>
+<p>Static objects have their own setting, <code>default_spawn_radius_statics</code>, because their built-in default
+is already <code>0</code>: one setting for both would start scattering statics that stand still today.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">combat_zone_settings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_spawn_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">          </span><span class="c1"># the usual default, mission-wide</span>
+<span class="w">  </span><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CMBT_PALMYRA</span>
+<span class="w">      </span><span class="nt">default_spawn_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">         </span><span class="c1"># everything here is placed to the metre: do not move it</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CMBT_TIYAS</span><span class="w">           </span><span class="c1"># this one keeps the 50 m</span>
+</code></pre></div>
+<hr />
 <hr />
 <h2 id="defining-a-zone">Defining a Zone<a class="headerlink" href="#defining-a-zone" title="Permanent link">&para;</a></h2>
 <p>In the most common case, elements are populated automatically from the units placed inside the DCS trigger zone via <code>:addZoneElementsFromZoneNamed(...)</code>:</p>
