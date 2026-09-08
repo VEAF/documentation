@@ -2235,6 +2235,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#vanished-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vanished-site sweep — veafSkynet.SecondsBetweenVanishedSitesSweeps
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3194,6 +3205,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#vanished-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vanished-site sweep — veafSkynet.SecondsBetweenVanishedSitesSweeps
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3364,6 +3386,7 @@
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
 <p>The module scans all groups in the mission at startup and adds eligible ones to the Skynet IADS networks. Initialisation is delayed by <code>DelayForStartup</code> seconds to let other modules finish first. Late-activation groups are included; dynamically spawned groups are not (unless <code>DynamicSpawn = true</code>).</p>
 <p>The module always creates two Skynet networks: one for <strong>blue</strong> coalition, one for <strong>red</strong>.</p>
+<p>Only groups DCS still holds are enrolled. The distinction matters: DCS keeps listing a group for a short while after destroying it, and this module initialises just after every combat zone has cleaned itself out at startup. Such a group used to appear in the network as a SAM site whose radar never existed — counted as <em>radar destroyed</em> on the IADS status page for the rest of the mission.</p>
 <hr />
 <h2 id="global-properties-set-before-initialize">Global properties (set before <code>initialize</code>)<a class="headerlink" href="#global-properties-set-before-initialize" title="Permanent link">&para;</a></h2>
 <h3 id="point-defence-mode--veafskynetpointdefencemode">Point Defence mode — <code>veafSkynet.PointDefenceMode</code><a class="headerlink" href="#point-defence-mode--veafskynetpointdefencemode" title="Permanent link">&para;</a></h3>
@@ -3443,6 +3466,11 @@
 </code></pre></div>
 <h3 id="startup-delay--veafskynetdelayforstartup">Startup delay — <code>veafSkynet.DelayForStartup</code><a class="headerlink" href="#startup-delay--veafskynetdelayforstartup" title="Permanent link">&para;</a></h3>
 <p>Seconds to wait before initialising networks (default: <code>1</code>). Increase if other modules initialise groups with a delay.</p>
+<h3 id="vanished-sites">Vanished-site sweep — <code>veafSkynet.SecondsBetweenVanishedSitesSweeps</code><a class="headerlink" href="#vanished-sites" title="Permanent link">&para;</a></h3>
+<p>Seconds between two cleanup passes over the networks (default: <code>60</code>).</p>
+<p>A site whose group <strong>leaves the mission without being destroyed</strong> — which is what happens when a combat zone is deactivated and takes its air defences with it — used to be kept in the network until the end of the game. It inflated the status page, was walked on every detection cycle, and <strong>held its group name</strong>: the module refuses to enrol a group the network already lists. The sweep removes those sites and frees the name.</p>
+<p>Worth stating, because the distinction matters: freeing the name is not enough to bring back a group that reappears <strong>under the same name within</strong> the sweep interval. Enrolment happens on the birth event, which has already fired and been refused, and nothing retries it afterwards. This does not affect combat zones, which give each respawn a fresh name.</p>
+<p>Sites the player <strong>destroyed</strong> are kept: they are what the <code>Raddest</code> and <code>Destroyed</code> columns of the status page count, and that is how a successful SEAD reads.</p>
 <hr />
 <h2 id="command-centers">Command Centers<a class="headerlink" href="#command-centers" title="Permanent link">&para;</a></h2>
 <p>In Skynet, a <strong>Command Center</strong> is a unit or static object that a network depends on. If all Command Centers of a network are destroyed, that network switches to autonomous mode (all elements remain on permanently, but still benefit from Skynet intelligence, in particular HARM evasion).</p>

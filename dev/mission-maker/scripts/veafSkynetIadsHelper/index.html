@@ -2235,6 +2235,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#vanished-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Balayage des sites disparus — veafSkynet.SecondsBetweenVanishedSitesSweeps
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3194,6 +3205,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#vanished-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Balayage des sites disparus — veafSkynet.SecondsBetweenVanishedSitesSweeps
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3364,6 +3386,7 @@
 <h2 id="principes-de-fonctionnement">Principes de fonctionnement<a class="headerlink" href="#principes-de-fonctionnement" title="Permanent link">&para;</a></h2>
 <p>Le module parcourt la liste de tous les groupes de la mission au démarrage, et ajoute ceux qui sont éligibles dans les réseaux IADS Skynet. Cette initialisation se fait avec un délai paramétrable (<code>DelayForStartup</code>) pour laisser les autres modules s'initialiser en premier. Les groupes en activation retardée sont intégrés au démarrage, mais pas les groupes générés dynamiquement (sauf si <code>DynamicSpawn = true</code>).</p>
 <p>Le module crée toujours deux réseaux Skynet : un pour la coalition <strong>bleue</strong>, un pour la coalition <strong>rouge</strong>.</p>
+<p>Seuls les groupes que DCS possède encore sont intégrés. La nuance a son importance : DCS continue de lister pendant un court instant les groupes qu'il vient de détruire, et l'initialisation du module arrive juste après le nettoyage que fait chaque zone de combat au démarrage. Un tel groupe apparaissait auparavant dans le réseau comme un site SAM dont le radar n'a jamais existé — compté « radar détruit » sur la page de statut IADS pour toute la mission.</p>
 <hr />
 <h2 id="propriétés-globales-à-définir-avant-initialize">Propriétés globales (à définir avant <code>initialize</code>)<a class="headerlink" href="#propriétés-globales-à-définir-avant-initialize" title="Permanent link">&para;</a></h2>
 <h3 id="mode-point-defence--veafskynetpointdefencemode">Mode Point Defence — <code>veafSkynet.PointDefenceMode</code><a class="headerlink" href="#mode-point-defence--veafskynetpointdefencemode" title="Permanent link">&para;</a></h3>
@@ -3443,6 +3466,11 @@
 </code></pre></div>
 <h3 id="délai-de-démarrage--veafskynetdelayforstartup">Délai de démarrage — <code>veafSkynet.DelayForStartup</code><a class="headerlink" href="#délai-de-démarrage--veafskynetdelayforstartup" title="Permanent link">&para;</a></h3>
 <p>Nombre de secondes à attendre avant d'initialiser les réseaux (défaut : <code>1</code>). À augmenter si d'autres modules initialisent des groupes en retard.</p>
+<h3 id="vanished-sites">Balayage des sites disparus — <code>veafSkynet.SecondsBetweenVanishedSitesSweeps</code><a class="headerlink" href="#vanished-sites" title="Permanent link">&para;</a></h3>
+<p>Nombre de secondes entre deux passages de nettoyage des réseaux (défaut : <code>60</code>).</p>
+<p>Un site dont le groupe <strong>quitte la mission sans être détruit</strong> — c'est le cas quand une zone de combat est désactivée et emporte ses défenses aériennes — était conservé dans le réseau jusqu'à la fin de la partie. Il gonflait la page de statut, était parcouru à chaque cycle de détection, et <strong>retenait le nom de son groupe</strong> : le module refuse d'intégrer un groupe que le réseau liste déjà. Le balayage retire ces sites et libère le nom.</p>
+<p>À noter, parce que la nuance compte : libérer le nom ne suffit pas à faire rejoindre le réseau à un groupe qui réapparaît <strong>sous le même nom pendant</strong> l'intervalle de balayage. L'intégration se fait sur l'événement d'apparition, qui est déjà passé et a été refusé ; rien ne la relance ensuite. Ce cas ne concerne pas les zones de combat, qui donnent un nom neuf à chaque réapparition.</p>
+<p>Les sites que le joueur a <strong>détruits</strong>, eux, restent dans le réseau : ce sont eux que comptent les colonnes <code>Raddest</code> et <code>Destroyed</code> de la page de statut, et c'est la lecture d'une SEAD réussie.</p>
 <hr />
 <h2 id="centres-de-commandement">Centres de commandement<a class="headerlink" href="#centres-de-commandement" title="Permanent link">&para;</a></h2>
 <p>Dans Skynet, un <strong>Command Center</strong> est une unité ou un statique dont dépend le fonctionnement d'un réseau. Si tous les Command Centers d'un réseau sont détruits, ce réseau bascule en mode autonome (tous les éléments restent allumés en permanence, mais bénéficient toujours des intelligences de Skynet, notamment l'évasion HARM).</p>
