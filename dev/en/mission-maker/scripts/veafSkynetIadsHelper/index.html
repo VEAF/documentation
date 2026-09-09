@@ -2246,6 +2246,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#radar-range-recheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreadable radar range — veafSkynet.DelayForRangeRecheck / veafSkynet.MaxRangeRechecks
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3216,6 +3227,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#radar-range-recheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreadable radar range — veafSkynet.DelayForRangeRecheck / veafSkynet.MaxRangeRechecks
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3454,8 +3476,9 @@
 </tr>
 </tbody>
 </table>
-<p><strong>What it costs.</strong> Once on, the module watches <strong>every unit birth</strong> in the mission to spot eligible groups. That is why it is off by default: turn it on when the mission spawns SAMs while it runs (combat zones, dynamic campaign), not as a matter of course.</p>
-<p><strong>What it fixes.</strong> Without it, a SAM appearing during the mission — a combat-zone one included — joins no network at all, and nothing says so.</p>
+<p><strong>What it costs.</strong> Once on, the module watches <strong>every unit birth</strong> in the mission to spot eligible groups. That is why it is off by default: turn it on when the mission spawns SAMs while it runs (a dynamic campaign, a third-party script), not as a matter of course.</p>
+<p><strong>What it fixes.</strong> Without it, a SAM appearing during the mission joins no network at all, and nothing says so.</p>
+<p><strong>Combat zones do not need it.</strong> An air defence a combat zone puts back on the map joins its coalition's network <strong>whatever</strong> this setting says: content the author placed inside a zone is not a spawn nobody asked for. Without that, belonging to the network came down to scheduling luck — a zone's activation and the start-up enrolment are scheduled for the same second, so a zone's battery joined the network if the activation happened to run first, and never rejoined it after the zone was cycled. Only elements that <strong>stay put</strong> are concerned: a convoy driving through the zone has no business in an air-defence network. The criterion is the one the alarm state uses when no <code>#alarm=</code> tag is stated — an explicit tag changes the alarm state, not the network membership.</p>
 <p><strong>Who decides, group by group.</strong> A spawn command's <code>skynet</code> option stays in charge: <code>skynet false</code> keeps the group <strong>out</strong> of every network (which is what the convoy shortcuts carry), and <code>skynet &lt;network name&gt;</code> sends it to that network rather than its coalition's. A group no VEAF command declared — placed in the Mission Editor, created by a third-party script — joins its coalition's network, which is exactly what this setting is for.</p>
 <blockquote>
 <p>The two integration paths are exclusive: when the target network integrates spawns, it does the work; otherwise <code>veafSpawn</code> does it as the group appears. A group is never integrated twice.</p>
@@ -3469,8 +3492,12 @@
 <h3 id="vanished-sites">Vanished-site sweep — <code>veafSkynet.SecondsBetweenVanishedSitesSweeps</code><a class="headerlink" href="#vanished-sites" title="Permanent link">&para;</a></h3>
 <p>Seconds between two cleanup passes over the networks (default: <code>60</code>).</p>
 <p>A site whose group <strong>leaves the mission without being destroyed</strong> — which is what happens when a combat zone is deactivated and takes its air defences with it — used to be kept in the network until the end of the game. It inflated the status page, was walked on every detection cycle, and <strong>held its group name</strong>: the module refuses to enrol a group the network already lists. The sweep removes those sites and frees the name.</p>
-<p>Worth stating, because the distinction matters: freeing the name is not enough to bring back a group that reappears <strong>under the same name within</strong> the sweep interval. Enrolment happens on the birth event, which has already fired and been refused, and nothing retries it afterwards. This does not affect combat zones, which give each respawn a fresh name.</p>
+<p>Worth stating, because the distinction matters: freeing the name is not enough to bring back a group that reappears <strong>under the same name within</strong> the sweep interval. Enrolment happens on the birth event, which has already fired and been refused, and nothing retries it afterwards. This does not affect combat zones: they give each respawn a fresh name, and above all they tell the network themselves about the air defences they put back — see <a href="#dynamic-spawn">Groups appearing during the mission</a>.</p>
 <p>Sites the player <strong>destroyed</strong> are kept: they are what the <code>Raddest</code> and <code>Destroyed</code> columns of the status page count, and that is how a successful SEAD reads.</p>
+<h3 id="radar-range-recheck">Unreadable radar range — <code>veafSkynet.DelayForRangeRecheck</code> / <code>veafSkynet.MaxRangeRechecks</code><a class="headerlink" href="#radar-range-recheck" title="Permanent link">&para;</a></h3>
+<p>Seconds between two readings of a radar's range (default: <code>5</code>), and how many readings to try (default: <code>3</code>). At <code>0</code>, nothing is re-read.</p>
+<p>Skynet reads a radar's detection range <strong>once</strong>, at the instant the site joins the network. If DCS does not hand it over at that precise moment, the range stays at zero for the rest of the mission: the site detects nothing, never goes live — not even when an aircraft flies over it — and the status page counts it under <code>Raddest</code>, as though its radar had been shot. A site in that state is therefore asked again, and its coverage is rebuilt as soon as a reading succeeds.</p>
+<p>Such a site leaves a line in the log (<code>RADAR RANGE ZERO</code>, then <code>RADAR RANGE RECOVERED</code> or <code>RADAR RANGE STILL ZERO</code>), carrying the site's radar and launcher counts. A mission whose sites all answer normally writes nothing.</p>
 <hr />
 <h2 id="command-centers">Command Centers<a class="headerlink" href="#command-centers" title="Permanent link">&para;</a></h2>
 <p>In Skynet, a <strong>Command Center</strong> is a unit or static object that a network depends on. If all Command Centers of a network are destroyed, that network switches to autonomous mode (all elements remain on permanently, but still benefit from Skynet intelligence, in particular HARM evasion).</p>
