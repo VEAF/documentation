@@ -3297,6 +3297,7 @@
 <ul>
 <li><strong><code>poetry run check-vendored</code></strong> compares each pin against upstream <strong>via the GitHub API only</strong> (no artifact download) — latest release tag or latest file commit — and reports <code>drifted</code> / <code>up-to-date</code> / <code>manual</code> (<code>--format table|json|markdown</code>, non-zero exit on anything actionable).</li>
 <li>The scheduled <strong><code>vendored-drift-watch.yml</code></strong> workflow (weekly cron + <code>workflow_dispatch</code>) runs it and <strong>opens or updates a single recap issue</strong> listing the drifts + the manual re-check reminders, each with its <code>manual_steps</code>. <strong>Notify only — never auto-update</strong> (that is the COMMUNITY-AUTOUPDATE vision).</li>
+<li><strong>A repo that publishes nothing but pre-releases</strong>: GitHub's <code>/releases/latest</code> skips them by design, so such a repo answers 404 and reads as an error for ever — CTLD sat 17 days behind that way. Set <code>prereleases: true</code> on the watch and the releases are listed instead. Do <strong>not</strong> set it on a repo that cuts stable releases: a beta would then read as drift. Add <code>tag_pattern</code> (a regular expression, e.g. <code>^published-v</code>) wherever the repo also republishes a moving tag — CTLD rewrites <code>dev</code> on every <code>master</code> build, and without a pattern that tag is always the newest thing there.</li>
 </ul>
 
 
