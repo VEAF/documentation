@@ -4202,6 +4202,10 @@ different conclusions:</p>
 but the module keeps a <strong>history of spotter-network wake-ups</strong> that survives it: the last 200 per
 coalition, each with its mission time. It answers the question asked the next day — <em>did the network
 wake anything last night?</em> — without the measurement having to be planned in advance.</p>
+<p><strong>One line per wake-up, not one per check.</strong> A site holding the same aircraft for twenty minutes
+writes a single line; if it loses the contact and is woken again by the same aircraft, that is a
+second line. So an evening of flying fits in the 200, and a site that keeps flapping shows up as
+what it is.</p>
 <div class="highlight"><pre><span></span><code><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">entry</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">getSpotterWakeUpLog</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
 <span class="w">    </span><span class="nv">env</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;%d s: %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">entry</span><span class="p">.</span><span class="py">at</span><span class="p">,</span><span class="w"> </span><span class="nv">entry</span><span class="p">.</span><span class="py">line</span><span class="p">))</span>
 <span class="kr">end</span>
