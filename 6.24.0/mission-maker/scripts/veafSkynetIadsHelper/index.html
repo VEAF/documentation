@@ -1,0 +1,4802 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.24.0/mission-maker/scripts/veafSkynetIadsHelper/">
+      
+      
+        <link rel="prev" href="../veafShortcuts/">
+      
+      
+        <link rel="next" href="../veafSpawn/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../../en/mission-maker/scripts/veafSkynetIadsHelper/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>veafSkynetIadsHelper - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#veafskynetiadshelper--intégration-skynet-iads" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              veafSkynetIadsHelper
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/mission-maker/scripts/veafSkynetIadsHelper/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../SUPPORT/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Obtenir de l'aide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer/" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SUPPORT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Obtenir de l'aide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pilot/dcs-trouble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS se comporte mal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DISCOVER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Découvrir VMCT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TUTORIAL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutoriel — votre première mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Les fiches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Les fiches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/mission-folder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Le dossier de mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/mission-yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mission.yaml et ses modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Le build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/custom-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/radio-presets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préréglages radio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/combat-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zones de combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dynamic-slots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slots dynamiques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/spawnables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groupes spawnables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/weather-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variantes météo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Les messages du build
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Les messages du build
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-messages/coalitions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coalitions et pays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-messages/missing-references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références manquantes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-messages/lua-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Les fichiers Lua du dossier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-messages/routes-and-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Routes et tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-messages/modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules et scripts communautaires
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopt a third-party mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foothold moulinette
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LOGS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Read the DCS logs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI assistant — action catalogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_14" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_14" id="__nav_4_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklists guidées (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Menu MISSIONS (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IA au sol (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prérequis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prérequis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation-via-mission-scriptlua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation (via mission-script.lua)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#principes-de-fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principes de fonctionnement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-network-sam-sees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qu'un site du réseau voit — et ne voit pas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ce qu&#39;un site du réseau voit — et ne voit pas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#les-deux-façons-dont-un-site-sallume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les deux façons dont un site s'allume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-disparition-des-ewr-rend-les-sites-restants-plus-agressifs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La disparition des EWR rend les sites restants plus agressifs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-couvert--ne-veut-pas-dire--renseigné-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        « Couvert » ne veut pas dire « renseigné »
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joining-a-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les quatre façons de rejoindre un réseau
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ewr-option" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donner à un site une veille permanente — l'option ewr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnosing-a-dark-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostiquer : pourquoi ce site ne s'allume pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#propriétés-globales-à-définir-avant-initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propriétés globales (à définir avant initialize)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Propriétés globales (à définir avant initialize)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mode-point-defence--veafskynetpointdefencemode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode Point Defence — veafSkynet.PointDefenceMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-dintégration-des-groupes--veafskynetgroupintegrationmode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode d'intégration des groupes — veafSkynet.GroupIntegrationMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-spawn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apparitions en cours de mission — dynamic_spawn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spotter-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réseau de guetteurs — spotter_network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Réseau de guetteurs — spotter_network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir ce qui se passe, sur la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une alerte, du début à la fin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Une alerte, du début à la fin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1--rien-ne-se-passe-encore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 — Rien ne se passe encore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2--un-poste-le-voit-et-la-batterie-quil-prévient-sallume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 — Un poste le voit, et la batterie qu'il prévient s'allume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3--le-mot-fait-le-tour-du-front" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 — Le mot fait le tour du front
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4--lavion-séloigne-la-défense-se-rendort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 — L'avion s'éloigne, la défense se rendort
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5--les-patrouilles-prennent-le-relais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 — Les patrouilles prennent le relais
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#last-line-of-defence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dernière ligne de défense — last_line_of_defence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#délai-de-démarrage--veafskynetdelayforstartup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Délai de démarrage — veafSkynet.DelayForStartup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vanished-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Balayage des sites disparus — veafSkynet.SecondsBetweenVanishedSitesSweeps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#radar-range-recheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portée radar illisible — veafSkynet.DelayForRangeRecheck / veafSkynet.MaxRangeRechecks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#centres-de-commandement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Centres de commandement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deactivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Désactivation d'un réseau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accéder-aux-réseaux-générés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux réseaux générés
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple--bascule-en-autonome-contrôlée-par-un-objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple — Bascule en autonome contrôlée par un objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/diagnostic-block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Format du bloc de diagnostic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/report-block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Format du bloc de rapport
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mise à jour & publication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prérequis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prérequis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-missionyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mission.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activation-via-mission-scriptlua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activation (via mission-script.lua)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#principes-de-fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principes de fonctionnement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-network-sam-sees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qu'un site du réseau voit — et ne voit pas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ce qu&#39;un site du réseau voit — et ne voit pas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#les-deux-façons-dont-un-site-sallume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les deux façons dont un site s'allume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-disparition-des-ewr-rend-les-sites-restants-plus-agressifs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La disparition des EWR rend les sites restants plus agressifs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-couvert--ne-veut-pas-dire--renseigné-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        « Couvert » ne veut pas dire « renseigné »
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joining-a-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les quatre façons de rejoindre un réseau
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ewr-option" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donner à un site une veille permanente — l'option ewr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnosing-a-dark-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostiquer : pourquoi ce site ne s'allume pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#propriétés-globales-à-définir-avant-initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propriétés globales (à définir avant initialize)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Propriétés globales (à définir avant initialize)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mode-point-defence--veafskynetpointdefencemode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode Point Defence — veafSkynet.PointDefenceMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-dintégration-des-groupes--veafskynetgroupintegrationmode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode d'intégration des groupes — veafSkynet.GroupIntegrationMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-spawn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apparitions en cours de mission — dynamic_spawn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spotter-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réseau de guetteurs — spotter_network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Réseau de guetteurs — spotter_network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir ce qui se passe, sur la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une alerte, du début à la fin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Une alerte, du début à la fin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1--rien-ne-se-passe-encore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 — Rien ne se passe encore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2--un-poste-le-voit-et-la-batterie-quil-prévient-sallume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 — Un poste le voit, et la batterie qu'il prévient s'allume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3--le-mot-fait-le-tour-du-front" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 — Le mot fait le tour du front
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4--lavion-séloigne-la-défense-se-rendort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 — L'avion s'éloigne, la défense se rendort
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5--les-patrouilles-prennent-le-relais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 — Les patrouilles prennent le relais
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#last-line-of-defence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dernière ligne de défense — last_line_of_defence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#délai-de-démarrage--veafskynetdelayforstartup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Délai de démarrage — veafSkynet.DelayForStartup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vanished-sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Balayage des sites disparus — veafSkynet.SecondsBetweenVanishedSitesSweeps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#radar-range-recheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portée radar illisible — veafSkynet.DelayForRangeRecheck / veafSkynet.MaxRangeRechecks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#centres-de-commandement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Centres de commandement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deactivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Désactivation d'un réseau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accéder-aux-réseaux-générés" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux réseaux générés
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple--bascule-en-autonome-contrôlée-par-un-objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple — Bascule en autonome contrôlée par un objectif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="veafskynetiadshelper--intégration-skynet-iads">veafSkynetIadsHelper — Intégration Skynet IADS<a class="headerlink" href="#veafskynetiadshelper--intégration-skynet-iads" title="Permanent link">&para;</a></h1>
+<p><strong>Module ID :</strong> <code>SKYNET</code> | <strong>Fichier :</strong> <code>veafSkynetIadsHelper.lua</code> | <strong>Table Lua :</strong> <code>veafSkynet</code></p>
+<hr />
+<h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/walder/Skynet-IADS">Skynet-IADS</a> est un script tiers qui pilote les systèmes radar antiaériens afin qu'ils optimisent leur survivabilité et leur léthalité en restant éteints le plus possible. Il simule un IADS (Integrated Air Defence System) dans lequel les EWR (Early Warning Radar) scannent le ciel et communiquent leurs détections aux sites SAM, permettant à ceux-ci de ne s'activer que lorsqu'ils sont en capacité d'engager un contact.</p>
+<p><code>veafSkynetIadsHelper</code> automatise la construction de ces réseaux à partir des groupes présents dans la mission, et fournit des outils pour les surveiller, les contrôler et les lier à des objectifs de mission.</p>
+<hr />
+<h2 id="prérequis">Prérequis<a class="headerlink" href="#prérequis" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Le script Skynet IADS doit être téléchargé séparément et chargé <strong>avant</strong> <code>veafSkynetIadsHelper</code></li>
+<li>Configurer via <code>mission.yaml</code> (recommandé) ou dans <code>mission-script.lua</code> pour les options avancées non disponibles en YAML</li>
+</ul>
+<hr />
+<h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">include_red_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># afficher l&#39;état du réseau rouge dans le menu F10</span>
+<span class="w">    </span><span class="nt">debug_red</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># logs détaillés Skynet pour le réseau rouge</span>
+<span class="w">    </span><span class="nt">include_blue_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># afficher l&#39;état du réseau bleu dans le menu F10</span>
+<span class="w">    </span><span class="nt">debug_blue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">             </span><span class="c1"># logs détaillés Skynet pour le réseau bleu</span>
+<span class="w">    </span><span class="nt">dynamic_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">          </span><span class="c1"># intégrer aussi les groupes apparus en cours de mission</span>
+<span class="w">    </span><span class="nt">spotter_network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">        </span><span class="c1"># les unités au sol voient les avions et se passent le mot</span>
+<span class="w">    </span><span class="nt">spotter_radio_range_km</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">    </span><span class="c1"># portée d&#39;un relais radio</span>
+<span class="w">    </span><span class="nt">spotter_propagation_speed_kmh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span><span class="w">  </span><span class="c1"># vitesse de l&#39;alerte sur le réseau</span>
+<span class="w">    </span><span class="nt">spotter_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;off&quot;</span><span class="w">           </span><span class="c1"># &quot;off&quot; | &quot;on&quot; | &quot;radio&quot; — vue carte F10 (guillemets obligatoires)</span>
+<span class="w">    </span><span class="nt">last_line_of_defence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># un site éteint garde un rayon court et s&#39;y allume seul</span>
+<span class="w">    </span><span class="nt">last_line_of_defence_min_radius_km</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">    </span><span class="nt">last_line_of_defence_max_radius_km</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="w">    </span><span class="nt">last_line_of_defence_persistence_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">45</span>
+<span class="w">    </span><span class="nt">coverage_refresh_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Activer l'intégration Skynet</td>
+</tr>
+<tr>
+<td><code>include_red_in_radio</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Ajouter l'état IADS rouge au menu radio F10</td>
+</tr>
+<tr>
+<td><code>debug_red</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Debug verbeux Skynet pour la coalition rouge</td>
+</tr>
+<tr>
+<td><code>include_blue_in_radio</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Ajouter l'état IADS bleu au menu radio F10</td>
+</tr>
+<tr>
+<td><code>debug_blue</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Debug verbeux Skynet pour la coalition bleue</td>
+</tr>
+<tr>
+<td><code>dynamic_spawn</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Intégrer aussi les groupes apparus <strong>en cours de mission</strong> — voir <a href="#dynamic-spawn">Apparitions en cours de mission</a></td>
+</tr>
+<tr>
+<td><code>spotter_network</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Activer le réseau de guetteurs — voir <a href="#spotter-network">Réseau de guetteurs</a></td>
+</tr>
+<tr>
+<td><code>spotter_radio_range_km</code></td>
+<td>nombre</td>
+<td><code>20</code></td>
+<td>Distance à laquelle un groupe peut relayer une alerte, en kilomètres</td>
+</tr>
+<tr>
+<td><code>spotter_propagation_speed_kmh</code></td>
+<td>nombre</td>
+<td><code>3600</code></td>
+<td>Vitesse à laquelle l'alerte traverse la carte, en km/h</td>
+</tr>
+<tr>
+<td><code>spotter_view</code></td>
+<td><code>"off"</code> | <code>"on"</code> | <code>"radio"</code></td>
+<td><code>"off"</code></td>
+<td>Vue carte F10 du réseau — voir <a href="#spotter-view">Voir ce qui se passe, sur la carte</a></td>
+</tr>
+<tr>
+<td><code>last_line_of_defence</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Un site éteint garde un rayon court et s'y allume seul — voir <a href="#last-line-of-defence">Dernière ligne de défense</a></td>
+</tr>
+<tr>
+<td><code>last_line_of_defence_min_radius_km</code></td>
+<td>nombre</td>
+<td><code>10</code></td>
+<td>Borne basse du rayon, en kilomètres</td>
+</tr>
+<tr>
+<td><code>last_line_of_defence_max_radius_km</code></td>
+<td>nombre</td>
+<td><code>15</code></td>
+<td>Borne haute du rayon, en kilomètres</td>
+</tr>
+<tr>
+<td><code>last_line_of_defence_persistence_s</code></td>
+<td>nombre</td>
+<td><code>45</code></td>
+<td>Durée pendant laquelle le site reste allumé après le dernier passage, en secondes</td>
+</tr>
+<tr>
+<td><code>coverage_refresh_interval_s</code></td>
+<td>nombre</td>
+<td><code>10</code></td>
+<td>Intervalle entre deux balayages du graphe de couverture, en secondes (<code>0</code> = jamais)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="activation-via-mission-scriptlua">Activation (via <code>mission-script.lua</code>)<a class="headerlink" href="#activation-via-mission-scriptlua" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">PointDefenceMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">PointDefenceModes</span><span class="p">.</span><span class="py">Skynet</span>
+<span class="w">    </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">GroupIntegrationMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">GroupIntegrationModes</span><span class="p">.</span><span class="py">Strict</span>
+<span class="w">    </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">DynamicSpawn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">DelayForStartup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">initialize</span><span class="p">(</span>
+<span class="w">        </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="c1">-- includeRedInRadio</span>
+<span class="w">        </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="c1">-- debugRed</span>
+<span class="w">        </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="c1">-- includeBlueInRadio</span>
+<span class="w">        </span><span class="kc">false</span><span class="w">  </span><span class="c1">-- debugBlue</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<hr />
+<h2 id="principes-de-fonctionnement">Principes de fonctionnement<a class="headerlink" href="#principes-de-fonctionnement" title="Permanent link">&para;</a></h2>
+<p>Le module parcourt la liste de tous les groupes de la mission au démarrage, et ajoute ceux qui sont éligibles dans les réseaux IADS Skynet. Cette initialisation se fait avec un délai paramétrable (<code>DelayForStartup</code>) pour laisser les autres modules s'initialiser en premier. Les groupes en activation retardée sont intégrés au démarrage, mais pas les groupes générés dynamiquement (sauf si <code>DynamicSpawn = true</code>).</p>
+<p>Le module crée toujours deux réseaux Skynet : un pour la coalition <strong>bleue</strong>, un pour la coalition <strong>rouge</strong>.</p>
+<p>Seuls les groupes que DCS possède encore sont intégrés. La nuance a son importance : DCS continue de lister pendant un court instant les groupes qu'il vient de détruire, et l'initialisation du module arrive juste après le nettoyage que fait chaque zone de combat au démarrage. Un tel groupe apparaissait auparavant dans le réseau comme un site SAM dont le radar n'a jamais existé — compté « radar détruit » sur la page de statut IADS pour toute la mission.</p>
+<hr />
+<h2 id="what-a-network-sam-sees">Ce qu'un site du réseau voit — et ne voit pas<a class="headerlink" href="#what-a-network-sam-sees" title="Permanent link">&para;</a></h2>
+<p>C'est la mécanique qui surprend le plus, et elle a déjà été signalée comme un bug alors qu'elle
+fonctionnait comme prévu. <strong>Un site SAM pris en charge par un réseau a son radar éteint.</strong> Il ne voit
+donc rien par lui-même.</p>
+<h3 id="les-deux-façons-dont-un-site-sallume">Les deux façons dont un site s'allume<a class="headerlink" href="#les-deux-façons-dont-un-site-sallume" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Ce qui le déclenche</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Un EWR le renseigne</strong></td>
+<td>Un radar de veille voit l'avion et transmet le contact au site, qui s'allume si le contact entre dans son enveloppe de tir</td>
+</tr>
+<tr>
+<td><strong>Sa dernière ligne de défense</strong></td>
+<td>L'avion entre dans le rayon court que le site garde pour lui — voir <a href="#last-line-of-defence">Dernière ligne de défense</a></td>
+</tr>
+</tbody>
+</table>
+<p>La proximité seule n'est pas une troisième façon. En dehors du rayon de dernière ligne de défense, un
+avion peut passer <strong>à la verticale</strong> d'une batterie sans que rien ne réagisse, si aucun EWR ne l'a vu.</p>
+<h3 id="la-disparition-des-ewr-rend-les-sites-restants-plus-agressifs">La disparition des EWR rend les sites restants <em>plus</em> agressifs<a class="headerlink" href="#la-disparition-des-ewr-rend-les-sites-restants-plus-agressifs" title="Permanent link">&para;</a></h3>
+<p>C'est contre-intuitif, et c'est le comportement attendu. Un site qui n'a plus aucun EWR pour le
+renseigner bascule en <strong>autonome</strong> : Skynet le rend à l'IA de DCS, qui allume tout, tout le temps.
+Détruire les radars de veille ne désarme donc pas la défense, ça la rend aveugle mais agressive.</p>
+<h3 id="-couvert--ne-veut-pas-dire--renseigné-">« Couvert » ne veut pas dire « renseigné »<a class="headerlink" href="#-couvert--ne-veut-pas-dire--renseigné-" title="Permanent link">&para;</a></h3>
+<p>La page de statut liste, sous chaque EWR, les batteries qu'il « couvre ». La couverture est une simple
+<strong>distance à plat</strong> entre le radar de l'EWR et celui de la batterie, comparée à la portée de détection
+de l'EWR. Elle ignore l'horizon, le relief et l'altitude.</p>
+<p>Autrement dit, elle dit que l'EWR est <strong>près</strong> de la batterie, jamais qu'il est en train de la
+renseigner. Un seul 55G6 peut lister dix-huit batteries sous sa couverture pendant qu'il ne voit
+aucun avion.</p>
+<h3 id="joining-a-network">Les quatre façons de rejoindre un réseau<a class="headerlink" href="#joining-a-network" title="Permanent link">&para;</a></h3>
+<p>Deux batteries identiques se comportent à l'opposé selon leur origine.</p>
+<table>
+<thead>
+<tr>
+<th>Origine du groupe</th>
+<th>Rejoint le réseau ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Éditeur de mission (y compris activation retardée)</td>
+<td>Oui</td>
+</tr>
+<tr>
+<td>Zone de combat</td>
+<td>Oui, quel que soit <code>dynamic_spawn</code></td>
+</tr>
+<tr>
+<td>Commande d'apparition VEAF (<code>_spawn</code>)</td>
+<td>Seulement si la commande porte <code>skynet</code></td>
+</tr>
+<tr>
+<td>Script tiers, ou toute autre apparition</td>
+<td>Seulement si <code>dynamic_spawn: true</code></td>
+</tr>
+</tbody>
+</table>
+<p>Voir <a href="#dynamic-spawn">Apparitions en cours de mission</a> pour le détail et pour <code>skynet false</code>.</p>
+<h3 id="ewr-option">Donner à un site une veille permanente — l'option <code>ewr</code><a class="headerlink" href="#ewr-option" title="Permanent link">&para;</a></h3>
+<p>Une commande d'apparition peut poser le mot-clé <code>ewr</code> sur un groupe :</p>
+<div class="highlight"><pre><span></span><code>_spawn group, name SA-10 skynet ewr
+</code></pre></div>
+<p>Le site est alors un <strong>site de veille</strong> : il garde son radar allumé en permanence et voit pour
+lui-même, au lieu d'attendre qu'on le renseigne. Il renseigne aussi les autres sites du réseau.</p>
+<p>Ce que ça coûte : allumé en permanence, il est <strong>visible et ciblable</strong> — un HARM le trouvera. C'est le
+prix de la veille, et c'est pourquoi le conseil est de sacrifier une batterie courte portée plutôt que
+le système qu'on protège.</p>
+<blockquote>
+<p>Jusqu'à Skynet 3.5.0, l'option n'avait <strong>aucun effet</strong> sur les SA-10, SA-6, SA-5, Patriot et Hawk :
+deux balayages internes remettaient ces cinq types en veille éteinte juste après les avoir marqués.
+Ils ont été retirés.</p>
+</blockquote>
+<h3 id="diagnosing-a-dark-site">Diagnostiquer : pourquoi ce site ne s'allume pas<a class="headerlink" href="#diagnosing-a-dark-site" title="Permanent link">&para;</a></h3>
+<p>Mettre <code>debug_red: true</code> (ou <code>debug_blue</code>) affiche la page de statut du réseau. Trois lectures, trois
+conclusions différentes :</p>
+<table>
+<thead>
+<tr>
+<th>Ce que montre la page</th>
+<th>Ce que ça veut dire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L'EWR n'a <strong>aucun contact</strong></td>
+<td>Personne ne voit l'avion : masqué par le relief, ou hors de portée. Le réseau fonctionne</td>
+</tr>
+<tr>
+<td>L'EWR a des contacts, mais le site reste <code>ACTIVE: false</code></td>
+<td>L'avion est vu, mais hors de l'enveloppe de tir du site. Le réseau fonctionne</td>
+</tr>
+<tr>
+<td>Le site est <code>AUTONOMOUS</code></td>
+<td>Il n'a plus d'EWR pour le renseigner et il est rendu à l'IA DCS — c'est l'inversion décrite plus haut</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Après coup, quand personne n'avait pensé à allumer le debug.</strong> La page de statut est effacée à
+chaque cycle, mais le module garde un <strong>historique des réveils par le réseau de guetteurs</strong> qui, lui,
+survit : les 200 derniers, par coalition, avec l'instant de mission. Il répond à la question qu'on se
+pose le lendemain — <em>est-ce que le réseau a réveillé quelque chose hier soir ?</em> — sans qu'il ait fallu
+prévoir la mesure à l'avance.</p>
+<p><strong>Une ligne par réveil, pas une par vérification.</strong> Un site qui tient le même avion pendant vingt
+minutes écrit une seule ligne ; s'il perd le contact et que le même avion le réveille à nouveau,
+c'est une deuxième ligne. Une soirée de vol tient donc dans les 200, et un site qui clignote se voit
+pour ce qu'il est.</p>
+<div class="highlight"><pre><span></span><code><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">entry</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">getSpotterWakeUpLog</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">    </span><span class="nv">env</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;%d s : %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">entry</span><span class="p">.</span><span class="py">at</span><span class="p">,</span><span class="w"> </span><span class="nv">entry</span><span class="p">.</span><span class="py">line</span><span class="p">))</span>
+<span class="kr">end</span>
+</code></pre></div>
+<hr />
+<h2 id="propriétés-globales-à-définir-avant-initialize">Propriétés globales (à définir avant <code>initialize</code>)<a class="headerlink" href="#propriétés-globales-à-définir-avant-initialize" title="Permanent link">&para;</a></h2>
+<h3 id="mode-point-defence--veafskynetpointdefencemode">Mode Point Defence — <code>veafSkynet.PointDefenceMode</code><a class="headerlink" href="#mode-point-defence--veafskynetpointdefencemode" title="Permanent link">&para;</a></h3>
+<p>Identifie les sites SAM capables d'intercepter des missiles antiradar et les affecte en défense rapprochée d'autres éléments du réseau.</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafSkynet.PointDefenceModes.None</code></td>
+<td>Pas de défenses rapprochées (<strong>défaut</strong>)</td>
+</tr>
+<tr>
+<td><code>veafSkynet.PointDefenceModes.Skynet</code></td>
+<td>Défenses rapprochées gérées par Skynet (recommandé si activé)</td>
+</tr>
+<tr>
+<td><code>veafSkynet.PointDefenceModes.Dcs</code></td>
+<td>Exclut les défenses rapprochées du réseau IADS — laissées à l'IA DCS (toujours allumées, plus efficaces mais vulnérables)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mode-dintégration-des-groupes--veafskynetgroupintegrationmode">Mode d'intégration des groupes — <code>veafSkynet.GroupIntegrationMode</code><a class="headerlink" href="#mode-dintégration-des-groupes--veafskynetgroupintegrationmode" title="Permanent link">&para;</a></h3>
+<p>Détermine quels groupes DCS sont intégrés dans les réseaux Skynet.</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafSkynet.GroupIntegrationModes.Strict</code></td>
+<td>Seuls les groupes composés <strong>uniquement</strong> d'unités connues de Skynet sont intégrés</td>
+</tr>
+<tr>
+<td><code>veafSkynet.GroupIntegrationModes.Lenient</code></td>
+<td>Les groupes contenant <strong>au moins une</strong> unité connue de Skynet sont intégrés (<strong>défaut</strong>)</td>
+</tr>
+</tbody>
+</table>
+<p>Le mode <code>Lenient</code> intégrera un convoi composé de tanks, transports <strong>et</strong> d'une SA-19 d'escorte. Le mode <code>Strict</code> ne l'intégrera pas.</p>
+<h3 id="dynamic-spawn">Apparitions en cours de mission — <code>dynamic_spawn</code><a class="headerlink" href="#dynamic-spawn" title="Permanent link">&para;</a></h3>
+<p>Se règle depuis <code>mission.yaml</code> (<code>dynamic_spawn</code>), ou avant <code>initialize</code> avec <code>veafSkynet.DynamicSpawn</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td>Seuls les groupes présents au démarrage sont intégrés (<strong>défaut</strong>)</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td>Les groupes apparus en cours de mission rejoignent aussi les réseaux existants</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ce que ça coûte.</strong> Activé, le module surveille <strong>chaque apparition d'unité</strong> de la mission pour repérer les groupes éligibles. C'est pour cette raison que le réglage est éteint par défaut : à activer quand la mission fait apparaître des SAM en cours de partie (campagne dynamique, script tiers), pas systématiquement.</p>
+<p><strong>Ce que ça règle.</strong> Sans lui, un SAM apparu en cours de mission ne rejoint aucun réseau, et rien ne le dit.</p>
+<p><strong>Les zones de combat n'en ont pas besoin.</strong> Une défense antiaérienne qu'une zone de combat remet sur la carte rejoint le réseau de sa coalition <strong>quel que soit</strong> ce réglage : le contenu qu'un auteur a placé dans une zone n'est pas une apparition que personne n'a demandée. Sans cela, l'appartenance au réseau se jouait sur un hasard d'ordonnancement — l'activation d'une zone et l'enrôlement de démarrage sont programmés à la même seconde, donc une batterie de zone entrait dans le réseau si l'activation passait la première, et n'y revenait jamais après un cycle de la zone. Seuls les éléments qui <strong>restent en place</strong> sont concernés : un convoi qui traverse la zone n'a rien à faire dans un réseau de défense aérienne. Le critère est le même que celui de l'état d'alerte quand aucune balise <code>#alarm=</code> n'est posée — une balise explicite change l'état d'alerte, pas l'appartenance au réseau.</p>
+<p><strong>Qui décide, groupe par groupe.</strong> L'option <code>skynet</code> d'une commande d'apparition reste maîtresse : <code>skynet false</code> garde le groupe <strong>hors</strong> de tout réseau (c'est ce que portent les raccourcis de convoi), et <code>skynet &lt;nom de réseau&gt;</code> l'envoie dans ce réseau précis plutôt que dans celui de sa coalition. Un groupe qu'aucune commande VEAF n'a déclaré — posé dans l'éditeur, créé par un script tiers — rejoint le réseau de sa coalition : c'est précisément à quoi sert ce réglage.</p>
+<blockquote>
+<p>Les deux chemins d'intégration sont exclusifs : quand le réseau visé intègre les apparitions, c'est lui qui fait le travail ; sinon <code>veafSpawn</code> s'en charge au moment de l'apparition. Un groupe n'est jamais intégré deux fois.</p>
+</blockquote>
+<p><strong>Portée par réseau.</strong> Le réglage est propre à chaque réseau. Éteindre l'intégration côté rouge — ou désactiver le réseau rouge — laisse le bleu fonctionner.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- en cours de mission, réseau par réseau</span>
+<span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">setDynamicSpawn</span><span class="p">(</span><span class="s2">&quot;red iads&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="spotter-network">Réseau de guetteurs — <code>spotter_network</code><a class="headerlink" href="#spotter-network" title="Permanent link">&para;</a></h3>
+<p>Un <strong>groupe</strong> au sol qui voit un avion ennemi le signale, et le signalement se propage de groupe en
+groupe par la radio, un bond à la fois. Un site SAM qui le reçoit <strong>ne s'allume pas</strong> : il garde le contact
+et attend, exactement comme il le ferait pour un radar de veille lointaine, et ne passe en émission
+que lorsque l'avion entre dans son enveloppe de tir. C'est donc un <strong>radar de veille distribué</strong>, pas
+un déclencheur de réveil.</p>
+<p>Quand le guetteur perd l'avion de vue, il envoie une annulation par le même chemin et la défense se
+rendort.</p>
+<p><strong>Éteint par défaut</strong>, parce que ça change l'équilibre de toutes les missions existantes.</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td>Rien ne change (<strong>défaut</strong>)</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td>Les groupes au sol voient les avions et se passent le mot</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Le groupe est l'unité de raisonnement.</strong> Un groupe DCS est <strong>un</strong> guetteur, quel qu'en soit le
+nombre de véhicules : un convoi de onze camions garés au même endroit n'est pas onze stations radio
+indépendantes. Le groupe est situé au <strong>point médian</strong> de ses véhicules vivants, et il <strong>voit aussi
+loin que celui d'entre eux qui voit le plus loin</strong> — donc un groupe mêlant un MANPADS et un Shilka
+voit à 10 km, le Shilka étant aveugle.</p>
+<blockquote>
+<p>Le point médian est une approximation assumée : un groupe <strong>étiré</strong> sur plusieurs kilomètres — un
+convoi en route — n'a qu'un point, donc sa portée et sa position radio sont fausses de la moitié de
+sa longueur. Nulle pour un groupe à l'arrêt, négligeable devant des portées de 3 à 20 km.</p>
+</blockquote>
+<p><strong>Qui voit quoi.</strong> La portée de détection dépend du type d'unité, et chaque unité tire la sienne une
+fois pour la mission, à ±20 % de la valeur du tableau ; le groupe retient la meilleure. Le relief
+compte : un avion qui suit une vallée n'est pas vu par le guetteur situé derrière la crête.</p>
+<table>
+<thead>
+<tr>
+<th>Unité</th>
+<th>Voit à</th>
+<th>Relaie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Avion</td>
+<td>30 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Hélicoptère</td>
+<td>15 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Navire</td>
+<td>12 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>MANPADS</td>
+<td>10 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>AAA, véhicule de défense antiaérienne</td>
+<td>8 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Infanterie</td>
+<td>4 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Blindés, artillerie, camions</td>
+<td>3 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Site SAM, EWR, AWACS</td>
+<td>—</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Statiques, bâtiments, le reste</td>
+<td>—</td>
+<td>non</td>
+</tr>
+</tbody>
+</table>
+<p>Voir et relayer sont deux propriétés distinctes. <strong>Un site SAM relaie mais ne guette jamais</strong> : sa
+propre détection est déjà le travail de sa dernière ligne de défense. C'est ce qui produit l'effet
+domino — une batterie prévenue s'allume <strong>et</strong> passe le mot, donc une ligne de batteries se réveille
+dans le sens de la pénétration. Les EWR et les AWACS sont exclus pour la même raison : ils alimentent
+déjà Skynet.</p>
+<p>Conséquence assumée : <strong>un joueur qui vole pour la coalition du réseau devient un guetteur</strong>, et une
+patrouille amie alimente la défense au sol.</p>
+<p><strong>La portée radio décide si le réseau existe.</strong> Mesuré sur une mission de 1 000 unités : à 10 km, la
+plus grande poche connectée couvre 5 % d'une carte dispersée — une alerte ne sort jamais du groupe
+qui l'a levée. À 20 km, elle en couvre la totalité sur la plupart des dispositions. C'est pour ça que
+le défaut est à 20 et pas en dessous. Sur une carte dont le contenu est très éparpillé, le réseau
+reste en îlots quelle que soit la portée : c'est la limite honnête de l'idée.</p>
+<p><strong>La vitesse, et pas une période.</strong> Un bond couvre la portée radio, donc exposer les deux permettrait
+d'élargir la portée et de doubler la vitesse de l'alerte sans s'en rendre compte. La période d'un
+bond est calculée : portée ÷ vitesse, soit 20 s avec les valeurs par défaut. Aux réglages livrés,
+l'alerte traverse un front de 200 km en quatre minutes, contre treize pour un chasseur qui le
+survole.</p>
+<p><strong>Lire ce qui se passe.</strong> Avec <code>debug_red</code> ou <code>debug_blue</code> à <code>true</code>, le module écrit une page d'état
+dans <code>dcs.log</code> toutes les minutes : nombre d'unités et de liens, <strong>nombre de poches</strong> — la réponse à
+« pourquoi mon alerte n'est pas allée plus loin » —, les alertes en cours avec leur âge, qui a vu
+quoi depuis la page précédente et quel site a été réveillé par quelle alerte.</p>
+<p>Cette trace n'est pas décorative : une fois cette fonctionnalité en service, un site peut s'allumer
+pour <strong>trois</strong> raisons — un radar de veille lointaine, sa dernière ligne de défense, ou un guetteur.
+Sans la page, la question n'a pas de réponse.</p>
+<h4 id="spotter-view">Voir ce qui se passe, sur la carte<a class="headerlink" href="#spotter-view" title="Permanent link">&para;</a></h4>
+<p>Le module peut dessiner le réseau sur la carte F10. <strong>Un carré et un cercle par groupe</strong>, et chaque
+couleur ne veut dire qu'une chose :</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Gris</th>
+<th>Bleu</th>
+<th>Orange</th>
+<th>Rouge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Le carré</strong> — ce que le groupe <em>sait</em></td>
+<td>personne ne l'a prévenu</td>
+<td>on l'a prévenu</td>
+<td>—</td>
+<td>c'est une batterie, et elle est allumée</td>
+</tr>
+<tr>
+<td><strong>Le cercle</strong> — ce qu'il <em>voit</em></td>
+<td>il ne voit rien</td>
+<td>—</td>
+<td>il a un avion en vue</td>
+<td>la portée de tir de la batterie allumée</td>
+</tr>
+</tbody>
+</table>
+<p>Le carré parle de ce qu'on lui a <strong>dit</strong>, le cercle de ce qu'il <strong>voit</strong> lui-même. Les deux ne vont pas
+ensemble, et c'est le cœur de la fonctionnalité : un camion prévenu par radio est bleu avec un cercle
+gris, parce qu'il sait sans rien voir.</p>
+<p>Une batterie éteinte ne dessine <strong>aucun</strong> cercle. C'est volontaire : en gris, le gris voudrait dire
+deux choses à la fois — <em>cette batterie pourrait tirer, personne ne l'a prévenue</em> et <em>ces yeux ne
+regardent rien</em> — et on ne saurait plus lequel des deux cercles on regarde.</p>
+<p><img alt="Un poste qui voit, un poste qui ne voit rien" src="../../../assets/img/mission-maker/spotter-view-shapes.png" /></p>
+<p><em>Tout est là sur une seule vue : le </em><em>cercle orange</em><em> du poste qui a l'avion en vue, son </em><em>carré
+bleu</em><em>, la position prévenue à l'est dont les carrés sont bleus aussi, le trait qui les relie — et
+juste en dessous un autre poste, </em><em>cercle gris en pointillé</em><em>, qui ne voit rien.</em></p>
+<p>S'y ajoutent une <strong>croix rouge</strong> sur chaque avion suivi, un trait <strong>gris pointillé</strong> entre deux
+groupes qui peuvent se parler par radio, et un trait <strong>rouge continu</strong> là où une alerte est réellement
+passée — c'est ce qui rend le chemin d'un signalement lisible d'un coup d'œil.</p>
+<p>Trois valeurs pour <code>spotter_view</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"off"</code></td>
+<td>Rien n'est dessiné (<strong>défaut</strong>)</td>
+</tr>
+<tr>
+<td><code>"on"</code></td>
+<td>La vue est affichée dès le début de la mission</td>
+</tr>
+<tr>
+<td><code>"radio"</code></td>
+<td>Un interrupteur <em>Afficher / Masquer la vue des guetteurs</em> apparaît dans le menu F10, sous <strong>RÉSEAU DE GUETTEURS</strong>. La vue démarre <strong>éteinte</strong> : c'est l'intérêt d'un interrupteur, et c'est prudent vu ce que la vue montre</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>Mettez la valeur entre guillemets.</strong> YAML lit un <code>on</code> ou un <code>off</code> nu comme un booléen, pas
+comme un mot. Les deux sont acceptés et compris (<code>spotter_view: on</code> fonctionne), mais
+<code>spotter_view: "on"</code> est ce qui restera juste quoi qu'il arrive.</p>
+</blockquote>
+<p>L'interrupteur du menu est propre à chaque coalition : les pilotes rouges ne voient pas celui du
+réseau bleu. Il est aussi posé sans restriction de groupe, parce qu'un game master n'a <strong>pas</strong> de
+groupe — une commande radio réservée aux groupes ne lui parviendrait jamais, et c'est précisément lui
+que ce menu vise.</p>
+<p>Depuis <code>mission-script.lua</code>, la même chose s'obtient par&nbsp;:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">showSpotterView</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>C'est une vue de coalition, et ça ne peut pas être plus étroit.</strong> DCS ne sait dessiner que
+pour tout le monde, pour une coalition, ou pour un groupe — et un game master n'a pas de groupe.
+Donc <strong>tous les pilotes de cette coalition voient ces marqueurs</strong>, ce qui sur un réseau rouge offre
+aux pilotes rouges un suivi en direct des avions bleus. À réserver aux tests et aux missions où
+c'est voulu.</p>
+<p>Le réseau vit dans le module Skynet et ne fait rien quand Skynet est éteint : il n'y a pas de mode
+de repli pour les missions sans IADS.</p>
+</blockquote>
+<h4 id="spotter-view-story">Une alerte, du début à la fin<a class="headerlink" href="#spotter-view-story" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>⚠️ <strong>Ce n'est pas ce que voit un pilote.</strong> Les images ci-dessous montrent une mission en <strong>mode mise
+au point</strong>, avec deux affichages allumés en même temps : la <strong>vue des guetteurs</strong> (les carrés, les
+cercles, les traits) et le <strong>bandeau de Skynet</strong> en haut à droite, qui compte les batteries et dit
+combien sont allumées. Les deux sont <strong>éteints par défaut</strong> : ils servent à régler une mission, pas
+à la jouer.</p>
+<p>Pour retrouver ces vues dans votre mission :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">spotter_network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">spotter_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;on&quot;</span><span class="w">    </span><span class="c1"># les carrés et les cercles ; &quot;radio&quot; pour un interrupteur au menu F10</span>
+<span class="w">    </span><span class="nt">debug_red</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># le bandeau d&#39;état en haut à droite, et la trace dans dcs.log</span>
+</code></pre></div>
+<p>Puis, en jeu : <strong>fermez et rouvrez la carte F10 après le chargement.</strong> Un dessin posé par un script
+n'apparaît pas sur une carte déjà ouverte — c'est de loin la première cause de « ça ne dessine
+rien ».</p>
+</blockquote>
+<p>Les cinq images qui suivent sont <strong>une seule et même alerte</strong>, suivie au fil d'une mission de
+démonstration livrée avec les outils (<code>test/veaf-tools/spotter-network-dense</code>), vue du <strong>côté rouge</strong>.
+L'heure donnée est le temps écoulé depuis le début de la mission.</p>
+<p>Le décor : un avion ennemi arrive par le nord et longe une ligne de <strong>six postes d'observation espacés
+de 17 km</strong> ; derrière eux, deux positions défendues, chacune avec ses blindés, ses camions, ses
+fantassins et sa batterie anti-aérienne. Deux patrouilles et un avion radar tournent au-dessus.</p>
+<h5 id="1--rien-ne-se-passe-encore">1 — Rien ne se passe encore<a class="headerlink" href="#1--rien-ne-se-passe-encore" title="Permanent link">&para;</a></h5>
+<p><img alt="Le réseau au repos" src="../../../assets/img/mission-maker/spotter-view-1-at-rest.jpg" /></p>
+<p><em>Tout est gris : personne n'a rien vu, et la carte le dit sans qu'on ait besoin de la déchiffrer.
+L'avion n'est pas encore arrivé.</em></p>
+<p>C'est le bon moment pour dire <strong>qui voit quoi</strong>. Chaque groupe a sa propre portée de vue, et elle
+dépend du <strong>type</strong> de ses véhicules — le tableau plus haut donne les valeurs. Un groupe voit aussi loin
+que <strong>celui de ses véhicules qui voit le plus loin</strong> : un groupe mêlant un tireur de missile portable
+(10 km) et un canon anti-aérien aveugle voit 10 km, pas la moyenne des deux.</p>
+<p>Deux choses qui surprennent la première fois :</p>
+<ul>
+<li><strong>certains véhicules qui ont l'air faits pour ça ne voient rien.</strong> Une pièce d'un site anti-aérien,
+  un canon automoteur : leur détection est déjà le travail du site lui-même, donc ils <strong>relaient sans
+  guetter</strong>. Un simple camion voit plus loin qu'un canon anti-aérien automoteur ;</li>
+<li><strong>le relief compte.</strong> Un avion qui suit une vallée n'est pas vu par le poste situé derrière la
+  crête, même s'il est à portée. Ce n'est pas qu'une question de distance : il faut une ligne de vue.</li>
+</ul>
+<p>Les carrés <strong>sans aucun cercle</strong>, sur cette image, sont l'avion radar et le radar de veille : ils
+relaient et ne voient rien, parce que ce qu'ils voient alimente déjà la défense par un autre chemin.</p>
+<h5 id="2--un-poste-le-voit-et-la-batterie-quil-prévient-sallume">2 — Un poste le voit, et la batterie qu'il prévient s'allume<a class="headerlink" href="#2--un-poste-le-voit-et-la-batterie-quil-prévient-sallume" title="Permanent link">&para;</a></h5>
+<p><em>(1 min 20 plus tard)</em></p>
+<p><img alt="Le premier réveil" src="../../../assets/img/mission-maker/spotter-view-2-first-wake-up.jpg" /></p>
+<p><em>Le poste du nord passe en </em><em>orange</em><em> : il a l'avion en vue. Il passe le mot, et la batterie située
+22 km plus à l'est — </em><em>qui n'a rien vu du tout</em><em> — s'allume : carré rouge, et son cercle rouge montre
+jusqu'où elle peut tirer. Le reste de la carte est encore gris, donc il n'y a pas d'ambiguïté sur ce
+qui vient de se produire. Le bandeau en haut à droite le confirme : <code>SAM: 3 | On: 1 | Off: 2</code>.</em></p>
+<p>C'est <strong>toute l'idée de la fonctionnalité en une image</strong>, et il y a deux mécaniques distinctes dedans.</p>
+<p><strong>Comment le mot circule.</strong> Deux groupes peuvent se parler s'ils sont à moins de <strong>20 km</strong> l'un de
+l'autre — c'est le réglage <code>spotter_radio_range_km</code>. Le signalement ne saute pas d'un bout à l'autre de
+la carte : il avance <strong>de voisin en voisin, un bond à la fois</strong>, et un bond prend une vingtaine de
+secondes. Si deux groupes sont à 25 km, ils ne s'entendent pas : le réseau se coupe en morceaux
+séparés, et une alerte levée dans l'un ne sortira jamais de l'autre. C'est pour ça que les postes de
+cette mission sont espacés de 17 km et pas de 25.</p>
+<p><strong>Ce que fait une batterie prévenue.</strong> Elle <strong>ne s'allume pas parce qu'on lui a parlé</strong>. Elle garde le
+renseignement et attend, exactement comme elle le ferait avec un radar de veille lointaine, et elle
+n'allume son radar que lorsque l'avion entre <strong>dans sa propre portée de tir</strong>. C'est ce qui se passe
+ici : elle a été prévenue, l'avion était déjà dans ses 25 km, donc elle s'allume. Sur la même image,
+les autres batteries ont reçu le même signalement et <strong>restent grises</strong> : l'avion n'est pas dans
+<em>leur</em> portée à elles. Le réseau de guetteurs est un <strong>radar de veille réparti</strong>, pas un interrupteur
+qui réveille tout le monde.</p>
+<h5 id="3--le-mot-fait-le-tour-du-front">3 — Le mot fait le tour du front<a class="headerlink" href="#3--le-mot-fait-le-tour-du-front" title="Permanent link">&para;</a></h5>
+<p><em>(1 minute de plus)</em></p>
+<p><img alt="L'alerte traverse le front" src="../../../assets/img/mission-maker/spotter-view-3-word-travels.jpg" /></p>
+<p><em>Les carrés sont devenus </em><em>bleus sur 95 km</em><em>, jusqu'au poste le plus au sud. Mais leurs cercles restent
+</em><em>gris</em><em> : ils savent, ils ne voient rien. Les traits rouges dessinent le chemin exact qu'a pris le
+signalement, de proche en proche.</em></p>
+<p>C'est la différence entre le carré et le cercle rendue visible : douze groupes sont au courant, un seul
+regarde l'avion. Et l'effet en cascade se lit aussi — une batterie prévenue <strong>passe le mot à son
+tour</strong>, donc une ligne de défenses se réveille dans le sens de la pénétration.</p>
+<h5 id="4--lavion-séloigne-la-défense-se-rendort">4 — L'avion s'éloigne, la défense se rendort<a class="headerlink" href="#4--lavion-séloigne-la-défense-se-rendort" title="Permanent link">&para;</a></h5>
+<p><em>(1 min 20 de plus)</em></p>
+<p><img alt="La défense se rendort" src="../../../assets/img/mission-maker/spotter-view-4-back-to-sleep.jpg" /></p>
+<p><em>L'avion est sorti de la portée de tir : la batterie s'éteint, son cercle rouge disparaît, et le
+bandeau repasse à <code>On: 0</code>. Le nord est </em><em>redevenu gris</em><em> — il a oublié — pendant que le sud est encore
+bleu.</em></p>
+<p>Quand un guetteur perd l'avion de vue, il n'attend pas que l'information pourrisse : il envoie une
+<strong>annulation</strong>, qui voyage par le même chemin et à la même vitesse que l'alerte. C'est elle qu'on voit
+ici en train de se propager — le nord est déjà nettoyé, le sud pas encore. Sans ça, une défense
+resterait en alerte sur un avion parti depuis longtemps.</p>
+<p>Un guetteur ne lâche pas l'avion au premier battement de cils, cela dit : un appareil qui disparaît
+derrière une crête quelques secondes reste suivi. Il faut le perdre franchement pour que l'annulation
+parte.</p>
+<h5 id="5--les-patrouilles-prennent-le-relais">5 — Les patrouilles prennent le relais<a class="headerlink" href="#5--les-patrouilles-prennent-le-relais" title="Permanent link">&para;</a></h5>
+<p><em>(1 min 45 de plus)</em></p>
+<p><img alt="Les patrouilles prennent le relais" src="../../../assets/img/mission-maker/spotter-view-5-air-takes-over.jpg" /></p>
+<p><em>Ce sont maintenant l'hélicoptère et la patrouille de chasse qui suivent l'avion. Le grand cercle
+orange, c'est le chasseur : il voit à 30 km </em><em>et il se déplace</em><em>.</em></p>
+<p>Les appareils en vol voient beaucoup plus loin que le sol — 30 km pour un avion, 15 pour un
+hélicoptère — parce que rien ne les masque et que beaucoup portent un radar. Conséquence assumée :
+<strong>un joueur qui vole pour la coalition du réseau devient un guetteur</strong>, et une patrouille amie
+alimente la défense au sol sans avoir à faire quoi que ce soit de particulier.</p>
+<h3 id="last-line-of-defence">Dernière ligne de défense — <code>last_line_of_defence</code><a class="headerlink" href="#last-line-of-defence" title="Permanent link">&para;</a></h3>
+<p>Un site éteint garde malgré tout un <strong>rayon de détection virtuel court</strong>, dans lequel il s'allume de
+lui-même. C'est ce qui évite qu'un avion passant sous l'horizon des radars de veille traverse une
+défense aérienne sans être inquiété.</p>
+<p><strong>Livré allumé</strong>, et c'est un changement de comportement : avant Skynet 3.5.0, un site pris en charge
+par un réseau était totalement aveugle entre deux renseignements d'EWR.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SKYNET</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">last_line_of_defence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                </span><span class="c1"># mettre à false pour un IADS puriste</span>
+<span class="w">    </span><span class="nt">last_line_of_defence_min_radius_km</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">    </span><span class="nt">last_line_of_defence_max_radius_km</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="w">    </span><span class="nt">last_line_of_defence_persistence_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">45</span>
+<span class="w">    </span><span class="nt">coverage_refresh_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+<p><strong>Chaque site tire son propre rayon</strong> entre les deux bornes, une seule fois, au début. Un front ne
+présente donc pas un anneau uniforme qu'un pilote pourrait apprendre.</p>
+<p><strong>La limite, dite franchement :</strong> le rayon est mesuré <strong>à plat</strong> et ignore volontairement l'enveloppe
+de tir. Une pièce courte portée peut donc s'allumer pour un avion qu'elle ne peut pas atteindre. C'est
+un choix : le rayon dit « quelque chose passe au-dessus de chez moi », pas « je peux l'abattre ».</p>
+<p><strong>La persistance</strong> est le temps pendant lequel le site reste allumé après le dernier passage dans son
+rayon. À <code>45</code> secondes, il ne se rallume pas à chaque aller-retour.</p>
+<p><strong>Le balayage de couverture</strong> est la fréquence à laquelle Skynet refait le graphe « quel EWR couvre
+quelle batterie ». Il sert aux sites qui bougent ; à <code>0</code>, il ne se fait jamais.</p>
+<p><strong>Les deux bornes vont ensemble.</strong> Skynet refuse la paire entière si la borne haute est inférieure à
+la borne basse — et il la refuse <strong>en silence</strong>. Écrire <code>last_line_of_defence_min_radius_km: 20</code> tout
+seul suffit à tomber dedans, puisque la borne haute reste à 15 : les deux valeurs livrées
+s'appliquent alors, pas celle demandée. Si vous élargissez le rayon, <strong>déplacez les deux bornes</strong>.</p>
+<p>Le module relit ce qu'il a posé et le dit dans le journal quand un réglage n'a pas été pris :</p>
+<div class="highlight"><pre><span></span><code>WARN SKYNET [red iads]: the last-line-of-defence radius (min/max, in metres) was refused —
+     asked for 20000/15000, Skynet stands at 10000/15000. Check the value in mission.yaml
+</code></pre></div>
+<blockquote>
+<p>Ces quatre réglages sont <strong>globaux aux deux coalitions</strong>. Seul <code>dynamic_spawn</code> est propre à chaque
+réseau.</p>
+</blockquote>
+<h3 id="délai-de-démarrage--veafskynetdelayforstartup">Délai de démarrage — <code>veafSkynet.DelayForStartup</code><a class="headerlink" href="#délai-de-démarrage--veafskynetdelayforstartup" title="Permanent link">&para;</a></h3>
+<p>Nombre de secondes à attendre avant d'initialiser les réseaux (défaut : <code>1</code>). À augmenter si d'autres modules initialisent des groupes en retard.</p>
+<h3 id="vanished-sites">Balayage des sites disparus — <code>veafSkynet.SecondsBetweenVanishedSitesSweeps</code><a class="headerlink" href="#vanished-sites" title="Permanent link">&para;</a></h3>
+<p>Nombre de secondes entre deux passages de nettoyage des réseaux (défaut : <code>60</code>).</p>
+<p>Un site dont le groupe <strong>quitte la mission sans être détruit</strong> — c'est le cas quand une zone de combat est désactivée et emporte ses défenses aériennes — était conservé dans le réseau jusqu'à la fin de la partie. Il gonflait la page de statut, était parcouru à chaque cycle de détection, et <strong>retenait le nom de son groupe</strong> : le module refuse d'intégrer un groupe que le réseau liste déjà. Le balayage retire ces sites et libère le nom.</p>
+<p>À noter, parce que la nuance compte : libérer le nom ne suffit pas à faire rejoindre le réseau à un groupe qui réapparaît <strong>sous le même nom pendant</strong> l'intervalle de balayage. L'intégration se fait sur l'événement d'apparition, qui est déjà passé et a été refusé ; rien ne la relance ensuite. Ce cas ne concerne pas les zones de combat : elles donnent un nom neuf à chaque réapparition, et surtout elles annoncent elles-mêmes au réseau les défenses qu'elles remettent en place — voir <a href="#dynamic-spawn">Apparitions en cours de mission</a>.</p>
+<p>Les sites que le joueur a <strong>détruits</strong>, eux, restent dans le réseau : ce sont eux que comptent les colonnes <code>Raddest</code> et <code>Destroyed</code> de la page de statut, et c'est la lecture d'une SEAD réussie.</p>
+<h3 id="radar-range-recheck">Portée radar illisible — <code>veafSkynet.DelayForRangeRecheck</code> / <code>veafSkynet.MaxRangeRechecks</code><a class="headerlink" href="#radar-range-recheck" title="Permanent link">&para;</a></h3>
+<p>Nombre de secondes entre deux lectures de la portée d'un radar (défaut : <code>5</code>), et nombre de lectures tentées (défaut : <code>3</code>). À <code>0</code>, aucune relecture.</p>
+<p>Skynet lit la portée de détection d'un radar <strong>une seule fois</strong>, à l'instant où le site entre dans le réseau. Si DCS ne la donne pas à cet instant précis, elle reste à zéro pour le reste de la mission : le site ne détecte rien, ne s'allume jamais — même quand un avion lui passe dessus — et la page de statut le compte en <code>Raddest</code>, comme si son radar avait été détruit. Un site dans cet état est donc réinterrogé, et sa couverture est refaite dès qu'une lecture aboutit.</p>
+<p>Un site concerné laisse une ligne dans le journal (<code>RADAR RANGE ZERO</code>, puis <code>RADAR RANGE RECOVERED</code> ou <code>RADAR RANGE STILL ZERO</code>), avec le nombre de radars et de rampes du site. Une mission dont tous les sites répondent normalement n'écrit rien.</p>
+<hr />
+<h2 id="centres-de-commandement">Centres de commandement<a class="headerlink" href="#centres-de-commandement" title="Permanent link">&para;</a></h2>
+<p>Dans Skynet, un <strong>Command Center</strong> est une unité ou un statique dont dépend le fonctionnement d'un réseau. Si tous les Command Centers d'un réseau sont détruits, ce réseau bascule en mode autonome (tous les éléments restent allumés en permanence, mais bénéficient toujours des intelligences de Skynet, notamment l'évasion HARM).</p>
+<p>Cette mécanique permet de donner des objectifs de mission concrets : détruire le centre de commandement pour désorganiser la défense aérienne.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Ajouter un Command Center à un réseau (peut être un groupe, une unité ou un statique)</span>
+<span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">addCommandCenterOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;CommandCenterRed&quot;</span><span class="p">)</span>
+
+<span class="c1">-- Détruire (faire exploser) tous les Command Centers d&#39;un réseau</span>
+<span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">destroyCommandCentersOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="deactivation">Désactivation d'un réseau<a class="headerlink" href="#deactivation" title="Permanent link">&para;</a></h2>
+<p>Désactive un réseau Skynet et bascule tous ses éléments dans un état défini avant de les rendre à l'IA DCS.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">deactivateNetworkOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+<span class="c1">-- ou avec un état spécifique :</span>
+<span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">deactivateNetworkOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">,</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">SkynetElementStates</span><span class="p">.</span><span class="py">Dark</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>État</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafSkynet.SkynetElementStates.Autonomous</code></td>
+<td>Mode autonome selon la configuration de chaque élément</td>
+</tr>
+<tr>
+<td><code>veafSkynet.SkynetElementStates.Live</code></td>
+<td>Tous les éléments allumés (<strong>défaut</strong>)</td>
+</tr>
+<tr>
+<td><code>veafSkynet.SkynetElementStates.Dark</code></td>
+<td>Tous les éléments éteints</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Un réseau désactivé reste désactivé.</strong> Faire apparaître un SAM dedans ne le rallume plus : le groupe est bien rattaché — c'est ce que demande <code>skynet true</code> — mais le réseau ne se réveille pas tout seul. Avant, l'apparition d'un seul SAM suffisait à remettre en route un réseau qu'on venait d'éteindre.</p>
+<p>Pour le rallumer, il faut le demander. Tout ce qui a été rattaché entre-temps s'allume avec lui :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">activateNetworkOfCoalition</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)</span>
+</code></pre></div>
+<p>Désactiver un réseau <strong>ne touche pas à l'autre</strong> : le réseau bleu garde son état et son intégration des apparitions.</p>
+<hr />
+<h2 id="accéder-aux-réseaux-générés">Accéder aux réseaux générés<a class="headerlink" href="#accéder-aux-réseaux-générés" title="Permanent link">&para;</a></h2>
+<p>Après l'initialisation (qui se fait en différé), on peut accéder aux objets réseaux Skynet via une tâche différée :</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">assignRedIadsTaskId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">myRedIads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">AssignRedIadsTask</span><span class="p">()</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">removeFunction</span><span class="p">(</span><span class="nv">assignRedIadsTaskId</span><span class="p">)</span>
+<span class="w">        </span><span class="kr">return</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">initialized</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">removeFunction</span><span class="p">(</span><span class="nv">assignRedIadsTaskId</span><span class="p">)</span>
+<span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="nv">veafSkynetNetwork</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">getNetwork</span><span class="p">(</span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">defaultIADS</span><span class="p">[</span><span class="nb">tostring</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">)])</span>
+<span class="w">        </span><span class="nv">myRedIads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSkynetNetwork</span><span class="p">.</span><span class="py">iads</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="nv">assignRedIadsTaskId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">scheduleFunction</span><span class="p">(</span><span class="nv">AssignRedIadsTask</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">DelayForStartup</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="exemple--bascule-en-autonome-contrôlée-par-un-objectif">Exemple — Bascule en autonome contrôlée par un objectif<a class="headerlink" href="#exemple--bascule-en-autonome-contrôlée-par-un-objectif" title="Permanent link">&para;</a></h2>
+<p>Cet exemple crée un Command Center depuis un template, puis expose des fonctions pour activer/désactiver le réseau selon l'évolution de la mission.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">SkynetNetworkEnable</span><span class="p">(</span><span class="nv">iCoalition</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">veafSkynetNetwork</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">getNetwork</span><span class="p">(</span><span class="nv">veafSkynet</span><span class="p">.</span><span class="py">defaultIADS</span><span class="p">[</span><span class="nb">tostring</span><span class="p">(</span><span class="nv">iCoalition</span><span class="p">)])</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">iads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafSkynetNetwork</span><span class="p">.</span><span class="py">iads</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="o">#</span><span class="nv">iads</span><span class="p">:</span><span class="nf">getCommandCenters</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">iads</span><span class="p">:</span><span class="nf">isCommandCenterUsable</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="c1">-- déjà actif</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="w">    </span><span class="c1">-- Cloner un groupe template dans une zone dédiée</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">sTemplateName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SkynetCommandCenterRed&quot;</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">ccData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">mist</span><span class="p">.</span><span class="nf">cloneInZone</span><span class="p">(</span><span class="nv">sTemplateName</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SkynetCommandCenterZone&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">addCommandCenterOfCoalition</span><span class="p">(</span><span class="nv">iads</span><span class="p">:</span><span class="nf">getCoalition</span><span class="p">(),</span><span class="w"> </span><span class="nv">ccData</span><span class="p">.</span><span class="py">name</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">SkynetNetworkDisable</span><span class="p">(</span><span class="nv">iCoalition</span><span class="p">)</span>
+<span class="w">    </span><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">destroyCommandCentersOfCoalition</span><span class="p">(</span><span class="nv">iCoalition</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<blockquote>
+<p>Cet exemple appelle <code>mist.cloneInZone</code>, il a donc besoin de MiST — qui n'est plus injecté dans
+toutes les missions. Placez l'extrait dans l'un de vos <code>src/scripts/*.lua</code> et le build voit l'appel
+<code>mist.</code> et injecte MiST pour vous ; voir
+<a href="../../GUIDE/#mist-injection">MiST : injecté seulement si vous en avez besoin</a>.</p>
+</blockquote>
+<hr />
+<h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/walder/Skynet-IADS">Documentation Skynet IADS</a> — script tiers (non inclus dans VEAF)</li>
+<li><a href="../../../LUA_API_REFERENCE/">Référence API Lua</a> — API complète de <code>veafSkynet</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>
