@@ -2458,6 +2458,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spotter-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spotter network — spotter_network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotter network — spotter_network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seeing what happens, on the map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#startup-delay--veafskynetdelayforstartup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3439,6 +3467,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spotter-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spotter network — spotter_network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotter network — spotter_network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seeing what happens, on the map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#startup-delay--veafskynetdelayforstartup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3573,6 +3629,10 @@
 <span class="w">    </span><span class="nt">include_blue_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># show BLUE network status in F10 menu</span>
 <span class="w">    </span><span class="nt">debug_blue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">             </span><span class="c1"># verbose Skynet logging for BLUE network</span>
 <span class="w">    </span><span class="nt">dynamic_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">          </span><span class="c1"># also integrate groups that appear during the mission</span>
+<span class="w">    </span><span class="nt">spotter_network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">        </span><span class="c1"># ground units see aircraft and pass the word along</span>
+<span class="w">    </span><span class="nt">spotter_radio_range_km</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">    </span><span class="c1"># how far one unit can relay</span>
+<span class="w">    </span><span class="nt">spotter_propagation_speed_kmh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span><span class="w">  </span><span class="c1"># how fast an alert crosses the network</span>
+<span class="w">    </span><span class="nt">spotter_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;off&quot;</span><span class="w">           </span><span class="c1"># &quot;off&quot; | &quot;on&quot; | &quot;radio&quot; — F10 map view (the quotes matter)</span>
 </code></pre></div>
 <table>
 <thead>
@@ -3619,6 +3679,30 @@
 <td>boolean</td>
 <td><code>false</code></td>
 <td>Also integrate groups that appear <strong>during</strong> the mission — see <a href="#dynamic-spawn">Groups appearing during the mission</a></td>
+</tr>
+<tr>
+<td><code>spotter_network</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Enable the spotter network — see <a href="#spotter-network">Spotter network</a></td>
+</tr>
+<tr>
+<td><code>spotter_radio_range_km</code></td>
+<td>number</td>
+<td><code>20</code></td>
+<td>How far one unit can relay an alert, in kilometres</td>
+</tr>
+<tr>
+<td><code>spotter_propagation_speed_kmh</code></td>
+<td>number</td>
+<td><code>3600</code></td>
+<td>How fast an alert crosses the map, in km/h</td>
+</tr>
+<tr>
+<td><code>spotter_view</code></td>
+<td><code>"off"</code> | <code>"on"</code> | <code>"radio"</code></td>
+<td><code>"off"</code></td>
+<td>F10 map view of the network — see <a href="#spotter-view">Seeing what happens, on the map</a></td>
 </tr>
 </tbody>
 </table>
@@ -3720,6 +3804,157 @@
 <div class="highlight"><pre><span></span><code><span class="c1">-- during the mission, network by network</span>
 <span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">setDynamicSpawn</span><span class="p">(</span><span class="s2">&quot;red iads&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
 </code></pre></div>
+<h3 id="spotter-network">Spotter network — <code>spotter_network</code><a class="headerlink" href="#spotter-network" title="Permanent link">&para;</a></h3>
+<p>A ground unit that sees a hostile aircraft reports it, and the report travels from unit to unit over
+the radio, one hop at a time. A SAM site that receives it does <strong>not</strong> light up: it holds the contact
+and waits, exactly as it would for an early-warning radar, and goes live only when the aircraft
+enters its firing envelope. It is a <strong>distributed early-warning radar</strong>, not a wake-up trigger.</p>
+<p>When the spotter loses sight of the aircraft it sends a cancellation along the same path, and the
+defence goes quiet again.</p>
+<p><strong>Off by default</strong>, because it changes the balance of every existing mission.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td>Nothing changes (<strong>default</strong>)</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td>Ground units see aircraft and pass the word along</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Who sees what.</strong> The detection range depends on the type of unit, and each unit draws its own once
+for the mission, within ±20 % of the table value. Terrain counts: an aircraft following a valley is
+not seen by the spotter behind the crest.</p>
+<table>
+<thead>
+<tr>
+<th>Unit</th>
+<th>Sees out to</th>
+<th>Relays</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aeroplane</td>
+<td>30 km</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Helicopter</td>
+<td>15 km</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Ship</td>
+<td>12 km</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>MANPADS</td>
+<td>10 km</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>AAA, air-defence vehicle</td>
+<td>8 km</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Infantry</td>
+<td>4 km</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Armour, artillery, trucks</td>
+<td>3 km</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>SAM site, EWR, AWACS</td>
+<td>—</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Statics, buildings, everything else</td>
+<td>—</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>Seeing and relaying are two separate properties. <strong>A SAM site relays but never spots</strong>: its own
+detection is already its last line of defence's job. That is what produces the domino — a battery
+that is warned lights up <strong>and</strong> passes the word, so a line of batteries wakes in the direction of
+the penetration. EWRs and AWACS are excluded for the same reason: they already feed Skynet.</p>
+<p>A consequence that was accepted deliberately: <strong>a player flying for the network's coalition becomes a
+spotter</strong>, and a friendly patrol feeds the ground defence.</p>
+<p><strong>The radio range decides whether the network exists at all.</strong> Measured over a 1 000-unit mission: at
+10 km the largest connected pocket covers 5 % of a scattered map — an alert never leaves the group
+that raised it. At 20 km it covers all of it on most layouts. That is why the default is 20 and not
+below. On a map whose contents are spread very thin the network stays a set of islands at any range,
+which is the honest limit of the idea.</p>
+<p><strong>A speed, not a period.</strong> One hop covers the radio range, so exposing both would let you widen the
+range and double the speed of the alert without noticing. The hop period is derived: range ÷ speed,
+so 20 s at the shipped values. At those settings an alert crosses a 200 km front in four minutes,
+against thirteen for a fighter to fly it.</p>
+<p><strong>Reading what happens.</strong> With <code>debug_red</code> or <code>debug_blue</code> set to <code>true</code>, the module writes a status
+page into <code>dcs.log</code> every minute: how many units and links, <strong>how many pockets</strong> — the answer to
+"why did my alert not travel" — the live alerts with their age, who saw what since the previous page,
+and which site was woken by which alert.</p>
+<p>That trace is not decoration: once this feature is in service a site can light up for <strong>three</strong>
+reasons — an early-warning radar, its last line of defence, or a spotter. Without the page the
+question has no answer.</p>
+<h4 id="spotter-view">Seeing what happens, on the map<a class="headerlink" href="#spotter-view" title="Permanent link">&para;</a></h4>
+<p>The module can put an F10 marker at each spotter currently holding a contact, with a circle at its
+detection range. <code>spotter_view</code> takes three values:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"off"</code></td>
+<td>Nothing is drawn (<strong>default</strong>)</td>
+</tr>
+<tr>
+<td><code>"on"</code></td>
+<td>The view is shown from the start of the mission</td>
+</tr>
+<tr>
+<td><code>"radio"</code></td>
+<td>A <em>Show / Hide the spotter view</em> switch appears in the F10 menu, under <strong>SPOTTER NETWORK</strong>. The view starts <strong>off</strong>: that is the point of a switch, and it is the cautious choice given what the view shows</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>Quote the value.</strong> YAML reads a bare <code>on</code> or <code>off</code> as a boolean, not as a word. Both are
+accepted and understood (<code>spotter_view: on</code> works), but <code>spotter_view: "on"</code> is the spelling that
+stays correct whatever happens.</p>
+</blockquote>
+<p>The menu switch belongs to one coalition: red pilots do not see the blue network's. It is also added
+without a group restriction, because a game master has <strong>no</strong> group — a group-only radio command
+would never reach one, and a game master is exactly who this menu is for.</p>
+<p>From <code>mission-script.lua</code>, the same thing:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">showSpotterView</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>It is a coalition view, and it cannot be anything narrower.</strong> DCS can only draw for everyone,
+for a coalition, or for a group — and a game master has no group. So <strong>every pilot of that coalition
+sees these markers</strong>, which on a red network hands red pilots a live tracker of blue aircraft. Keep
+it for testing and for missions where that is what you want.</p>
+<p>The network lives inside the Skynet module and does nothing when Skynet is off: there is no
+fallback mode for missions without an IADS.</p>
+</blockquote>
 <h3 id="startup-delay--veafskynetdelayforstartup">Startup delay — <code>veafSkynet.DelayForStartup</code><a class="headerlink" href="#startup-delay--veafskynetdelayforstartup" title="Permanent link">&para;</a></h3>
 <p>Seconds to wait before initialising networks (default: <code>1</code>). Increase if other modules initialise groups with a delay.</p>
 <h3 id="vanished-sites">Vanished-site sweep — <code>veafSkynet.SecondsBetweenVanishedSitesSweeps</code><a class="headerlink" href="#vanished-sites" title="Permanent link">&para;</a></h3>

@@ -2458,6 +2458,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spotter-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réseau de guetteurs — spotter_network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Réseau de guetteurs — spotter_network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir ce qui se passe, sur la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#délai-de-démarrage--veafskynetdelayforstartup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3439,6 +3467,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spotter-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réseau de guetteurs — spotter_network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Réseau de guetteurs — spotter_network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotter-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir ce qui se passe, sur la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#délai-de-démarrage--veafskynetdelayforstartup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3573,6 +3629,10 @@
 <span class="w">    </span><span class="nt">include_blue_in_radio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># afficher l&#39;état du réseau bleu dans le menu F10</span>
 <span class="w">    </span><span class="nt">debug_blue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">             </span><span class="c1"># logs détaillés Skynet pour le réseau bleu</span>
 <span class="w">    </span><span class="nt">dynamic_spawn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">          </span><span class="c1"># intégrer aussi les groupes apparus en cours de mission</span>
+<span class="w">    </span><span class="nt">spotter_network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">        </span><span class="c1"># les unités au sol voient les avions et se passent le mot</span>
+<span class="w">    </span><span class="nt">spotter_radio_range_km</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">    </span><span class="c1"># portée d&#39;un relais radio</span>
+<span class="w">    </span><span class="nt">spotter_propagation_speed_kmh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span><span class="w">  </span><span class="c1"># vitesse de l&#39;alerte sur le réseau</span>
+<span class="w">    </span><span class="nt">spotter_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;off&quot;</span><span class="w">           </span><span class="c1"># &quot;off&quot; | &quot;on&quot; | &quot;radio&quot; — vue carte F10 (guillemets obligatoires)</span>
 </code></pre></div>
 <table>
 <thead>
@@ -3619,6 +3679,30 @@
 <td>booléen</td>
 <td><code>false</code></td>
 <td>Intégrer aussi les groupes apparus <strong>en cours de mission</strong> — voir <a href="#dynamic-spawn">Apparitions en cours de mission</a></td>
+</tr>
+<tr>
+<td><code>spotter_network</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Activer le réseau de guetteurs — voir <a href="#spotter-network">Réseau de guetteurs</a></td>
+</tr>
+<tr>
+<td><code>spotter_radio_range_km</code></td>
+<td>nombre</td>
+<td><code>20</code></td>
+<td>Distance à laquelle une unité peut relayer une alerte, en kilomètres</td>
+</tr>
+<tr>
+<td><code>spotter_propagation_speed_kmh</code></td>
+<td>nombre</td>
+<td><code>3600</code></td>
+<td>Vitesse à laquelle l'alerte traverse la carte, en km/h</td>
+</tr>
+<tr>
+<td><code>spotter_view</code></td>
+<td><code>"off"</code> | <code>"on"</code> | <code>"radio"</code></td>
+<td><code>"off"</code></td>
+<td>Vue carte F10 du réseau — voir <a href="#spotter-view">Voir ce qui se passe, sur la carte</a></td>
 </tr>
 </tbody>
 </table>
@@ -3720,6 +3804,162 @@
 <div class="highlight"><pre><span></span><code><span class="c1">-- en cours de mission, réseau par réseau</span>
 <span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">setDynamicSpawn</span><span class="p">(</span><span class="s2">&quot;red iads&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
 </code></pre></div>
+<h3 id="spotter-network">Réseau de guetteurs — <code>spotter_network</code><a class="headerlink" href="#spotter-network" title="Permanent link">&para;</a></h3>
+<p>Une unité au sol qui voit un avion ennemi le signale, et le signalement se propage d'unité en unité
+par la radio, un bond à la fois. Un site SAM qui le reçoit <strong>ne s'allume pas</strong> : il garde le contact
+et attend, exactement comme il le ferait pour un radar de veille lointaine, et ne passe en émission
+que lorsque l'avion entre dans son enveloppe de tir. C'est donc un <strong>radar de veille distribué</strong>, pas
+un déclencheur de réveil.</p>
+<p>Quand le guetteur perd l'avion de vue, il envoie une annulation par le même chemin et la défense se
+rendort.</p>
+<p><strong>Éteint par défaut</strong>, parce que ça change l'équilibre de toutes les missions existantes.</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td>Rien ne change (<strong>défaut</strong>)</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td>Les unités au sol voient les avions et se passent le mot</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Qui voit quoi.</strong> La portée de détection dépend du type d'unité, et chaque unité tire la sienne
+une fois pour la mission, à ±20 % de la valeur du tableau. Le relief compte : un avion qui suit une
+vallée n'est pas vu par le guetteur situé derrière la crête.</p>
+<table>
+<thead>
+<tr>
+<th>Unité</th>
+<th>Voit à</th>
+<th>Relaie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Avion</td>
+<td>30 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Hélicoptère</td>
+<td>15 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Navire</td>
+<td>12 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>MANPADS</td>
+<td>10 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>AAA, véhicule de défense antiaérienne</td>
+<td>8 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Infanterie</td>
+<td>4 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Blindés, artillerie, camions</td>
+<td>3 km</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Site SAM, EWR, AWACS</td>
+<td>—</td>
+<td>oui</td>
+</tr>
+<tr>
+<td>Statiques, bâtiments, le reste</td>
+<td>—</td>
+<td>non</td>
+</tr>
+</tbody>
+</table>
+<p>Voir et relayer sont deux propriétés distinctes. <strong>Un site SAM relaie mais ne guette jamais</strong> : sa
+propre détection est déjà le travail de sa dernière ligne de défense. C'est ce qui produit l'effet
+domino — une batterie prévenue s'allume <strong>et</strong> passe le mot, donc une ligne de batteries se réveille
+dans le sens de la pénétration. Les EWR et les AWACS sont exclus pour la même raison : ils alimentent
+déjà Skynet.</p>
+<p>Conséquence assumée : <strong>un joueur qui vole pour la coalition du réseau devient un guetteur</strong>, et une
+patrouille amie alimente la défense au sol.</p>
+<p><strong>La portée radio décide si le réseau existe.</strong> Mesuré sur une mission de 1 000 unités : à 10 km, la
+plus grande poche connectée couvre 5 % d'une carte dispersée — une alerte ne sort jamais du groupe
+qui l'a levée. À 20 km, elle en couvre la totalité sur la plupart des dispositions. C'est pour ça que
+le défaut est à 20 et pas en dessous. Sur une carte dont le contenu est très éparpillé, le réseau
+reste en îlots quelle que soit la portée : c'est la limite honnête de l'idée.</p>
+<p><strong>La vitesse, et pas une période.</strong> Un bond couvre la portée radio, donc exposer les deux permettrait
+d'élargir la portée et de doubler la vitesse de l'alerte sans s'en rendre compte. La période d'un
+bond est calculée : portée ÷ vitesse, soit 20 s avec les valeurs par défaut. Aux réglages livrés,
+l'alerte traverse un front de 200 km en quatre minutes, contre treize pour un chasseur qui le
+survole.</p>
+<p><strong>Lire ce qui se passe.</strong> Avec <code>debug_red</code> ou <code>debug_blue</code> à <code>true</code>, le module écrit une page d'état
+dans <code>dcs.log</code> toutes les minutes : nombre d'unités et de liens, <strong>nombre de poches</strong> — la réponse à
+« pourquoi mon alerte n'est pas allée plus loin » —, les alertes en cours avec leur âge, qui a vu
+quoi depuis la page précédente et quel site a été réveillé par quelle alerte.</p>
+<p>Cette trace n'est pas décorative : une fois cette fonctionnalité en service, un site peut s'allumer
+pour <strong>trois</strong> raisons — un radar de veille lointaine, sa dernière ligne de défense, ou un guetteur.
+Sans la page, la question n'a pas de réponse.</p>
+<h4 id="spotter-view">Voir ce qui se passe, sur la carte<a class="headerlink" href="#spotter-view" title="Permanent link">&para;</a></h4>
+<p>Le module peut poser un marqueur F10 à chaque guetteur qui tient un contact, avec un cercle à sa
+portée de détection. Trois valeurs pour <code>spotter_view</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Valeur</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"off"</code></td>
+<td>Rien n'est dessiné (<strong>défaut</strong>)</td>
+</tr>
+<tr>
+<td><code>"on"</code></td>
+<td>La vue est affichée dès le début de la mission</td>
+</tr>
+<tr>
+<td><code>"radio"</code></td>
+<td>Un interrupteur <em>Afficher / Masquer la vue des guetteurs</em> apparaît dans le menu F10, sous <strong>RÉSEAU DE GUETTEURS</strong>. La vue démarre <strong>éteinte</strong> : c'est l'intérêt d'un interrupteur, et c'est prudent vu ce que la vue montre</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>Mettez la valeur entre guillemets.</strong> YAML lit un <code>on</code> ou un <code>off</code> nu comme un booléen, pas
+comme un mot. Les deux sont acceptés et compris (<code>spotter_view: on</code> fonctionne), mais
+<code>spotter_view: "on"</code> est ce qui restera juste quoi qu'il arrive.</p>
+</blockquote>
+<p>L'interrupteur du menu est propre à chaque coalition : les pilotes rouges ne voient pas celui du
+réseau bleu. Il est aussi posé sans restriction de groupe, parce qu'un game master n'a <strong>pas</strong> de
+groupe — une commande radio réservée aux groupes ne lui parviendrait jamais, et c'est précisément lui
+que ce menu vise.</p>
+<p>Depuis <code>mission-script.lua</code>, la même chose s'obtient par&nbsp;:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafSkynet</span><span class="p">.</span><span class="nf">showSpotterView</span><span class="p">(</span><span class="nv">coalition</span><span class="p">.</span><span class="py">side</span><span class="p">.</span><span class="py">RED</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>C'est une vue de coalition, et ça ne peut pas être plus étroit.</strong> DCS ne sait dessiner que
+pour tout le monde, pour une coalition, ou pour un groupe — et un game master n'a pas de groupe.
+Donc <strong>tous les pilotes de cette coalition voient ces marqueurs</strong>, ce qui sur un réseau rouge offre
+aux pilotes rouges un suivi en direct des avions bleus. À réserver aux tests et aux missions où
+c'est voulu.</p>
+<p>Le réseau vit dans le module Skynet et ne fait rien quand Skynet est éteint : il n'y a pas de mode
+de repli pour les missions sans IADS.</p>
+</blockquote>
 <h3 id="délai-de-démarrage--veafskynetdelayforstartup">Délai de démarrage — <code>veafSkynet.DelayForStartup</code><a class="headerlink" href="#délai-de-démarrage--veafskynetdelayforstartup" title="Permanent link">&para;</a></h3>
 <p>Nombre de secondes à attendre avant d'initialiser les réseaux (défaut : <code>1</code>). À augmenter si d'autres modules initialisent des groupes en retard.</p>
 <h3 id="vanished-sites">Balayage des sites disparus — <code>veafSkynet.SecondsBetweenVanishedSitesSweeps</code><a class="headerlink" href="#vanished-sites" title="Permanent link">&para;</a></h3>
