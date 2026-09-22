@@ -1906,13 +1906,30 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configurer-csar-via-missionyaml-yaml-first" class="md-nav__link">
+  <a href="#csar-yaml" class="md-nav__link">
     <span class="md-ellipsis">
       
         Configurer CSAR via mission.yaml (YAML-first)
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Configurer CSAR via mission.yaml (YAML-first)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#csar-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les réglages disponibles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1950,7 +1967,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fallback-lua--csar-dans-mission-scriptlua" class="md-nav__link">
+  <a href="#csar-lua-fallback" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fallback Lua — CSAR dans mission-script.lua
@@ -4274,13 +4291,30 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configurer-csar-via-missionyaml-yaml-first" class="md-nav__link">
+  <a href="#csar-yaml" class="md-nav__link">
     <span class="md-ellipsis">
       
         Configurer CSAR via mission.yaml (YAML-first)
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Configurer CSAR via mission.yaml (YAML-first)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#csar-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les réglages disponibles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -4318,7 +4352,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fallback-lua--csar-dans-mission-scriptlua" class="md-nav__link">
+  <a href="#csar-lua-fallback" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fallback Lua — CSAR dans mission-script.lua
@@ -5375,7 +5409,7 @@ coupure — et sans cette phrase, la commande passe pour cassée.</p>
 <p>Le réglage sous-jacent est <code>enableHoverSlingload</code>, qui vit dans votre <code>ctld-config.yaml</code> comme tous les
 autres : le menu ne fait que le basculer à chaud. Pour démarrer la mission avec l'élingage déjà coupé,
 posez-le à <code>false</code> dans ce fichier.</p>
-<h3 id="configurer-csar-via-missionyaml-yaml-first">Configurer CSAR via mission.yaml (YAML-first)<a class="headerlink" href="#configurer-csar-via-missionyaml-yaml-first" title="Permanent link">&para;</a></h3>
+<h3 id="csar-yaml">Configurer CSAR via mission.yaml (YAML-first)<a class="headerlink" href="#csar-yaml" title="Permanent link">&para;</a></h3>
 <p>CSAR se configure de la même façon :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CSAR</span><span class="p">:</span>
@@ -5383,9 +5417,285 @@ posez-le à <code>false</code> dans ce fichier.</p>
 <span class="w">    </span><span class="nt">settings</span><span class="p">:</span><span class="w">                </span><span class="c1"># paires csar.xxx = valeur</span>
 <span class="w">      </span><span class="nt">enableAllslots</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">      </span><span class="nt">useprefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">csarPrefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MEDEVAC&quot;</span>
+<span class="w">      </span><span class="nt">csarPrefix</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;helicargo&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;MEDEVAC&quot;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
-<p>VEAF génère les assignations <code>csar.xxx = value</code> et l'appel <code>csar.initialize()</code> dans <code>veaf-config.lua</code>. Pour les paramètres complexes comme <code>aircraftType</code> (une table par appareil), continuez à utiliser le pattern callback Lua dans <code>mission-script.lua</code>.</p>
+<p>VEAF génère les assignations <code>csar.xxx = value</code> et l'appel <code>csar.initialize()</code> dans <code>veaf-config.lua</code>.</p>
+<p>Une valeur peut être un booléen, un nombre, du texte, ou une <strong>liste</strong> — une liste YAML devient une
+table Lua. Une valeur à clés (<code>UH-1H: 8</code>) n'a pas sa place ici : le build la refuse en nommant le
+réglage, et vous renvoie au <a href="#csar-lua-fallback">callback Lua</a>.</p>
+<h4 id="csar-settings">Les réglages disponibles<a class="headerlink" href="#csar-settings" title="Permanent link">&para;</a></h4>
+<p>Les valeurs par défaut ci-dessous sont celles de <code>CSAR.lua</code>. Vous ne reprenez que celles que vous
+voulez changer.</p>
+<p><strong>Qui est secouru</strong></p>
+<table>
+<thead>
+<tr>
+<th>Réglage</th>
+<th>Défaut</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>csarOncrash</code></td>
+<td><code>true</code></td>
+<td>crée aussi un CSAR au crash, pas seulement à l'éjection</td>
+</tr>
+<tr>
+<td><code>enableForAI</code></td>
+<td><code>true</code></td>
+<td>les équipages IA abattus sont secourables</td>
+</tr>
+<tr>
+<td><code>enableForRED</code></td>
+<td><code>true</code></td>
+<td>CSAR actif côté rouge</td>
+</tr>
+<tr>
+<td><code>enableForBLUE</code></td>
+<td><code>true</code></td>
+<td>CSAR actif côté bleu</td>
+</tr>
+<tr>
+<td><code>countCSARCrash</code></td>
+<td><code>false</code></td>
+<td>le crash d'un appareil CSAR consomme aussi une vie</td>
+</tr>
+<tr>
+<td><code>allowDownedPilotCAcontrol</code></td>
+<td><code>true</code></td>
+<td>le pilote au sol est pilotable en Combined Arms</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Qui peut faire le sauvetage</strong></p>
+<table>
+<thead>
+<tr>
+<th>Réglage</th>
+<th>Défaut</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enableAllslots</code></td>
+<td><code>false</code></td>
+<td>tous les hélicoptères peuvent secourir, sans condition de nom</td>
+</tr>
+<tr>
+<td><code>useprefix</code></td>
+<td><code>true</code></td>
+<td>seuls les appareils dont le nom contient un préfixe de <code>csarPrefix</code> peuvent secourir</td>
+</tr>
+<tr>
+<td><code>csarPrefix</code></td>
+<td><code>["helicargo", "MEDEVAC"]</code></td>
+<td>la liste de ces préfixes</td>
+</tr>
+<tr>
+<td><code>csarFixedUnits</code></td>
+<td><code>["helicargo1", …]</code></td>
+<td>noms d'unités autorisées, en plus des préfixes</td>
+</tr>
+<tr>
+<td><code>enableSlotBlocking</code></td>
+<td><code>true</code></td>
+<td>exige <code>csarSlotBlockGameGUI.lua</code> côté serveur</td>
+</tr>
+<tr>
+<td><code>max_units</code></td>
+<td><code>6</code></td>
+<td>nombre de pilotes transportables à la fois</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Vies et sanctions</strong></p>
+<table>
+<thead>
+<tr>
+<th>Réglage</th>
+<th>Défaut</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>csarMode</code></td>
+<td><code>0</code></td>
+<td>sanction d'une éjection — voir <a href="#csar-mode"><code>csarMode</code></a></td>
+</tr>
+<tr>
+<td><code>maxLives</code></td>
+<td><code>8</code></td>
+<td>vies par pilote en mode <code>3</code></td>
+</tr>
+<tr>
+<td><code>disableTimeoutTime</code></td>
+<td><code>20</code></td>
+<td>durée de l'indisponibilité, en minutes, pour les modes <code>1</code> et <code>2</code></td>
+</tr>
+<tr>
+<td><code>disableAircraftTimeout</code></td>
+<td><code>true</code></td>
+<td>l'appareil redevient utilisable une fois ce délai passé</td>
+</tr>
+<tr>
+<td><code>reenableIfCSARCrashes</code></td>
+<td><code>true</code></td>
+<td>un CSAR qui se crashe compte quand même comme réussi</td>
+</tr>
+<tr>
+<td><code>destructionHeight</code></td>
+<td><code>150</code></td>
+<td>hauteur, en mètres, à laquelle un appareil interdit est détruit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Retrouver le survivant</strong></p>
+<table>
+<thead>
+<tr>
+<th>Réglage</th>
+<th>Défaut</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>coordtype</code></td>
+<td><code>3</code></td>
+<td>format des coordonnées annoncées : <code>0</code> DDM, <code>1</code> DMS, <code>2</code> MGRS, <code>3</code> bullseye impérial, <code>4</code> bullseye métrique</td>
+</tr>
+<tr>
+<td><code>coordaccuracy</code></td>
+<td><code>1</code></td>
+<td>précision de ces coordonnées</td>
+</tr>
+<tr>
+<td><code>autosmoke</code></td>
+<td><code>false</code></td>
+<td>fumigène automatique quand l'hélicoptère est à 5 km</td>
+</tr>
+<tr>
+<td><code>bluesmokecolor</code></td>
+<td><code>4</code></td>
+<td>couleur du fumigène bleu : <code>0</code> vert, <code>1</code> rouge, <code>2</code> blanc, <code>3</code> orange, <code>4</code> bleu</td>
+</tr>
+<tr>
+<td><code>redsmokecolor</code></td>
+<td><code>1</code></td>
+<td>idem côté rouge</td>
+</tr>
+<tr>
+<td><code>radioSound</code></td>
+<td><code>"beacon.ogg"</code></td>
+<td>fichier son de la balise du pilote — il doit être présent dans la mission</td>
+</tr>
+<tr>
+<td><code>requestdelay</code></td>
+<td><code>2</code></td>
+<td>délai, en secondes, avant que le survivant demande l'évacuation</td>
+</tr>
+<tr>
+<td><code>messageTime</code></td>
+<td><code>30</code></td>
+<td>durée d'affichage du message initial, en secondes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>La récupération</strong></p>
+<table>
+<thead>
+<tr>
+<th>Réglage</th>
+<th>Défaut</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>loadDistance</code></td>
+<td><code>60</code></td>
+<td>distance, en mètres, à laquelle le pilote peut embarquer</td>
+</tr>
+<tr>
+<td><code>extractDistance</code></td>
+<td><code>500</code></td>
+<td>distance, en mètres, que le pilote parcourt à pied vers l'hélicoptère</td>
+</tr>
+<tr>
+<td><code>pilotRuntoExtractPoint</code></td>
+<td><code>true</code></td>
+<td>le pilote court vers l'hélicoptère au lieu d'attendre</td>
+</tr>
+<tr>
+<td><code>loadtimemax</code></td>
+<td><code>135</code></td>
+<td>durée maximale de l'embarquement, en secondes</td>
+</tr>
+<tr>
+<td><code>weight</code></td>
+<td><code>100</code></td>
+<td>poids ajouté par pilote embarqué</td>
+</tr>
+<tr>
+<td><code>allowFARPRescue</code></td>
+<td><code>true</code></td>
+<td>déposer le pilote sur une FARP ou un aérodrome compte comme un sauvetage</td>
+</tr>
+<tr>
+<td><code>bluemash</code></td>
+<td><code>["BlueMASH #1", …]</code></td>
+<td>unités servant d'hôpital côté bleu</td>
+</tr>
+<tr>
+<td><code>redmash</code></td>
+<td><code>["RedMASH #1", …]</code></td>
+<td>idem côté rouge</td>
+</tr>
+</tbody>
+</table>
+<p><strong>L'état du survivant</strong></p>
+<table>
+<thead>
+<tr>
+<th>Réglage</th>
+<th>Défaut</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>immortalcrew</code></td>
+<td><code>true</code></td>
+<td>le survivant ne peut pas être tué</td>
+</tr>
+<tr>
+<td><code>invisiblecrew</code></td>
+<td><code>true</code></td>
+<td>le survivant est invisible pour l'IA</td>
+</tr>
+<tr>
+<td><code>downedPilotCounterRed</code></td>
+<td><code>0</code></td>
+<td>compteur de départ des pilotes abattus, côté rouge</td>
+</tr>
+<tr>
+<td><code>downedPilotCounterBlue</code></td>
+<td><code>0</code></td>
+<td>idem côté bleu</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Le seul réglage que <code>mission.yaml</code> ne peut pas atteindre</p>
+<p><code>aircraftType</code> associe un nombre de places à chaque type d'appareil
+(<code>csar.aircraftType["UH-1H"] = 8</code>). C'est une valeur <strong>à clés</strong>, la seule de CSAR, et elle passe
+par le <a href="#csar-lua-fallback">callback Lua</a>.</p>
+<p>Les quatre autres tables — <code>csarPrefix</code>, <code>csarFixedUnits</code>, <code>bluemash</code> et <code>redmash</code> — sont de
+simples listes et s'écrivent directement en YAML.</p>
+</div>
 <h3 id="csar-over-water">Un pilote abattu au-dessus de l'eau<a class="headerlink" href="#csar-over-water" title="Permanent link">&para;</a></h3>
 <p>Quand un appareil est descendu, CSAR fait apparaître le pilote survivant à récupérer. Sa position venait d'un décalage fixe de 50 m par rapport à l'appareil, sans que rien ne regarde ce qu'il y avait là : une éjection près d'un rivage mettait donc le survivant <strong>dans l'eau</strong>, injoignable (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/245">#245</a>).</p>
 <p>Depuis la 6.15.28, deux issues et rien entre les deux :</p>
@@ -5469,7 +5779,7 @@ DO SCRIPT FILE → mission-script.lua  (votre code personnalisé)
 </code></pre></div>
 <p>L'ordre des deux premières lignes compte : CTLD lit sa configuration au chargement. Ce même fichier lui demande d'attendre le framework VEAF plutôt que de démarrer tout seul, ce qui permet à VEAF de router ses messages dans les logs VEAF — y compris son rapport de démarrage, qui signale une configuration incomplète ou périmée.</p>
 <p>CSAR, lui, garde l'ancien mécanisme : <code>veaf-scripts.lua</code> détecte la table globale <code>csar</code> et enveloppe sa fonction <code>initialize()</code>.</p>
-<h3 id="fallback-lua--csar-dans-mission-scriptlua">Fallback Lua — CSAR dans mission-script.lua<a class="headerlink" href="#fallback-lua--csar-dans-mission-scriptlua" title="Permanent link">&para;</a></h3>
+<h3 id="csar-lua-fallback">Fallback Lua — CSAR dans mission-script.lua<a class="headerlink" href="#csar-lua-fallback" title="Permanent link">&para;</a></h3>
 <p>Pour les surcharges par type d'appareil ou d'autres paramètres complexes non supportés par YAML :</p>
 <div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">csar</span><span class="w"> </span><span class="kr">then</span>
 <span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">initializeCSAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
