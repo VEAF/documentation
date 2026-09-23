@@ -3191,6 +3191,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Default file locations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-catalogue-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Falling back to the shipped catalogue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3887,6 +3904,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Default file locations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-catalogue-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Falling back to the shipped catalogue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -4615,6 +4649,18 @@ Also accepted: waypoints.yaml  (mission root)
 <blockquote>
 <p><strong>v6 hard break</strong>: the old <code>src/aircraft-templates.yaml</code> / <code>src/templates.yaml</code> names and the <code>aircraft_groups</code> step are gone. <code>convert-v5</code> produces the two new files directly.</p>
 </blockquote>
+<h4 id="shipped-catalogue-fallback">Falling back to the shipped catalogue<a class="headerlink" href="#shipped-catalogue-fallback" title="Permanent link">&para;</a></h4>
+<p>These two steps are the only ones in the pipeline with a <strong>fallback</strong>: their input is a catalogue, most of which nobody edits. <code>prepare</code> therefore no longer lays down a copy — it writes an empty file — and resolution goes in this order:</p>
+<ol>
+<li>the mission folder's file, <strong>when it holds at least one group</strong>;</li>
+<li>otherwise the shipped catalogue, under <code>published/src/defaults/mission-folder/src/</code>.</li>
+</ol>
+<p>An absent or empty file means "I add nothing to the shipped catalogue", not "inject nothing". Two consequences worth knowing:</p>
+<ul>
+<li><code>spawnable_aircrafts: false</code> / <code>dynamic_slot_templates: false</code> remains the only way to disable the step, and the fallback does not resurrect it;</li>
+<li>an explicit <code>file:</code> is taken at its word: when the named path does not exist the step is <strong>skipped</strong> rather than falling back to the shipped catalogue — a typo must not inject a catalogue nobody asked for.</li>
+</ul>
+<p>When the fallback applies, the build report says so. To pull entries from the shipped catalogue selectively into a file that already has some, see <a href="../CLI_REFERENCE/#pull-aircraft-groups"><code>pull-aircraft-groups</code></a>.</p>
 <h3 id="injection-modes">Injection modes<a class="headerlink" href="#injection-modes" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

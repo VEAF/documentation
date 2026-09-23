@@ -1119,6 +1119,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#shipped-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the template catalogue comes from
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where the template catalogue comes from">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pull-new-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taking in the new templates, à la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#minimal-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3223,6 +3251,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#shipped-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the template catalogue comes from
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where the template catalogue comes from">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pull-new-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taking in the new templates, à la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#minimal-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3307,8 +3363,57 @@ aircraft type, and DCS puts them on a parking spot. Two files feed it:</p>
   frequencies);</li>
 <li><code>src/warehouses.yaml</code> — <strong>which airfields</strong> open dynamic slots, and with what stock.</li>
 </ul>
-<p>Both ship filled in a freshly created folder: a hundred-odd templates, and a <code>warehouses.yaml</code> that
-fits in a handful of useful lines.</p>
+<p><code>warehouses.yaml</code> fits in a handful of useful lines, and it ships in a freshly created folder. The
+template catalogue does not need to be in your folder at all: see just below.</p>
+<h2 id="shipped-catalogue">Where the template catalogue comes from<a class="headerlink" href="#shipped-catalogue" title="Permanent link">&para;</a></h2>
+<p>A template catalogue ships with veaf-tools, and it grows with every release. Your mission folder
+gets <strong>no copy</strong> of it: it gets an empty <code>src/dynamic-slot-templates.yaml</code>, and the build reads the
+shipped catalogue. So you get the templates added since, automatically, just by updating the tool.</p>
+<p>Three situations, one rule:</p>
+<table>
+<thead>
+<tr>
+<th>Your <code>src/dynamic-slot-templates.yaml</code></th>
+<th>What the build injects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>absent, or empty</td>
+<td>the shipped catalogue, in full — and the build says so in its report</td>
+</tr>
+<tr>
+<td>holding at least one group</td>
+<td><strong>yours, alone</strong>: the shipped catalogue is no longer read</td>
+</tr>
+<tr>
+<td>either of those, with <code>dynamic_slot_templates: false</code> in <code>mission.yaml</code></td>
+<td>nothing</td>
+</tr>
+</tbody>
+</table>
+<p>In other words, an empty file means "I add nothing to the shipped catalogue", and <strong>not</strong> "I want no
+dynamic slots". To inject nothing at all, it is <code>dynamic_slot_templates: false</code> under the
+<code>pipeline:</code> key of <code>mission.yaml</code>, and nothing else.</p>
+<p>As soon as you write a single group into your file, it stands alone. Nothing is merged behind your
+back: your settings stay exactly what you wrote, even when a new release of the tool ships a
+template of the same name.</p>
+<h3 id="pull-new-templates">Taking in the new templates, à la carte<a class="headerlink" href="#pull-new-templates" title="Permanent link">&para;</a></h3>
+<p>That is the trade-off: your file will never move on its own again, so picking up what is new takes
+a gesture. It is selective — you take what you want, not everything.</p>
+<p>First see what is missing, which writes nothing:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span>
+</code></pre></div>
+<p>Then take one template by name, or every missing one:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span> <span class="p">-</span><span class="n">-add</span> <span class="s2">&quot;F-14BU Template&quot;</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span> <span class="p">-</span><span class="n">-add-new</span>
+</code></pre></div>
+<p><strong>A template you already have is never replaced</strong>, even when the shipped catalogue holds a different
+version of it — which is exactly why this command exists instead of an automatic merge. The report
+lists them as kept, so you know what was left aside and why. And a template you deleted on purpose
+stays deleted until you ask for it back.</p>
+<p>The same mechanism covers <a href="../spawnables/">spawnable groups</a>: same shipped catalogue, same
+command, with <code>--kind spawnable</code>.</p>
 <h2 id="minimal-example">The smallest example that works<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h2>
 <p>It is the shipped file, and it is enough:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">blue</span><span class="p">:</span>
@@ -3377,6 +3482,9 @@ payload: an A-10C II or an F/A-18C comes out armed and painted, a UH-1H or an AV
 the file from that mission.</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract-aircraft-groups</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">dynamic-template</span>
 </code></pre></div>
+<p>From then on your file is no longer empty: it stands alone, and the shipped catalogue is no longer
+read for this mission. That is the intent — your payloads are your payloads — and
+<a href="#pull-new-templates"><code>pull-aircraft-groups</code></a> is there to fetch what you are missing.</p>
 <div class="admonition warning">
 <p class="admonition-title">Two warnings worth reading</p>
 <p>The build now reports two situations that break nothing and still leave the slots unusable. <strong>A
@@ -3401,6 +3509,7 @@ else the behaviour is unchanged.</p>
 <li><a href="../../../PIPELINE_REFERENCE/#pipeline-step-4-warehouses">Pipeline reference — step 4, warehouses</a></li>
 <li><a href="../../../PIPELINE_REFERENCE/#pipeline-step-3-aircraft-groups">Pipeline reference — step 3, aircraft groups</a></li>
 <li><a href="../../../CLI_REFERENCE/#extract-aircraft-groups">CLI reference — <code>extract-aircraft-groups</code></a></li>
+<li><a href="../../../CLI_REFERENCE/#pull-aircraft-groups">CLI reference — <code>pull-aircraft-groups</code></a></li>
 <li><a href="../spawnables/">Spawnable groups</a> — the other family of aircraft groups</li>
 </ul>
 

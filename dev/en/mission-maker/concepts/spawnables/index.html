@@ -1166,6 +1166,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The smallest example that works — aircraft">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Until you have extracted anything
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3231,6 +3248,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The smallest example that works — aircraft">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Until you have extracted anything
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3326,6 +3360,19 @@ DCS editor, name it with the <code>veafSpawn-</code> prefix, then extract it:</p
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract-aircraft-groups</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">spawnable</span>
 </code></pre></div>
 <p><code>src/spawnables.yaml</code> is rewritten with your groups. The next build injects them back.</p>
+<h3 id="shipped-catalogue">Until you have extracted anything<a class="headerlink" href="#shipped-catalogue" title="Permanent link">&para;</a></h3>
+<p>A freshly prepared folder gets an <strong>empty</strong> <code>src/spawnables.yaml</code>, and the build then injects the
+spawnable-group catalogue shipped with veaf-tools. Empty therefore means "I add nothing to the
+shipped catalogue", not "I want nothing" — to inject nothing, it is <code>spawnable_aircrafts: false</code>
+under <code>pipeline:</code> in <code>mission.yaml</code>.</p>
+<p>As soon as the file holds a group — from the first extraction onwards — it stands alone, and the
+shipped catalogue is no longer read. To pick up the entries a later release adds, without losing
+yours:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">spawnable</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">spawnable</span> <span class="p">-</span><span class="n">-add-new</span>
+</code></pre></div>
+<p>The full rule, with the table of all three cases, is on the
+<a href="../dynamic-slots/#shipped-catalogue">Dynamic slots</a> page: both catalogues behave exactly alike.</p>
 <h2 id="gotcha">The gotcha<a class="headerlink" href="#gotcha" title="Permanent link">&para;</a></h2>
 <p><strong>The name prefix decides the family</strong>, not the file. An aircraft group named <code>veafSpawn-…</code> belongs
 in <code>spawnables.yaml</code>; a group flagged <code>dynSpawnTemplate: true</code> belongs in

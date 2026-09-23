@@ -1119,6 +1119,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#shipped-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D'où vient le catalogue de modèles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D&#39;où vient le catalogue de modèles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pull-new-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Récupérer les nouveaux modèles, à la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#minimal-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3223,6 +3251,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#shipped-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D'où vient le catalogue de modèles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D&#39;où vient le catalogue de modèles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pull-new-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Récupérer les nouveaux modèles, à la carte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#minimal-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3306,8 +3362,59 @@ terrain et un type d'appareil, et DCS le fait apparaître au parking. Deux fichi
   <code>dynSpawnTemplate: true</code>, qui décrit l'appareil servi (emport, livrée, fréquences) ;</li>
 <li><code>src/warehouses.yaml</code> — <strong>quels terrains</strong> ouvrent des slots dynamiques, et avec quel stock.</li>
 </ul>
-<p>Les deux sont livrés dans un dossier fraîchement créé : une centaine de modèles, et un
-<code>warehouses.yaml</code> qui tient en une poignée de lignes utiles.</p>
+<p>Le <code>warehouses.yaml</code> tient en une poignée de lignes utiles, et il est livré dans un dossier
+fraîchement créé. Le catalogue de modèles, lui, n'a pas besoin d'être dans votre dossier : voir
+juste en dessous.</p>
+<h2 id="shipped-catalogue">D'où vient le catalogue de modèles<a class="headerlink" href="#shipped-catalogue" title="Permanent link">&para;</a></h2>
+<p>Un catalogue de modèles est livré avec veaf-tools, et il grossit à chaque version. Votre dossier
+de mission n'en reçoit <strong>pas de copie</strong> : il reçoit un <code>src/dynamic-slot-templates.yaml</code> vide, et
+le build va lire le catalogue livré. Vous profitez donc automatiquement des modèles ajoutés
+depuis, simplement en mettant l'outil à jour.</p>
+<p>Trois situations, et une seule règle :</p>
+<table>
+<thead>
+<tr>
+<th>Votre <code>src/dynamic-slot-templates.yaml</code></th>
+<th>Ce que le build injecte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>absent, ou vide</td>
+<td>le catalogue livré, en entier — et le build le dit dans son compte rendu</td>
+</tr>
+<tr>
+<td>contenant au moins un groupe</td>
+<td><strong>le vôtre, seul</strong> : le catalogue livré n'est plus consulté</td>
+</tr>
+<tr>
+<td>n'importe lequel des deux, avec <code>dynamic_slot_templates: false</code> dans <code>mission.yaml</code></td>
+<td>rien</td>
+</tr>
+</tbody>
+</table>
+<p>Autrement dit, un fichier vide veut dire « je n'ajoute rien au catalogue livré », et <strong>pas</strong> « je
+ne veux pas de slots dynamiques ». Pour ne rien injecter du tout, c'est <code>dynamic_slot_templates:
+false</code> sous la clé <code>pipeline:</code> de <code>mission.yaml</code>, et rien d'autre.</p>
+<p>Dès que vous écrivez un seul groupe dans votre fichier, il fait foi tout seul. Rien n'est fusionné
+dans votre dos : vos réglages restent exactement ceux que vous avez écrits, même quand une nouvelle
+version de l'outil livre un modèle du même nom.</p>
+<h3 id="pull-new-templates">Récupérer les nouveaux modèles, à la carte<a class="headerlink" href="#pull-new-templates" title="Permanent link">&para;</a></h3>
+<p>C'est la contrepartie : votre fichier ne bougera plus jamais tout seul, donc il faut un geste pour
+aller chercher les nouveautés. Il est sélectif — vous prenez ce que vous voulez, pas tout.</p>
+<p>D'abord voir ce qui manque, ce qui n'écrit rien :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span>
+</code></pre></div>
+<p>Puis prendre un modèle nommément, ou tous ceux qui manquent :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span> <span class="p">-</span><span class="n">-add</span> <span class="s2">&quot;F-14BU Template&quot;</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">pull-aircraft-groups</span> <span class="p">-</span><span class="n">-add-new</span>
+</code></pre></div>
+<p><strong>Un modèle que vous avez déjà n'est jamais remplacé</strong>, même si le catalogue livré en a une version
+différente — c'est bien pour ça que la commande existe plutôt qu'une fusion automatique. Le compte
+rendu les liste comme conservés, pour que vous sachiez ce qui a été laissé de côté et pourquoi.
+Et un modèle que vous avez supprimé exprès reste supprimé tant que vous ne le redemandez pas.</p>
+<p>Le même mécanisme vaut pour <a href="../spawnables/">les groupes spawnables</a> : c'est le même catalogue livré
+et la même commande, avec <code>--kind spawnable</code>.</p>
 <h2 id="minimal-example">Le plus petit exemple qui marche<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h2>
 <p>C'est le fichier livré, et il suffit :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">blue</span><span class="p">:</span>
@@ -3376,6 +3483,9 @@ porte un emport : un A-10C II ou un F/A-18C sortent armés et peints, un UH-1H o
 puis régénérez le fichier depuis cette mission.</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract-aircraft-groups</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">dynamic-template</span>
 </code></pre></div>
+<p>À partir de là, votre fichier n'est plus vide : il fait foi seul, et le catalogue livré n'est plus
+consulté pour cette mission. C'est voulu — vos emports sont vos emports — et
+<a href="#pull-new-templates"><code>pull-aircraft-groups</code></a> est là pour aller rechercher ce qui vous manque.</p>
 <div class="admonition warning">
 <p class="admonition-title">Deux avertissements à lire</p>
 <p>Le build signale désormais deux situations qui ne cassent rien et rendent pourtant les slots
@@ -3401,6 +3511,7 @@ pour lesquelles les données de parking existent ; partout ailleurs le comportem
 <li><a href="../../../PIPELINE_REFERENCE/#pipeline-step-4-warehouses">Référence Pipeline — étape 4, warehouses</a></li>
 <li><a href="../../../PIPELINE_REFERENCE/#pipeline-step-3-aircraft-groups">Référence Pipeline — étape 3, groupes d'aéronefs</a></li>
 <li><a href="../../../CLI_REFERENCE/#extract-aircraft-groups">Référence CLI — <code>extract-aircraft-groups</code></a></li>
+<li><a href="../../../CLI_REFERENCE/#pull-aircraft-groups">Référence CLI — <code>pull-aircraft-groups</code></a></li>
 <li><a href="../spawnables/">Groupes spawnables</a> — l'autre famille de groupes d'aéronefs</li>
 </ul>
 

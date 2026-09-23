@@ -3191,6 +3191,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Emplacements par défaut">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-catalogue-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repli sur le catalogue livré
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3887,6 +3904,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Emplacements par défaut">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-catalogue-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repli sur le catalogue livré
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -4616,6 +4650,18 @@ Aussi accepté : waypoints.yaml  (racine du dossier mission)
 <blockquote>
 <p><strong>Rupture v6</strong> : les anciens noms <code>src/aircraft-templates.yaml</code> / <code>src/templates.yaml</code> et l'étape <code>aircraft_groups</code> ne sont plus utilisés. <code>convert-v5</code> produit directement les deux nouveaux fichiers.</p>
 </blockquote>
+<h4 id="shipped-catalogue-fallback">Repli sur le catalogue livré<a class="headerlink" href="#shipped-catalogue-fallback" title="Permanent link">&para;</a></h4>
+<p>Ces deux étapes sont les seules du pipeline à avoir un <strong>repli</strong> : leur entrée est un catalogue, dont l'essentiel n'est édité par personne. <code>prepare</code> ne dépose donc plus de copie — il écrit un fichier vide — et la résolution se fait dans cet ordre :</p>
+<ol>
+<li>le fichier du dossier de mission, <strong>s'il contient au moins un groupe</strong> ;</li>
+<li>sinon le catalogue livré, sous <code>published/src/defaults/mission-folder/src/</code>.</li>
+</ol>
+<p>Un fichier absent ou vide veut dire « je n'ajoute rien au catalogue livré », pas « je ne veux rien injecter ». Deux conséquences à connaître :</p>
+<ul>
+<li><code>spawnable_aircrafts: false</code> / <code>dynamic_slot_templates: false</code> reste le seul moyen de désactiver l'étape, et le repli ne la ressuscite pas ;</li>
+<li>un <code>file:</code> explicite est pris au mot : si le chemin nommé n'existe pas, l'étape est <strong>ignorée</strong> plutôt que repliée sur le catalogue livré — une faute de frappe ne doit pas injecter un catalogue que personne n'a demandé.</li>
+</ul>
+<p>Quand le repli joue, le compte rendu de build le dit. Pour récupérer sélectivement les entrées du catalogue livré dans un fichier qui en a déjà, voir <a href="../CLI_REFERENCE/#pull-aircraft-groups"><code>pull-aircraft-groups</code></a>.</p>
 <h3 id="modes-dinjection">Modes d'injection<a class="headerlink" href="#modes-dinjection" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
