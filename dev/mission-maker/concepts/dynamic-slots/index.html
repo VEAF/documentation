@@ -3325,6 +3325,11 @@ terrain et un type d'appareil, et DCS le fait apparaître au parking. Deux fichi
 coalition. C'est pour ça que le fichier est si court.</p>
 <p>Le build met alors, sur chaque terrain retenu, <code>dynamicSpawn = true</code>, le démarrage moteur chaud, le
 stock, et le lien vers le modèle de chaque type.</p>
+<p><strong>Les navires et les FARP sont traités de la même façon</strong>, sans rien écrire de plus : un
+porte-avions, un bâtiment porte-hélicoptères ou un FARP de la coalition ouvre ses slots dynamiques
+comme un terrain. Chacun reçoit ce qu'il peut réellement accueillir — un porte-avions les avions et
+les hélicoptères, un FARP ou une frégate les hélicoptères seuls — et un navire sans pont d'envol,
+un pétrolier par exemple, n'est pas touché.</p>
 <h2 id="in-the-editor">Ce que vous devez faire dans l'éditeur DCS<a class="headerlink" href="#in-the-editor" title="Permanent link">&para;</a></h2>
 <p><strong>Une seule chose : donner le terrain à une coalition.</strong> Sans liste <code>airports:</code>, le build ne retient
 que les aérodromes dont la coalition correspond au bloc — un aérodrome neutre est donc ignoré, par
@@ -3345,7 +3350,23 @@ est écrit par le build ; ne le réglez pas à la main, il serait réécrit.</p>
 <p>Dès que <code>airports:</code> est là, seuls les terrains listés sont configurés — et leur coalition n'est plus
 consultée, c'est votre liste qui décide. Dès qu'un terrain a une liste <code>aircrafts:</code>, elle remplace le
 choix automatique pour ce terrain.</p>
-<p>Le build annonce alors le résultat : « Warehouses : 2 aéroports configurés, 53 liens de modèle ».</p>
+<p>Les navires et les FARP se restreignent pareil, avec <code>ships:</code> et <code>farps:</code>. On les désigne par le
+<strong>nom de l'unité</strong> tel qu'il apparaît dans l'éditeur, ou par son identifiant :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">blue</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span>
+<span class="w">  </span><span class="nt">ships</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">CSG-74 Stennis</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">farps</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">FARP Kaspi MM54</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">aircrafts</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">UH-1H</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">20</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p><strong>Les trois listes sont indépendantes</strong> : nommer un navire ne dit rien des FARP, qui gardent le
+comportement « tous ceux de la coalition ». Si vous voulez restreindre les uns sans ouvrir les
+autres, écrivez la liste vide : <code>farps: {}</code>.</p>
+<p>Le build annonce alors le résultat : « Warehouses : 2 aéroports configurés, 3 navires/FARP, 53 liens
+de modèle ».</p>
 <h2 id="gotcha">Le piège<a class="headerlink" href="#gotcha" title="Permanent link">&para;</a></h2>
 <p><strong>Les modèles livrés sont un point de départ, pas un catalogue prêt à l'emploi.</strong> DCS sert au pilote
 l'appareil <em>tel que le modèle le décrit</em>. Sur les modèles fournis par défaut, un quart seulement
@@ -3355,6 +3376,17 @@ porte un emport : un A-10C II ou un F/A-18C sortent armés et peints, un UH-1H o
 puis régénérez le fichier depuis cette mission.</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract-aircraft-groups</span> <span class="n">ma-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">dynamic-template</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Deux avertissements à lire</p>
+<p>Le build signale désormais deux situations qui ne cassent rien et rendent pourtant les slots
+inutilisables. <strong>Un lien de modèle qui ne mène nulle part</strong> : DCS l'affiche en <em>Group template:
+None</em> dans le Resource Manager, ce qui ressemble à un choix délibéré. Ils sont le reste d'une
+construction plus ancienne, sur un entrepôt que votre configuration ne cible pas — déclarez la
+coalition concernée, ou nettoyez-les dans l'éditeur. <strong>Des modèles sans nulle part où les
+proposer</strong> : si la mission contient des modèles et qu'aucun terrain, navire ou FARP n'appartient
+à une coalition, aucun slot dynamique ne sortira. C'est le cas d'une mission toute neuve, dont
+tous les aérodromes sont neutres.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Le stock est filtré par ce que le terrain peut garer</p>
 <p><strong>DCS ne propose que ce que le terrain peut garer</strong>, et le build en tient compte : le stock

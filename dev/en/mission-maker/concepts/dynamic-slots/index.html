@@ -3326,6 +3326,11 @@ is derived automatically from the templates present in the mission for that coal
 the file is so short.</p>
 <p>On each selected airfield the build then writes <code>dynamicSpawn = true</code>, hot start, the stock, and the
 link to each type's template.</p>
+<p><strong>Ships and FARPs are handled the same way</strong>, with nothing more to write: an aircraft carrier, a
+helicopter-capable ship or a FARP belonging to the coalition opens its dynamic slots just like an
+airfield. Each gets what it can actually host — a carrier takes planes and helicopters, a FARP or a
+frigate takes helicopters only — and a ship with no flight deck, a tanker for instance, is left
+untouched.</p>
 <h2 id="in-the-editor">What you must do in the DCS editor<a class="headerlink" href="#in-the-editor" title="Permanent link">&para;</a></h2>
 <p><strong>One thing only: give the airfield to a coalition.</strong> With no <code>airports:</code> list the build only keeps
 airfields whose coalition matches the block, so a neutral airfield is skipped — by design. The rest
@@ -3346,7 +3351,23 @@ it would be overwritten.</p>
 <p>Once <code>airports:</code> is there, only the listed airfields are configured — and their coalition is no
 longer consulted, your list decides. Once an airfield has an <code>aircrafts:</code> list, it replaces the
 automatic choice for that airfield.</p>
-<p>The build then reports the result: "Warehouses: 2 airports configured, 53 template links".</p>
+<p>Ships and FARPs restrict the same way, with <code>ships:</code> and <code>farps:</code>. Name them by the <strong>unit name</strong> as
+it appears in the editor, or by its id:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">blue</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">fuel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unlimited</span>
+<span class="w">  </span><span class="nt">ships</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">CSG-74 Stennis</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">farps</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">FARP Kaspi MM54</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">aircrafts</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">UH-1H</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">20</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p><strong>The three lists are independent</strong>: naming a ship says nothing about the FARPs, which keep the "all
+of this coalition" behaviour. To restrict one without opening the other, write the empty list:
+<code>farps: {}</code>.</p>
+<p>The build then reports the result: "Warehouses: 2 airports configured, 3 ships/FARPs, 53 template
+links".</p>
 <h2 id="gotcha">The gotcha<a class="headerlink" href="#gotcha" title="Permanent link">&para;</a></h2>
 <p><strong>The shipped templates are a starting point, not a ready-made catalogue.</strong> DCS gives the pilot the
 aircraft exactly <em>as the template describes it</em>. Among the shipped templates, only a quarter carry a
@@ -3356,6 +3377,16 @@ payload: an A-10C II or an F/A-18C comes out armed and painted, a UH-1H or an AV
 the file from that mission.</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">extract-aircraft-groups</span> <span class="n">my-mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-kind</span> <span class="n">dynamic-template</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Two warnings worth reading</p>
+<p>The build now reports two situations that break nothing and still leave the slots unusable. <strong>A
+template link that leads nowhere</strong>: DCS renders it as <em>Group template: None</em> in the Resource
+Manager, which reads like a deliberate choice. Those are leftovers from an earlier build, on a
+warehouse your configuration does not target — declare the coalition concerned, or clear them in
+the editor. <strong>Templates with nowhere to be offered from</strong>: if the mission carries templates and
+no airfield, ship or FARP belongs to a coalition, no dynamic slot will appear. That is the state
+of a brand-new mission, whose airfields are all neutral.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">The stock is filtered by what the field can park</p>
 <p><strong>DCS only offers what the airfield can park</strong>, and the build takes that into account: the stock
