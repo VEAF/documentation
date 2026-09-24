@@ -2907,6 +2907,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réglages de la mission (FIX-SCRATCH-MISSION-FINDINGS ticket 07)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3906,6 +3917,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réglages de la mission (FIX-SCRATCH-MISSION-FINDINGS ticket 07)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4788,15 +4810,33 @@ modules) :</p>
 </ul>
 <h3 id="coalition-dun-aérodrome">Coalition d'un aérodrome<a class="headerlink" href="#coalition-dun-aérodrome" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>set_airbase_coalition(folder_path, name, coalition)</code> — assigne durablement un aérodrome DCS à une
-  coalition, dans un <strong>dossier de mission</strong>.</li>
+<li><code>set_airbase_coalition(folder_path, name, coalition, dynamic_spawn=True)</code> — assigne durablement un
+  aérodrome DCS à une coalition, dans un <strong>dossier de mission</strong> ; <code>dynamic_spawn=False</code> laisse ses
+  slots dynamiques fermés (une base ennemie).</li>
 </ul>
 <blockquote>
 <p>⚠️ La coalition d'un aérodrome vit dans <code>warehouses.airports[&lt;id&gt;].coalition</code>, <strong>pas</strong> dans
 <code>mission.coalition</code>. Poser une unité à côté d'une base ne la fait donc jamais changer de camp :
 c'est cette action qu'il faut. Elle résout le nom de l'aérodrome en identifiant via le théâtre de
 la mission, pose la coalition, et <strong>active les slots Dynamic Spawn</strong> de la base (le build les
-approvisionne ensuite). Sauvegarde préalable, comme les autres actions d'édition.</p>
+approvisionne ensuite), sauf si <code>dynamic_spawn</code> est faux. Sauvegarde préalable, comme les autres
+actions d'édition.</p>
+</blockquote>
+<h3 id="réglages-de-la-mission-fix-scratch-mission-findings-ticket-07">Réglages de la mission (FIX-SCRATCH-MISSION-FINDINGS ticket 07)<a class="headerlink" href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" title="Permanent link">&para;</a></h3>
+<p>Ce que l'éditeur règle hors de tout groupe, et que GermanyCW-v6 a dû patcher par un sérialiseur Lua.
+Chaque action vise un dossier de mission (durable) ou un <code>.miz</code>, sauvegardé avant écriture.</p>
+<ul>
+<li><code>set_mission_date(target, date?, start_time?)</code> — <code>mission.date</code> (<code>AAAA-MM-JJ</code>) et
+  <code>mission.start_time</code> (<code>HH:MM[:SS]</code>, l'horloge du théâtre). Les variantes météo gardent la main sur
+  les deux.</li>
+<li><code>set_bullseye(target, coalition, position)</code> — <code>mission.coalition.&lt;camp&gt;.bullseye</code>, d'où vient le
+  waypoint BULLSEYE de chaque plan de vol.</li>
+<li><code>set_briefing(target, sortie?, situation?, blue_task?, red_task?, neutrals_task?)</code> — les textes du
+  briefing. Quand la table de mission porte une référence <code>DictKey_…</code>, le texte va dans
+  <code>l10n/DEFAULT/dictionary</code> derrière elle, et la référence reste valide ; <code>write_mission_folder</code>
+  réécrit désormais ce dictionnaire, seulement s'il change.</li>
+</ul>
+<blockquote>
 <p>Les <strong>hashes de mot de passe</strong> (<code>veafSecurity.password_L9[...]</code> / <code>password_MM[...]</code>) — un cas
 multi-lignes — ne sont pas couverts pour l'instant : seul le drapeau <code>SecurityDisabled</code> l'est.</p>
 </blockquote>

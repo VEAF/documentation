@@ -2907,6 +2907,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#mission-settings-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission settings (FIX-SCRATCH-MISSION-FINDINGS ticket 07)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3906,6 +3917,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#mission-settings-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission settings (FIX-SCRATCH-MISSION-FINDINGS ticket 07)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4768,15 +4790,31 @@ initialise):</p>
 </ul>
 <h3 id="airfield-coalition">Airfield coalition<a class="headerlink" href="#airfield-coalition" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>set_airbase_coalition(folder_path, name, coalition)</code> — durably assign a DCS airfield to a
-  coalition, in a <strong>mission folder</strong>.</li>
+<li><code>set_airbase_coalition(folder_path, name, coalition, dynamic_spawn=True)</code> — durably assign a DCS
+  airfield to a coalition, in a <strong>mission folder</strong>; <code>dynamic_spawn=False</code> keeps its dynamic slots
+  closed (an enemy base).</li>
 </ul>
 <blockquote>
 <p>⚠️ An airfield's coalition lives in <code>warehouses.airports[&lt;id&gt;].coalition</code>, <strong>not</strong> in
 <code>mission.coalition</code>. Placing a unit near a base therefore never turns the base itself — this action
 is what does. It resolves the airfield name to an id through the mission's theatre, sets the
-coalition, and <strong>turns on the base's Dynamic Spawn slots</strong> (the build then stocks them). Backed up
-first, like the other editing actions.</p>
+coalition, and <strong>turns on the base's Dynamic Spawn slots</strong> (the build then stocks them) unless
+<code>dynamic_spawn</code> is false. Backed up first, like the other editing actions.</p>
+</blockquote>
+<h3 id="mission-settings-fix-scratch-mission-findings-ticket-07">Mission settings (FIX-SCRATCH-MISSION-FINDINGS ticket 07)<a class="headerlink" href="#mission-settings-fix-scratch-mission-findings-ticket-07" title="Permanent link">&para;</a></h3>
+<p>What the editor sets outside any group, and GermanyCW-v6 had to patch through a Lua serializer. Each
+targets a mission folder (durable) or a <code>.miz</code>, backed up first.</p>
+<ul>
+<li><code>set_mission_date(target, date?, start_time?)</code> — <code>mission.date</code> (<code>YYYY-MM-DD</code>) and
+  <code>mission.start_time</code> (<code>HH:MM[:SS]</code>, the theatre's clock). The weather variants still override both.</li>
+<li><code>set_bullseye(target, coalition, position)</code> — <code>mission.coalition.&lt;side&gt;.bullseye</code>, the source of
+  every flight plan's BULLSEYE waypoint.</li>
+<li><code>set_briefing(target, sortie?, situation?, blue_task?, red_task?, neutrals_task?)</code> — the briefing
+  texts. Where the mission table holds a <code>DictKey_…</code> reference, the text goes into
+  <code>l10n/DEFAULT/dictionary</code> behind it, so the reference stays valid; <code>write_mission_folder</code> now
+  writes that dictionary back, only when it changes.</li>
+</ul>
+<blockquote>
 <p>Password <strong>hashes</strong> (<code>veafSecurity.password_L9[...]</code> / <code>password_MM[...]</code>) — a multi-line
 case — are not covered yet: only the <code>SecurityDisabled</code> flag is.</p>
 </blockquote>
