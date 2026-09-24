@@ -1959,6 +1959,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#defense-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce que place un niveau de défense
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3339,6 +3350,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#defense-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce que place un niveau de défense
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3505,7 +3527,7 @@ _cas, side blue
 <td><code>defense</code></td>
 <td>0–5</td>
 <td>1</td>
-<td>Niveau de défense AA (0=aucune, 5=SAM lourd)</td>
+<td>Niveau de défense aérienne de l'escorte, tiré à ±1 — voir <a href="#defense-levels">ce que place un niveau</a></td>
 </tr>
 <tr>
 <td><code>armor</code></td>
@@ -3542,6 +3564,68 @@ _cas, side blue
 <h3 id="armour-tiers">Ce que contient un palier de blindage<a class="headerlink" href="#armour-tiers" title="Permanent link">&para;</a></h3>
 <p>Chaque palier tire au hasard dans une liste de types de véhicules, choisie selon la coalition et l'époque de la mission (<code>era</code>). Les listes sont maintenues à la main : un palier exprime une puissance <em>relative</em>, une notion que la base de données DCS ne porte pas — elle ne dit ni l'époque d'un véhicule ni sa place dans une échelle.</p>
 <p>Depuis la 6.15.25, les blindés modernes ajoutés par DCS y figurent : le T-84 Oplot-M et le Stryker CV côté bleu, le T-90M et le BMPT Terminator côté rouge, entre autres. Un contrôle automatique vérifie désormais que <strong>chaque</strong> type nommé dans ces listes existe bien dans la base — auparavant, une entrée devenue invalide ne faisait simplement rien apparaître, sans le dire.</p>
+<h3 id="defense-levels">Ce que place un niveau de défense<a class="headerlink" href="#defense-levels" title="Permanent link">&para;</a></h3>
+<p>Le niveau <code>defense</code> sert à deux choses : l'<strong>escorte</strong> d'une section (un ou deux véhicules de défense
+aérienne ajoutés aux blindés, à l'infanterie ou aux camions de <code>_cas</code>, <code>-armor</code>, <code>-convoy</code>…) et le
+<strong>groupe de défense aérienne</strong> complet que posent <code>-sam</code>, <code>-samSR</code>, <code>-samLR</code> et <code>-aaa</code>
+(<code>_spawn samgroup</code>). Pour une vraie batterie longue portée, c'est <code>-samVLR</code> (<code>_spawn longrangesam</code>),
+qui ne dépend d'aucun niveau : voir <a href="../../../ALIASES/">la liste des alias</a>.</p>
+<p><strong>Le niveau est tiré, pas garanti.</strong> Pour un niveau demandé supérieur à 0 : 60 % de chances de
+l'obtenir, 20 % d'obtenir le niveau en dessous, 20 % celui au-dessus. Le groupe de défense aérienne
+reste ensuite borné à 0–5 ; l'escorte a un palier 6, atteint seulement par un 5 tiré vers le haut.
+Les alias tirent aussi le niveau demandé dans une plage : <code>-sam</code> 1–5, <code>-samLR</code> 4–5, <code>-samSR</code> 2–3,
+<code>-aaa</code> 1–2. <code>list_shortcuts</code> (MCP) donne ces plages pour chaque alias.</p>
+<p><strong>Le niveau suit l'époque de la mission</strong> (<code>mission.era</code>) :</p>
+<ul>
+<li><code>MODERN</code> (défaut) : les groupes ci-dessous.</li>
+<li><code>COLD_WAR</code> : les types entrés en service après 1980 — la référence des listes de blindés — sont
+  remplacés : Avenger → Vulcan, Linebacker → Chaparral, Tor → Osa, Tunguska → Shilka, HQ-7 →
+  Strela-10, Igla-S → Igla. Dates de service estimées, non sourcées.</li>
+<li><code>WW2</code> : de la flak uniquement pour les groupes de défense aérienne (Bofors, M45, 3.7-inch côté
+  bleu ; Flak 30/36/37/38/41 côté rouge), et <strong>aucune escorte</strong>.</li>
+</ul>
+<p>Groupes de défense aérienne en <code>MODERN</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Bleu</th>
+<th>Rouge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>AAV7, camions (aucune défense aérienne)</td>
+<td>ZU-23, S-60 (0–1 chacun)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Vulcan, Avenger (0–1)</td>
+<td>Shilka, ZSU-57-2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vulcan, Avenger</td>
+<td>SA-9, Shilka, ZSU-57-2, S-60</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Gepard, Linebacker, Avenger</td>
+<td>SA-13, SA-9, Shilka, ZSU-57-2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Roland, Chaparral, Gepard</td>
+<td>SA-8, SA-13, Shilka, ZSU-57-2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Hawk, Chaparral, Gepard</td>
+<td>SA-15, SA-8, SA-13, SA-19, ZSU-57-2, S-60</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="menu-radio-f10">Menu radio F10<a class="headerlink" href="#menu-radio-f10" title="Permanent link">&para;</a></h2>
 <p>Le sous-menu <strong>CAS MISSION</strong> est créé dès l'initialisation du module, avec une entrée <strong>HELP</strong>. Une fois une mission générée (via le marqueur <code>_cas</code>), il propose en plus :</p>
@@ -3558,7 +3642,7 @@ _cas, side blue
 <tr>
 <th>Niveau</th>
 <th>Unités typiques</th>
-<th>Défense AA</th>
+<th>Escorte de défense aérienne (rouge, <code>MODERN</code>)</th>
 </tr>
 </thead>
 <tbody>
@@ -3570,30 +3654,31 @@ _cas, side blue
 <tr>
 <td>1</td>
 <td>APC, camions</td>
-<td>MANPADS</td>
+<td>ZU-23 ou ZSU-57-2</td>
 </tr>
 <tr>
 <td>2</td>
 <td>BMP, BTR</td>
-<td>ZU-23</td>
+<td>Shilka ou ZSU-57-2, ×2</td>
 </tr>
 <tr>
 <td>3</td>
 <td>IFV, chars légers</td>
-<td>ZSU-23-4 + SA-9</td>
+<td>SA-9 ou SA-13, Shilka ou ZSU-57-2</td>
 </tr>
 <tr>
 <td>4</td>
 <td>MBT</td>
-<td>SA-13 + SA-15</td>
+<td>Shilka ou ZSU-57-2, HQ-7</td>
 </tr>
 <tr>
 <td>5</td>
 <td>Mix MBT lourds</td>
-<td>SA-6 / SA-11</td>
+<td>SA-8 ou SA-19, Shilka ou SA-13</td>
 </tr>
 </tbody>
 </table>
+<p>Le niveau est tiré à ±1 et suit l'époque : voir <a href="#defense-levels">ce que place un niveau de défense</a>.</p>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>

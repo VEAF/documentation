@@ -1959,6 +1959,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#defense-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a defense level places
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3339,6 +3350,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#defense-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a defense level places
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3505,7 +3527,7 @@ _cas, side blue
 <td><code>defense</code></td>
 <td>0–5</td>
 <td>1</td>
-<td>AA defence level (0=none, 5=heavy SAM)</td>
+<td>Air-defense level of the escort, rolled ±1 — see <a href="#defense-levels">what a level places</a></td>
 </tr>
 <tr>
 <td><code>armor</code></td>
@@ -3542,6 +3564,67 @@ _cas, side blue
 <h3 id="armour-tiers">What an armour tier holds<a class="headerlink" href="#armour-tiers" title="Permanent link">&para;</a></h3>
 <p>Each tier draws at random from a list of vehicle types, picked by coalition and by the mission's era. Those lists are maintained by hand: a tier expresses <em>relative</em> power, which the DCS database does not carry — it states neither a vehicle's period nor its place on any scale.</p>
 <p>Since 6.15.25 the modern armour DCS has added is in them: the T-84 Oplot-M and Stryker CV on the blue side, the T-90M and BMPT Terminator on the red one, among others. An automated check now verifies that <strong>every</strong> type named in those lists actually exists in the database — before it, an entry gone stale simply spawned nothing, and never said so.</p>
+<h3 id="defense-levels">What a defense level places<a class="headerlink" href="#defense-levels" title="Permanent link">&para;</a></h3>
+<p>The <code>defense</code> level drives two things: the <strong>escort</strong> of a section (one or two air-defense vehicles
+added to the armour, infantry or trucks of <code>_cas</code>, <code>-armor</code>, <code>-convoy</code>…) and the complete
+<strong>air-defense group</strong> that <code>-sam</code>, <code>-samSR</code>, <code>-samLR</code> and <code>-aaa</code> place (<code>_spawn samgroup</code>). For a real long-range battery, use <code>-samVLR</code> (<code>_spawn longrangesam</code>),
+which depends on no level: see <a href="../../../ALIASES/">the alias list</a>.</p>
+<p><strong>The level is rolled, not guaranteed.</strong> For a requested level above 0: 60 % chance of getting it,
+20 % of getting the level below, 20 % the level above. The air-defense group is then clamped to 0–5;
+the escort has a tier 6, reached only by a 5 rolled upwards. The aliases also draw the requested
+level from a range: <code>-sam</code> 1–5, <code>-samLR</code> 4–5, <code>-samSR</code> 2–3, <code>-aaa</code> 1–2. <code>list_shortcuts</code> (MCP)
+returns those ranges for each alias.</p>
+<p><strong>The level follows the mission's era</strong> (<code>mission.era</code>):</p>
+<ul>
+<li><code>MODERN</code> (default): the groups below.</li>
+<li><code>COLD_WAR</code>: the types that entered service after 1980 — the armour lists' reference — are
+  replaced: Avenger → Vulcan, Linebacker → Chaparral, Tor → Osa, Tunguska → Shilka, HQ-7 →
+  Strela-10, Igla-S → Igla. Service dates are estimates, not sourced.</li>
+<li><code>WW2</code>: flak only for the air-defense groups (Bofors, M45, 3.7-inch on the blue side; Flak
+  30/36/37/38/41 on the red one), and <strong>no escort</strong>.</li>
+</ul>
+<p>Air-defense groups in <code>MODERN</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Blue</th>
+<th>Red</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>AAV7, trucks (no air defense)</td>
+<td>ZU-23, S-60 (0–1 each)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Vulcan, Avenger (0–1)</td>
+<td>Shilka, ZSU-57-2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vulcan, Avenger</td>
+<td>SA-9, Shilka, ZSU-57-2, S-60</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Gepard, Linebacker, Avenger</td>
+<td>SA-13, SA-9, Shilka, ZSU-57-2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Roland, Chaparral, Gepard</td>
+<td>SA-8, SA-13, Shilka, ZSU-57-2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Hawk, Chaparral, Gepard</td>
+<td>SA-15, SA-8, SA-13, SA-19, ZSU-57-2, S-60</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="f10-radio-menu">F10 Radio Menu<a class="headerlink" href="#f10-radio-menu" title="Permanent link">&para;</a></h2>
 <p>The <strong>CAS MISSION</strong> submenu is created as soon as the module initialises, with a <strong>HELP</strong> entry. Once a mission has been generated (via the <code>_cas</code> marker), it additionally exposes:</p>
@@ -3558,7 +3641,7 @@ _cas, side blue
 <tr>
 <th>Level</th>
 <th>Typical units</th>
-<th>AA defence</th>
+<th>Air-defense escort (red, <code>MODERN</code>)</th>
 </tr>
 </thead>
 <tbody>
@@ -3570,30 +3653,31 @@ _cas, side blue
 <tr>
 <td>1</td>
 <td>APCs, trucks</td>
-<td>MANPADS</td>
+<td>ZU-23 or ZSU-57-2</td>
 </tr>
 <tr>
 <td>2</td>
 <td>BMPs, BTRs</td>
-<td>ZU-23</td>
+<td>Shilka or ZSU-57-2, ×2</td>
 </tr>
 <tr>
 <td>3</td>
 <td>IFVs, light tanks</td>
-<td>ZSU-23-4 + SA-9</td>
+<td>SA-9 or SA-13, Shilka or ZSU-57-2</td>
 </tr>
 <tr>
 <td>4</td>
 <td>MBTs</td>
-<td>SA-13 + SA-15</td>
+<td>Shilka or ZSU-57-2, HQ-7</td>
 </tr>
 <tr>
 <td>5</td>
 <td>Heavy MBT mix</td>
-<td>SA-6 / SA-11</td>
+<td>SA-8 or SA-19, Shilka or SA-13</td>
 </tr>
 </tbody>
 </table>
+<p>The level is rolled ±1 and follows the era: see <a href="#defense-levels">what a defense level places</a>.</p>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
