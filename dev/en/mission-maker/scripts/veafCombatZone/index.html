@@ -2016,6 +2016,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Difficulty levels on the same targets — includes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#combat_zones-fields--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2221,7 +2232,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#command--spawning-via-veaf-marker-syntax" class="md-nav__link">
+  <a href="#command" class="md-nav__link">
     <span class="md-ellipsis">
       
         #command — spawning via VEAF marker syntax
@@ -3667,6 +3678,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Difficulty levels on the same targets — includes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#combat_zones-fields--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3872,7 +3894,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#command--spawning-via-veaf-marker-syntax" class="md-nav__link">
+  <a href="#command" class="md-nav__link">
     <span class="md-ellipsis">
       
         #command — spawning via VEAF marker syntax
@@ -4092,6 +4114,8 @@
 <span class="w">        </span><span class="nt">chained_zones</span><span class="p">:</span><span class="w">                      </span><span class="c1"># zones to trigger when this one completes</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Bravo&quot;</span>
 <span class="w">        </span><span class="nt">chained_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">                   </span><span class="c1"># seconds before chaining fires</span>
+<span class="w">        </span><span class="nt">includes</span><span class="p">:</span><span class="w">                           </span><span class="c1"># borrow other zones&#39; elements (difficulty levels)</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Alpha-Easy&quot;</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operation</span>
 <span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Op-Thunder&quot;</span>
 <span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Operation</span><span class="nv"> </span><span class="s">Thunder&quot;</span>
@@ -4282,6 +4306,13 @@
 <td>No</td>
 <td>Seconds before chained zones fire</td>
 </tr>
+<tr>
+<td><code>includes</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td>Zones whose elements this one borrows: activated with it, transitively. See <a href="#includes">below</a></td>
+</tr>
 </tbody>
 </table>
 <h3 id="rename-units"><code>rename_units_sequentially</code> — keeping the original unit names<a class="headerlink" href="#rename-units" title="Permanent link">&para;</a></h3>
@@ -4293,6 +4324,45 @@
 <p>The setting is <strong>per zone</strong>, not a global debug switch: that is what the
 <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/289">original request</a> asked for, and a global one would be one more thing to remember to put back before shipping.</p>
 <p>The default stays <code>true</code>, so no existing mission changes.</p>
+<h3 id="includes">Difficulty levels on the same targets — <code>includes</code><a class="headerlink" href="#includes" title="Permanent link">&para;</a></h3>
+<p>A training range in progressive levels: <strong>easy</strong> (inert targets), <strong>medium</strong> (light AAA), <strong>hard</strong>
+(realistic SHORAD). Activating a level must also spawn everything the levels below it hold. Each
+level is a zone of its own — its own trigger zone, its own name, its own groups — and <code>includes</code>
+makes it borrow the others' elements:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RANGE-EASY&quot;</span><span class="w">          </span><span class="c1"># inert targets (statics)</span>
+<span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Range</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">easy&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RANGE-MEDIUM&quot;</span><span class="w">        </span><span class="c1"># light AAA</span>
+<span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Range</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">medium&quot;</span>
+<span class="w">    </span><span class="nt">includes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;RANGE-EASY&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RANGE-HARD&quot;</span><span class="w">          </span><span class="c1"># SHORAD</span>
+<span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Range</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">hard&quot;</span>
+<span class="w">    </span><span class="nt">includes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;RANGE-MEDIUM&quot;</span><span class="p p-Indicator">]</span><span class="w">       </span><span class="c1"># so RANGE-EASY as well: inclusion is transitive</span>
+</code></pre></div>
+<p>What the build does:</p>
+<ul>
+<li><strong>Inclusion is transitive</strong>: <code>RANGE-HARD</code> includes <code>RANGE-MEDIUM</code>, which includes <code>RANGE-EASY</code>, so
+  activating <code>RANGE-HARD</code> spawns all three levels. The order of the zones in the list does not
+  matter.</li>
+<li><strong>The borrowing level owns what it spawns</strong>: deactivating it removes the borrowed elements too,
+  and its completion counts their units. A borrowed <a href="#command"><code>#command</code></a> element works as well,
+  and the group it creates is named after the active level.</li>
+<li><strong>Mistakes stop the build</strong>: a name that is not a combat zone of the mission (or is an
+  <code>operation</code>), a zone including itself, or a cycle (<code>A</code> includes <code>B</code> which includes <code>A</code>). In game,
+  each of these would only be a line in <code>dcs.log</code> and a level missing its lower levels.</li>
+</ul>
+<p><strong>One level at a time.</strong> Two levels active together each spawn <strong>their own copy</strong> of the elements
+they share — the same targets twice, in the same place. To change level, deactivate the previous one.</p>
+<div class="admonition warning">
+<p class="admonition-title">Why nesting by name prefix does not work</p>
+<p>The <a href="#zone-membership">prefix rule</a> suggests zones could be nested by name: <code>RANGE-HARD</code>,
+<code>RANGE-HARD-MEDIUM</code>, <code>RANGE-HARD-MEDIUM-EASY</code>, and a group named after the deepest one would be
+picked up by all three. It is not: at start a zone <strong>destroys</strong> the groups it picks up, and the
+next zone looks for <strong>live</strong> units — so it finds nothing left. A group belongs to one zone in
+practice; <code>includes</code> is what shares it.</p>
+</div>
+<p>In Lua, this is <code>VeafCombatZone:addZoneElementsFromZoneNamed(zoneName)</code>, called once every zone
+exists; <code>includes</code> generates exactly those calls, transitive closure included.</p>
 <h3 id="combat_zones-fields--type-operation"><code>combat_zones[]</code> fields — type <code>operation</code><a class="headerlink" href="#combat_zones-fields--type-operation" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4706,7 +4776,7 @@ CZ-Alpha-MANPAD-3 #spawnchance=50
 CZ-Alpha-MANPAD-4 #spawnchance=50
 </code></pre></div>
 <p>Each position has a 50% chance of spawning, independently of the others — statistically, around two will be active each time the zone is triggered. "Around" is the right word: sometimes none will spawn, and sometimes all four. If you want <strong>exactly two</strong> every time, <code>#spawncount</code> is the tag, as above.</p>
-<h3 id="command--spawning-via-veaf-marker-syntax"><code>#command</code> — spawning via VEAF marker syntax<a class="headerlink" href="#command--spawning-via-veaf-marker-syntax" title="Permanent link">&para;</a></h3>
+<h3 id="command"><code>#command</code> — spawning via VEAF marker syntax<a class="headerlink" href="#command" title="Permanent link">&para;</a></h3>
 <p>The <code>#command</code> tag turns a unit into a one-shot trigger. When the zone activates, VEAF executes the command at the unit's position and destroys the unit. This is equivalent to dropping a map marker at that location.</p>
 <div class="highlight"><pre><span></span><code>CZ-Alpha-SPAWN-SA11 #command=&quot;-spawn sa-11, side red&quot;
 CZ-Alpha-CONVOY-TRIGGER #command=&quot;-convoy from ZONE-DEPOT to ZONE-FRONT&quot;

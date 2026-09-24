@@ -2016,6 +2016,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Niveaux de difficulté sur les mêmes cibles — includes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#champs-de-combat_zones--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2221,7 +2232,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#command--apparition-via-la-syntaxe-de-marqueur-veaf" class="md-nav__link">
+  <a href="#command" class="md-nav__link">
     <span class="md-ellipsis">
       
         #command — apparition via la syntaxe de marqueur VEAF
@@ -3667,6 +3678,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Niveaux de difficulté sur les mêmes cibles — includes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#champs-de-combat_zones--type-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3872,7 +3894,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#command--apparition-via-la-syntaxe-de-marqueur-veaf" class="md-nav__link">
+  <a href="#command" class="md-nav__link">
     <span class="md-ellipsis">
       
         #command — apparition via la syntaxe de marqueur VEAF
@@ -4092,6 +4114,8 @@
 <span class="w">        </span><span class="nt">chained_zones</span><span class="p">:</span><span class="w">                      </span><span class="c1"># zones à déclencher quand celle-ci se termine</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Bravo&quot;</span>
 <span class="w">        </span><span class="nt">chained_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">                   </span><span class="c1"># secondes avant le déclenchement des zones chaînées</span>
+<span class="w">        </span><span class="nt">includes</span><span class="p">:</span><span class="w">                           </span><span class="c1"># emprunte les éléments d&#39;autres zones (niveaux de difficulté)</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;CZ-Alpha-Facile&quot;</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operation</span>
 <span class="w">        </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Op-Tonnerre&quot;</span>
 <span class="w">        </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Opération</span><span class="nv"> </span><span class="s">Tonnerre&quot;</span>
@@ -4282,6 +4306,13 @@
 <td>Non</td>
 <td>Secondes avant le déclenchement des zones chaînées</td>
 </tr>
+<tr>
+<td><code>includes</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Zones dont celle-ci emprunte les éléments : les activer avec elle, transitivement. Voir <a href="#includes">ci-dessous</a></td>
+</tr>
 </tbody>
 </table>
 <h3 id="rename-units"><code>rename_units_sequentially</code> — garder les noms d'unités d'origine<a class="headerlink" href="#rename-units" title="Permanent link">&para;</a></h3>
@@ -4293,6 +4324,48 @@
 <p>Le réglage est <strong>par zone</strong>, et non un interrupteur global de débogage : c'est ce que demandait la
 <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/289">demande d'origine</a>, et un interrupteur global serait une chose de plus à penser à remettre avant de livrer.</p>
 <p>Le défaut reste <code>true</code>, donc aucune mission existante ne change.</p>
+<h3 id="includes">Niveaux de difficulté sur les mêmes cibles — <code>includes</code><a class="headerlink" href="#includes" title="Permanent link">&para;</a></h3>
+<p>Un champ de tir en niveaux progressifs : <strong>facile</strong> (cibles inertes), <strong>moyen</strong> (AAA légère),
+<strong>difficile</strong> (SHORAD réaliste). Activer un niveau doit aussi faire apparaître tout ce que
+contiennent les niveaux en dessous. Chaque niveau est une zone à part — sa propre trigger zone,
+son propre nom, ses propres groupes — et <code>includes</code> lui fait emprunter les éléments des autres :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RANGE-EASY&quot;</span><span class="w">          </span><span class="c1"># cibles inertes (statiques)</span>
+<span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Champ</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">tir</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">facile&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RANGE-MEDIUM&quot;</span><span class="w">        </span><span class="c1"># AAA légère</span>
+<span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Champ</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">tir</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">moyen&quot;</span>
+<span class="w">    </span><span class="nt">includes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;RANGE-EASY&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RANGE-HARD&quot;</span><span class="w">          </span><span class="c1"># SHORAD</span>
+<span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Champ</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">tir</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">difficile&quot;</span>
+<span class="w">    </span><span class="nt">includes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;RANGE-MEDIUM&quot;</span><span class="p p-Indicator">]</span><span class="w">       </span><span class="c1"># donc aussi RANGE-EASY : l&#39;inclusion est transitive</span>
+</code></pre></div>
+<p>Ce que fait la construction :</p>
+<ul>
+<li><strong>L'inclusion est transitive</strong> : <code>RANGE-HARD</code> inclut <code>RANGE-MEDIUM</code>, qui inclut <code>RANGE-EASY</code>, donc
+  activer <code>RANGE-HARD</code> fait apparaître les trois niveaux. L'ordre des zones dans la liste n'a pas
+  d'importance.</li>
+<li><strong>Le niveau qui emprunte possède ce qu'il fait apparaître</strong> : le désactiver retire aussi les
+  éléments empruntés, et sa réussite compte leurs unités. Un élément <a href="#command"><code>#command</code></a> emprunté
+  fonctionne aussi, et le groupe qu'il crée porte le nom du niveau actif.</li>
+<li><strong>Les erreurs arrêtent la construction</strong> : un nom qui n'est pas une zone de combat de la mission
+  (ou qui est une <code>operation</code>), une zone qui s'inclut elle-même, ou un cycle (<code>A</code> inclut <code>B</code> qui
+  inclut <code>A</code>). En jeu, chacune de ces erreurs ne serait qu'une ligne dans <code>dcs.log</code> et un niveau
+  auquel il manquerait les niveaux inférieurs.</li>
+</ul>
+<p><strong>Un niveau à la fois.</strong> Deux niveaux actifs en même temps font chacun apparaître <strong>leur propre
+copie</strong> des éléments qu'ils partagent — deux fois les mêmes cibles, au même endroit. Pour changer de
+niveau, désactivez le précédent.</p>
+<div class="admonition warning">
+<p class="admonition-title">Pourquoi l'imbrication par préfixe de nom ne marche pas</p>
+<p>La <a href="#zone-membership">règle du préfixe</a> laisse croire qu'on peut imbriquer des zones par leur
+nom : <code>RANGE-HARD</code>, <code>RANGE-HARD-MEDIUM</code>, <code>RANGE-HARD-MEDIUM-EASY</code>, et un groupe nommé d'après la
+plus profonde serait ramassé par les trois. Ce n'est pas le cas : au démarrage, une zone
+<strong>détruit</strong> les groupes qu'elle ramasse, et la zone suivante cherche des unités <strong>vivantes</strong> —
+elle ne trouve donc plus rien. Un groupe appartient en pratique à une seule zone ; c'est
+<code>includes</code> qui le partage.</p>
+</div>
+<p>En Lua, c'est <code>VeafCombatZone:addZoneElementsFromZoneNamed(nomDeZone)</code>, appelé une fois toutes les
+zones créées ; <code>includes</code> génère exactement ces appels, clôture transitive comprise.</p>
 <h3 id="champs-de-combat_zones--type-operation">Champs de <code>combat_zones[]</code> — type <code>operation</code><a class="headerlink" href="#champs-de-combat_zones--type-operation" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4709,7 +4782,7 @@ CZ-Alpha-MANPAD-3 #spawnchance=50
 CZ-Alpha-MANPAD-4 #spawnchance=50
 </code></pre></div>
 <p>Chaque position a 50 % de chances d'apparaître, indépendamment des autres — statistiquement, environ deux seront actives à chaque déclenchement de la zone. « Environ » est le mot juste : il arrivera qu'aucune n'apparaisse, et qu'elles apparaissent toutes les quatre. Si vous voulez <strong>exactement deux</strong> à chaque fois, c'est <code>#spawncount</code> qu'il faut, comme ci-dessus.</p>
-<h3 id="command--apparition-via-la-syntaxe-de-marqueur-veaf"><code>#command</code> — apparition via la syntaxe de marqueur VEAF<a class="headerlink" href="#command--apparition-via-la-syntaxe-de-marqueur-veaf" title="Permanent link">&para;</a></h3>
+<h3 id="command"><code>#command</code> — apparition via la syntaxe de marqueur VEAF<a class="headerlink" href="#command" title="Permanent link">&para;</a></h3>
 <p>Le tag <code>#command</code> transforme une unité en déclencheur à usage unique. À l'activation de la zone, VEAF exécute la commande à la position de l'unité et détruit l'unité. C'est l'équivalent du dépôt d'un marqueur de carte à cet endroit.</p>
 <div class="highlight"><pre><span></span><code>CZ-Alpha-SPAWN-SA11 #command=&quot;-spawn sa-11, side red&quot;
 CZ-Alpha-CONVOY-TRIGGER #command=&quot;-convoy from ZONE-DEPOT to ZONE-FRONT&quot;
