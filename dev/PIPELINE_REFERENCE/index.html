@@ -4739,10 +4739,21 @@ carburant / munitions et le stock d'aéronefs, et lie chaque type d'aéronef pro
 <span class="w">  </span><span class="nt">airports</span><span class="p">:</span><span class="w">                  </span><span class="c1"># optionnel. Absent -&gt; TOUS les aérodromes de la coalition reçoivent `defaults`.</span>
 <span class="w">    </span><span class="nt">&lt;nom ou id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">                        </span><span class="c1"># defaults seuls</span>
 <span class="w">    </span><span class="nt">&lt;nom ou id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> aircrafts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">     </span><span class="c1"># defaults + override par aérodrome</span>
+<span class="w">  </span><span class="nt">exclude_airports</span><span class="p">:</span><span class="w">          </span><span class="c1"># optionnel. Ces aérodromes ne reçoivent JAMAIS de slot, listés ou non.</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;nom ou id&gt;</span>
 </code></pre></div>
 <ul>
-<li><code>template</code> référence un groupe-modèle par <strong>nom</strong> ; omettez-le pour l'auto-matcher
-  à un groupe-modèle du même <strong>type d'aéronef</strong> (même coalition).</li>
+<li>
+<p><code>exclude_airports</code> est ce que l'action MCP <code>set_airbase_coalition(…, dynamic_spawn: false)</code> écrit :
+  sans lui, un <code>dynamicSpawn = false</code> dans les <code>warehouses</code> de la mission était <strong>réactivé au build</strong>
+  pour toute base d'une coalition déclarée sans liste <code>airports:</code> (mesuré sur GermanyCW-v6 : 61
+  aérodromes ouverts au lieu de 12). Une base à la fois listée et exclue reste fermée, avec un
+  avertissement.</p>
+</li>
+<li>
+<p><code>template</code> référence un groupe-modèle par <strong>nom</strong> ; omettez-le pour l'auto-matcher
+  à un groupe-modèle du même <strong>type d'aéronef</strong> (même coalition).</p>
+</li>
 <li>Les aérodromes ne peuvent être nommés que sur les théâtres installés présents dans
   la table versionnée (<code>veaf-build update-dcs-data --airdromes</code>) ; sinon utilisez l'id
   numérique (visible dans les <code>warehouses</code> de la mission : <code>airports[&lt;id&gt;]</code>).</li>

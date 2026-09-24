@@ -4738,10 +4738,20 @@ template group via <code>linkDynTempl</code>.</p>
 <span class="w">  </span><span class="nt">airports</span><span class="p">:</span><span class="w">                  </span><span class="c1"># optional. Absent -&gt; ALL airports of this coalition get `defaults`.</span>
 <span class="w">    </span><span class="nt">&lt;name or id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">                       </span><span class="c1"># defaults only</span>
 <span class="w">    </span><span class="nt">&lt;name or id&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> aircrafts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">    </span><span class="c1"># defaults + per-airport override</span>
+<span class="w">  </span><span class="nt">exclude_airports</span><span class="p">:</span><span class="w">          </span><span class="c1"># optional. These airports NEVER get a slot, listed or not.</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;name or id&gt;</span>
 </code></pre></div>
 <ul>
-<li><code>template</code> references a template group by <strong>name</strong>; omit it to auto-match a
-  template group of the same <strong>aircraft type</strong> (same coalition).</li>
+<li>
+<p><code>exclude_airports</code> is what the MCP action <code>set_airbase_coalition(…, dynamic_spawn: false)</code> writes:
+  without it, a <code>dynamicSpawn = false</code> in the mission's <code>warehouses</code> was <strong>turned back on at build</strong>
+  for every base of a declared coalition with no <code>airports:</code> list (measured on GermanyCW-v6: 61
+  airports opened instead of 12). A base both listed and excluded stays closed, with a warning.</p>
+</li>
+<li>
+<p><code>template</code> references a template group by <strong>name</strong>; omit it to auto-match a
+  template group of the same <strong>aircraft type</strong> (same coalition).</p>
+</li>
 <li>Airports may be named only on installed theatres present in the committed
   airdrome table (<code>veaf-build update-dcs-data --airdromes</code>); otherwise use the
   numeric id (visible in the mission's <code>warehouses</code> as <code>airports[&lt;id&gt;]</code>).</li>

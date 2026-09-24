@@ -4056,6 +4056,13 @@
 <td>No</td>
 <td>Name of a DCS group; the generated submenu only appears for that group</td>
 </tr>
+<tr>
+<td><code>radio_menu_secured</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td><strong>Secured</strong> commands: only a pilot of that group with the required security level can run them. Requires <code>radio_menu_restrict_to_group</code> (the level checked is that of the group the menu is posted for); the build refuses otherwise</td>
+</tr>
 </tbody>
 </table>
 <h3 id="control-radio-menu-shortcut">Control radio menu (shortcut)<a class="headerlink" href="#control-radio-menu-shortcut" title="Permanent link">&para;</a></h3>
@@ -4070,7 +4077,16 @@
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">North&quot;</span>
 <span class="w">        </span><span class="nt">radio_menu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                         </span><span class="c1"># generates the control submenu</span>
 <span class="w">        </span><span class="nt">radio_menu_restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">  </span><span class="c1"># optional: restrict the submenu to this DCS group</span>
+<span class="w">        </span><span class="nt">radio_menu_secured</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                 </span><span class="c1"># optional: and require the security level (&quot;+…&quot; commands)</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">This menu is not secured</p>
+<p>Without <code>radio_menu_restrict_to_group</code>, the submenu is posted for <strong>every player</strong>, on both sides,
+and its commands run without asking for any security level. On a public server, a blue pilot can
+stop the red QRA they are about to fly over. Keep it for a Mission Master group with
+<code>radio_menu_restrict_to_group</code> — knowing that any player who takes that group's slot sees the menu
+in turn — and add <code>radio_menu_secured: true</code> so that pilot must also hold the required security level.</p>
+</div>
 <p>This is <strong>mechanism 1</strong> (per-module shortcut). For a custom MM menu that is structured or combines several actions (QRA, AirWaves, flags, messages, Lua), use <strong>mechanism 2</strong> described in <a href="../veafRadio/#radio-menus-in-yaml">veafRadio → Radio menus in YAML</a>.</p>
 <h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>

@@ -3991,6 +3991,13 @@ se lit pas.</p>
 <td>Non</td>
 <td>Nom d'un groupe DCS ; le sous-menu généré n'apparaît que pour ce groupe</td>
 </tr>
+<tr>
+<td><code>radio_menu_secured</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Commandes <strong>sécurisées</strong> : seul un pilote de ce groupe ayant le niveau de sécurité requis peut les exécuter. Exige <code>radio_menu_restrict_to_group</code> ; le build refuse sinon</td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -4004,7 +4011,17 @@ se lit pas.</p>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;su27-flight&quot;</span>
 <span class="w">        </span><span class="nt">radio_menu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                         </span><span class="c1"># génère le sous-menu de contrôle</span>
 <span class="w">        </span><span class="nt">radio_menu_restrict_to_group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MM</span><span class="nv"> </span><span class="s">Ctrl&quot;</span><span class="w">  </span><span class="c1"># optionnel : réserver le sous-menu à ce groupe DCS</span>
+<span class="w">        </span><span class="nt">radio_menu_secured</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                 </span><span class="c1"># optionnel : et exiger le niveau de sécurité (commandes « +… »)</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ce menu n'est pas sécurisé</p>
+<p>Sans <code>radio_menu_restrict_to_group</code>, le sous-menu est posé pour <strong>tous les joueurs</strong>, des deux
+camps, et ses commandes s'exécutent sans demander de niveau de sécurité. Sur un serveur public,
+n'importe quel pilote peut arrêter ou réinitialiser une zone pendant que d'autres y combattent.
+Réservez-le à un groupe de Mission Master avec <code>radio_menu_restrict_to_group</code> — en sachant que tout
+joueur qui prend le slot de ce groupe voit le menu à son tour — et ajoutez <code>radio_menu_secured: true</code>
+pour que ce pilote doive en plus avoir le niveau de sécurité requis.</p>
+</div>
 <p>C'est le <strong>mécanisme 1</strong> (raccourci par module). Pour un menu MM personnalisé, structuré ou combinant plusieurs actions (AirWaves, QRA, flags, messages, Lua), utilisez le <strong>mécanisme 2</strong> décrit dans <a href="../veafRadio/#radio-menus-in-yaml">veafRadio → Menus radio en YAML</a>.</p>
 <h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>

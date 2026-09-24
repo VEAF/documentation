@@ -2908,6 +2908,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#farp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3140,6 +3151,17 @@
     <span class="md-ellipsis">
       
         describe_map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list_airfields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_airfields
       
     </span>
   </a>
@@ -3929,6 +3951,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#farp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FARP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4168,6 +4201,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#list_airfields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_airfields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resolve_coordinates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4379,6 +4423,12 @@ qui lit <code>null</code> ne peut pas distinguer « désactivé » de « le lect
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;include_route&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="set_unit_properties-lot-feat-mcp-mutation-actions"><code>set_unit_properties</code> (lot FEAT-MCP-MUTATION-ACTIONS)<a class="headerlink" href="#set_unit_properties-lot-feat-mcp-mutation-actions" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Depuis <code>FIX-SCRATCH-MISSION-FINDINGS</code> ticket 19, elle <strong>renomme</strong> (<code>new_name</code>, refusé si une autre
+unité porte déjà ce nom : DCS les veut uniques dans toute la mission) et <strong>déplace</strong> (<code>position</code>)
+une unité seule ; l'ancre et la route du groupe ne bougent pas. Pour un avion, dont la place tient
+à la route, un avertissement le signale.</p>
+</blockquote>
 <p>Écriture. La <strong>première</strong> action qui modifie un objet déjà présent dans la mission : toutes les
 <code>set_*</code> livrées avant elle agissent sur la <em>configuration</em> (modules, sécurité, logs, coalition d'une
 base). Sauvegarde horodatée avant écriture, comme ses sœurs.</p>
@@ -4509,6 +4559,10 @@ AttackGroup, surchargeable via <code>weapon_type</code>), les paires <code>altit
 <code>direction</code>/<code>directionEnabled</code> <strong>présentes mais désactivées</strong> par défaut (activées si l'appelant passe
 <code>altitude_ft</code>/<code>direction_deg</code>), et l'ensemble <code>expend</code>/<code>attackQty</code>/<code>groupAttack</code>. <code>EngageTargetsInZone</code>
 porte aussi <code>noTargetTypes</code> (liste d'exclusion, vide par défaut).</p>
+<p><strong>L'ordre des tâches compte.</strong> DCS les exécute par <code>number</code>, et une tâche placée après une orbite sans
+fin n'est jamais atteinte. <code>add_task</code> ajoute à la fin par défaut ; <code>task_position</code> (1-based) l'insère à
+une place donnée et renumérote les autres — pour mettre un engagement <strong>avant</strong> l'orbite
+(<code>FIX-SCRATCH-MISSION-FINDINGS</code> ticket 17).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;group_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Colt 1-1&quot;</span><span class="p">,</span>
@@ -4843,7 +4897,21 @@ c'est cette action qu'il faut. Elle résout le nom de l'aérodrome en identifian
 la mission, pose la coalition, et <strong>active les slots Dynamic Spawn</strong> de la base (le build les
 approvisionne ensuite), sauf si <code>dynamic_spawn</code> est faux. Sauvegarde préalable, comme les autres
 actions d'édition.</p>
+<p><code>dynamic_spawn: false</code> inscrit aussi la base sous <code>&lt;camp&gt;.exclude_airports</code> dans
+<code>src/warehouses.yaml</code>, et <code>true</code> l'en retire : le build ouvrait toute base d'un camp déclaré sans
+liste <code>airports:</code>, <code>dynamicSpawn = false</code> ou pas (<code>FIX-SCRATCH-MISSION-FINDINGS</code> ticket 15). Rien
+n'est écrit si le fichier manque (l'étape ne tourne pas) ou si le camp n'y est pas déclaré (le
+déclarer ouvrirait toutes ses bases).</p>
 </blockquote>
+<h3 id="farp">FARP<a class="headerlink" href="#farp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>add_farp(target, name, position, coalition, country_id, country_name, farp_type="FARP",
+  frequency_mhz=127.5, modulation="AM", callsign_id=1)</code> — un FARP <strong>complet</strong> : le statique
+  d'héliport (<code>category = "Heliports"</code>, <code>shape_name</code> du type), sa radio et son indicatif, et l'entrée
+  d'entrepôt <code>warehouses.warehouses[&lt;unitId&gt;]</code> qui permet de s'y ravitailler. <code>add_group</code> en <code>static</code>
+  ne posait que l'objet (ticket 19). Forme mesurée sur les 372 héliports des missions de
+  <code>D:\dev\_VEAF</code>. Le <code>farps:</code> de <code>warehouses.yaml</code> l'approvisionne ensuite au build, comme une base.</li>
+</ul>
 <h3 id="réglages-de-la-mission-fix-scratch-mission-findings-ticket-07">Réglages de la mission (FIX-SCRATCH-MISSION-FINDINGS ticket 07)<a class="headerlink" href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" title="Permanent link">&para;</a></h3>
 <p>Ce que l'éditeur règle hors de tout groupe, et que GermanyCW-v6 a dû patcher par un sérialiseur Lua.
 Chaque action vise un dossier de mission (durable) ou un <code>.miz</code>, sauvegardé avant écriture.</p>
@@ -4857,6 +4925,11 @@ Chaque action vise un dossier de mission (durable) ou un <code>.miz</code>, sauv
   briefing. Quand la table de mission porte une référence <code>DictKey_…</code>, le texte va dans
   <code>l10n/DEFAULT/dictionary</code> derrière elle, et la référence reste valide ; <code>write_mission_folder</code>
   réécrit désormais ce dictionnaire, seulement s'il change.</li>
+<li><code>set_weather(target, metar?, temperature?, wind_speed?, wind_direction?, visibility?, cloud_type?,
+  cloud_height?, precipitation?, fog_enabled?, clearsky?)</code> — la météo de la mission <strong>de base</strong>, dans
+  les champs que DCS lit (ticket 19 : la mission vierge a ses nuages au sol, <code>Preset1</code> à 0 m). Même
+  vocabulaire et même convertisseur que <code>versions[].weather</code>, donc un METAR marche aussi ; les
+  variantes gardent la main au build.</li>
 </ul>
 <blockquote>
 <p>Les <strong>hashes de mot de passe</strong> (<code>veafSecurity.password_L9[...]</code> / <code>password_MM[...]</code>) — un cas
@@ -4980,14 +5053,19 @@ produit le <code>.miz</code>). Elles orchestrent les primitives des vagues 1-7 (
 <code>insert_group_into_content</code>, l'éditeur <code>mission.yaml</code>). Implémentation : <code>veaf_mission_mcp/composites.py</code>.</p>
 <h3 id="create_combat_zone"><code>create_combat_zone</code><a class="headerlink" href="#create_combat_zone" title="Permanent link">&para;</a></h3>
 <p>Zone de déclenchement + groupes placés dedans (noms auto-préfixés par la zone → capturés au
-runtime, coalition indifférente) + bloc <code>modules.COMBATZONE.combat_zones[]</code> <strong>ajouté</strong> au yaml.</p>
+runtime, coalition indifférente) + bloc <code>modules.COMBATZONE.combat_zones[]</code> <strong>ajouté</strong> au yaml.
+Chaque groupe accepte <code>route</code> et <code>patrol</code>, de la même forme qu'<code>add_group</code> : un convoi qui traverse la
+zone est un groupe de la zone, pas un appel séparé. En catégorie <code>ship</code>, les navires sont espacés de
+600 m (ceux d'un véhicule, 20 m, les faisaient se percuter à l'apparition).</p>
 <h3 id="create_qra"><code>create_qra</code><a class="headerlink" href="#create_qra" title="Permanent link">&para;</a></h3>
 <p>Zone + intercepteurs <strong>Late Activation</strong> (coalition significative) + entrée
 <code>modules.QRA.definitions[]</code> référençant les groupes <strong>par nom exact</strong> (<code>simple_groups</code>). La
 coalition est passée en minuscule pour le placement, majuscule dans la définition YAML.</p>
 <h3 id="create_cap_mission"><code>create_cap_mission</code><a class="headerlink" href="#create_cap_mission" title="Permanent link">&para;</a></h3>
 <p>Groupe template <strong>Late Activation</strong> nommé <code>OnDemand-&lt;nom&gt;</code> + entrée <code>cap_missions[]</code>
-(<code>group_name: &lt;nom&gt;</code>, sans préfixe — le build résout vers le groupe <code>OnDemand-</code>).</p>
+(<code>group_name: &lt;nom&gt;</code>, sans préfixe — le build résout vers le groupe <code>OnDemand-</code>). Le premier point
+porte la tâche <code>EngageTargets</code> (cibles <code>Air</code>) que l'éditeur ajoute de lui-même à une tâche CAP, numérotée
+<strong>avant</strong> l'orbite : sans elle, le vol patrouille et n'engage jamais.</p>
 <h2 id="scaffolding-dun-dossier-de-mission-vague-9">Scaffolding d'un dossier de mission (vague 9)<a class="headerlink" href="#scaffolding-dun-dossier-de-mission-vague-9" title="Permanent link">&para;</a></h2>
 <p>Toutes les actions ci-dessus supposent qu'un dossier de mission <strong>existe déjà</strong>. La vague 9 fournit
 l'amont : créer ce dossier depuis un <strong>dossier vide</strong>, en pilotant les vrais binaires VEAF comme le
@@ -5037,12 +5115,23 @@ réel projeté</strong>, ce socle relie <code>x/y DCS ↔ lat/lon réel</code>.<
 LLM s'oriente sans DCS.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz-ou-dossier&quot;</span><span class="p">}</span>
 </code></pre></div>
+<h3 id="list_airfields"><code>list_airfields</code><a class="headerlink" href="#list_airfields" title="Permanent link">&para;</a></h3>
+<p>Lecture seule. Liste les bases d'un théâtre — nom, id d'aérodrome DCS, lat/lon, et <code>x</code>/<code>y</code> DCS quand
+la projection du théâtre est connue — depuis la donnée livrée avec les outils
+(<code>veaf_libs/data/airdrome-positions.yaml</code>, générée avec <code>airdromes.yaml</code> depuis les dumps runtime par
+<code>veaf-build update-dcs-data --airdromes</code>). Avec <code>mission_path</code>, le théâtre de la mission ; sans
+mission, <code>theatre</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GermanyCW&quot;</span><span class="p">}</span>
+</code></pre></div>
 <h3 id="resolve_coordinates"><code>resolve_coordinates</code><a class="headerlink" href="#resolve_coordinates" title="Permanent link">&para;</a></h3>
 <p>Utilitaire. Convertit une position entre <code>{x, y}</code> (local DCS) et <code>{lat, lon}</code> (degrés décimaux) pour
 le théâtre de la mission (lu depuis la mission — l'appelant ne fournit jamais de paramètres de
 projection).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;lat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">42.18</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lon&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">41.68</span><span class="p">}}</span>
 </code></pre></div>
+<p>Pour convertir plusieurs points en un appel, <code>positions</code> (une liste) à la place de <code>position</code> : la
+réponse est <code>{theatre, points}</code>, dans l'ordre donné, et une position incomplète est nommée par son
+index.</p>
 <h3 id="geocode"><code>geocode</code><a class="headerlink" href="#geocode" title="Permanent link">&para;</a></h3>
 <p>Lecture seule (lot <code>FEAT-GEO-PLACEMENT</code>). Résout un <strong>nom de lieu réel</strong> en coordonnées DCS pour le
 théâtre de la mission — les cartes DCS étant le monde réel projeté. Géocodeur <strong>enfichable</strong> :
@@ -5066,8 +5155,9 @@ process. Renvoie <code>{ok, errors[], warnings[]}</code> (<code>ok = false</code
 <h3 id="build_mission"><code>build_mission</code><a class="headerlink" href="#build_mission" title="Permanent link">&para;</a></h3>
 <p>Écriture. Construit le dossier en <code>.miz</code> jouable en pilotant <strong><code>veaf-tools mission build</code></strong> dans le dossier
 (le binaire installé par <code>scaffold_mission</code>, ou <code>veaf-tools</code> du PATH). L'orchestration du build vit
-dans la commande CLI, on la réexécute telle quelle. Un échec de build est remonté (<code>RuntimeError</code>).</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">}</span>
+dans la commande CLI, on la réexécute telle quelle. Un échec de build est remonté (<code>RuntimeError</code>).
+<code>profile</code> (optionnel) est passé en <code>--profile</code> — <code>LOCAL_TEST</code> pour un build de test local.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCAL_TEST&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h2 id="prochaines-vagues-hors-périmètre">Prochaines vagues (hors périmètre)<a class="headerlink" href="#prochaines-vagues-hors-périmètre" title="Permanent link">&para;</a></h2>
 <ul>
