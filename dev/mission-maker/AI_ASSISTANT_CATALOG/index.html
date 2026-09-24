@@ -4401,7 +4401,9 @@ terrain.</p>
 </ul>
 <blockquote>
 <p>🛟 <strong>Filet de sécurité</strong> : avant <em>chaque</em> modification, l'IA fait une <strong>sauvegarde horodatée</strong>
-du fichier concerné. Rien n'est écrasé sans copie.</p>
+du fichier concerné. Rien n'est écrasé sans copie. Dans un dossier de mission, les copies vont dans
+<code>.veaf-backups/</code> à la racine du dossier — ni dans <code>src/</code>, que le build empaquette, ni dans vos
+commits (le répertoire s'ignore lui-même) — et seules les 20 dernières de chaque fichier sont gardées.</p>
 </blockquote>
 <h2 id="légende-des-fréquences">Légende des fréquences<a class="headerlink" href="#légende-des-fréquences" title="Permanent link">&para;</a></h2>
 <table>
@@ -4780,13 +4782,17 @@ prédéfinis</strong> à l'activation de la zone (SAM, convois…) plutôt que d
 <h3 id="create-qra">Créer une QRA complète<a class="headerlink" href="#create-qra" title="Permanent link">&para;</a></h3>
 <p><em>Recette (dossier) · 🔥</em> — En un appel : la zone protégée, les intercepteurs en <strong>Late
 Activation</strong> (sur la bonne coalition) <strong>et</strong> la définition <code>QRA</code> dans <code>mission.yaml</code> (référençant
-les groupes par nom exact). Tu dis l'avion, l'IA choisit le type et assemble.</p>
+les groupes par nom exact). Tu dis l'avion, l'IA choisit le type et assemble. Les intercepteurs
+sont créés <strong>en vol</strong>, avec le plein et un emport : donne-le, ou demande de le recopier d'un modèle
+<code>veafSpawn-*</code> — un intercepteur désarmé n'intercepte rien.</p>
 <blockquote>
-<p>💬 <em>« Crée une QRA rouge en Mirage 2000 sur la zone Nord. »</em></p>
+<p>💬 <em>« Crée une QRA rouge en Mirage 2000 sur la zone Nord, armée comme le modèle veafSpawn du Mirage. »</em></p>
 </blockquote>
 <h3 id="create-cap">Créer une mission CAP à la demande<a class="headerlink" href="#create-cap" title="Permanent link">&para;</a></h3>
 <p><em>Recette (dossier) · ⭐</em> — En un appel : le groupe template <code>OnDemand-&lt;nom&gt;</code> en <strong>Late
-Activation</strong> <strong>et</strong> l'entrée <code>cap_missions</code> dans <code>mission.yaml</code>.</p>
+Activation</strong> <strong>et</strong> l'entrée <code>cap_missions</code> dans <code>mission.yaml</code>. Le template est créé <strong>en vol</strong> avec
+le plein ; donne-lui un second point et il tient un hippodrome entre les deux — sans, il ne patrouille
+nulle part.</p>
 <blockquote>
 <p>💬 <em>« Crée une CAP à la demande “Escort” avec deux F-15. »</em></p>
 </blockquote>
@@ -4795,9 +4801,11 @@ Activation</strong> <strong>et</strong> l'entrée <code>cap_missions</code> dans
 <p><em>Recette (dossier) · 🔥</em> — Assigne un aérodrome à une coalition (bleu / rouge / neutre). La couleur
 d'une base ne se change <strong>pas</strong> en posant une unité à côté : dis simplement « Mezzeh est bleu » et
 l'IA colore l'aérodrome <strong>durablement</strong> puis <strong>active ses slots dynamiques</strong> (Dynamic Spawn), en
-remplissant son entrepôt avec les avions dynamiques de la coalition au build.</p>
+remplissant son entrepôt avec les avions dynamiques de la coalition au build. Pour une base qui
+ne doit offrir <strong>aucun</strong> slot (une base ennemie, par exemple), dis-le : la couleur change, les slots
+restent fermés.</p>
 <blockquote>
-<p>💬 <em>« Mets la base de Mezzeh en bleu. »</em></p>
+<p>💬 <em>« Mets la base de Mezzeh en bleu. »</em> · <em>« Passe Stendal en rouge, sans slots dynamiques. »</em></p>
 </blockquote>
 <hr />
 <h2 id="-état-de-la-mission">🔥 État de la mission<a class="headerlink" href="#-état-de-la-mission" title="Permanent link">&para;</a></h2>
