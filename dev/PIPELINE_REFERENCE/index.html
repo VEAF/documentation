@@ -4865,7 +4865,7 @@ Aussi accepté : versions.yaml  (racine du dossier mission)
 <span class="nt">position</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span><span class="w">                        </span><span class="c1"># degrés décimaux, -90 à 90</span>
 <span class="w">  </span><span class="nt">longitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.5</span><span class="w">                       </span><span class="c1"># degrés décimaux, -180 à 180</span>
-<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Damascus&quot;</span><span class="w">             </span><span class="c1"># fuseau horaire IANA</span>
+<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Damascus&quot;</span><span class="w">             </span><span class="c1"># fuseau IANA, repli pour un théâtre inconnu (sinon : horloge DCS du théâtre)</span>
 
 <span class="c1"># ── Date de base pour toutes les versions ─────────────────────────────────</span>
 <span class="nt">base_date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-03-15&quot;</span><span class="w">                 </span><span class="c1"># ISO 8601 (AAAA-MM-JJ)</span>
@@ -4934,6 +4934,12 @@ Aussi accepté : versions.yaml  (racine du dossier mission)
 <td>objet</td>
 <td>Non</td>
 <td>Surcharge météo manuelle (utilisée sans <code>metar</code> ni <code>airport_icao</code>)</td>
+</tr>
+<tr>
+<td><code>clearsky</code></td>
+<td>booléen</td>
+<td>Non</td>
+<td>Plafonne la météo à des conditions de vol à vue : nuages au plus FEW, vent sous 15 kt, visibilité de 10 km ou plus, ni pluie ni brouillard. Garde la vraie météo d'un <code>airport_icao</code> tout en restant pilotable à vue. Défaut <code>false</code></td>
 </tr>
 </tbody>
 </table>
@@ -5069,7 +5075,7 @@ nom visiblement mal orthographié vous dit quoi corriger.</p>
 <tr>
 <td><code>wind_direction</code></td>
 <td>nombre</td>
-<td>Direction du vent en degrés (0 = Nord)</td>
+<td>Direction <strong>d'où vient</strong> le vent, en degrés (0 = Nord), comme dans un METAR</td>
 </tr>
 <tr>
 <td><code>visibility</code></td>
@@ -5091,8 +5097,17 @@ nom visiblement mal orthographié vous dit quoi corriger.</p>
 <td>booléen</td>
 <td>Activer l'effet de brouillard</td>
 </tr>
+<tr>
+<td><code>precipitation</code></td>
+<td>booléen</td>
+<td>Pluie : choisit un preset de nuages pluvieux de DCS (<code>RainyPreset…</code>)</td>
+</tr>
 </tbody>
 </table>
+<p>La couverture et la base choisissent un <strong>preset de nuages</strong> DCS, le seul rendu depuis DCS 2.7 : le
+premier preset de cette couverture dont la plage d'altitude contient la base, sinon la base est
+ramenée dans la plage du plus proche (plages lues dans <code>Config/Effects/clouds.lua</code> de DCS). Un METAR
+fournit en plus la pression (<code>Q1018</code>, <code>A2992</code>), la pluie (<code>RA</code>, <code>DZ</code>, <code>TS</code>…) et le brouillard (<code>FG</code>).</p>
 <h3 id="exemple-minimal_4">Exemple minimal<a class="headerlink" href="#exemple-minimal_4" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">42.3</span>

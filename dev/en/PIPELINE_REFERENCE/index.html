@@ -4863,7 +4863,7 @@ Also accepted: versions.yaml  (mission root)
 <span class="nt">position</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span><span class="w">                        </span><span class="c1"># Decimal degrees, -90 to 90</span>
 <span class="w">  </span><span class="nt">longitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.5</span><span class="w">                       </span><span class="c1"># Decimal degrees, -180 to 180</span>
-<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Damascus&quot;</span><span class="w">             </span><span class="c1"># IANA timezone string</span>
+<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Damascus&quot;</span><span class="w">             </span><span class="c1"># IANA zone, fallback for an unknown theatre (else: the theatre&#39;s DCS clock)</span>
 
 <span class="c1"># ── Base date for all versions ─────────────────────────────────────────────</span>
 <span class="nt">base_date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-03-15&quot;</span><span class="w">                 </span><span class="c1"># ISO 8601 (YYYY-MM-DD)</span>
@@ -4932,6 +4932,12 @@ Also accepted: versions.yaml  (mission root)
 <td>object</td>
 <td>No</td>
 <td>Manual weather override (used without <code>metar</code> or <code>airport_icao</code>)</td>
+</tr>
+<tr>
+<td><code>clearsky</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Caps the weather to visual-flight conditions: clouds at most FEW, wind under 15 kt, visibility 10 km or more, no rain, no fog. Keeps an <code>airport_icao</code>'s real weather flyable without instruments. Default <code>false</code></td>
 </tr>
 </tbody>
 </table>
@@ -5071,7 +5077,7 @@ misspelt name tells you what to fix.</p>
 <td><code>wind_direction</code></td>
 <td>number</td>
 <td>—</td>
-<td>Wind direction in degrees (0 = North)</td>
+<td>Direction the wind <strong>comes from</strong>, in degrees (0 = North), as in a METAR</td>
 </tr>
 <tr>
 <td><code>visibility</code></td>
@@ -5097,8 +5103,18 @@ misspelt name tells you what to fix.</p>
 <td><code>false</code></td>
 <td>Enable fog effect</td>
 </tr>
+<tr>
+<td><code>precipitation</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Rain: picks one of DCS's rainy cloud presets (<code>RainyPreset…</code>)</td>
+</tr>
 </tbody>
 </table>
+<p>Coverage and base pick a DCS <strong>cloud preset</strong>, the only thing DCS renders since 2.7: the first preset
+of that coverage whose altitude range holds the base, otherwise the base is moved into the nearest
+one's range (ranges read from DCS's <code>Config/Effects/clouds.lua</code>). A METAR also brings the pressure
+(<code>Q1018</code>, <code>A2992</code>), rain (<code>RA</code>, <code>DZ</code>, <code>TS</code>...) and fog (<code>FG</code>).</p>
 <h3 id="minimal-example_4">Minimal example<a class="headerlink" href="#minimal-example_4" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">42.3</span>
