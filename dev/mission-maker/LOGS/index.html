@@ -1556,6 +1556,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Journal d'un serveur distant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#les-trois-états" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3345,6 +3356,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Journal d'un serveur distant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#les-trois-états" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3559,6 +3581,45 @@ poetry run veaf-logs
 </code></pre></div>
 <p>L'interface graphique demande PySide6, déclaré en dépendance optionnelle
 (<code>--all-extras</code>, ou <code>--extras logs</code>). Le reste de <code>veaf-tools</code> n'en a pas besoin.</p>
+<h2 id="remote">Journal d'un serveur distant<a class="headerlink" href="#remote" title="Permanent link">&para;</a></h2>
+<p><code>Fichier › Ouvrir un journal distant…</code> (Ctrl+Maj+O) suit le <code>dcs.log</code> d'un serveur
+DCS par SSH, avec les mêmes filtres, règles et profils qu'un fichier local. Une
+machine héberge souvent plusieurs instances DCS : on déclare la machine une fois,
+puis un journal par instance, dans <code>~/veafmct.yaml</code> (voir
+<a href="../GUIDE/#global-user-configuration">la configuration globale utilisateur</a>) :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">servers</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">veaf</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcs.veaf.org</span>
+<span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">veaf</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">22</span><span class="w">                  </span><span class="c1"># facultatif</span>
+<span class="w">    </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.ssh/id_ed25519</span><span class="w">    </span><span class="c1"># facultatif : sinon l&#39;agent SSH et les clés par défaut</span>
+<span class="w">    </span><span class="nt">logs</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">private1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">C:/Users/veaf/Saved Games/private1_server/Logs/dcs.log</span>
+<span class="w">      </span><span class="nt">public1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">C:/Users/veaf/Saved Games/public1_server/Logs/dcs.log</span>
+</code></pre></div>
+<p>Le menu propose alors <code>veaf › private1</code>, <code>veaf › public1</code>… Chaque instance ouvre
+un onglet <code>veaf:private1</code>, rouvert au prochain lancement comme un fichier local.</p>
+<p><strong>Authentification par clé uniquement.</strong> L'outil ne demande, ne lit ni ne stocke
+aucun mot de passe. Si la clé de la machine n'est pas encore dans
+<code>~/.ssh/known_hosts</code>, une boîte de dialogue montre son empreinte et propose de
+la mémoriser, comme le ferait <code>ssh</code> la première fois.</p>
+<p>Le journal est recopié en local au fil de l'eau : un <code>stat</code> par seconde, et
+seuls les octets nouveaux transitent. Quand DCS redémarre sur le serveur et
+repart d'un fichier neuf, l'onglet repart avec lui. Une coupure réseau met
+l'onglet en attente ; il reprend là où il en était dès que le serveur répond,
+une nouvelle tentative toutes les cinq secondes. Ouvrir une instance arrêtée
+(pas de <code>dcs.log</code> sur le serveur) affiche un message ; un onglet déjà ouvert,
+lui, reste en attente jusqu'au redémarrage de l'instance. Au lancement, un
+serveur injoignable est signalé dans la barre d'état et ses onglets ne sont pas
+rouverts : rien ne bloque.</p>
+<p>Côté serveur Windows, il faut le service <strong>OpenSSH Server</strong> (fonctionnalité
+facultative de Windows, <code>Paramètres › Applications › Fonctionnalités
+facultatives</code>) : SFTP est inclus et actif par défaut. Piège classique : pour un
+compte <strong>administrateur</strong>, la clé publique va dans
+<code>C:\ProgramData\ssh\administrators_authorized_keys</code>, pas dans
+<code>~\.ssh\authorized_keys</code>, et le fichier doit n'être lisible que par
+<code>SYSTEM</code> et <code>Administrators</code>.</p>
+<p><code>veaf-tools.exe</code> n'embarque pas cette fonction : elle vit dans <code>veaf-logs</code>.</p>
 <h2 id="les-trois-états">Les trois états<a class="headerlink" href="#les-trois-états" title="Permanent link">&para;</a></h2>
 <p>Chaque niveau, chaque source et chaque famille de bruit se règle d'un clic, en
 faisant défiler trois états :</p>
@@ -3923,6 +3984,14 @@ doivent rester en ASCII. Le nombre de familles de bruit est plafonné à 64.</p>
 <tr>
 <td>Profils</td>
 <td><code>%APPDATA%\veaf-logs\profiles.json</code></td>
+</tr>
+<tr>
+<td>Serveurs distants (<code>servers:</code>)</td>
+<td><code>~\veafmct.yaml</code></td>
+</tr>
+<tr>
+<td>Miroir local d'un journal distant</td>
+<td><code>%TEMP%\veaf-logs-*.log</code>, supprimé à la fermeture de l'onglet</td>
 </tr>
 </tbody>
 </table>
