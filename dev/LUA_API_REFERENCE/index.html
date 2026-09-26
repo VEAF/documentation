@@ -3457,6 +3457,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#veafunitssettlegroupunits-spawnradius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veafUnits.settleGroup(units, spawnRadius)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#veafgetlandheightvec3" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7786,6 +7797,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#veafunitssettlegroupunits-spawnradius" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veafUnits.settleGroup(units, spawnRadius)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#veafgetlandheightvec3" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -11925,6 +11947,37 @@ déplace un point <strong>verticalement</strong>, celle-ci en <strong>cherche</s
 <code>dcs-world-schema</code>. L'appel est gardé et protégé par <code>pcall</code> : si le singleton est absent de
 cette version de DCS ou de cette carte, la recherche passe au palier 2 au lieu d'échouer.</p>
 </blockquote>
+<h5 id="veafunitssettlegroupunits-spawnradius"><code>veafUnits.settleGroup(units, spawnRadius)</code><a class="headerlink" href="#veafunitssettlegroupunits-spawnradius" title="Permanent link">&para;</a></h5>
+<p>Décale <strong>le groupe entier</strong>, d'un seul bloc, jusqu'à une clairière assez grande pour le contenir.
+<code>veaf.findSpawnPoint</code> ne place que le <strong>centre</strong> du groupe ; <code>veafUnits.placeGroup</code> répartit ensuite
+les véhicules autour de ce centre sans regarder le décor, si bien qu'une batterie posée en terrain
+dégagé peut avoir la moitié de ses pièces dans les arbres.</p>
+<p>Tous les véhicules subissent <strong>le même déplacement</strong>, donc les distances entre eux ne changent pas :
+la formation est conservée. Un décalage véhicule par véhicule ne peut pas marcher — l'espacement
+naturel d'une batterie est de 20 à 27 m alors que le point libre le plus proche que DCS sache
+proposer est à 52 m.</p>
+<p><strong>Paramètres :</strong></p>
+<ul>
+<li><code>units</code> — la liste des unités, telle que <code>veafUnits.placeGroup</code> l'a renseignée</li>
+<li><code>honourDeclaredPosition</code> — à <code>true</code>, l'appelant déclare <strong>maîtriser lui-même le placement</strong> et rien
+  ne bouge. Même contrat que <code>VeafGroupSpawn:honouringDeclaredPosition()</code>, et explicite pour la même
+  raison : un rayon nul est la valeur par <strong>défaut</strong> du code, pas une intention. Mesuré le 2026-09-25
+  sur GermanyCW-v6, 100 des 118 commandes de spawn d'un lancement passent <code>radius 0</code> — c'est-à-dire
+  toutes les batteries que ce lot doit décaler.</li>
+</ul>
+<p><strong>Retourne :</strong> la distance dont le groupe a été déplacé, <code>0</code> s'il n'a pas bougé.</p>
+<p><strong>Ne déplace jamais :</strong> un groupe contenant une unité aérienne, navale ou un statique naval ; un
+convoi ; un appelant qui a posé <code>honourDeclaredPosition</code> ; une mission ayant mis
+<code>veaf.doNotAvoidScenery</code> à <code>true</code> ; et le contenu de l'éditeur de mission, qui passe par
+<code>VeafGroupSpawn:honouringDeclaredPosition()</code> et ne vient jamais ici.</p>
+<p><strong>Réglages :</strong></p>
+<ul>
+<li><code>veafUnits.SETTLE_MAX_TRANSLATION</code> (défaut 1000) — distance de déplacement acceptable, en mètres.
+  Au-delà, le groupe reste où il est. Ce n'est <strong>pas</strong> le rayon demandé à DCS : celui-là n'est pas
+  respecté (50 m demandés, 52 à 171 m obtenus, mesuré le 2026-09-25).</li>
+<li><code>veafUnits.SETTLE_MARGIN</code> (défaut 50) — marge demandée autour de l'emprise du groupe, et distance
+  en deçà de laquelle on considère que le groupe est déjà dans la clairière trouvée.</li>
+</ul>
 <h5 id="veafgetlandheightvec3"><code>veaf.getLandHeight(vec3)</code><a class="headerlink" href="#veafgetlandheightvec3" title="Permanent link">&para;</a></h5>
 <p>Obtient la hauteur du terrain aux coordonnées.</p>
 <p><strong>Paramètres :</strong></p>
