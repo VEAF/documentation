@@ -1868,6 +1868,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ctld-airbase-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Airfields become logistic zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ctlds-language" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4253,6 +4264,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ctld-airbase-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Airfields become logistic zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ctlds-language" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5343,6 +5365,28 @@ not. That is exactly what this setting fixes.</p>
 <p>CTLD 2 merges nothing. A plain setting you omit falls back to the engine default (and says so when the mission starts), but a <strong>list</strong> you omit — a crate section, a troop group, a zone — is genuinely removed. That is how you take one out. Always start from the existing file rather than writing one from scratch.</p>
 </div>
 <p>When you upgrade CTLD and your file was written against an earlier version, <code>ctld-tools</code> lists what appeared, what disappeared and what differs from the default before you save it again.</p>
+<h4 id="ctld-airbase-logistics">Airfields become logistic zones<a class="headerlink" href="#ctld-airbase-logistics" title="Permanent link">&para;</a></h4>
+<p>Until now a transport aircraft landed on a captured airfield read <em>"No logistics in range"</em>: CTLD 2 only recognises loading points whose unit type is declared in <code>logisticUnitTypes</code> (the FARPs and carriers of the previous section) and the <code>LGZ_</code> zones placed in the editor. An airfield — a map <code>Airbase</code>, not a unit — is neither. VEAF closes the gap: at start-up it registers <strong>every airfield on the map</strong> as a CTLD logistic zone, then keeps it up to date as the game unfolds.</p>
+<p>It is a setting, not a given:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">manage_airbase_logistics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># default</span>
+<span class="w">    </span><span class="c1"># airbase_logistics_radius: 250    # zone radius, in metres</span>
+<span class="w">    </span><span class="c1"># airbase_occupation_radius: 2000  # radius probed for ground occupation, in metres</span>
+<span class="w">    </span><span class="c1"># airbase_logistics_tick: 30       # re-evaluation period, in seconds</span>
+</code></pre></div>
+<p>Set <code>manage_airbase_logistics</code> to <code>false</code> and no airfield is registered: nothing is declared, no tick is scheduled, no circle is drawn, and the log says the feature was <strong>explicitly switched off</strong> — not that no airfields were found. The three numbers are yours to change without touching Lua; their defaults are commented above.</p>
+<p><strong>Two classes of airfield.</strong> An airfield held by a coalition at the first evaluation (<strong>class A</strong>) opens its zone straight away and keeps it as long as the coalition does not change. An airfield that is <strong>neutral</strong> at start, or that switches from one coalition to the other during the game (<strong>class B</strong>), opens its logistics only after <strong>two minutes</strong> of continuous, unopposed ground occupation. Re-evaluation runs every <strong>30 seconds</strong> (the tick). The two minutes are measured on the mission clock, from the first tick that sees your troops there, whatever interval you choose. A tick that finds nobody, or finds both sides, resets the clock to zero.</p>
+<div class="admonition warning">
+<p class="admonition-title">Occupation counts <strong>ground</strong> units</p>
+<p>The occupation probe only looks at ground units within <code>airbase_occupation_radius</code> (2,000 m by default) of the airfield. A transport that lands on a captured field <strong>does not open it</strong>: an aircraft on the ground is not a ground unit. You need troops or vehicles on the ground, yours, with no enemy opposite, for two minutes.</p>
+</div>
+<p>Transitions are announced in game in the mission's language (<code>transport.airbase_logistics_gained</code> / <code>transport.airbase_logistics_lost</code>), but not symmetrically. When a held field is captured, <strong>the side losing it is told at once</strong>; the taker hears nothing at that moment — the zone stays <strong>dark</strong> for them until the two minutes of ground occupation actually open it, and only then do they receive the "gained" message. Announcing "you can load now" at capture would be a lie the very next activation contradicts. A <strong>translucent green</strong> circle is drawn on the F10 map around every airfield whose logistics is active, visible to the coalition holding it.</p>
+<div class="admonition note">
+<p class="admonition-title">The accepted 250 m gap</p>
+<p>There is only <strong>one</strong> zone of <code>airbase_logistics_radius</code> (250 m by default) per airfield, centred on the parking stand nearest the terrain's centroid. On a widely spread airfield, an aircraft parked more than 250 m from that point reads <em>"No logistics in range"</em> even though the field is active. This is an accepted compromise (2026-09-27): the radius is the setting to raise if your theatre has large dispersed aprons.</p>
+</div>
 <h4 id="ctlds-language">CTLD's language<a class="headerlink" href="#ctlds-language" title="Permanent link">&para;</a></h4>
 <p>CTLD speaks your mission's language: VEAF aligns it on <code>mission.language</code> at start-up, so a French mission gets a French CTLD menu with nothing to configure.</p>
 <p>Two cases where that is not what happens:</p>

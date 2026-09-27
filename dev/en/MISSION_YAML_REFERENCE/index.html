@@ -3106,10 +3106,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#modulesctld-a-boolean-nothing-else" class="md-nav__link">
+  <a href="#modulesctld-a-switch-a-few-veaf-keys-no-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        modules.CTLD: a boolean, nothing else
+        modules.CTLD: a switch, a few VEAF keys, no settings:
       
     </span>
   </a>
@@ -3742,10 +3742,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#modulesctld-a-boolean-nothing-else" class="md-nav__link">
+  <a href="#modulesctld-a-switch-a-few-veaf-keys-no-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        modules.CTLD: a boolean, nothing else
+        modules.CTLD: a switch, a few VEAF keys, no settings:
       
     </span>
   </a>
@@ -4497,14 +4497,25 @@ generated <code>mission-script.lua</code>, under "Settings NOT migrated".</p>
 </tbody>
 </table>
 <p>VEAF generates the <code>csar.xxx = value</code> assignments and the <code>csar.initialize()</code> call in <code>veaf-config.lua</code>. On <code>convert-v5</code>, these settings are extracted automatically from <code>missionConfig.lua</code>. For complex settings such as <code>aircraftType</code> (a per-aircraft table), continue using the Lua callback pattern in <code>mission-script.lua</code>.</p>
-<h4 id="modulesctld-a-boolean-nothing-else"><code>modules.CTLD</code>: a boolean, nothing else<a class="headerlink" href="#modulesctld-a-boolean-nothing-else" title="Permanent link">&para;</a></h4>
-<p>CTLD 2 is configured <strong>outside <code>mission.yaml</code></strong>, in a <code>ctld-config.yaml</code> file sitting next to it and edited with <code>ctld-tools.exe</code>. A <code>settings:</code> block under <code>CTLD</code> is <strong>rejected by <code>validate</code></strong>: it was no longer read, and letting it pass in silence is exactly the defect this change removes. Exactly one key is read here besides the switch: <code>manage_logistics</code> (boolean, default <code>true</code>). With it on, the build <strong>adds</strong> the carriers and FARP ammo dumps VEAF has always recognised to the <code>logisticUnitTypes</code> / <code>troopZoneShipTypes</code> lists in your <code>ctld-config.yaml</code> — it adds, it does not replace.</p>
+<h4 id="modulesctld-a-switch-a-few-veaf-keys-no-settings"><code>modules.CTLD</code>: a switch, a few VEAF keys, no <code>settings:</code><a class="headerlink" href="#modulesctld-a-switch-a-few-veaf-keys-no-settings" title="Permanent link">&para;</a></h4>
+<p>CTLD 2 is configured <strong>outside <code>mission.yaml</code></strong>, in a <code>ctld-config.yaml</code> file sitting next to it and edited with <code>ctld-tools.exe</code>. A <code>settings:</code> block under <code>CTLD</code> is <strong>rejected by <code>validate</code></strong>: it was no longer read, and letting it pass in silence is exactly the defect this change removes. Besides the switch, <code>mission.yaml</code> only carries keys read by <strong>VEAF at runtime</strong>, never by the CTLD engine:</p>
+<ul>
+<li><code>manage_logistics</code> (boolean, default <code>true</code>) — with it on, the build <strong>adds</strong> the carriers and FARP ammo dumps VEAF has always recognised to the <code>logisticUnitTypes</code> / <code>troopZoneShipTypes</code> lists in your <code>ctld-config.yaml</code>; it adds, it does not replace.</li>
+<li><code>manage_airbase_logistics</code> (boolean, default <code>true</code>) — VEAF registers <strong>every airfield on the map</strong> as a CTLD logistic zone and keeps it up to date (two classes, two minutes of ground occupation for a neutral or captured field). At <code>false</code>, nothing is registered and the log says the feature was explicitly switched off.</li>
+<li><code>airbase_logistics_radius</code> (number greater than 0, default <code>250</code>) — radius, in metres, of the logistic zone and of the green circle drawn around each airfield.</li>
+<li><code>airbase_occupation_radius</code> (number greater than 0, default <code>2000</code>) — radius, in metres, probed around the airfield for ground occupation.</li>
+<li><code>airbase_logistics_tick</code> (number greater than 0, default <code>30</code>) — re-evaluation period, in seconds.</li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">CTLD</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">manage_logistics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">manage_airbase_logistics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># default</span>
+<span class="w">    </span><span class="c1"># airbase_logistics_radius: 250</span>
+<span class="w">    </span><span class="c1"># airbase_occupation_radius: 2000</span>
+<span class="w">    </span><span class="c1"># airbase_logistics_tick: 30</span>
 </code></pre></div>
-<p>See <a href="../mission-maker/GUIDE/#ctld-and-csar-integration">CTLD and CSAR Integration</a> — including <a href="../mission-maker/GUIDE/#getting-ctld-tools">where to get <code>ctld-tools</code></a>, which does not ship with VEAF MCT, and <a href="../mission-maker/GUIDE/#ctld-manage-logistics">FARPs placed in the editor</a>.</p>
+<p>See <a href="../mission-maker/GUIDE/#ctld-and-csar-integration">CTLD and CSAR Integration</a> — including <a href="../mission-maker/GUIDE/#getting-ctld-tools">where to get <code>ctld-tools</code></a>, which does not ship with VEAF MCT, <a href="../mission-maker/GUIDE/#ctld-manage-logistics">FARPs placed in the editor</a>, and <a href="../mission-maker/GUIDE/#ctld-airbase-logistics">airfields become logistic zones</a>.</p>
 <blockquote>
 <p><strong>Sounds.</strong> CTLD and CSAR play sounds by filename at runtime (<code>beacon.ogg</code>, <code>beaconsilent.ogg</code>, <code>CSAR.ogg</code>). When CTLD or CSAR is enabled, the build automatically injects the required sounds it ships (<code>src/scripts/community/sounds/</code>) into the mission's <code>l10n/DEFAULT/</code>, without overwriting any sound your mission already provides. A required sound shipped by neither the tools nor your mission is reported with a build warning — add it to <code>src/mission/l10n/DEFAULT/</code> (e.g. <code>radiobeep.ogg</code>, the JTAC fallback beep, is not redistributed).</p>
 <p>The build then <strong>declares</strong> every sound the mission carries in <code>mapResource</code>, through a "Declare mission sounds" trigger that plays it to a country no coalition uses — so nothing is audible. Without that declaration the DCS Mission Editor treats these files as orphans (it cannot know a script plays them by name) and <strong>deletes them the moment you save the mission in the editor</strong>, with no message at all.</p>
