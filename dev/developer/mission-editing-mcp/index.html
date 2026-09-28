@@ -2919,6 +2919,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#groupe-aéronaval-slots-sur-le-pont-sons-fix-open-training-prompt-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Groupe aéronaval, slots sur le pont, sons (FIX-OPEN-TRAINING-PROMPT-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3973,6 +3984,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#groupe-aéronaval-slots-sur-le-pont-sons-fix-open-training-prompt-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Groupe aéronaval, slots sur le pont, sons (FIX-OPEN-TRAINING-PROMPT-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4364,6 +4386,16 @@ chaque action reçoit le chemin du <code>.miz</code> à éditer en paramètre. L
 embarque le serveur dans le binaire <code>veaf-tools</code> déjà livré (pas de binaire séparé à builder) — c'est
 elle que le plugin Claude déclare dans son <code>.mcp.json</code>.</p>
 <h2 id="catalogue-dactions-v1">Catalogue d'actions (v1)<a class="headerlink" href="#catalogue-dactions-v1" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">La mission se nomme <code>mission_path</code>, partout (FIX-OPEN-TRAINING-PROMPT-FINDINGS, ticket 05)</p>
+<p>42 des 47 actions prenaient la mission sous cinq noms : <code>miz_path</code> (17), <code>target</code> (9),
+<code>folder_path</code> (6), <code>mission_path</code> (4) et <code>mission_yaml_path</code> (6). Le catalogue publie désormais
+<strong><code>mission_path</code></strong> (un dossier de mission ou un <code>.miz</code>) pour toutes, et le traduit vers la clé que
+le gestionnaire lit : les trois anciens noms restent acceptés comme alias, les exemples ci-dessous
+qui les emploient restent valides. <code>mission_yaml_path</code> est gardé, puisqu'il désigne un autre fichier ;
+un <code>mission_path</code> donné à sa place (un dossier) est lu comme <code>&lt;dossier&gt;/mission.yaml</code>. Un test du
+catalogue échoue si une nouvelle action introduit un sixième nom.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title"><code>miz_path</code> accepte aussi un <strong>dossier</strong> de mission (lot FIX-MCP-AUTHORING-GAPS, ticket 03)</p>
 <p>Toutes les actions d'édition — <code>edit_route</code>, <code>set_group_properties</code>, <code>set_unit_properties</code>,
@@ -4948,6 +4980,26 @@ déclarer ouvrirait toutes ses bases).</p>
   d'entrepôt <code>warehouses.warehouses[&lt;unitId&gt;]</code> qui permet de s'y ravitailler. <code>add_group</code> en <code>static</code>
   ne posait que l'objet (ticket 19). Forme mesurée sur les 372 héliports des missions de
   <code>D:\dev\_VEAF</code>. Le <code>farps:</code> de <code>warehouses.yaml</code> l'approvisionne ensuite au build, comme une base.</li>
+</ul>
+<h3 id="groupe-aéronaval-slots-sur-le-pont-sons-fix-open-training-prompt-findings">Groupe aéronaval, slots sur le pont, sons (FIX-OPEN-TRAINING-PROMPT-FINDINGS)<a class="headerlink" href="#groupe-aéronaval-slots-sur-le-pont-sons-fix-open-training-prompt-findings" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>add_carrier_group(mission_path, coalition, country_id, country_name, name, position, heading_deg,
+  speed_kt, carrier_type="Stennis", carrier_name, escorts, tower_mhz, tacan_channel, tacan_callsign,
+  icls_channel, link4_mhz, recovery_tanker, tanker_*, rescue_helicopter)</code> — le porte-avions (et ses
+  escorteurs) en route, sa radio sur l'unité (hertz), <code>ActivateBeacon</code> (TACAN, <code>system</code> 3),
+  <code>ActivateICLS</code>, et sur un pont à brins d'arrêt <code>ActivateLink4</code> + <code>ActivateACLS</code> ; les groupes
+  <code>&lt;unité&gt; S3B-Tanker</code> (tâche <code>Tanker</code> + TACAN Y) et <code>&lt;unité&gt; Pedro</code> que <code>veafCarrierOperations</code>
+  cherche par leur nom ; l'entrée <code>warehouses.warehouses[&lt;unitId&gt;]</code>. Les tâches ATC sont écrites <strong>au
+  premier point de route et dans le <code>tasks</code> du groupe</strong> : sur 218 groupes mesurés, 120 les rangent au
+  groupe, 55 sur la route, 43 aux deux, et <code>veafCarrierOperations</code> ne lit que le groupe ; lequel des
+  deux DCS exécute n'a pas été mesuré.</li>
+<li><code>add_air_group(..., start="deck-cold"|"deck-hot", carrier=&lt;unité navire&gt;)</code> — premier point lié au
+  navire (<code>linkUnit</code> = <code>helipadId</code> = son <code>unitId</code>), places de pont numérotées à la suite ; refusé si
+  l'appareil ne peut pas à la fois décoller de ce pont et y apponter (<code>TakeOffRWCategories</code> /
+  <code>LandRWCategories</code>, capturés dans <code>dcsUnits.yaml</code>).</li>
+<li><code>add_sound(mission_path, sound_path, resource_name)</code> — copie un <code>.ogg</code>/<code>.wav</code> dans <code>l10n/DEFAULT</code> et
+  le déclare dans <code>mapResource</code> sous <code>MCP_Sound_&lt;nom&gt;</code> ; <code>edit_route</code> <code>transmit_message</code> le diffuse
+  (<code>TransmitMessage</code> enveloppé, <code>file</code> = la clé, <code>loop</code>, <code>duration</code>, <code>subtitle</code> écrit au dictionnaire).</li>
 </ul>
 <h3 id="réglages-de-la-mission-fix-scratch-mission-findings-ticket-07">Réglages de la mission (FIX-SCRATCH-MISSION-FINDINGS ticket 07)<a class="headerlink" href="#réglages-de-la-mission-fix-scratch-mission-findings-ticket-07" title="Permanent link">&para;</a></h3>
 <p>Ce que l'éditeur règle hors de tout groupe, et que GermanyCW-v6 a dû patcher par un sérialiseur Lua.

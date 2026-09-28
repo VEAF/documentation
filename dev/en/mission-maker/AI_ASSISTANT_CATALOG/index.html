@@ -1928,6 +1928,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#add-carrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Place a complete carrier group
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2249,6 +2260,17 @@
     <span class="md-ellipsis">
       
         Add a startup script to the mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embed a sound in the mission
       
     </span>
   </a>
@@ -4172,6 +4194,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#add-carrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Place a complete carrier group
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4493,6 +4526,17 @@
     <span class="md-ellipsis">
       
         Add a startup script to the mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embed a sound in the mission
       
     </span>
   </a>
@@ -4904,6 +4948,20 @@ commits (the directory ignores itself) — and only the last 20 of each file are
 <td>Recipe + built</td>
 <td>⭐</td>
 </tr>
+<tr>
+<td>40</td>
+<td><a href="#add-carrier">Place a complete carrier group</a></td>
+<td>🛫 Bases &amp; airfields</td>
+<td>Recipe + built</td>
+<td>◽</td>
+</tr>
+<tr>
+<td>41</td>
+<td><a href="#add-sound">Embed a sound in the mission</a></td>
+<td>Zones &amp; triggers</td>
+<td>Recipe + built</td>
+<td>◽</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -5064,6 +5122,21 @@ not enough: nobody can use it.</p>
 <blockquote>
 <p>💬 <em>"Place a blue FARP at Fulda, on 127.5 MHz."</em></p>
 </blockquote>
+<h3 id="add-carrier">Place a complete carrier group<a class="headerlink" href="#add-carrier" title="Permanent link">&para;</a></h3>
+<p><em>Recipe + built · ◽</em> — A carrier ready for flight operations: the ship (and its escorts) steaming on a
+heading at a speed, its radio, its <strong>TACAN</strong>, its <strong>ICLS</strong>, and on an arrested-landing deck its
+<strong>Link 4</strong> with <strong>ACLS</strong>; the recovery tanker and rescue helicopter the <code>CARRIER</code> module looks for under
+the exact names <code>&lt;carrier&gt; S3B-Tanker</code> and <code>&lt;carrier&gt; Pedro</code>; and the ship's warehouse, which the build
+then stocks. Deck slots are then placed like a <a href="#add-a-flight">flight on the ramp</a>, with a <strong>deck</strong>
+start.</p>
+<blockquote>
+<p>💬 <em>"Place a blue carrier group off Batumi, heading 270, TACAN 74X, ICLS 7."</em>
+💬 <em>"Put four F/A-18C slots on the Stennis deck, cold start."</em></p>
+</blockquote>
+<p>Worth knowing: the build stocks a deck only with the aircraft that can both <strong>take off from and land
+on</strong> that ship, by DCS's own data — an F-14 on the Stennis, not on the Tarawa; a Harrier and the
+helicopters on both. An aircraft list written by hand in <code>warehouses.yaml</code> is still obeyed as written.
+Remember to switch the <code>CARRIER</code> module on.</p>
 <h2 id="-mission-settings">🕰️ Mission settings<a class="headerlink" href="#-mission-settings" title="Permanent link">&para;</a></h2>
 <h3 id="mission-date">Date the mission and set its start time<a class="headerlink" href="#mission-date" title="Permanent link">&para;</a></h3>
 <p><em>Recipe + built · ⭐</em> — The date and the start time, like the editor's time panel. A mission created
@@ -5149,6 +5222,9 @@ invented. The AI writes the right start waypoint pair for you and sets the group
 <p>💬 <em>"Add an A-10C slot on parking 43 at Kobuleti, cold start."</em>
 💬 <em>"Put an F-16 slot airborne at 15,000 ft over the zone."</em></p>
 </blockquote>
+<p>As in the editor, the slot gets a <strong>callsign</strong> (Enfield, Springfield… ; a number for an Eastern
+country), an <strong>onboard number</strong> no other aircraft of the mission carries, and the <strong>countermeasures</strong>
+(chaff and flare) the editor gives that type — an airborne slot cannot rearm.</p>
 <p>One thing to know: a slot is <strong>Client</strong> skill (playable in single-player too) and is <strong>never</strong> a
 dynamic-spawn template — that setting, left on, is exactly what makes a slot sit in the file but not
 appear in the slot list.</p>
@@ -5157,7 +5233,10 @@ appear in the slot list.</p>
 airfield you <strong>name</strong> — it picks the free stands itself, so you never need their numbers. It takes the
 stands nearest the runway, skips the ones already taken, and <strong>refuses</strong> if a requested stand is
 occupied (telling you which group holds it) or the airfield has no real aircraft stand. Start cold or
-hot on the ramp, from the runway, or airborne.</p>
+hot on the ramp, from the runway, airborne, or <strong>on the deck</strong> of a carrier (<a href="#add-carrier">carrier
+group</a>) — an aircraft that cannot use that deck is refused. Each aircraft gets its
+countermeasures, a callsign (Texaco for a tanker, Overlord for an AWACS) and an onboard number unique in
+the mission.</p>
 <blockquote>
 <p>💬 <em>"Put a two-ship of F-16s on the ramp at Kobuleti."</em>
 💬 <em>"Add four Su-25s at Batumi parking, engines hot."</em>
@@ -5169,7 +5248,7 @@ for <strong>player slots</strong>. The airfield must have been <strong>captured<
 tells you rather than guessing.</p>
 <h3 id="change-a-unit">Change an existing aircraft or vehicle<a class="headerlink" href="#change-a-unit" title="Permanent link">&para;</a></h3>
 <p><em>Built mission · ⭐</em> — Change what is <strong>already</strong> in the mission, unit by unit: its <strong>loadout</strong>
-(pylon by pylon), its <strong>AI level</strong>, its <strong>livery</strong>, its <strong>heading</strong>, its <strong>callsign</strong> and its
+(pylon by pylon), its <strong>countermeasures</strong> (chaff and flare), its <strong>AI level</strong>, its <strong>livery</strong>, its <strong>heading</strong>, its <strong>callsign</strong> and its
 <strong>onboard number</strong>, its <strong>name</strong>, its <strong>position</strong>. You give the heading in degrees, the AI converts it. Only the settings you ask
 for change, and the AI tells you what was there before.</p>
 <blockquote>
@@ -5220,14 +5299,17 @@ save the mission.</p>
 or type — and above all give it a <strong>task</strong>: orbit, attack a group, bomb a point, engage the targets in
 a zone, land, set a frequency, or loop the route back on itself. For a <strong>support flight</strong>: refuel others
 (<code>tanker</code>), act as AWACS, turn on a <strong>TACAN</strong> (channel, X/Y mode, callsign), enable the datalink (EPLRS),
-carry unlimited fuel, or <strong>escort</strong> another group named by its name.</p>
+carry unlimited fuel, or <strong>escort</strong> another group named by its name. For a <strong>radio beacon</strong>: a unit
+that <strong>plays a sound</strong> in a loop on its frequency, which a helicopter homes on with its direction
+finder (<a href="#add-sound">embed the sound</a> first, and set the frequency just before).</p>
 <blockquote>
 <p>💬 <em>"Add a waypoint after the third, at 20,000 feet."</em>
 💬 <em>"Have this tanker orbit a race-track at 20,000 feet, 300 knots."</em>
 💬 <em>"Put an attack task on that group at waypoint 3."</em>
 💬 <em>"Loop the patrol from the last waypoint back to the second."</em>
 💬 <em>"Make Texaco a tanker, TACAN 30Y callsign TXO, unlimited fuel."</em>
-💬 <em>"Have the two F-15s escort Texaco."</em></p>
+💬 <em>"Have the two F-15s escort Texaco."</em>
+💬 <em>"Make this truck a beacon on 31 MHz FM playing beacon.ogg in a loop."</em></p>
 </blockquote>
 <p>Three things worth knowing:</p>
 <ul>
@@ -5327,6 +5409,13 @@ a <code>.lua</code> file embedded / loaded from disk).</p>
 <blockquote>
 <p>💬 <em>"Run this bit of Lua at mission start."</em>
 💬 <em>"Embed and load this .lua script at launch."</em></p>
+</blockquote>
+<h3 id="add-sound">Embed a sound in the mission<a class="headerlink" href="#add-sound" title="Permanent link">&para;</a></h3>
+<p><em>Recipe + built · ◽</em> — Copies a sound (<code>.ogg</code> or <code>.wav</code>) into the mission and declares it, as the editor
+does when you pick a file. It is what a unit needs before it can <a href="#change-a-route">play it</a> — the radio
+beacon of a helicopter zone, a distress signal. Embedding the same file twice reuses the first.</p>
+<blockquote>
+<p>💬 <em>"Embed beacon.ogg and sos.ogg in the mission."</em></p>
 </blockquote>
 <hr />
 <h2 id="-advanced-edits">🔧 Advanced edits<a class="headerlink" href="#-advanced-edits" title="Permanent link">&para;</a></h2>
