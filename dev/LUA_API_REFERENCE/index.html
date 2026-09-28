@@ -3457,10 +3457,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#veafunitssettlegroupunits-spawnradius" class="md-nav__link">
+  <a href="#veafunitssettlegroupunits-honourdeclaredposition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        veafUnits.settleGroup(units, spawnRadius)
+        veafUnits.settleGroup(units, honourDeclaredPosition)
       
     </span>
   </a>
@@ -7797,10 +7797,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#veafunitssettlegroupunits-spawnradius" class="md-nav__link">
+  <a href="#veafunitssettlegroupunits-honourdeclaredposition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        veafUnits.settleGroup(units, spawnRadius)
+        veafUnits.settleGroup(units, honourDeclaredPosition)
       
     </span>
   </a>
@@ -11947,7 +11947,7 @@ déplace un point <strong>verticalement</strong>, celle-ci en <strong>cherche</s
 <code>dcs-world-schema</code>. L'appel est gardé et protégé par <code>pcall</code> : si le singleton est absent de
 cette version de DCS ou de cette carte, la recherche passe au palier 2 au lieu d'échouer.</p>
 </blockquote>
-<h5 id="veafunitssettlegroupunits-spawnradius"><code>veafUnits.settleGroup(units, spawnRadius)</code><a class="headerlink" href="#veafunitssettlegroupunits-spawnradius" title="Permanent link">&para;</a></h5>
+<h5 id="veafunitssettlegroupunits-honourdeclaredposition"><code>veafUnits.settleGroup(units, honourDeclaredPosition)</code><a class="headerlink" href="#veafunitssettlegroupunits-honourdeclaredposition" title="Permanent link">&para;</a></h5>
 <p>Décale <strong>le groupe entier</strong>, d'un seul bloc, jusqu'à une clairière assez grande pour le contenir.
 <code>veaf.findSpawnPoint</code> ne place que le <strong>centre</strong> du groupe ; <code>veafUnits.placeGroup</code> répartit ensuite
 les véhicules autour de ce centre sans regarder le décor, si bien qu'une batterie posée en terrain
@@ -11956,6 +11956,12 @@ dégagé peut avoir la moitié de ses pièces dans les arbres.</p>
 la formation est conservée. Un décalage véhicule par véhicule ne peut pas marcher — l'espacement
 naturel d'une batterie est de 20 à 27 m alors que le point libre le plus proche que DCS sache
 proposer est à 52 m.</p>
+<p><strong>Comment il cherche :</strong> il balaie des anneaux de rayon croissant autour du groupe, le plus proche
+d'abord, et garde le premier décalage où chaque véhicule est sur un terrain praticable <strong>et</strong> passe la
+petite sonde de décor (<code>Disposition.getSimpleZones</code> interrogé sur un seul point : 5 m libres dans un
+rayon de 20 m). Il ne demande jamais à <code>Disposition</code> de proposer une clairière : cette requête-là
+n'est pas déterministe et ne renvoie rien là où un groupe a le plus besoin de bouger (mesuré le
+2026-09-26).</p>
 <p><strong>Paramètres :</strong></p>
 <ul>
 <li><code>units</code> — la liste des unités, telle que <code>veafUnits.placeGroup</code> l'a renseignée</li>
@@ -11972,11 +11978,13 @@ convoi ; un appelant qui a posé <code>honourDeclaredPosition</code> ; une missi
 <code>VeafGroupSpawn:honouringDeclaredPosition()</code> et ne vient jamais ici.</p>
 <p><strong>Réglages :</strong></p>
 <ul>
-<li><code>veafUnits.SETTLE_MAX_TRANSLATION</code> (défaut 1000) — distance de déplacement acceptable, en mètres.
-  Au-delà, le groupe reste où il est. Ce n'est <strong>pas</strong> le rayon demandé à DCS : celui-là n'est pas
-  respecté (50 m demandés, 52 à 171 m obtenus, mesuré le 2026-09-25).</li>
-<li><code>veafUnits.SETTLE_MARGIN</code> (défaut 50) — marge demandée autour de l'emprise du groupe, et distance
-  en deçà de laquelle on considère que le groupe est déjà dans la clairière trouvée.</li>
+<li><code>veafUnits.SETTLE_MAX_TRANSLATION</code> (défaut 300) — distance de déplacement acceptable, en mètres,
+  et rayon jusqu'où le balayage cherche. Au-delà, le groupe reste où il est.</li>
+<li><code>veafUnits.SETTLE_SWEEP_STEP</code> (défaut 20) — écart entre deux anneaux du balayage, et entre deux
+  décalages sur un même anneau, en mètres.</li>
+<li><code>veafUnits.SETTLE_SWEEP_PROBE_BUDGET</code> (défaut 1000) — nombre maximal de sondes par groupe. Tout se
+  passe dans la frame du spawn : c'est l'à-coup qu'un groupe sans issue coûte à chaque activation
+  (une sonde ≈ 0,38 ms, mesuré le 2026-09-26).</li>
 </ul>
 <h5 id="veafgetlandheightvec3"><code>veaf.getLandHeight(vec3)</code><a class="headerlink" href="#veafgetlandheightvec3" title="Permanent link">&para;</a></h5>
 <p>Obtient la hauteur du terrain aux coordonnées.</p>
