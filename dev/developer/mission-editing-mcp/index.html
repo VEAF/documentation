@@ -3030,6 +3030,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#offer_clear_ground_check-lot-feat-clear-ground-at-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        offer_clear_ground_check (lot FEAT-CLEAR-GROUND-AT-AUTHORING)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_naming_conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4073,6 +4084,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#offer_clear_ground_check-lot-feat-clear-ground-at-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        offer_clear_ground_check (lot FEAT-CLEAR-GROUND-AT-AUTHORING)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_naming_conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4696,6 +4718,21 @@ nom conforme aux conventions VEAF lui-même (<code>veaf_mission_mcp.group_naming
 </ul>
 <p><code>add_group</code> renvoie aussi un champ <code>warnings</code> (voir <code>validate_group_name</code> ci-dessous) : il <strong>écrit
 quand même</strong>, mais signale toute collision de convention pour que l'appelant la relaie.</p>
+<p><strong>Terrain dégagé (lot FEAT-CLEAR-GROUND-AT-AUTHORING).</strong> Quand c'est l'outil qui choisit la position,
+un groupe de véhicules <strong>immobile</strong> (sans <code>route</code>) est posé sur un terrain mesuré dégagé des arbres et
+des bâtiments, à 1 km au plus de la position demandée, en translatant le groupe d'un bloc. La mesure
+vient du <strong>catalogue de terrain dégagé</strong> du théâtre, balayé une fois dans DCS avec
+<code>veaf-tools dcs clear-ground-sweep</code> (le Caucase est livré ; sinon, celui balayé sur le poste). La place
+nécessaire est l'étendue des unités écrites ; pour un <strong>marqueur</strong> <code>#command</code>, c'est le pire cas du
+groupe que le runtime dessinera (calculé depuis <code>veaf-units.yaml</code>, rayon d'apparition compris : environ
+214 m pour <code>-sa10</code>). Un <code>warnings</code> dit toujours ce qui s'est passé : déplacé de N m, rien d'assez grand
+dans le rayon cherché, zone non couverte par le catalogue (avec la commande pour la balayer), ou groupe
+dont la taille n'est connue qu'à l'apparition (<code>-armor</code>, <code>-infantry</code>…), laissé au runtime. Le groupe
+n'est <strong>jamais refusé</strong> : faute de mieux, il reste où il était demandé.</p>
+<ul>
+<li><code>keep_position: true</code> — la position est celle que <strong>l'utilisateur</strong> a donnée : le groupe n'est
+  jamais déplacé. Même paramètre sur les groupes de <code>create_combat_zone</code>.</li>
+</ul>
 <h3 id="add_player_slot-lot-fix-scratch-mission-playable"><code>add_player_slot</code> (lot FIX-SCRATCH-MISSION-PLAYABLE)<a class="headerlink" href="#add_player_slot-lot-fix-scratch-mission-playable" title="Permanent link">&para;</a></h3>
 <p>Écriture. Crée une <strong>place joueur</strong> — un groupe avion jouable — que <code>add_group</code> (terrestre) ne sait
 pas produire et sans laquelle une mission bâtie de zéro n'est pas jouable. Sauvegarde horodatée avant
@@ -5033,6 +5070,15 @@ entrée : <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</co
 <code>kind</code> optionnel. Le fichier est la seule source : <code>docs/agents/dcs-runtime-traps.md</code> en est
 généré.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dcs&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="offer_clear_ground_check-lot-feat-clear-ground-at-authoring"><code>offer_clear_ground_check</code> (lot FEAT-CLEAR-GROUND-AT-AUTHORING)<a class="headerlink" href="#offer_clear_ground_check-lot-feat-clear-ground-at-authoring" title="Permanent link">&para;</a></h3>
+<p>Lecture seule, et <strong>ne lance rien</strong>. Sur un <code>.miz</code> construit, renvoie de quoi <strong>proposer</strong> à
+l'utilisateur une vérification en jeu : la commande <code>veaf-tools dcs clear-ground-check</code> à lancer (elle
+demande DCS), ce qu'elle fera, le nombre de véhicules et de marqueurs, et le critère de comptage. La
+vérification sonde la position de chaque véhicule sur la mission d'arpentage <strong>vide</strong> : aucun véhicule
+n'y existe, donc aucun n'est compté comme bloqué par ses voisins — le piège qui a faussé trois chiffres
+publiés. Elle compare ensuite chaque réponse à ce que le catalogue avait prédit.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="describe_naming_conventions"><code>describe_naming_conventions</code><a class="headerlink" href="#describe_naming_conventions" title="Permanent link">&para;</a></h3>
 <p>Lecture seule. Les <strong>8 motifs de nommage réservés</strong> (appartenance combat zone, préfixes

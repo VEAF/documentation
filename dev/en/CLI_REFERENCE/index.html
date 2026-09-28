@@ -3372,6 +3372,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#clear-ground-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-ground-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3884,6 +3906,28 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs inject-bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-ground-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-ground-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-check
       
     </span>
   </a>
@@ -5515,6 +5559,242 @@ veaf-tools<span class="w"> </span>content<span class="w"> </span>pull-aircraft-g
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools inject-bridge</code></em></p>
 <p><strong>See also</strong> : <a href="../developer/dcs-data/">developer/dcs-data.md</a></p>
+<h3 id="clear-ground-sweep"><code>veaf-tools dcs clear-ground-sweep</code><a class="headerlink" href="#clear-ground-sweep" title="Permanent link">&para;</a></h3>
+<p>Sweep a theatre for clear ground, step by step, and write its catalogue. The command:</p>
+<ol>
+<li>writes an <strong>empty</strong> survey mission into your DCS <code>Missions</code> folder. It must stay empty: the DCS
+   probe counts vehicles as obstacles, so a unit standing on the map would be taken for forest;</li>
+<li>makes sure <code>dcs-serve</code> runs: the small local server the mission's dcs-bridge script connects to, and the
+   sweep goes through. When none answers, the command starts one itself (found next to <code>veaf-tools.exe</code>,
+   on <code>PATH</code>, or through <code>--dcs-serve</code>), in a folder of its own, with a generated access key and listening
+   on this computer only, and stops it at the end;</li>
+<li>tells you what to do: allow mission scripts to talk to the outside once (<code>MissionScripting.lua</code>), open
+   and start the mission, take the spectator slot;</li>
+<li>waits for you to press Enter, then for the mission to answer;</li>
+<li>probes the ground around the airfields (and, on request, the combat zones of a mission or given
+   points), showing progress. An interrupted sweep resumes where it stopped;</li>
+<li>writes the catalogue and says DCS can be closed.</li>
+</ol>
+<p>The 21 Caucasus airfields take about 4 minutes, one combat zone about ten seconds. DCS freezes for
+about 1.5 s at each batch, which does not matter on a mission nobody is flying.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>yes</td>
+<td>DCS theatre name, as a mission spells it.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--zones-from</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Also sweep around the <code>combatZone...</code> trigger zones of this .miz.</td>
+</tr>
+<tr>
+<td><code>--around</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Also sweep around this point, as <code>x,y</code> mission coordinates (repeatable).</td>
+</tr>
+<tr>
+<td><code>--airfields</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Sweep around every airfield of the theatre.</td>
+</tr>
+<tr>
+<td><code>--out</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/clear-ground/&lt;theatre&gt;.clear-ground.json</code></td>
+<td>The catalogue to write.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;theatre&gt;.miz</code></td>
+<td>Where to write the survey mission.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Local dcs-bridge.lua to embed (default: download).</td>
+</tr>
+<tr>
+<td><code>--state-dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/clear-ground/sweep-&lt;theatre&gt;</code></td>
+<td>Where the sweep keeps its progress.</td>
+</tr>
+<tr>
+<td><code>--restart</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Throw away the progress of a different plan instead of refusing.</td>
+</tr>
+<tr>
+<td><code>--batch</code></td>
+<td><code>int</code></td>
+<td><code>10000</code></td>
+<td>Cells probed per call to DCS.</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>How many seconds to wait for the survey mission to answer.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>dcs-serve superuser Bearer token (default: read from dcs-serve.yaml). (environment variable <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Path to a dcs-serve.yaml / dcs-client.yaml to read the key from.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>dcs-serve base URL.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The dcs-serve executable to start when none is running (default: next to veaf-tools, or on PATH).</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, displays detailed debugging information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>clear-ground-sweep<span class="w"> </span>Caucasus<span class="w"> </span>--zones-from<span class="w"> </span>MyMission.miz
+</code></pre></div>
+<p><em>Flat alias : <code>veaf-tools clear-ground-sweep</code></em></p>
+<h3 id="clear-ground-check"><code>veaf-tools dcs clear-ground-check</code><a class="headerlink" href="#clear-ground-check" title="Permanent link">&para;</a></h3>
+<p>Check in DCS whether the ground vehicles of a built mission stand in trees or buildings, <strong>without
+spawning them</strong>. Their positions are read from the <code>.miz</code>, then probed on the empty survey mission: no
+vehicle exists there, so none is counted as blocked by its neighbours — which is what happens as soon as
+a battery that has already spawned is probed. Each answer is compared with what the clear-ground
+catalogue predicted, and a disagreement is reported as a question about the catalogue. Combat-zone
+markers (<code>#command</code>) are not checked: their group is drawn at runtime, which moves it off scenery
+itself. Same flow as <code>clear-ground-sweep</code>: <code>dcs-serve</code>, survey mission, instructions, waiting.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MISSION</code></td>
+<td><code>str</code></td>
+<td>yes</td>
+<td>The .miz to check. It is read, never loaded in DCS.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;theatre&gt;.miz</code></td>
+<td>Where to write the survey mission.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Local dcs-bridge.lua to embed (default: download).</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>How many seconds to wait for the survey mission to answer.</td>
+</tr>
+<tr>
+<td><code>--report</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Also write the report as JSON to this file.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>dcs-serve superuser Bearer token (default: read from dcs-serve.yaml). (environment variable <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Path to a dcs-serve.yaml / dcs-client.yaml to read the key from.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>dcs-serve base URL.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The dcs-serve executable to start when none is running.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, displays detailed debugging information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>clear-ground-check<span class="w"> </span>build<span class="se">\M</span>yMission.miz
+</code></pre></div>
+<p><em>Flat alias : <code>veaf-tools clear-ground-check</code></em></p>
 <h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
 <p>Assert VEAF runtime behaviour inside a running DCS, over the dcs-fiddle hook.</p>
 <table>

@@ -3030,6 +3030,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#offer_clear_ground_check-feat-clear-ground-at-authoring-lot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        offer_clear_ground_check (FEAT-CLEAR-GROUND-AT-AUTHORING lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_naming_conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4073,6 +4084,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#offer_clear_ground_check-feat-clear-ground-at-authoring-lot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        offer_clear_ground_check (FEAT-CLEAR-GROUND-AT-AUTHORING lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_naming_conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4680,6 +4702,21 @@ convention-correct name itself (<code>veaf_mission_mcp.group_naming.resolve_grou
 </ul>
 <p><code>add_group</code> also returns a <code>warnings</code> field (see <code>validate_group_name</code>): it <strong>still writes</strong>, but
 flags any convention collision for the caller to relay.</p>
+<p><strong>Clear ground (FEAT-CLEAR-GROUND-AT-AUTHORING lot).</strong> When the tool chooses the position, a
+<strong>stationary</strong> vehicle group (no <code>route</code>) is put on ground measured clear of trees and buildings, at
+most 1 km from the asked position, translating the group as one body. The measurement comes from the
+theatre's <strong>clear-ground catalogue</strong>, swept once in DCS with <code>veaf-tools dcs clear-ground-sweep</code>
+(Caucasus ships; otherwise the one swept on this workstation). The room needed is the extent of the
+units written; for a <code>#command</code> <strong>marker</strong>, it is the worst case of the group the runtime will draw
+(computed from <code>veaf-units.yaml</code>, spawn radius included: about 214 m for <code>-sa10</code>). A <code>warnings</code> entry
+always says what happened: moved by N m, nothing large enough within reach, a place the catalogue
+does not cover (with the command that sweeps it), or a group whose size is only known when it spawns
+(<code>-armor</code>, <code>-infantry</code>…), left to the runtime. The group is <strong>never refused</strong>: failing better, it stays
+where it was asked to go.</p>
+<ul>
+<li><code>keep_position: true</code> — the position is the one <strong>the user</strong> gave: the group is never moved. Same
+  parameter on the groups of <code>create_combat_zone</code>.</li>
+</ul>
 <h3 id="add_player_slot-fix-scratch-mission-playable-lot"><code>add_player_slot</code> (FIX-SCRATCH-MISSION-PLAYABLE lot)<a class="headerlink" href="#add_player_slot-fix-scratch-mission-playable-lot" title="Permanent link">&para;</a></h3>
 <p>Write. Creates a <strong>player slot</strong> — a flyable aircraft group — which <code>add_group</code> (ground) cannot, and
 without which a from-scratch mission is not flyable at all. Timestamped backup before writing. Targets
@@ -5009,6 +5046,15 @@ always returned, with the date they were measured). Each entry: <code>id</code>,
 <code>symptom</code>, <code>workaround</code>, optionally <code>cost</code>. Optional <code>kind</code> filter. The file is the one source:
 <code>docs/agents/dcs-runtime-traps.md</code> is generated from it.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dcs&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="offer_clear_ground_check-feat-clear-ground-at-authoring-lot"><code>offer_clear_ground_check</code> (FEAT-CLEAR-GROUND-AT-AUTHORING lot)<a class="headerlink" href="#offer_clear_ground_check-feat-clear-ground-at-authoring-lot" title="Permanent link">&para;</a></h3>
+<p>Read-only, and it <strong>launches nothing</strong>. On a built <code>.miz</code>, returns what it takes to <strong>offer</strong> the user
+an in-game check: the <code>veaf-tools dcs clear-ground-check</code> command to run (it needs DCS), what it will
+do, the number of vehicles and markers, and the counting criterion. The check probes each vehicle's
+position on the <strong>empty</strong> survey mission: no vehicle exists there, so none is counted as blocked by its
+neighbours — the trap that made three published figures wrong. It then compares each answer with what
+the catalogue predicted.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;miz_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.miz&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="describe_naming_conventions"><code>describe_naming_conventions</code><a class="headerlink" href="#describe_naming_conventions" title="Permanent link">&para;</a></h3>
 <p>Read-only. The <strong>8 reserved naming patterns</strong> (combat-zone membership, <code>veafSpawn-</code>/<code>OnDemand-</code>

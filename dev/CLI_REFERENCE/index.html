@@ -3372,6 +3372,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#clear-ground-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-ground-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3884,6 +3906,28 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs inject-bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-ground-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-ground-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs clear-ground-check
       
     </span>
   </a>
@@ -5517,6 +5561,244 @@ veaf-tools<span class="w"> </span>content<span class="w"> </span>pull-aircraft-g
 </code></pre></div>
 <p><em>Alias plat : <code>veaf-tools inject-bridge</code></em></p>
 <p><strong>Voir aussi</strong> : <a href="../developer/dcs-data/">developer/dcs-data.md</a></p>
+<h3 id="clear-ground-sweep"><code>veaf-tools dcs clear-ground-sweep</code><a class="headerlink" href="#clear-ground-sweep" title="Permanent link">&para;</a></h3>
+<p>Sonde le terrain dégagé d'un théâtre, pas à pas, et écrit son catalogue. La commande :</p>
+<ol>
+<li>écrit une mission d'arpentage <strong>vide</strong> dans le dossier <code>Missions</code> de votre DCS. Elle doit rester vide :
+   la sonde de DCS compte les véhicules comme des obstacles, et une unité posée sur la carte serait
+   prise pour de la forêt ;</li>
+<li>s'assure que <code>dcs-serve</code> tourne : c'est le petit serveur local auquel le script dcs-bridge de la mission
+   se connecte, et par lequel passe le balayage. S'il ne répond pas, la commande le lance elle-même (trouvé
+   à côté de <code>veaf-tools.exe</code>, dans le <code>PATH</code>, ou via <code>--dcs-serve</code>), dans un dossier à elle, avec une clé
+   d'accès générée et une écoute limitée à cet ordinateur, et l'arrête à la fin ;</li>
+<li>affiche quoi faire : autoriser une fois les scripts de mission à communiquer (<code>MissionScripting.lua</code>),
+   ouvrir et lancer la mission, prendre le slot spectateur ;</li>
+<li>attend que vous appuyiez sur Entrée, puis que la mission réponde ;</li>
+<li>sonde le terrain autour des aérodromes (et, sur demande, des combat zones d'une mission ou de
+   points donnés) en affichant la progression. Un balayage interrompu reprend là où il s'était arrêté ;</li>
+<li>écrit le catalogue et indique que DCS peut être fermé.</li>
+</ol>
+<p>Les 21 aérodromes du Caucase prennent environ 4 minutes, une combat zone une dizaine de secondes. DCS
+gèle environ 1,5 s à chaque lot, sans conséquence sur une mission que personne ne pilote.</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>oui</td>
+<td>Nom du théâtre DCS, tel qu'une mission l'écrit.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--zones-from</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Sonder aussi autour des zones de déclenchement <code>combatZone...</code> de ce .miz.</td>
+</tr>
+<tr>
+<td><code>--around</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Sonder aussi autour de ce point, en coordonnées de mission <code>x,y</code> (répétable).</td>
+</tr>
+<tr>
+<td><code>--airfields</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Sonder autour de chaque aérodrome du théâtre.</td>
+</tr>
+<tr>
+<td><code>--out</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/clear-ground/&lt;théâtre&gt;.clear-ground.json</code></td>
+<td>Le catalogue à écrire.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;théâtre&gt;.miz</code></td>
+<td>Où écrire la mission d'arpentage.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>dcs-bridge.lua local à embarquer (défaut : téléchargement).</td>
+</tr>
+<tr>
+<td><code>--state-dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/clear-ground/sweep-&lt;théâtre&gt;</code></td>
+<td>Où le balayage garde sa progression.</td>
+</tr>
+<tr>
+<td><code>--restart</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Jeter la progression d'un autre plan au lieu de refuser.</td>
+</tr>
+<tr>
+<td><code>--batch</code></td>
+<td><code>int</code></td>
+<td><code>10000</code></td>
+<td>Cellules sondées par appel à DCS.</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>Combien de secondes attendre que la mission d'arpentage réponde.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Jeton Bearer superuser de dcs-serve (par défaut : lu dans dcs-serve.yaml). (variable d'environnement <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Chemin d'un dcs-serve.yaml / dcs-client.yaml où lire la clé.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>URL de base de dcs-serve.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>L'exécutable dcs-serve à lancer quand aucun ne tourne (par défaut : à côté de veaf-tools, ou dans le PATH).</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Si activé, affiche des informations de débogage détaillées.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>clear-ground-sweep<span class="w"> </span>Caucasus<span class="w"> </span>--zones-from<span class="w"> </span>MaMission.miz
+</code></pre></div>
+<p><em>Alias plat : <code>veaf-tools clear-ground-sweep</code></em></p>
+<h3 id="clear-ground-check"><code>veaf-tools dcs clear-ground-check</code><a class="headerlink" href="#clear-ground-check" title="Permanent link">&para;</a></h3>
+<p>Vérifie dans DCS si les véhicules au sol d'une mission construite sont dans les arbres ou les
+bâtiments, <strong>sans les faire apparaître</strong>. Leur position est lue dans le <code>.miz</code>, puis sondée sur la mission
+d'arpentage vide : aucun véhicule n'y existe, donc aucun n'est compté comme bloqué par ses voisins — ce
+qui arrive dès qu'on sonde une batterie déjà apparue. Chaque réponse est comparée à ce que le catalogue
+de terrain dégagé prédisait, et un désaccord est signalé comme une question sur le catalogue. Les
+marqueurs de combat zone (<code>#command</code>) ne sont pas vérifiés : leur groupe est dessiné au runtime, qui le
+déplace lui-même hors du décor. Même déroulé que <code>clear-ground-sweep</code> : <code>dcs-serve</code>, mission d'arpentage,
+consignes, attente.</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MISSION</code></td>
+<td><code>str</code></td>
+<td>oui</td>
+<td>Le .miz à vérifier. Il est lu, jamais chargé dans DCS.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;théâtre&gt;.miz</code></td>
+<td>Où écrire la mission d'arpentage.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>dcs-bridge.lua local à embarquer (défaut : téléchargement).</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>Combien de secondes attendre que la mission d'arpentage réponde.</td>
+</tr>
+<tr>
+<td><code>--report</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Écrire aussi le rapport en JSON dans ce fichier.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Jeton Bearer superuser de dcs-serve (par défaut : lu dans dcs-serve.yaml). (variable d'environnement <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Chemin d'un dcs-serve.yaml / dcs-client.yaml où lire la clé.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>URL de base de dcs-serve.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>L'exécutable dcs-serve à lancer quand aucun ne tourne.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Si activé, affiche des informations de débogage détaillées.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>clear-ground-check<span class="w"> </span>build<span class="se">\M</span>aMission.miz
+</code></pre></div>
+<p><em>Alias plat : <code>veaf-tools clear-ground-check</code></em></p>
 <h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
 <p>Vérifie le comportement runtime VEAF dans un DCS en cours d'exécution, via le hook dcs-fiddle.</p>
 <table>
