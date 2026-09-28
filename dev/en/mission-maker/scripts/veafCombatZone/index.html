@@ -2381,6 +2381,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Following a zone live in the log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4043,6 +4054,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Following a zone live in the log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5175,6 +5197,17 @@ is already <code>0</code>: one setting for both would start scattering statics t
 </code></pre></div>
 <p>Training mode is ideal for BFM / CAS training scenarios where pilots need to know unit positions.</p>
 <hr />
+<h2 id="diagnostics">Following a zone live in the log<a class="headerlink" href="#diagnostics" title="Permanent link">&para;</a></h2>
+<p>When a zone does not behave as expected (the info panel does not show what is on the ground, the
+zone never completes), switch the diagnostics on in <code>mission.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">module_settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">veaf.Diagnostics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Every zone then writes <code>DIAG|</code> lines to <code>dcs.log</code>, at <code>info</code> level whatever the modules' log levels:
+the activation request and who made it, every element spawned (its group, its live units and their
+types) or failed, the exact content of the info panel group by group, every pass of the completion
+watchdog with its decision, and the deactivation. Filter the log on <code>DIAG|</code> to read only that.</p>
+<p>It is verbose: keep it for a session you are watching, then set it back to <code>false</code>.</p>
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../veafCasMission/">veafCasMission</a> — generated CAS zones (no pre-placed groups needed)</li>
