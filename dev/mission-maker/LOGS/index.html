@@ -1700,6 +1700,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#other-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autres journaux d'un serveur
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#gros-journaux" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3500,6 +3511,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#other-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autres journaux d'un serveur
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#gros-journaux" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3567,7 +3589,8 @@
 <p><code>veaf-logs</code> ouvre un journal DCS et n'en montre que ce qui compte. Il connaît les
 scripts VEAF, CTLD, CSAR, AIEN et Skynet, sait reconnaître les erreurs d'Eagle
 Dynamics sans conséquence, et suit le fichier en direct pendant que la mission
-tourne.</p>
+tourne. Il lit aussi les autres journaux d'un serveur : DCSServerBot, Real Weather
+et LotAtc (voir <a href="#other-logs">Autres journaux d'un serveur</a>).</p>
 <h2 id="lancer">Lancer<a class="headerlink" href="#lancer" title="Permanent link">&para;</a></h2>
 <p>Depuis l'exécutable téléchargé avec la release :</p>
 <div class="highlight"><pre><span></span><code>.\veaf-logs.exe
@@ -3843,6 +3866,99 @@ est choisi tout seul.</p>
 ne peut pas être renommé — et c'est ce que DCS fait de son <code>dcs.log</code> à chaque
 lancement. <code>veaf-logs</code> ouvre et referme à chaque lecture : il n'empêche jamais le
 jeu de démarrer.</p>
+<h2 id="other-logs">Autres journaux d'un serveur<a class="headerlink" href="#other-logs" title="Permanent link">&para;</a></h2>
+<p>Un serveur DCS écrit d'autres journaux que <code>dcs.log</code>, chacun avec sa propre forme
+de ligne. <code>veaf-logs</code> reconnaît celles-ci, avec l'heure, le niveau et l'émetteur
+de chaque ligne :</p>
+<table>
+<thead>
+<tr>
+<th>Journal</th>
+<th>Exemple de ligne</th>
+<th>Source affichée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DCSServerBot (<code>logs\dcssb-*.log</code>, journal du chat)</td>
+<td><code>2026-09-29 18:02:44.490 WARNING⇥New update…</code></td>
+<td>DCSSB</td>
+</tr>
+<tr>
+<td>DCSServerBot, performances (<code>perf-*.log</code>)</td>
+<td><code>2026-09-29 18:03:38,541⇥INFO⇥4.80s⇥…</code></td>
+<td>DCSSB</td>
+</tr>
+<tr>
+<td>DCSServerBot, exceptions (<code>async_errors.log</code>)</td>
+<td><code>2026-05-26T00:47:56.023909: Task exception…</code></td>
+<td>DCSSB, en <code>ERROR</code></td>
+</tr>
+<tr>
+<td>Real Weather (<code>realweather.log</code>)</td>
+<td><code>2026-09-29T20:03:44.385+0200⇥WARN⇥…</code></td>
+<td>Real Weather</td>
+</tr>
+<tr>
+<td>LotAtc (<code>LotAtc_server.log</code>)</td>
+<td><code>[2026-09-29 20:05:21 +02:00] [W] [clienthandler] Init</code></td>
+<td>LotAtc</td>
+</tr>
+</tbody>
+</table>
+<p>La forme est reconnue <strong>ligne par ligne</strong>, pas fichier par fichier : DCSServerBot
+recopie la sortie de Real Weather telle quelle dans son propre journal, et ces
+lignes y apparaissent avec la source Real Weather et leur vrai niveau (<code>WARN</code> en
+avertissement, <code>FATAL</code> en alerte).</p>
+<p>Les préfixes des scripts (VEAF, CTLD…) ne sont cherchés que dans les lignes de
+<code>dcs.log</code> : ailleurs, un message qui contient « SRS » ne vient pas du script SRS.</p>
+<p>Cinq familles de bruit sont propres à ces journaux, masquées par les profils
+<strong>Lecture</strong> et <strong>Diagnostic</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Famille</th>
+<th>Ce que c'est</th>
+<th>Part du journal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DCSSB : événements de mission</td>
+<td>chaque événement de mission relayé du serveur au bot, en JSON</td>
+<td>70 %</td>
+</tr>
+<tr>
+<td>DCSSB : interrogations périodiques</td>
+<td>état, charge et images par seconde demandés chaque minute</td>
+<td>3,5 %</td>
+</tr>
+<tr>
+<td>LotAtc : options au démarrage</td>
+<td>la liste des options, recopiée à chaque démarrage</td>
+<td>19 %</td>
+</tr>
+<tr>
+<td>LotAtc : camp des aérodromes</td>
+<td>le camp de chaque aérodrome, à chaque démarrage de mission</td>
+<td>17 %</td>
+</tr>
+<tr>
+<td>LotAtc : connexions des clients</td>
+<td>connexion et déconnexion d'un client, y compris les avertissements <code>Init</code>, <code>Finish</code> et <em>The remote host closed the connection</em> d'une déconnexion normale</td>
+<td>33 %</td>
+</tr>
+</tbody>
+</table>
+<p>Mesuré le 2026-09-29 sur les journaux de dcs.veaf.org : sur 4 090 entrées du
+journal DCSServerBot, il en reste 1 084 une fois le bruit écarté ; sur 8 735 entrées
+LotAtc, 2 669.</p>
+<p>Un fichier dont aucune ligne n'a de forme connue s'affiche ligne à ligne, au niveau
+<code>UNKNOWN</code>. Le panneau des filtres ne liste que les sources et les familles de bruit
+présentes dans le journal ouvert.</p>
+<p>Pour suivre l'un de ces journaux à distance, on le déclare comme un <code>dcs.log</code> dans
+<code>logs:</code> (<a href="#remote">Journal d'un serveur distant</a>), par exemple
+<code>dcssb: C:/Users/veaf/VEAF-DCSServerBot/logs/dcssb-dcs-veaf-org.log</code>.</p>
 <h2 id="gros-journaux">Gros journaux<a class="headerlink" href="#gros-journaux" title="Permanent link">&para;</a></h2>
 <p>Le texte n'est pas chargé en mémoire : seul un index compact l'est, et les lignes
 sont décodées à l'affichage. Sur un journal de serveur de 119 Mo (991 392 lignes) :</p>
@@ -3976,6 +4092,10 @@ sans quitter l'application.</p>
 </code></pre></div>
 <p>Les motifs sont appliqués sur des octets pour que l'indexation reste rapide : ils
 doivent rester en ASCII. Le nombre de familles de bruit est plafonné à 64.</p>
+<p>Une famille propre à un autre journal que <code>dcs.log</code> précise son format avec
+<code>"formats": ["dcssb"]</code> (ou <code>realweather</code>, <code>lotatc</code>) : elle n'est alors cherchée que
+dans les lignes de ce journal. Les préfixes de sources (<code>match</code>) ne s'appliquent,
+eux, qu'aux lignes de <code>dcs.log</code>.</p>
 <h2 id="où-sont-rangés-les-réglages">Où sont rangés les réglages<a class="headerlink" href="#où-sont-rangés-les-réglages" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

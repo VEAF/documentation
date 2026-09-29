@@ -1700,6 +1700,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#other-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other server logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#large-logs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3500,6 +3511,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#other-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other server logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#large-logs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3566,7 +3588,8 @@
 <h1 id="veaf-logs--reading-dcs-logs">veaf-logs — reading DCS logs<a class="headerlink" href="#veaf-logs--reading-dcs-logs" title="Permanent link">&para;</a></h1>
 <p><code>veaf-logs</code> opens a DCS log and shows only what matters. It knows the VEAF, CTLD,
 CSAR, AIEN and Skynet scripts, recognises Eagle Dynamics' harmless errors, and
-follows the file live while the mission runs.</p>
+follows the file live while the mission runs. It also reads a server's other logs:
+DCSServerBot, Real Weather and LotAtc (see <a href="#other-logs">Other server logs</a>).</p>
 <h2 id="running-it">Running it<a class="headerlink" href="#running-it" title="Permanent link">&para;</a></h2>
 <p>From the executable shipped with the release:</p>
 <div class="highlight"><pre><span></span><code>.\veaf-logs.exe
@@ -3826,6 +3849,96 @@ the memory dump, the mission and the dxdiag report: the log is picked for you.</
 <p><strong>The log is never locked.</strong> On Windows a file held open cannot be renamed — and
 that is exactly what DCS does to its <code>dcs.log</code> on every launch. <code>veaf-logs</code> opens
 and closes on each read, so it never keeps the game from starting.</p>
+<h2 id="other-logs">Other server logs<a class="headerlink" href="#other-logs" title="Permanent link">&para;</a></h2>
+<p>A DCS server writes other logs than <code>dcs.log</code>, each with its own line shape.
+<code>veaf-logs</code> recognises these, with the time, level and emitter of every line:</p>
+<table>
+<thead>
+<tr>
+<th>Log</th>
+<th>Sample line</th>
+<th>Source shown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DCSServerBot (<code>logs\dcssb-*.log</code>, chat log)</td>
+<td><code>2026-09-29 18:02:44.490 WARNING⇥New update…</code></td>
+<td>DCSSB</td>
+</tr>
+<tr>
+<td>DCSServerBot, performance (<code>perf-*.log</code>)</td>
+<td><code>2026-09-29 18:03:38,541⇥INFO⇥4.80s⇥…</code></td>
+<td>DCSSB</td>
+</tr>
+<tr>
+<td>DCSServerBot, exceptions (<code>async_errors.log</code>)</td>
+<td><code>2026-05-26T00:47:56.023909: Task exception…</code></td>
+<td>DCSSB, as <code>ERROR</code></td>
+</tr>
+<tr>
+<td>Real Weather (<code>realweather.log</code>)</td>
+<td><code>2026-09-29T20:03:44.385+0200⇥WARN⇥…</code></td>
+<td>Real Weather</td>
+</tr>
+<tr>
+<td>LotAtc (<code>LotAtc_server.log</code>)</td>
+<td><code>[2026-09-29 20:05:21 +02:00] [W] [clienthandler] Init</code></td>
+<td>LotAtc</td>
+</tr>
+</tbody>
+</table>
+<p>The shape is recognised <strong>line by line</strong>, not file by file: DCSServerBot copies
+Real Weather's output verbatim into its own log, and those lines show there with
+the Real Weather source and their real level (<code>WARN</code> as a warning, <code>FATAL</code> as an
+alert).</p>
+<p>Script prefixes (VEAF, CTLD…) are looked for in <code>dcs.log</code> lines only: elsewhere, a
+message containing "SRS" does not come from the SRS script.</p>
+<p>Five noise families belong to these logs, hidden by the <strong>Lecture</strong> and
+<strong>Diagnostic</strong> profiles:</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>What it is</th>
+<th>Share of the log</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DCSSB: mission events</td>
+<td>every mission event relayed from the server to the bot, as JSON</td>
+<td>70 %</td>
+</tr>
+<tr>
+<td>DCSSB: periodic polling</td>
+<td>status, load and frame rate requested every minute</td>
+<td>3.5 %</td>
+</tr>
+<tr>
+<td>LotAtc: startup options</td>
+<td>the option list, copied on every start</td>
+<td>19 %</td>
+</tr>
+<tr>
+<td>LotAtc: airfield sides</td>
+<td>the side of every airfield, on every mission start</td>
+<td>17 %</td>
+</tr>
+<tr>
+<td>LotAtc: client connections</td>
+<td>a client connecting and disconnecting, including the <code>Init</code>, <code>Finish</code> and <em>The remote host closed the connection</em> warnings of a normal disconnection</td>
+<td>33 %</td>
+</tr>
+</tbody>
+</table>
+<p>Measured on 2026-09-29 on the dcs.veaf.org logs: of the DCSServerBot log's 4,090
+entries, 1,084 remain once the noise is set aside; of LotAtc's 8,735, 2,669.</p>
+<p>A file where no line has a known shape reads line by line, at level <code>UNKNOWN</code>. The
+filter panel lists only the sources and noise families present in the open log.</p>
+<p>To follow one of these logs remotely, declare it like a <code>dcs.log</code> under <code>logs:</code>
+(<a href="#remote">A remote server's log</a>), for instance
+<code>dcssb: C:/Users/veaf/VEAF-DCSServerBot/logs/dcssb-dcs-veaf-org.log</code>.</p>
 <h2 id="large-logs">Large logs<a class="headerlink" href="#large-logs" title="Permanent link">&para;</a></h2>
 <p>The text is not held in memory: only a compact index is, and lines are decoded as
 they are displayed. On a 119 MB server log (991,392 lines):</p>
@@ -3958,6 +4071,9 @@ without leaving the application.</p>
 </code></pre></div>
 <p>Patterns are matched against bytes to keep indexing fast, so they must stay
 ASCII. The number of noise families is capped at 64.</p>
+<p>A family that belongs to another log than <code>dcs.log</code> names its format with
+<code>"formats": ["dcssb"]</code> (or <code>realweather</code>, <code>lotatc</code>): it is then looked for in that
+log's lines only. Source prefixes (<code>match</code>) apply to <code>dcs.log</code> lines only.</p>
 <h2 id="where-the-settings-live">Where the settings live<a class="headerlink" href="#where-the-settings-live" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
