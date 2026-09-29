@@ -1452,6 +1452,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-ctld-name-not-in-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTLD : un nom de ctld-config.yaml n'est pas dans la mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#builder-community-sounds-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3333,6 +3344,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-ctld-name-not-in-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTLD : un nom de ctld-config.yaml n'est pas dans la mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#builder-community-sounds-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3527,6 +3549,19 @@ disque <strong>n'est pas touché</strong>. Ce qui change, c'est la copie remise 
 vous liriez une chose dans <code>ctld-tools</code> pendant qu'une autre tourne en jeu.</p>
 <p><strong>Pour l'arrêter.</strong> <code>manage_logistics: false</code> sous <code>modules.CTLD</code> — mais relisez le message
 précédent avant, c'est exactement le chemin qui y mène.</p>
+<h2 id="validate-ctld-name-not-in-mission">CTLD : un nom de ctld-config.yaml n'est pas dans la mission<a class="headerlink" href="#validate-ctld-name-not-in-mission" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>'extract1' dans extractableGroups de ctld-config.yaml n'est pas dans la mission : CTLD l'ignorera
+avec un avertissement « not found » au démarrage. Le retirer (dans ctld-tools), ou le placer dans
+l'éditeur de mission.</p>
+</blockquote>
+<p><strong>D'où ça vient, presque toujours.</strong> Le catalogue de CTLD donne des exemples : <code>extract1</code> …
+<code>extract25</code> et <code>logistic1</code> … <code>logistic10</code>. Aucune mission VEAF ne les contient, et une mission créée
+avant FIX-IN-GAME-TEST-FINDINGS les a gardés : 35 avertissements au démarrage, qui noient les autres.
+Une mission créée depuis part avec les deux listes vides.</p>
+<p><strong>Les issues.</strong> Vider la liste dans <code>ctld-tools</code>, ou n'y laisser que les groupes (<code>extractableGroups</code>)
+et les unités (<code>logisticUnits</code>) que la mission contient vraiment. Écrire <code>[]</code> seul sur sa ligne : le
+lecteur YAML de CTLD lit <code>extractableGroups: []   # note</code> comme le texte <code>"[]   # note"</code>.</p>
 <h2 id="builder-community-sounds-missing">Des fichiers son manquent<a class="headerlink" href="#builder-community-sounds-missing" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Des fichiers son requis par un module communautaire activé ne sont fournis ni par les outils ni

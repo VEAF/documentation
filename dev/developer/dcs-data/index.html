@@ -2747,6 +2747,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les villes des théâtres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cockpit-controls" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3431,6 +3442,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les villes des théâtres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cockpit-controls" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3528,10 +3550,9 @@ veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--units
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--radio
 veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes<span class="w">    </span><span class="c1"># fusionne les dumps runtime committés</span>
 </code></pre></div>
-<p><code>--radio</code>, <code>--airdromes</code>, <code>--airfield-freqs</code> et <code>--cockpit-controls</code> sont exclus du run
-sans flag / <code>--all</code> : radio a des overlays manuels, airdromes fusionne des dumps runtime
-committés, et les deux derniers nécessitent le chemin d'une install DCS locale
-(<code>--dcs-path</code>).</p>
+<p><code>--radio</code>, <code>--airdromes</code>, <code>--airfield-freqs</code>, <code>--cockpit-controls</code> et <code>--cities</code> sont exclus
+du run sans flag / <code>--all</code> : radio a des overlays manuels, airdromes fusionne des dumps
+runtime committés, et les trois derniers lisent une install DCS locale (<code>--dcs-path</code>).</p>
 <p>Le datamine est cloné à un ref <strong>pinné</strong>
 (<code>veaf_build.dcs_data.datamine.DATAMINE_REF</code>), donc la génération est
 reproductible : relancer sur le même ref produit un artefact identique au
@@ -3627,6 +3648,9 @@ matériel ferroviaire (locomotives, wagons), classé <code>vehicle</code> par l'
 <span class="w">  </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Air Defence</span><span class="w">     </span><span class="c1"># catégorie DCS (avions/navires/hélicos dérivés du dossier)</span>
 <span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EWR 1L13</span>
 <span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">EWR</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Air</span><span class="nv"> </span><span class="s">Defence</span><span class="nv"> </span><span class="s">vehicles&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.Command Center</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">static</span>
+<span class="w">  </span><span class="nt">shape_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComCenter</span><span class="w">     </span><span class="c1"># statiques seulement : le `shape_name` que l&#39;éditeur écrit</span>
 <span class="nt">naval_statics</span><span class="p">:</span><span class="w">              </span><span class="c1"># statiques offshore posés sur l&#39;eau (liste curée)</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">offshore WindTurbine</span>
 </code></pre></div>
@@ -3646,6 +3670,11 @@ et une map <code>attribute</code> (Skynet s'appuie sur <code>SAM SR</code> / <co
 <code>naval</code>/<code>air</code>/<code>infantry</code>/<code>vehicle</code>/<code>static</code> attendus par le reste du code. Le
 fichier Lua est <strong>exclu de <code>stylua</code></strong> (<code>.styluaignore</code>) car son formatage est un
 output déterministe du générateur.</p>
+<p><code>shape_name</code> n'est pas rendu dans le Lua : il sert au design time. <code>add_group</code> l'écrit sur
+un statique, et <code>validate</code> signale un statique qui n'en a pas alors que son type en a un.
+DCS résout beaucoup de types sans lui, pas tous : un <code>.Command Center</code> ou un <code>.Ammunition
+depot</code> posé sans <code>shape_name</code> est refusé au chargement (« unknown static shape_name »,
+mesuré le 2026-09-28) et l'objet n'existe pas.</p>
 <h3 id="unités-reportées-et-statiques-navals">Unités reportées et statiques navals<a class="headerlink" href="#unités-reportées-et-statiques-navals" title="Permanent link">&para;</a></h3>
 <p>Deux choses absentes du datamine sont gérées explicitement dans
 <code>veaf_build/dcs_data/units.py</code> :</p>
@@ -3724,6 +3753,26 @@ alias lisibles (ex. <code>Gudauta</code>).</p>
 <div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airfield-freqs<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
 </code></pre></div>
 <p>Elle ne couvre que les théâtres <strong>installés</strong>.</p>
+<h2 id="cities">Les villes des théâtres<a class="headerlink" href="#cities" title="Permanent link">&para;</a></h2>
+<p><code>veafNamedPoints</code> ajoute les villes du théâtre comme points nommés cachés : un nom de ville
+sert alors de destination à un convoi, de position à un raccourci ou de départ à une mission
+de transport, et la météo « au point le plus proche » les connaît. Elles viennent de
+<code>Mods/terrains/&lt;dossier&gt;/Map/towns.lua</code>, rangées sous le nom que le terrain déclare dans son
+<code>entry.lua</code> (<code>self_ID</code>) — celui que porte <code>env.mission.theatre</code>, qui n'est pas le nom du
+dossier (<code>GermanyColdWar</code> → <code>GermanyCW</code>, <code>Sinai</code> → <code>SinaiMap</code>).</p>
+<p>Deux fichiers, sur le modèle de la base des unités : <code>veaf_build/dcs_data/cities.yaml</code>, la
+source, et <code>src/scripts/veaf/veafCities.lua</code>, rendu depuis elle (exclu de <code>stylua</code> ; un test
+échoue s'il dérive du YAML).</p>
+<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--cities<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
+veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--cities<span class="w">    </span><span class="c1"># sans install : ne fait que re-rendre le Lua</span>
+</code></pre></div>
+<p>Aucune install n'a toutes les cartes, donc la commande <strong>fusionne</strong> : un théâtre présent dans
+l'install est remplacé, un théâtre absent est gardé tel quel. On la relance sur chaque install
+qui apporte une carte. Au 2026-09-29, <code>cities.yaml</code> couvre Afghanistan, Caucasus, Falklands,
+GermanyCW, MarianaIslands, MarianaIslandsWWII, Normandy, PersianGulf, SinaiMap, Syria et
+TheChannel ; Falklands vient de l'ancienne table tapée dans <code>veafNamedPoints.lua</code>, aucune
+install accessible n'ayant cette carte. Kola et Iraq n'ont pas encore de liste : une mission
+sur ces cartes le signale au démarrage.</p>
 <h2 id="cockpit-controls">Les index de contrôles de cockpit<a class="headerlink" href="#cockpit-controls" title="Permanent link">&para;</a></h2>
 <p><code>src/python/veaf-tools/veaf_libs/data/cockpit-controls/&lt;type&gt;.yaml</code> décrit, pour un
 appareil, chacun de ses <strong>contrôles cliquables</strong> : l'argument d'animation à lire, le

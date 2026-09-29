@@ -1401,6 +1401,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-static-without-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A static has no shape_name
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3333,6 +3344,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-static-without-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A static has no shape_name
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3507,6 +3529,21 @@ operation chains combat zones through its <code>tasking_orders</code> and <code>
 tasking order.</p>
 <p><strong>What it is not.</strong> Not a missing trigger zone — the object being looked for is a YAML entry, not a
 circle on the map.</p>
+<h2 id="validate-static-without-shape">A static has no <code>shape_name</code><a class="headerlink" href="#validate-static-without-shape" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Static 'CZ_Wunsdorf-HQ' (.Command Center) has no shape_name: DCS may refuse it at mission load
+("unknown static shape_name") and the object will not exist. Write shape_name = "ComCenter" on
+the unit, as the Mission Editor does.</p>
+</blockquote>
+<p><strong>In the editor.</strong> The static is in the mission, but DCS does not know which model to draw. It
+works it out for many types, not all: a command centre or an ammunition depot with no
+<code>shape_name</code> is not created at all. In a combat zone the objective is missing — without a word in
+game, and the zone draws its elements from what is left.</p>
+<p><strong>Where it comes from.</strong> The editor always writes this field; it is missing on a static placed by
+a tool. The MCP actions write it since FIX-IN-GAME-TEST-FINDINGS; this message catches the missions
+built before.</p>
+<p><strong>The ways out.</strong> Add <code>shape_name</code> on the unit with the value given, or place the static again in
+the editor or with <code>add_group</code>.</p>
 <h2 id="more">Going further<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../">Build messages</a> — the other families</li>

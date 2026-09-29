@@ -1452,6 +1452,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-ctld-name-not-in-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTLD: a name in ctld-config.yaml is not in the mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#builder-community-sounds-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3333,6 +3344,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-ctld-name-not-in-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTLD: a name in ctld-config.yaml is not in the mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#builder-community-sounds-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3524,6 +3546,18 @@ ctld-config.yaml is untouched; the copy injected into the mission is what change
 would read one thing in <code>ctld-tools</code> while another ran in game.</p>
 <p><strong>To stop it.</strong> <code>manage_logistics: false</code> under <code>modules.CTLD</code> — but read the previous message
 first, as that is exactly the path leading to it.</p>
+<h2 id="validate-ctld-name-not-in-mission">CTLD: a name in ctld-config.yaml is not in the mission<a class="headerlink" href="#validate-ctld-name-not-in-mission" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>'extract1' in extractableGroups of ctld-config.yaml is not in the mission: CTLD will skip it with
+a « not found » warning at start. Remove it (in ctld-tools), or place it in the Mission Editor.</p>
+</blockquote>
+<p><strong>Where it comes from, almost always.</strong> CTLD's catalogue gives examples: <code>extract1</code> … <code>extract25</code>
+and <code>logistic1</code> … <code>logistic10</code>. No VEAF mission holds them, and a mission created before
+FIX-IN-GAME-TEST-FINDINGS kept them: 35 warnings at start, burying the others. A mission created
+since starts with both lists empty.</p>
+<p><strong>The ways out.</strong> Empty the list in <code>ctld-tools</code>, or keep only the groups (<code>extractableGroups</code>) and
+units (<code>logisticUnits</code>) the mission actually holds. Write <code>[]</code> alone on its line: CTLD's YAML reader
+reads <code>extractableGroups: []   # note</code> as the text <code>"[]   # note"</code>.</p>
 <h2 id="builder-community-sounds-missing">Sound files are missing<a class="headerlink" href="#builder-community-sounds-missing" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Sound file(s) required by an enabled community module are shipped by neither the tools nor the
