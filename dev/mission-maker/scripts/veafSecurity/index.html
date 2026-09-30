@@ -3460,11 +3460,6 @@ par défaut.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>veafSecurity.authDuration</code></td>
-<td><code>10</code></td>
-<td>Minutes pendant lesquelles l'authentification reste valide</td>
-</tr>
-<tr>
 <td><code>veafSecurity.Keyphrase</code></td>
 <td><code>"_auth"</code></td>
 <td>Commande de marqueur pour l'authentification</td>
@@ -3488,15 +3483,16 @@ par défaut.</p>
 </table>
 <hr />
 <h2 id="authentification-du-joueur">Authentification du joueur<a class="headerlink" href="#authentification-du-joueur" title="Permanent link">&para;</a></h2>
-<p>La commande de marqueur <code>_auth</code> porte trois verbes :</p>
-<div class="highlight"><pre><span></span><code>_auth [MOT_DE_PASSE]   -- vérifie le mot de passe donné
-_auth elevate          -- élève le groupe de l&#39;auteur à son propre niveau pendant 2 minutes
-_auth logout           -- reverrouille la mission
+<p>La commande de marqueur <code>_auth</code> n'a plus qu'un verbe qui agit :</p>
+<div class="highlight"><pre><span></span><code>_auth elevate          -- élève le groupe de l&#39;auteur à son propre niveau pendant 2 minutes
 </code></pre></div>
-<p>Un mot de passe accepté n'ouvre <strong>pas de session</strong> : les commandes sécurisées vérifient le mot de
-passe commande par commande (mot-clé <code>password</code>). En tchat, les mêmes verbes existent sous la forme
-<code>/secu login|elevate|logout</code> (voir <a href="../veafServerHook/">veafServerHook</a>) ; l'alias caché <code>-login</code>
-équivaut à <code>_auth</code>.</p>
+<p>En tchat, c'est <code>/secu elevate</code> (voir <a href="../veafServerHook/">veafServerHook</a>) ; l'alias caché <code>-login</code>
+équivaut à <code>_auth</code>. Les commandes sécurisées vérifient le mot de passe commande par commande
+(mot-clé <code>password</code>).</p>
+<p><code>_auth [MOT_DE_PASSE]</code>, <code>_auth logout</code>, <code>/secu login</code> et <code>/secu logout</code> existent encore, mais
+n'ouvrent ni ne ferment plus rien : ils répondent au pilote qu'il n'y a plus de connexion globale et
+lui indiquent <code>/secu elevate</code>. Jusqu'à la version 6.25, <code>/secu login</code> répondait « le système est
+authentifié pour 10 minutes » sans rien déverrouiller.</p>
 <div class="admonition danger">
 <p class="admonition-title">Changement de comportement — l'authentification n'est plus globale</p>
 <p><strong>Avant</strong> : un seul <code>_auth</code> réussi ouvrait toutes les commandes sécurisées à <strong>tous les joueurs
@@ -3513,6 +3509,9 @@ réel des pilotes n'était même plus consulté : le mécanisme grossier désact
   <code>_auth elevate</code> (marqueur) ou <code>/secu elevate</code> (tchat) élève le groupe au niveau <strong>du
   demandeur</strong> pendant 2 minutes — un simple <code>_auth [MOT_DE_PASSE]</code> n'élève rien. C'est ce qui
   résout le cas de l'instructeur volant avec un élève.</li>
+<li>Le <code>+</code> au début du libellé d'une commande F10 signifie « cette commande demande un niveau »,
+  <strong>pas</strong> « vous ne l'avez pas » : il reste affiché que le groupe ait le niveau ou non. Un clic
+  refusé affiche au groupe le niveau demandé et celui auquel il agit.</li>
 <li>Le groupe étant la seule identité, une commande F10 sécurisée (son libellé commence par <code>+</code>)
   apparaît <strong>dans le menu de chaque groupe de pilotes</strong>. Un game master ou un spectateur, qui
   n'a pas de groupe, ne la voit pas — sauf quand la sécurité est désactivée : elle est alors

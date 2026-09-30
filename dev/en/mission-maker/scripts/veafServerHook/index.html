@@ -3350,11 +3350,11 @@ goes into <code>VEAF-specific-server-hook.lua</code>:</p>
 </tr>
 <tr>
 <td style="text-align: right;">1</td>
-<td>relay VEAF commands to the mission (<code>/alias</code>, <code>/atis</code>, <code>/secu elevate</code>… — each module then applies its own check)</td>
+<td>relay VEAF commands to the mission (<code>/alias</code>, <code>/atis</code>, <code>/secu elevate</code>… — each module then applies its own check; <code>/secu login</code> and <code>/secu logout</code> now only answer that there is no global login any more)</td>
 </tr>
 <tr>
 <td style="text-align: right;">10</td>
-<td><code>/secu login</code>, <code>/secu logout</code>, <code>/pause</code>, and <code>/restart</code>, <code>/halt</code> (if <code>enableAutoRestart</code>)</td>
+<td><code>/pause</code>, and <code>/restart</code>, <code>/halt</code> (if <code>enableAutoRestart</code>)</td>
 </tr>
 <tr>
 <td style="text-align: right;">30</td>
@@ -3378,6 +3378,10 @@ goes into <code>VEAF-specific-server-hook.lua</code>:</p>
 <h2 id="update">Update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h2>
 <p>Replace <code>VEAF-Server-hook.lua</code> with the new version, keep the existing
 <code>VEAF-specific-server-hook.lua</code> and <code>veaf-pilots.txt</code>, then <strong>restart the server</strong>.</p>
+<p>After 6.25, the hook sends the pilot's level to the mission <strong>on every slot change</strong>. With an older
+hook, a mission reloaded while a pilot stays connected does not know their level until they type a
+chat command: the radio menu treats them as a level-0 pilot, and the mission log says so
+(<code>took [...] with no known level</code>).</p>
 
 
 

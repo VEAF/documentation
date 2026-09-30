@@ -3351,11 +3351,11 @@ simple. Tout ce qui est propre à un serveur va dans <code>VEAF-specific-server-
 </tr>
 <tr>
 <td style="text-align: right;">1</td>
-<td>relayer des commandes VEAF vers la mission (<code>/alias</code>, <code>/atis</code>, <code>/secu elevate</code>… — chaque module applique ensuite son propre contrôle)</td>
+<td>relayer des commandes VEAF vers la mission (<code>/alias</code>, <code>/atis</code>, <code>/secu elevate</code>… — chaque module applique ensuite son propre contrôle ; <code>/secu login</code> et <code>/secu logout</code> ne font plus que répondre qu'il n'y a plus de connexion globale)</td>
 </tr>
 <tr>
 <td style="text-align: right;">10</td>
-<td><code>/secu login</code>, <code>/secu logout</code>, <code>/pause</code>, et <code>/restart</code>, <code>/halt</code> (si <code>enableAutoRestart</code>)</td>
+<td><code>/pause</code>, et <code>/restart</code>, <code>/halt</code> (si <code>enableAutoRestart</code>)</td>
 </tr>
 <tr>
 <td style="text-align: right;">30</td>
@@ -3380,6 +3380,10 @@ simple. Tout ce qui est propre à un serveur va dans <code>VEAF-specific-server-
 <p>Remplacer <code>VEAF-Server-hook.lua</code> par la nouvelle version, conserver le
 <code>VEAF-specific-server-hook.lua</code> et le <code>veaf-pilots.txt</code> existants, puis <strong>redémarrer le
 serveur</strong>.</p>
+<p>Après 6.25, le hook envoie le niveau du pilote à la mission <strong>à chaque changement de slot</strong>. Avec
+un hook plus ancien, une mission rechargée pendant qu'un pilote reste connecté ne connaît pas son
+niveau tant qu'il n'a tapé aucune commande de tchat : le menu radio le traite comme un pilote de
+niveau 0, et le journal de la mission l'écrit (<code>took [...] with no known level</code>).</p>
 
 
 
