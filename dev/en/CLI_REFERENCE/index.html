@@ -3405,6 +3405,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scenery-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs scenery-objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3950,6 +3961,17 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs clear-ground-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenery-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs scenery-objects
       
     </span>
   </a>
@@ -5878,6 +5900,106 @@ itself. Same flow as <code>clear-ground-sweep</code>: <code>dcs-serve</code>, su
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>clear-ground-check<span class="w"> </span>build<span class="se">\M</span>yMission.miz
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools clear-ground-check</code></em></p>
+<h3 id="scenery-objects"><code>veaf-tools dcs scenery-objects</code><a class="headerlink" href="#scenery-objects" title="Permanent link">&para;</a></h3>
+<p>Lists the <strong>map objects</strong> — bridges, buildings that are part of the map itself — around one or more
+points, with their DCS id, their type and their distance to the point, nearest first. That id is what a
+combat zone's <a href="../mission-maker/scripts/veafCombatZone/#scenery-targets"><code>scenery_targets</code></a> takes: a
+map object is not created by the zone, so the zone can only recognise it by its number, and that number
+exists only inside DCS. Same flow as <code>clear-ground-check</code>: <code>dcs-serve</code>, empty survey mission,
+instructions, waiting. Points are in mission coordinates (<code>x</code> north, <code>y</code> east, metres).</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>yes</td>
+<td>The theatre, as DCS spells it (Caucasus, Syria…).</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--around</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>A point to search around, as <code>x,y</code> or <code>x,y,radius</code> (radius 150 m by default). Repeatable.</td>
+</tr>
+<tr>
+<td><code>--report</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Also write the objects as JSON to this file.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;theatre&gt;.miz</code></td>
+<td>Where to write the survey mission.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Local dcs-bridge.lua to embed (default: download).</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>How many seconds to wait for the survey mission to answer.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>dcs-serve superuser Bearer token (default: read from dcs-serve.yaml). (environment variable <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Path of a dcs-serve.yaml / dcs-client.yaml to read the key from.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>dcs-serve base URL.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The dcs-serve executable to start when none is running.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debugging information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>scenery-objects<span class="w"> </span>Syria<span class="w"> </span>--around<span class="w"> </span>-64230,352140,100
+</code></pre></div>
+<p><em>Flat alias : <code>veaf-tools scenery-objects</code></em></p>
 <h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
 <p>Assert VEAF runtime behaviour inside a running DCS, over the dcs-fiddle hook.</p>
 <table>

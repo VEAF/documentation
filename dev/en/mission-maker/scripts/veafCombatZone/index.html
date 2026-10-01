@@ -2038,6 +2038,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scenery-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Map objects as targets — scenery_targets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#minimal-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3722,6 +3733,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scenery-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Map objects as targets — scenery_targets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#minimal-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4357,6 +4379,13 @@
 <td>No</td>
 <td>Zones whose elements this one borrows: activated with it, transitively. See <a href="#includes">below</a></td>
 </tr>
+<tr>
+<td><code>scenery_targets</code></td>
+<td>integer[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td>Ids of <strong>map objects</strong> (bridges, buildings of the map) that must also be destroyed for the zone to complete. See <a href="#scenery-targets">below</a></td>
+</tr>
 </tbody>
 </table>
 <h3 id="rename-units"><code>rename_units_sequentially</code> — keeping the original unit names<a class="headerlink" href="#rename-units" title="Permanent link">&para;</a></h3>
@@ -4468,8 +4497,37 @@ exists; <code>includes</code> generates exactly those calls, transitive closure 
 <td>No</td>
 <td>Zone names that must complete first</td>
 </tr>
+<tr>
+<td><code>active_at_start</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td>Activates the operation, and so all its zones, at mission start — for a mission nobody launches from the F10 menu</td>
+</tr>
 </tbody>
 </table>
+<p>When its last task is done, the operation tells every player "Operation … is over". Activating it
+activates <strong>all</strong> its zones at once: <code>dependencies</code> orders the tasks, not the units' appearance — an
+objective that must only appear after another is a <a href="#configuration-missionyaml"><code>chained_zones</code></a> of it.</p>
+<h3 id="scenery-targets">Map objects as targets — <code>scenery_targets</code><a class="headerlink" href="#scenery-targets" title="Permanent link">&para;</a></h3>
+<p>A zone completes when the units and statics <strong>it spawned</strong> are destroyed. A bridge or a building that
+is part of the map is spawned by nobody, so the zone does not see it — unless it is listed by id:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">combat_zones</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">zone_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CZ-Bridge&quot;</span>
+<span class="w">    </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Al-Rastan</span><span class="nv"> </span><span class="s">bridge&quot;</span>
+<span class="w">    </span><span class="nt">active_at_start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">scenery_targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">156696667</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># the bridge&#39;s DCS id</span>
+</code></pre></div>
+<p>The zone then completes only once those objects are destroyed <strong>and</strong> its own red units are gone (a
+zone holding nothing but the bridge completes on the bridge alone). Destruction is recorded from the
+start of the mission, so an object destroyed before the zone is activated counts. That is also why
+such a zone <strong>is not replayable</strong>: reactivated, it finds its bridge destroyed and completes at once.
+The zone's F10 report counts the map objects left to destroy, apart from its units; a zone that
+<a href="#includes">includes</a> another waits for that one's objects too.</p>
+<p>The ids exist only inside DCS: <a href="../../../CLI_REFERENCE/#scenery-objects"><code>veaf-tools dcs scenery-objects</code></a>
+lists the objects around a point with their id, type and distance. A value that is not a positive
+integer stops the build — it would be a target that can never be destroyed, and a zone that never
+completes.</p>
 <h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">COMBATZONE</span><span class="p">:</span>

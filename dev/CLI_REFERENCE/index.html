@@ -3405,6 +3405,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scenery-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs scenery-objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3950,6 +3961,17 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs clear-ground-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenery-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs scenery-objects
       
     </span>
   </a>
@@ -5882,6 +5904,108 @@ consignes, attente.</p>
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>clear-ground-check<span class="w"> </span>build<span class="se">\M</span>aMission.miz
 </code></pre></div>
 <p><em>Alias plat : <code>veaf-tools clear-ground-check</code></em></p>
+<h3 id="scenery-objects"><code>veaf-tools dcs scenery-objects</code><a class="headerlink" href="#scenery-objects" title="Permanent link">&para;</a></h3>
+<p>Liste les <strong>objets de la carte</strong> — ponts, bâtiments qui font partie de la carte elle-même — autour d'un
+ou plusieurs points, avec leur identifiant DCS, leur type et leur distance au point, du plus proche au
+plus loin. C'est l'identifiant que prend le
+<a href="../mission-maker/scripts/veafCombatZone/#scenery-targets"><code>scenery_targets</code></a> d'une zone de combat : un
+objet de la carte n'est pas créé par la zone, elle ne peut donc le reconnaître que par son numéro, et ce
+numéro n'existe que dans DCS. Même déroulé que <code>clear-ground-check</code> : <code>dcs-serve</code>, mission d'arpentage
+vide, consignes, attente. Les points sont en coordonnées de mission (<code>x</code> vers le nord, <code>y</code> vers l'est,
+en mètres).</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>oui</td>
+<td>Le théâtre, tel que DCS l'écrit (Caucasus, Syria…).</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--around</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Un point autour duquel chercher, en <code>x,y</code> ou <code>x,y,rayon</code> (rayon 150 m par défaut). Répétable.</td>
+</tr>
+<tr>
+<td><code>--report</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Écrire aussi les objets en JSON dans ce fichier.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;théâtre&gt;.miz</code></td>
+<td>Où écrire la mission d'arpentage.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>dcs-bridge.lua local à embarquer (défaut : téléchargement).</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>Combien de secondes attendre que la mission d'arpentage réponde.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Jeton Bearer superuser de dcs-serve (par défaut : lu dans dcs-serve.yaml). (variable d'environnement <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Chemin d'un dcs-serve.yaml / dcs-client.yaml où lire la clé.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>URL de base de dcs-serve.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>L'exécutable dcs-serve à lancer quand aucun ne tourne.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Si activé, affiche des informations de débogage détaillées.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>scenery-objects<span class="w"> </span>Syria<span class="w"> </span>--around<span class="w"> </span>-64230,352140,100
+</code></pre></div>
+<p><em>Alias plat : <code>veaf-tools scenery-objects</code></em></p>
 <h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
 <p>Vérifie le comportement runtime VEAF dans un DCS en cours d'exécution, via le hook dcs-fiddle.</p>
 <table>
