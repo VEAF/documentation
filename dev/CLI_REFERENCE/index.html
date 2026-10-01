@@ -3416,6 +3416,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#terrain-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs terrain-sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3972,6 +3983,17 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs scenery-objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terrain-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs terrain-sweep
       
     </span>
   </a>
@@ -6006,6 +6028,137 @@ en mètres).</p>
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>scenery-objects<span class="w"> </span>Syria<span class="w"> </span>--around<span class="w"> </span>-64230,352140,100
 </code></pre></div>
 <p><em>Alias plat : <code>veaf-tools scenery-objects</code></em></p>
+<h3 id="terrain-sweep"><code>veaf-tools dcs terrain-sweep</code><a class="headerlink" href="#terrain-sweep" title="Permanent link">&para;</a></h3>
+<p>Relève l'<strong>altitude du sol</strong> de tout un théâtre (<code>land.getHeight</code>, tous les 250 m par défaut) et l'écrit
+dans <code>&lt;VEAF home&gt;/terrain/&lt;théâtre&gt;.terrain</code>. L'action MCP <code>terrain_elevation</code> lit ensuite cette
+grille sans DCS : altitude d'une cible, sol le plus haut le long d'une route, masquage par le relief
+entre une route et un site SAM. Même déroulé que <code>clear-ground-sweep</code> : <code>dcs-serve</code>, mission
+d'arpentage vide, consignes, attente ; un relevé interrompu reprend où il s'est arrêté. L'étendue
+relevée est celle de la carte, demandée à DCS ; s'il ne la donne pas, celle des aérodromes plus 50 km,
+et la commande le dit. <strong>Relief seul</strong> : ni bâtiments, ni pylônes, ni arbres.</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>oui</td>
+<td>Le théâtre, tel que DCS l'écrit (Caucasus, Syria…).</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--spacing</code></td>
+<td><code>float</code></td>
+<td><code>250</code></td>
+<td>Distance entre deux échantillons, en mètres.</td>
+</tr>
+<tr>
+<td><code>--bounds</code></td>
+<td><code>str</code></td>
+<td><em>(celle de la carte)</em></td>
+<td>L'étendue à relever, en <code>min_x,min_y,max_x,max_y</code> (coordonnées de mission).</td>
+</tr>
+<tr>
+<td><code>--measure-at</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Au lieu de relever la carte, relève finement (50 m) un carré de 20 km autour de ce point <code>x,y</code> et dit, pour chaque pas candidat (100, 250, 500, 1000 m), l'erreur en un point et l'écart du maximum d'un carré de 10 km. Répétable.</td>
+</tr>
+<tr>
+<td><code>--out</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/terrain/</code></td>
+<td>La grille (ou, avec <code>--measure-at</code>, le rapport) à écrire.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;théâtre&gt;.miz</code></td>
+<td>Où écrire la mission d'arpentage.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>dcs-bridge.lua local à embarquer (défaut : téléchargement).</td>
+</tr>
+<tr>
+<td><code>--state-dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/terrain/sweep-&lt;théâtre&gt;</code></td>
+<td>Où le relevé garde sa progression.</td>
+</tr>
+<tr>
+<td><code>--restart</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Jeter la progression d'un autre plan au lieu de refuser.</td>
+</tr>
+<tr>
+<td><code>--batch</code></td>
+<td><code>int</code></td>
+<td><code>20000</code></td>
+<td>Altitudes lues par appel à DCS.</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>Combien de secondes attendre que la mission d'arpentage réponde.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Jeton Bearer superuser de dcs-serve (par défaut : lu dans dcs-serve.yaml). (variable d'environnement <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Chemin d'un dcs-serve.yaml / dcs-client.yaml où lire la clé.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>URL de base de dcs-serve.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>L'exécutable dcs-serve à lancer quand aucun ne tourne.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Si activé, affiche des informations de débogage détaillées.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>terrain-sweep<span class="w"> </span>Caucasus
+</code></pre></div>
+<p><em>Alias plat : <code>veaf-tools terrain-sweep</code></em></p>
 <h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
 <p>Vérifie le comportement runtime VEAF dans un DCS en cours d'exécution, via le hook dcs-fiddle.</p>
 <table>

@@ -3063,6 +3063,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#terrain_elevation-lot-feat-terrain-elevation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        terrain_elevation (lot FEAT-TERRAIN-ELEVATION)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_naming_conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4161,6 +4172,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#terrain_elevation-lot-feat-terrain-elevation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        terrain_elevation (lot FEAT-TERRAIN-ELEVATION)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_naming_conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5182,6 +5204,26 @@ those ids exist only inside DCS. The action returns what it takes to <strong>off
 <code>veaf-tools dcs scenery-objects</code> command (it needs DCS), which lists the objects around each point with
 their id, type and distance. Default radius: 150 m.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Syria&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;points&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-64230.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">352140.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;radius&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">}]}</span>
+</code></pre></div>
+<h3 id="terrain_elevation-lot-feat-terrain-elevation"><code>terrain_elevation</code> (lot FEAT-TERRAIN-ELEVATION)<a class="headerlink" href="#terrain_elevation-lot-feat-terrain-elevation" title="Permanent link">&para;</a></h3>
+<p>Read-only, <strong>no DCS</strong>: answers from the theatre's elevation grid, swept once by
+<a href="../../CLI_REFERENCE/#terrain-sweep"><code>veaf-tools dcs terrain-sweep</code></a>. Four questions, combinable in
+one call:</p>
+<ul>
+<li><code>points</code> — the ground height at each point, in metres and feet (a target's altitude);</li>
+<li><code>route</code> — the highest ground of each leg (the floor of a low-level route);</li>
+<li><code>route</code> + <code>observers</code> — how many metres of each leg each radar or SAM sees over the terrain, within
+  its range, 4/3-Earth radar horizon. Every route point then needs its <code>alt</code>: a leg between two <code>RADIO</code>
+  points (above the ground) follows the ground, any other is straight between the two altitudes;</li>
+<li><code>area</code> — the highest ground per 10 km MGRS square (the F10 grid) or 30′ quadrangle.</li>
+</ul>
+<p><strong>Terrain only</strong> — no buildings, pylons or trees — and interpolated between two samples: every answer
+carries the grid spacing and that caveat. A point off the grid is <code>null</code>, never 0. With no grid for the
+theatre, the answer is <code>available: false</code> with the command that sweeps one.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Caucasus&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">&quot;route&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-281000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">647000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;alt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;alt_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RADIO&quot;</span><span class="p">},</span>
+<span class="w">           </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-262000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">690000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;alt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;alt_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RADIO&quot;</span><span class="p">}],</span>
+<span class="w"> </span><span class="nt">&quot;observers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SA-6 Kutaisi&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-284500</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">683500</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;range&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25000</span><span class="p">}]}</span>
 </code></pre></div>
 <h3 id="describe_naming_conventions"><code>describe_naming_conventions</code><a class="headerlink" href="#describe_naming_conventions" title="Permanent link">&para;</a></h3>
 <p>Read-only. The <strong>8 reserved naming patterns</strong> (combat-zone membership, <code>veafSpawn-</code>/<code>OnDemand-</code>

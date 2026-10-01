@@ -3416,6 +3416,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#terrain-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs terrain-sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3972,6 +3983,17 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs scenery-objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terrain-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs terrain-sweep
       
     </span>
   </a>
@@ -6000,6 +6022,137 @@ instructions, waiting. Points are in mission coordinates (<code>x</code> north, 
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>scenery-objects<span class="w"> </span>Syria<span class="w"> </span>--around<span class="w"> </span>-64230,352140,100
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools scenery-objects</code></em></p>
+<h3 id="terrain-sweep"><code>veaf-tools dcs terrain-sweep</code><a class="headerlink" href="#terrain-sweep" title="Permanent link">&para;</a></h3>
+<p>Sweeps the <strong>ground elevation</strong> of a whole theatre (<code>land.getHeight</code>, every 250 m by default) and writes
+it to <code>&lt;VEAF home&gt;/terrain/&lt;theatre&gt;.terrain</code>. The MCP action <code>terrain_elevation</code> then reads that
+grid with no DCS: a target's altitude, the highest ground along a route, terrain masking between a
+route and a SAM site. Same flow as <code>clear-ground-sweep</code>: <code>dcs-serve</code>, empty survey mission,
+instructions, waiting; an interrupted sweep resumes where it stopped. The extent swept is the map's,
+asked to DCS; when it does not give it, the airfields' plus 50 km, and the command says so. <strong>Terrain
+only</strong>: no buildings, pylons or trees.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>yes</td>
+<td>The theatre, as DCS spells it (Caucasus, Syria…).</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--spacing</code></td>
+<td><code>float</code></td>
+<td><code>250</code></td>
+<td>Distance between two samples, in metres.</td>
+</tr>
+<tr>
+<td><code>--bounds</code></td>
+<td><code>str</code></td>
+<td><em>(the map's)</em></td>
+<td>The extent to sweep, as <code>min_x,min_y,max_x,max_y</code> (mission coordinates).</td>
+</tr>
+<tr>
+<td><code>--measure-at</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Instead of sweeping the map, sweep a fine (50 m) 20 km patch around this point <code>x,y</code> and report, for each candidate spacing (100, 250, 500, 1000 m), the error at a point and how far a 10 km square's maximum falls short. Repeatable.</td>
+</tr>
+<tr>
+<td><code>--out</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/terrain/</code></td>
+<td>The grid (or, with <code>--measure-at</code>, the report) to write.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;theatre&gt;.miz</code></td>
+<td>Where to write the survey mission.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Local dcs-bridge.lua to embed (default: download).</td>
+</tr>
+<tr>
+<td><code>--state-dir</code></td>
+<td><code>str</code></td>
+<td><code>&lt;VEAF home&gt;/terrain/sweep-&lt;theatre&gt;</code></td>
+<td>Where the sweep keeps its progress.</td>
+</tr>
+<tr>
+<td><code>--restart</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Throw away the progress of a different plan instead of refusing.</td>
+</tr>
+<tr>
+<td><code>--batch</code></td>
+<td><code>int</code></td>
+<td><code>20000</code></td>
+<td>Heights read per call to DCS.</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>How many seconds to wait for the survey mission to answer.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>dcs-serve superuser Bearer token (default: read from dcs-serve.yaml). (environment variable <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Path to a dcs-serve.yaml / dcs-client.yaml to read the key from.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>dcs-serve base URL.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The dcs-serve executable to start when none runs.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, shows detailed debug information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>terrain-sweep<span class="w"> </span>Caucasus
+</code></pre></div>
+<p><em>Flat alias : <code>veaf-tools terrain-sweep</code></em></p>
 <h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
 <p>Assert VEAF runtime behaviour inside a running DCS, over the dcs-fiddle hook.</p>
 <table>
