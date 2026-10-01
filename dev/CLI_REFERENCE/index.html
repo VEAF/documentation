@@ -3239,6 +3239,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#airfield-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools content airfield-channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#inject-presets" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3773,6 +3784,17 @@
     <span class="md-ellipsis">
       
         veaf-tools content pull-aircraft-groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#airfield-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools content airfield-channels
       
     </span>
   </a>
@@ -4965,6 +4987,67 @@ veaf-tools<span class="w"> </span>content<span class="w"> </span>pull-aircraft-g
 </code></pre></div>
 <p><em>Alias plat : <code>veaf-tools pull-aircraft-groups</code></em></p>
 <p><strong>Voir aussi</strong> : <a href="../mission-maker/concepts/dynamic-slots/#shipped-catalogue">Slots dynamiques</a></p>
+<h3 id="airfield-channels"><code>veaf-tools content airfield-channels</code><a class="headerlink" href="#airfield-channels" title="Permanent link">&para;</a></h3>
+<p>Liste les aérodromes qu'utilise la mission, du plus utile au moins utile, avec les fréquences ATC et le TACAN que DCS leur donne : le camp qui les tient (<code>warehouses</code>), s'ils offrent des slots dynamiques une fois <code>src/warehouses.yaml</code> appliqué, combien de slots sont posés au parking, et le canal qu'ils ont déjà dans la collection <code>bases</code>. Une radio DCS tient une vingtaine de canaux : c'est la liste dans laquelle choisir. Sans <code>--apply</code>, la commande n'écrit rien.</p>
+<p>Avec <code>--apply</code>, elle écrit les aérodromes choisis dans la collection <code>bases</code> de <code>src/presets.yaml</code>, avec les fréquences de DCS. Un aérodrome qui y est déjà garde son alias (les <code>channel_lists</code> le nomment) ; un nouveau prend l'alias <code>Base-&lt;nom DCS&gt;</code>. Une entrée qui ne correspond à aucun aérodrome choisi (un FARP, un navire) est laissée telle quelle et signalée. Rien d'autre ne change : ni les canaux tactiques et de patrouille, ni les <code>channel_lists</code>. La commande signale les canaux écrits qui ne sont encore sur aucune radio. Un aérodrome que DCS ne déclare pas est refusé : <strong>une fréquence d'aérodrome ne se tape jamais à la main</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MISSION_FOLDER</code></td>
+<td><code>str</code></td>
+<td>non</td>
+<td>Dossier de mission (contient <code>src/mission/</code> et <code>src/presets.yaml</code>). Défaut <code>.</code>.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--apply</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Aérodrome (nom DCS ou id) à écrire dans la collection <code>bases</code>, dans l'ordre voulu. Répétable.</td>
+</tr>
+<tr>
+<td><code>--neutral</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Liste aussi les aérodromes qu'aucun camp ne tient.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Si activé, affiche des informations de débogage détaillées.</td>
+</tr>
+<tr>
+<td><code>--pause</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Si activé, le script attend que l'utilisateur appuie sur une touche avant de quitter.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>content<span class="w"> </span>airfield-channels
+.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>content<span class="w"> </span>airfield-channels<span class="w"> </span>--apply<span class="w"> </span><span class="s2">&quot;Batumi&quot;</span><span class="w"> </span>--apply<span class="w"> </span><span class="s2">&quot;Kutaisi&quot;</span><span class="w"> </span>--apply<span class="w"> </span><span class="s2">&quot;Vaziani&quot;</span>
+</code></pre></div>
+<p><em>Alias plat : <code>veaf-tools airfield-channels</code></em></p>
 <h3 id="inject-presets"><code>veaf-tools content inject-presets</code><a class="headerlink" href="#inject-presets" title="Permanent link">&para;</a></h3>
 <p>Injecte des préréglages radio depuis un fichier YAML dans une mission .miz.</p>
 <table>

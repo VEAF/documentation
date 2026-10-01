@@ -3743,16 +3743,44 @@ inconnu survit à la lecture. Un théâtre qui ne renvoie aucun emplacement est 
 <p>Pas gardé par la CI, comme les autres tables dépendantes du runtime. Le mode opératoire côté
 opérateur est dans <a href="../capture-airbases/">Récupérer les aérodromes d'une carte</a>.</p>
 <h2 id="la-table-des-fréquences-daérodrome">La table des fréquences d'aérodrome<a class="headerlink" href="#la-table-des-fréquences-daérodrome" title="Permanent link">&para;</a></h2>
-<p><code>src/python/veaf-tools/veaf_libs/data/airfield-frequencies.yaml</code> associe, <strong>par
-théâtre</strong>, un nom d'aérodrome à ses <strong>fréquences ATC</strong> (<code>uhf</code>, <code>vhf</code>, <code>fm</code>, en MHz).
-Elle sert à <code>convert-v5</code> pour remplacer les fréquences en dur des presets par des
-alias lisibles (ex. <code>Gudauta</code>).</p>
-<p>Comme la table des aérodromes, elle est <strong>dépendante de l'install</strong> (source :
-<code>Mods/terrains/&lt;Théâtre&gt;/Radio.lua</code>, bloc <code>frequency</code> — <code>UHF</code>→<code>uhf</code>, <code>VHF_HI</code>→<code>vhf</code>,
-<code>VHF_LOW</code>→<code>fm</code>, HF ignoré) et <strong>non gardée par la CI</strong> :</p>
-<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airfield-freqs<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/Program Files/Eagle Dynamics/DCS World&quot;</span>
+<p><code>src/python/veaf-tools/veaf_libs/data/airfield-frequencies.yaml</code> donne, <strong>par théâtre et par
+id d'aérodrome DCS</strong> (la clé des <code>warehouses</code> d'une mission), le nom de l'aérodrome
+(<code>Airbase:getName()</code>), ses <strong>fréquences ATC</strong> (<code>uhf</code>, <code>vhf</code>, <code>fm</code>, en MHz) et son TACAN. Elle
+alimente les collections <code>airports-&lt;théâtre&gt;</code> du <code>presets.yaml</code> par défaut, la commande
+<code>content airfield-channels</code> et les actions MCP <code>describe_airfield_channels</code> /
+<code>set_airfield_channels</code>, et <code>convert-v5</code> pour remplacer des fréquences en dur par des alias.</p>
+<p><strong>D'où viennent les fréquences.</strong> L'éditeur de mission
+(<code>MissionEditor/modules/Mission/AirdromeData.lua</code>) demande à DCS les fréquences de chaque radio de
+l'aérodrome (<code>DCS.getATCradiosData</code>), et DCS en rend <strong>plus que le texte de</strong>
+<code>Mods/terrains/&lt;T&gt;/Radio.lua</code> : sur Persian Gulf, le fichier donne à Al Dhafra une seule fréquence,
+126.5 VHF, et DCS en rend quatre, 39.5 / 126.5 / 251.1 / 4.3, celles qu'affiche le panneau de
+l'aérodrome dans l'éditeur ; Bandar-e-Jask n'a aucune fréquence dans le fichier et quatre dans DCS
+(mesuré le 2026-10-01 sur les sept théâtres installés). On ne voit pas, dans l'install, où DCS les
+complète : lire le fichier est donc faux, seul DCS en marche fait foi. La table se construit en deux
+temps.</p>
+<ol>
+<li><strong>Capture</strong>, guidée, une carte après l'autre, par le hook fiddle (environnement GUI,
+   <code>dcs-fiddle-server.lua</code> installé — la commande vérifie sa présence). Pour chaque carte installée
+   et pas encore capturée (ou celles nommées par <code>--theatre</code>), la commande écrit une mission vide
+   dans le dossier <code>Missions\VEAF-capture-frequencies\</code> de DCS, dit quoi faire (l'ouvrir, la lancer,
+   prendre le slot spectateur), <strong>voit seule</strong> la carte arriver dans DCS, capture, puis nomme la
+   suivante ; à la fin, elle dit qu'on peut fermer DCS. Le TACAN est lu au même moment dans le
+   <code>Beacons.lua</code> de l'install (TACAN et VORTAC). Chaque carte est commitée dans
+   <code>veaf_build/dcs_data/airfield_freq_dumps/&lt;Théâtre&gt;.json</code> ; interrompue, la commande reprend là
+   où elle s'était arrêtée.</li>
+</ol>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>run<span class="w"> </span>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airfield-freqs<span class="w"> </span>--capture<span class="w"> </span>--dcs-path<span class="w"> </span><span class="s2">&quot;C:/jeux/DCS World&quot;</span>
 </code></pre></div>
-<p>Elle ne couvre que les théâtres <strong>installés</strong>.</p>
+<ol>
+<li><strong>Génération</strong>, hors DCS et reproductible, depuis les captures commitées : la table, et les
+   collections <code>airports-&lt;théâtre&gt;</code> du <code>presets.yaml</code> par défaut, réécrites <strong>entre leurs deux
+   balises seulement</strong>. Une seconde exécution ne change rien.</li>
+</ol>
+<div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airfield-freqs
+</code></pre></div>
+<p>Un théâtre jamais capturé sur ce poste garde sa capture commitée : la machine qui lance la
+commande ne touche que la carte qu'elle a chargée. Un test recalcule hors ligne la table et les
+collections depuis les captures, et échoue si l'une a été modifiée à la main.</p>
 <h2 id="cities">Les villes des théâtres<a class="headerlink" href="#cities" title="Permanent link">&para;</a></h2>
 <p><code>veafNamedPoints</code> ajoute les villes du théâtre comme points nommés cachés : un nom de ville
 sert alors de destination à un convoi, de position à un raccourci ou de départ à une mission

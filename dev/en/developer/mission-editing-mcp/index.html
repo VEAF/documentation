@@ -3191,6 +3191,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resolve_coordinates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4256,6 +4278,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resolve_coordinates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5195,6 +5239,23 @@ theatre's projection is known — from the data shipped with the tools
 <code>veaf-build update-dcs-data --airdromes</code>). With <code>mission_path</code>, the mission's theatre; without a
 mission, <code>theatre</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GermanyCW&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="describe_airfield_channels"><code>describe_airfield_channels</code><a class="headerlink" href="#describe_airfield_channels" title="Permanent link">&para;</a></h3>
+<p>Read-only. Lists, for a mission <strong>folder</strong>, the airfields it uses — side (from <code>warehouses</code>), dynamic
+slots once <code>src/warehouses.yaml</code> is applied, player slots parked there — with the ATC frequencies and
+TACAN DCS itself gives them (<code>veaf_libs/data/airfield-frequencies.yaml</code>), and the alias each already
+has in the <code>bases</code> collection. Ranked: held with slots, held without, then (<code>include_neutral</code>) neutral.
+It is the proposal to put to the mission author before <code>set_airfield_channels</code>: a DCS radio holds
+about twenty channels. Same code as <code>veaf-tools content airfield-channels</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;include_neutral&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="set_airfield_channels"><code>set_airfield_channels</code><a class="headerlink" href="#set_airfield_channels" title="Permanent link">&para;</a></h3>
+<p>Writes the chosen airfields into the <code>bases</code> channel collection of the folder's <code>src/presets.yaml</code>,
+with DCS's frequencies; refuses an airfield DCS does not declare. An airfield already in <code>bases</code> keeps
+its alias, a new one is aliased <code>Base-&lt;DCS name&gt;</code>, and an entry matching no chosen airfield (a FARP, a ship) is
+left as it is and reported in <code>untouched</code>. Only <code>bases</code> changes; <code>not_on_a_radio</code> lists the written
+channels no <code>channel_lists</code> entry uses yet. Idempotent.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;airfields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Batumi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Kutaisi&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">]}</span>
 </code></pre></div>
 <h3 id="resolve_coordinates"><code>resolve_coordinates</code><a class="headerlink" href="#resolve_coordinates" title="Permanent link">&para;</a></h3>
 <p>Utility. Converts a position between <code>{x, y}</code> (DCS local) and <code>{lat, lon}</code> (decimal degrees) for the

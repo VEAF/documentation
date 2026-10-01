@@ -3191,6 +3191,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resolve_coordinates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4256,6 +4278,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#describe_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_airfield_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_airfield_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resolve_coordinates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5220,6 +5264,25 @@ la projection du théâtre est connue — depuis la donnée livrée avec les out
 <code>veaf-build update-dcs-data --airdromes</code>). Avec <code>mission_path</code>, le théâtre de la mission ; sans
 mission, <code>theatre</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GermanyCW&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="describe_airfield_channels"><code>describe_airfield_channels</code><a class="headerlink" href="#describe_airfield_channels" title="Permanent link">&para;</a></h3>
+<p>Lecture seule. Liste, pour un <strong>dossier</strong> de mission, les aérodromes qu'elle utilise — camp (depuis
+<code>warehouses</code>), slots dynamiques une fois <code>src/warehouses.yaml</code> appliqué, slots posés au parking — avec
+les fréquences ATC et le TACAN que DCS leur donne (<code>veaf_libs/data/airfield-frequencies.yaml</code>), et
+l'alias que chacun a déjà dans la collection <code>bases</code>. Classés : tenus avec slots, tenus sans, puis
+(<code>include_neutral</code>) neutres. C'est la proposition à soumettre à l'auteur de la mission avant
+<code>set_airfield_channels</code> : une radio DCS tient une vingtaine de canaux. Même code que
+<code>veaf-tools content airfield-channels</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;include_neutral&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="set_airfield_channels"><code>set_airfield_channels</code><a class="headerlink" href="#set_airfield_channels" title="Permanent link">&para;</a></h3>
+<p>Écrit les aérodromes choisis dans la collection de canaux <code>bases</code> du <code>src/presets.yaml</code> du dossier,
+avec les fréquences de DCS ; refuse un aérodrome que DCS ne déclare pas. Un aérodrome déjà dans
+<code>bases</code> garde son alias, un nouveau prend l'alias <code>Base-&lt;nom DCS&gt;</code>, et une entrée qui ne correspond à aucun
+aérodrome choisi (un FARP, un navire) est laissée telle quelle et signalée dans <code>untouched</code>. Seule
+<code>bases</code> change ; <code>not_on_a_radio</code> liste les canaux écrits qu'aucune entrée de <code>channel_lists</code>
+n'utilise encore. Idempotent.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;airfields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Batumi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Kutaisi&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">]}</span>
 </code></pre></div>
 <h3 id="resolve_coordinates"><code>resolve_coordinates</code><a class="headerlink" href="#resolve_coordinates" title="Permanent link">&para;</a></h3>
 <p>Utilitaire. Convertit une position entre <code>{x, y}</code> (local DCS) et <code>{lat, lon}</code> (degrés décimaux) pour
