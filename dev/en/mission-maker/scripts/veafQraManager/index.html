@@ -2462,6 +2462,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scrambled-group-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a scrambled group does
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#logistics-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3756,6 +3767,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#scrambled-group-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a scrambled group does
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#logistics-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4459,6 +4481,24 @@ in turn — and add <code>radio_menu_secured: true</code> so that pilot must als
 <span class="w">  </span><span class="p">:</span><span class="nf">start</span><span class="p">()</span>
 </code></pre></div>
 <p>That is all — no trigger conditions, no scheduled functions. VEAF handles detection, scramble, and rearm automatically.</p>
+<h3 id="scrambled-group-task">What a scrambled group does<a class="headerlink" href="#scrambled-group-task" title="Permanent link">&para;</a></h3>
+<p>A group whose <strong>task</strong> (in the editor) is <code>CAP</code> or <code>Intercept</code> gets its job from the script when its route
+does not give it one: if it carries no aircraft engagement task (<code>EngageTargets</code> or <code>EngageTargetsInZone</code>
+with <em>Air</em> targets), it is launched on <strong>zone defense</strong>:</p>
+<ul>
+<li>it appears where you placed it, with the options of its first waypoint (ROE, reaction to threat…);</li>
+<li>it flies to the QRA zone and holds a race-track centred on it, along the axis it arrives from (a 20 NM
+  leg, or the zone's diameter when that is shorter);</li>
+<li>it engages only the aircraft that enter the zone, which it ranks by type and distance.</li>
+</ul>
+<p>A group placed <strong>on a parking spot or the runway</strong> keeps its take-off as you set it, then climbs to
+27,000 ft for its patrol.</p>
+<p>So this is the normal case: place the interceptor with <strong>a single waypoint</strong> and no task, and the script
+does the rest; the build says so for every such group. If you want a flight plan of your own, write it <strong>with</strong> an aircraft engagement task: it is
+then flown as written. A hand-written route without that engagement is replaced, and the build warns you
+about it. A group with any other task (<code>CAS</code>, <code>Ground Attack</code>, <code>Escort</code>…) always flies its route.</p>
+<p>A <code>-cap</code> command listed in <code>simple_groups</code> also defends the QRA zone, not the 60 NM zone it draws around
+its own leg.</p>
 <h3 id="logistics-chain">Logistics chain<a class="headerlink" href="#logistics-chain" title="Permanent link">&para;</a></h3>
 <p>By default a QRA has unlimited aircraft. The logistics system lets you model a finite airfield stock with optional resupply — useful for long persistent missions:</p>
 <table>
