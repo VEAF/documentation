@@ -4951,7 +4951,7 @@ Aussi accepté : versions.yaml  (racine du dossier mission)
 <td><code>clearsky</code></td>
 <td>booléen</td>
 <td>Non</td>
-<td>Plafonne la météo à des conditions de vol à vue : nuages au plus FEW, vent sous 15 kt, visibilité de 10 km ou plus, ni pluie ni brouillard. Garde la vraie météo d'un <code>airport_icao</code> tout en restant pilotable à vue. Défaut <code>false</code></td>
+<td>Plafonne la météo à des conditions de vol à vue : nuages au plus FEW, vent sous 15 kt, visibilité de 10 km ou plus, ni pluie ni brouillard. Garde la vraie météo d'un <code>airport_icao</code> tout en restant pilotable à vue ; le <a href="#briefing-variables"><code>${METAR}</code></a> du briefing décrit le ciel plafonné. Défaut <code>false</code></td>
 </tr>
 </tbody>
 </table>
@@ -4984,8 +4984,12 @@ Météo au départ : ${METAR}
 <td>le METAR réel récupéré pour cette station</td>
 </tr>
 <tr>
+<td><code>metar:</code> ou <code>airport_icao:</code>, avec <code>clearsky: true</code></td>
+<td>un METAR <strong>recomposé depuis la météo plafonnée</strong> que vole la mission, construit comme pour <code>weather:</code> ci-dessous mais en gardant la station du relevé, sa température et son QNH — <code>METAR LTAG 150203Z 35006KT 9999 FEW090 19/// Q1015</code>. Toujours recomposé, même quand les plafonds ne changent rien : un <code>TEMPO TSRA</code> laissé dans le texte publié annoncerait un orage que le ciel n'aura jamais</td>
+</tr>
+<tr>
 <td>seulement <code>weather:</code></td>
-<td>un METAR <strong>composé à partir d'elle</strong> : vent, visibilité, pluie et brouillard, nébulosité et base, température (sans point de rosée : écrit <code>///</code>), QNH de la mission, daté de la date et de l'heure de la variante en UTC, sans station — <code>METAR 150900Z 27010KT 9999 SKC Q1013</code></td>
+<td>un METAR <strong>composé à partir d'elle</strong> : vent, visibilité, pluie et brouillard, nébulosité et base (celle que vole DCS, qui ramène la base dans la plage de son preset de nuages), température (sans point de rosée : écrit <code>///</code>), QNH de la mission, daté de la date et de l'heure de la variante en UTC, sans station — <code>METAR 150900Z 27010KT 9999 SKC Q1013</code>. Avec <code>clearsky: true</code>, ce sont les valeurs plafonnées</td>
 </tr>
 <tr>
 <td>aucune météo</td>
@@ -4993,6 +4997,13 @@ Météo au départ : ${METAR}
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Un METAR publié garde son heure</p>
+<p>Un <code>metar:</code> écrit dans le fichier ou celui récupéré pour un <code>airport_icao</code> est affiché tel que
+publié, groupe horaire compris : un relevé récupéré le 2 à 18 h 20Z se lit <code>021820Z</code> dans une variante
+qui commence à l'aube d'une autre date. Seul un METAR composé ou recomposé (<code>weather:</code>, ou
+<code>clearsky: true</code>) est daté de la date et de l'heure de la variante.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Un <code>${...}</code> inconnu n'est jamais effacé</p>
 <p><code>${METRA}</code> reste écrit <code>${METRA}</code> dans le briefing. C'est délibéré : un briefing est lu par des

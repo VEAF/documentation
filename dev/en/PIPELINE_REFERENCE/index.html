@@ -4948,7 +4948,7 @@ Also accepted: versions.yaml  (mission root)
 <td><code>clearsky</code></td>
 <td>boolean</td>
 <td>No</td>
-<td>Caps the weather to visual-flight conditions: clouds at most FEW, wind under 15 kt, visibility 10 km or more, no rain, no fog. Keeps an <code>airport_icao</code>'s real weather flyable without instruments. Default <code>false</code></td>
+<td>Caps the weather to visual-flight conditions: clouds at most FEW, wind under 15 kt, visibility 10 km or more, no rain, no fog. Keeps an <code>airport_icao</code>'s real weather flyable without instruments; the briefing's <a href="#briefing-variables"><code>${METAR}</code></a> describes the capped sky. Default <code>false</code></td>
 </tr>
 </tbody>
 </table>
@@ -4981,8 +4981,12 @@ time. Substituting during the build is what fixes that.</p>
 <td>the live METAR fetched for that station</td>
 </tr>
 <tr>
+<td><code>metar:</code> or <code>airport_icao:</code>, with <code>clearsky: true</code></td>
+<td>a METAR <strong>recomposed from the capped weather</strong> the mission flies, built the same way as for <code>weather:</code> below but keeping the report's station, its temperature and its QNH — <code>METAR LTAG 150203Z 35006KT 9999 FEW090 19/// Q1015</code>. Always recomposed, even when the caps change nothing: a <code>TEMPO TSRA</code> left in the published text would announce a storm the sky never has</td>
+</tr>
+<tr>
 <td>only <code>weather:</code></td>
-<td>a METAR <strong>composed from it</strong>: wind, visibility, rain and fog, cover and base, temperature (no dew point: written <code>///</code>), the mission's QNH, stamped with the variant's date and time in UTC and no station — <code>METAR 150900Z 27010KT 9999 SKC Q1013</code></td>
+<td>a METAR <strong>composed from it</strong>: wind, visibility, rain and fog, cover and base (the one DCS flies, which moves the base into its cloud preset's range), temperature (no dew point: written <code>///</code>), the mission's QNH, stamped with the variant's date and time in UTC and no station — <code>METAR 150900Z 27010KT 9999 SKC Q1013</code>. With <code>clearsky: true</code>, the values are the capped ones</td>
 </tr>
 <tr>
 <td>no weather at all</td>
@@ -4990,6 +4994,13 @@ time. Substituting during the build is what fixes that.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">A published METAR keeps its own time</p>
+<p>A <code>metar:</code> written in the file or one fetched for an <code>airport_icao</code> is shown as published, time
+group included: a report fetched at 18:20Z on the 2nd reads <code>021820Z</code> in a variant that starts at
+dawn on another date. Only a composed or recomposed METAR (<code>weather:</code>, or <code>clearsky: true</code>) is stamped
+with the variant's date and time.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">An unknown <code>${...}</code> is never blanked</p>
 <p><code>${METRA}</code> stays written as <code>${METRA}</code> in the briefing. Deliberately: a briefing is read by players,
