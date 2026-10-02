@@ -2930,6 +2930,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#syria-open-training-fix-open-training-syria-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syria Open Training (FIX-OPEN-TRAINING-SYRIA-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mission-settings-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3012,6 +3023,17 @@
     <span class="md-ellipsis">
       
         list_unit_types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list_payloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_payloads
       
     </span>
   </a>
@@ -4039,6 +4061,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#syria-open-training-fix-open-training-syria-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syria Open Training (FIX-OPEN-TRAINING-SYRIA-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mission-settings-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4121,6 +4154,17 @@
     <span class="md-ellipsis">
       
         list_unit_types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list_payloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_payloads
       
     </span>
   </a>
@@ -4511,8 +4555,8 @@ surface, mirroring the <code>dcs-bridge</code> MCP tool (a bridge to a running m
 <td>Server identity (name, version).</td>
 </tr>
 <tr>
-<td><code>list_catalog()</code></td>
-<td>List registered actions (<code>name</code>, <code>description</code>, <code>parameters_schema</code>).</td>
+<td><code>list_catalog(full=False)</code></td>
+<td>List registered actions as <code>{name, summary}</code> — the description's first sentence, about 10 kB for all of them; <code>full=true</code> gives every <code>description</code> and <code>parameters_schema</code> (some 70 kB, which a client saves to a file rather than shows). <code>describe_action</code> gives one in full.</td>
 </tr>
 <tr>
 <td><code>describe_action(name)</code></td>
@@ -5042,11 +5086,15 @@ is written when the file is absent (the step does not run) or the side is not de
 <h3 id="farp">FARP<a class="headerlink" href="#farp" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>add_farp(target, name, position, coalition, country_id, country_name, farp_type="FARP",
-  frequency_mhz=127.5, modulation="AM", callsign_id=1)</code> — a <strong>complete</strong> FARP: the heliport static
+  frequency_mhz=127.5, modulation="AM", callsign_id=1, ammo_dump=True)</code> — a <strong>complete</strong> FARP: the heliport static
   (<code>category = "Heliports"</code>, the type's <code>shape_name</code>), its radio and callsign, and the
   <code>warehouses.warehouses[&lt;unitId&gt;]</code> entry that lets helicopters refuel there. <code>add_group</code> in <code>static</code>
   placed the object alone (ticket 19). Shape measured on the 372 heliports of the missions under
-  <code>D:\dev\_VEAF</code>. <code>warehouses.yaml</code>'s <code>farps:</code> then stocks it at build, like a base.</li>
+  <code>D:\dev\_VEAF</code>. <code>warehouses.yaml</code>'s <code>farps:</code> then stocks it at build, like a base. By default,
+  its <strong>ammunition dump</strong> (<code>FARP Ammo Dump Coating</code>, <code>&lt;name&gt; - Ammo</code>, 120 m east, <code>Fortifications</code> /
+  <code>SetkaKP</code> like the 68 of the OT missions) that CTLD takes as a loading point; <code>ammo_dump=False</code> skips
+  it (<code>FIX-OPEN-TRAINING-SYRIA-FINDINGS</code> ticket 05). A pad in the sea (ground 0 m on the elevation grid)
+  is warned about (ticket 04).</li>
 </ul>
 <h3 id="carrier-group-deck-slots-sounds-fix-open-training-prompt-findings">Carrier group, deck slots, sounds (FIX-OPEN-TRAINING-PROMPT-FINDINGS)<a class="headerlink" href="#carrier-group-deck-slots-sounds-fix-open-training-prompt-findings" title="Permanent link">&para;</a></h3>
 <ul>
@@ -5068,6 +5116,41 @@ is written when the file is absent (the step does not run) or the side is not de
   declares it in <code>mapResource</code> as <code>MCP_Sound_&lt;name&gt;</code>; <code>edit_route</code> <code>transmit_message</code> plays it (a
   wrapped <code>TransmitMessage</code>, <code>file</code> = the key, <code>loop</code>, <code>duration</code>, <code>subtitle</code> written to the
   dictionary).</li>
+</ul>
+<h3 id="syria-open-training-fix-open-training-syria-findings">Syria Open Training (FIX-OPEN-TRAINING-SYRIA-FINDINGS)<a class="headerlink" href="#syria-open-training-fix-open-training-syria-findings" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Callsign from the name</strong>: a western flight named like its callsign (<code>Texaco 2</code>, <code>Magic 1</code>) gets that
+  callsign (<code>Texaco21</code>) when the family fits the task and the flight is free; otherwise the former rule
+  (first free family) and a warning saying why. An AI flight with a fighting task (<code>Escort</code>, <code>CAP</code>, <code>CAS</code>,
+  <code>SEAD</code>…) and no <code>pylons</code> is warned about (ticket 01).</li>
+<li><code>set_unit_properties</code>: a <code>callsign.name</code> without digits is completed (<code>Texaco</code> → <code>Texaco21</code>); <code>pylons</code>
+  takes <code>{station: CLSID}</code> as well as <code>{station: {CLSID: …}}</code> and refuses any other value, naming the
+  station (ticket 02).</li>
+<li><code>create_qra</code> no longer writes <code>simple_groups</code> when <code>groups_by_enemy_count</code> is given: beside levels they
+  never take off (ticket 03, measured in <code>test_veafQraManager.lua</code>).</li>
+<li><strong>Surface check</strong>: <code>add_group</code>, <code>create_combat_zone</code>, <code>add_farp</code> and <code>set_group_properties</code>' move warn
+  about a vehicle, static or FARP at 0 m (in the sea) and a ship above 0 m (on land), where the theatre
+  has an elevation grid; otherwise "surface not checked". 3 m is land: DCS never reads below 0 (ticket 04).</li>
+<li><code>add_air_group(task="AFAC")</code> — a <strong>laser drone</strong> like GermanyCW-v6's: first point with
+  <code>SetUnlimitedFuel</code> then a <code>Circle</code> orbit at the group's altitude and speed. The lasing is CTLD's, from the
+  <code>modules.ASSETS</code> entry (<code>jtac</code>, <code>freq</code>, <code>mod</code>); CTLD moves it to <code>JTAC_droneAltitude</code>, it designates
+  vehicles only, within 10 km (ticket 06).</li>
+<li><code>geocode</code>: one request a second at most (Nominatim); a 429 waits what <code>Retry-After</code> asks (30 s at most)
+  once, then the refusal comes back as <code>found: false</code>, said plainly. Five candidates asked for, a named
+  place preferred to a road or a region; <code>osm_class</code> / <code>osm_type</code> in the answer, and a warning when it is
+  a road or a region (« Al-Kiswah » → a street of Amman) (ticket 07).</li>
+<li><code>list_unit_types</code> gives <code>threat_range_m</code> / <code>detection_range_m</code> (metres, the datamine's <code>ThreatRange</code> /
+  <code>DetectionRange</code>, the editor's circles) for every unit that has them; <code>dcsUnits.yaml</code> carries them,
+  regenerated by <code>veaf-build update-dcs-data --units</code> (ticket 08).</li>
+<li><strong>DCS loadouts by name</strong>: <code>add_air_group</code>, <code>create_qra</code> (per group) and <code>create_cap_mission</code> take
+  <code>payload</code>, the name of a loadout the editor offers (<code>list_payloads</code>), beside <code>pylons</code> and
+  <code>loadout_from</code> — one of the three. Source: an install's <code>MissionEditor/data/scripts/UnitPayloads</code>
+  (613 loadouts, 45 types), the datamine not carrying those files (ticket 09).</li>
+<li><code>repair_static_shapes(target)</code> — fills the <code>shape_name</code> of every static placed without one (before
+  6.26) from the units database, says what it filled and the statics whose type has no known shape;
+  writes nothing when there is nothing to fill. <code>validate</code>'s message names it (ticket 17).</li>
+<li>The backups of a file under <code>src/mission/l10n/DEFAULT/</code> go into <code>.veaf-backups/</code> (they stayed beside it
+  and went into the <code>.miz</code>), and a folder save rewrites <code>mapResource</code> (tickets 15, 16).</li>
 </ul>
 <h3 id="mission-settings-fix-scratch-mission-findings-ticket-07">Mission settings (FIX-SCRATCH-MISSION-FINDINGS ticket 07)<a class="headerlink" href="#mission-settings-fix-scratch-mission-findings-ticket-07" title="Permanent link">&para;</a></h3>
 <p>What the editor sets outside any group, and GermanyCW-v6 had to patch through a Lua serializer. Each
@@ -5172,6 +5255,14 @@ read from the <strong>canonical sources</strong> the build already uses, so they
 <p>Read-only. DCS unit types from the generated database, filterable by <code>category</code> and/or
 <code>name_contains</code>, so the LLM can pick concrete types.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plane&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name_contains&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;su-27&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="list_payloads"><code>list_payloads</code><a class="headerlink" href="#list_payloads" title="Permanent link">&para;</a></h3>
+<p>Read-only. The default loadouts the Mission Editor offers an AI aircraft type, by name
+(« R-40T<em>2,R-33</em>4 » for a MiG-31), with their pylons — what <code>payload</code> takes in <code>add_air_group</code>,
+<code>create_qra</code> and <code>create_cap_mission</code>. Without <code>unit_type</code>, the types that have some. Read from
+<code>veaf_libs/data/payloads.yaml</code>, generated from a DCS install
+(<code>veaf-build update-dcs-data --payloads --dcs-path &lt;DCS&gt;</code>): the datamine does not carry these files.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;unit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MiG-31&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="list_shortcuts"><code>list_shortcuts</code><a class="headerlink" href="#list_shortcuts" title="Permanent link">&para;</a></h3>
 <p>Read-only. The VEAF alias vocabulary (<code>shilka</code>, <code>sa8</code>…) — unit aliases (<code>_spawn unit &lt;alias&gt;</code>)
