@@ -2464,6 +2464,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#helicopters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn a helicopter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spawn-a-cap-patrol" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3478,6 +3489,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#helicopters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn a helicopter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spawn-a-cap-patrol" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3747,14 +3769,15 @@
 <h2 id="marker-commands-player-facing">Marker Commands (Player-Facing)<a class="headerlink" href="#marker-commands-player-facing" title="Permanent link">&para;</a></h2>
 <h3 id="spawn-a-unit">Spawn a unit<a class="headerlink" href="#spawn-a-unit" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_spawn unit, name [DCS_TYPE]
-_spawn unit, name F-16C, hdg 180, alt 20000
 _spawn unit, name T-80, hdg 270, spacing 50
 </code></pre></div>
+<p>An <strong>airplane</strong> cannot be spawned this way (the command refuses it): use a CAP patrol. A
+<strong>helicopter</strong> can: see <a href="#helicopters">Spawn a helicopter</a>.</p>
 <p><strong>Options:</strong></p>
 <ul>
 <li><code>name</code> — unit type</li>
 <li><code>hdg</code> — heading (degrees)</li>
-<li><code>alt</code> — altitude (feet)</li>
+<li><code>alt</code> — altitude (feet); for a helicopter, the height of its task</li>
 <li><code>side</code> — coalition override</li>
 <li><code>country</code> — country override</li>
 <li><code>skill</code> — AI skill level</li>
@@ -3767,6 +3790,71 @@ _spawn unit, name T-80, hdg 270, spacing 50
 <p>The group alias must exist in the <strong>spawn database</strong>: the built-in one (e.g. <code>sa2</code>, <code>sa3</code>, …) or your optional <code>src/spawn-groups.yaml</code>, which extends/overrides it. The database lives in YAML and is injected into the <code>.miz</code> at build time (no Lua to edit). See <a href="../../../PIPELINE_REFERENCE/">Pipeline Reference — spawn data</a>.</p>
 <blockquote>
 <p><strong>Typos abort the command.</strong> If a parameter is not recognized (e.g. <code>headng</code> instead of <code>heading</code>), the spawn is <strong>not</strong> performed and the pilot gets a hint (<em>did you mean 'heading'?</em>). Fix the marker text and try again.</p>
+</blockquote>
+<h3 id="helicopters">Spawn a helicopter<a class="headerlink" href="#helicopters" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_spawn unit, name mi8
+_spawn unit, name mi24, task orbit
+_spawn unit, name uh1, task transport, dest FOB-NORTH
+_spawn group, name [HELICOPTER_GROUP], task orbit, alt 800
+</code></pre></div>
+<p>The helicopter appears <strong>landed</strong> at the marker, then does what <code>task</code> says:</p>
+<table>
+<thead>
+<tr>
+<th><code>task</code></th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(none)</em></td>
+<td>stays on the ground, engine off: a target</td>
+</tr>
+<tr>
+<td><code>orbit</code></td>
+<td>takes off and circles the marker; fires at what comes by if armed, holds fire otherwise</td>
+</tr>
+<tr>
+<td><code>transport</code></td>
+<td>takes off, flies to <code>dest</code> and lands in the nearest clearing (up to 300 m off), only returning fire; refused without a <code>dest</code>. Aim at open ground: at a forest's edge it hovers and never lands</td>
+</tr>
+<tr>
+<td><code>patrol</code></td>
+<td>armed: a 1 km loop around the marker (or to and fro to <code>dest</code>), engaging ground units and helicopters in range; unarmed: a shuttle marker ↔ <code>dest</code>, 5 min on the ground at each end, for ever (refused without a <code>dest</code>)</td>
+</tr>
+<tr>
+<td><code>attack</code></td>
+<td>armed only: flies to <code>dest</code>, engages ground units and helicopters in range, then circles there</td>
+</tr>
+<tr>
+<td><code>escort</code></td>
+<td>armed only: <code>dest</code> is the <strong>name of a ground group</strong>, which it joins and covers</td>
+</tr>
+</tbody>
+</table>
+<p><code>alt</code> is the height above the ground (feet, 500 by default), <code>speed</code> the speed (knots, 80 by
+default). <code>dest</code> is a named point or coordinates, as for a convoy. <code>capradius</code> is an armed helicopter's
+engagement range (metres, 3,000 by default).</p>
+<p><strong>Armed or not is the alias's call</strong>, not the type's: DCS files the Mi-8 as both an attack and a
+transport helicopter.</p>
+<table>
+<thead>
+<tr>
+<th>Unarmed</th>
+<th>Armed (loadout of the shipped dynamic slot)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mi8</code> (Mi-8MTV2), <code>mi26</code> (Mi-26), <code>uh1</code> (UH-1H), <code>ch47</code> (CH-47F)</td>
+<td><code>mi24</code> (Mi-24P), <code>ka50</code> (Ka-50 III), <code>ah64</code> (AH-64D), <code>gazelle</code> (SA342M)</td>
+</tr>
+</tbody>
+</table>
+<p>A DCS type written directly (<code>name Mi-8MT</code>) flies unarmed. A <code>src/spawn-groups.yaml</code> can add its own
+aliases, with <code>pylons</code>, and groups of several helicopters.</p>
+<blockquote>
+<p>Checked in game on 2026-10-02: <code>orbit</code> circles 1.5–2 km from its point, <code>transport</code> lands 30 m from its own on open ground. <code>patrol</code>, <code>attack</code> and <code>escort</code> too (the escort circles within 3 km of its group).</p>
 </blockquote>
 <h3 id="spawn-a-cap-patrol">Spawn a CAP patrol<a class="headerlink" href="#spawn-a-cap-patrol" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_spawn cap, name Su-27, alt 25000, capradius 20000

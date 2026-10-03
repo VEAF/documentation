@@ -2464,6 +2464,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#helicopters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faire apparaître un hélicoptère
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#faire-apparaître-une-patrouille-cap" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3478,6 +3489,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#helicopters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faire apparaître un hélicoptère
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#faire-apparaître-une-patrouille-cap" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3747,14 +3769,15 @@
 <h2 id="commandes-de-marqueur-côté-joueur">Commandes de marqueur (côté joueur)<a class="headerlink" href="#commandes-de-marqueur-côté-joueur" title="Permanent link">&para;</a></h2>
 <h3 id="faire-apparaître-une-unité">Faire apparaître une unité<a class="headerlink" href="#faire-apparaître-une-unité" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_spawn unit, name [DCS_TYPE]
-_spawn unit, name F-16C, hdg 180, alt 20000
 _spawn unit, name T-80, hdg 270, spacing 50
 </code></pre></div>
+<p>Un <strong>avion</strong> ne peut pas être créé ainsi (la commande le refuse) : passez par une patrouille CAP. Un
+<strong>hélicoptère</strong>, si : voir <a href="#helicopters">Faire apparaître un hélicoptère</a>.</p>
 <p><strong>Options :</strong></p>
 <ul>
 <li><code>name</code> — type d'unité</li>
 <li><code>hdg</code> — cap (degrés)</li>
-<li><code>alt</code> — altitude (pieds)</li>
+<li><code>alt</code> — altitude (pieds) ; pour un hélicoptère, la hauteur de sa tâche</li>
 <li><code>side</code> — coalition</li>
 <li><code>country</code> — pays</li>
 <li><code>skill</code> — niveau de compétence IA</li>
@@ -3767,6 +3790,71 @@ _spawn unit, name T-80, hdg 270, spacing 50
 <p>L'alias de groupe doit exister dans la <strong>base de spawn</strong> : celle intégrée (ex. <code>sa2</code>, <code>sa3</code>, …) ou votre <code>src/spawn-groups.yaml</code> optionnel qui l'étend/la surcharge. La base vit en YAML et est injectée dans le <code>.miz</code> au build (pas de Lua à éditer). Voir <a href="../../../PIPELINE_REFERENCE/">Référence Pipeline — données de spawn</a>.</p>
 <blockquote>
 <p><strong>Une faute de frappe annule la commande.</strong> Si un paramètre n'est pas reconnu (ex. <code>headng</code> au lieu de <code>heading</code>), le spawn n'est <strong>pas</strong> effectué et le pilote reçoit un indice (<em>vouliez-vous dire « heading » ?</em>). Corrigez le texte du marqueur et réessayez.</p>
+</blockquote>
+<h3 id="helicopters">Faire apparaître un hélicoptère<a class="headerlink" href="#helicopters" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_spawn unit, name mi8
+_spawn unit, name mi24, task orbit
+_spawn unit, name uh1, task transport, dest FOB-NORD
+_spawn group, name [GROUPE_D_HELICOPTERES], task orbit, alt 800
+</code></pre></div>
+<p>L'hélicoptère apparaît <strong>posé</strong> à l'endroit du marqueur, puis fait ce que dit <code>task</code> :</p>
+<table>
+<thead>
+<tr>
+<th><code>task</code></th>
+<th>Ce qu'il fait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(rien)</em></td>
+<td>reste posé, moteur coupé : une cible</td>
+</tr>
+<tr>
+<td><code>orbit</code></td>
+<td>décolle et tourne au-dessus du marqueur ; tire sur ce qui passe s'il est armé, ne tire pas sinon</td>
+</tr>
+<tr>
+<td><code>transport</code></td>
+<td>décolle, va à <code>dest</code> et se pose dans la clairière la plus proche (jusqu'à 300 m), en ne faisant que riposter ; refusé sans <code>dest</code>. Visez un terrain dégagé : au bord d'une forêt, il reste en vol stationnaire sans se poser</td>
+</tr>
+<tr>
+<td><code>patrol</code></td>
+<td>armé : boucle de 1 km autour du marqueur (ou aller-retour jusqu'à <code>dest</code>), engage le sol et les hélicoptères à portée ; non armé : navette marqueur ↔ <code>dest</code>, 5 min au sol à chaque bout, sans fin (refusée sans <code>dest</code>)</td>
+</tr>
+<tr>
+<td><code>attack</code></td>
+<td>armé seulement : va à <code>dest</code>, engage le sol et les hélicoptères à portée, puis tourne sur place</td>
+</tr>
+<tr>
+<td><code>escort</code></td>
+<td>armé seulement : <code>dest</code> est le <strong>nom d'un groupe au sol</strong>, qu'il rejoint et couvre</td>
+</tr>
+</tbody>
+</table>
+<p><code>alt</code> est la hauteur au-dessus du sol (pieds, 500 par défaut), <code>speed</code> la vitesse (nœuds, 80 par
+défaut). <code>dest</code> est un point nommé ou des coordonnées, comme pour un convoi. <code>capradius</code> est la portée
+d'engagement d'un hélicoptère armé (mètres, 3 000 par défaut).</p>
+<p><strong>Armé ou non, c'est l'alias qui le dit</strong>, pas le type : DCS range le Mi-8 à la fois parmi les
+hélicoptères d'attaque et de transport.</p>
+<table>
+<thead>
+<tr>
+<th>Non armés</th>
+<th>Armés (armement du slot dynamique livré)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mi8</code> (Mi-8MTV2), <code>mi26</code> (Mi-26), <code>uh1</code> (UH-1H), <code>ch47</code> (CH-47F)</td>
+<td><code>mi24</code> (Mi-24P), <code>ka50</code> (Ka-50 III), <code>ah64</code> (AH-64D), <code>gazelle</code> (SA342M)</td>
+</tr>
+</tbody>
+</table>
+<p>Un type DCS écrit directement (<code>name Mi-8MT</code>) vole non armé. Un <code>src/spawn-groups.yaml</code> peut ajouter
+ses propres alias, avec des <code>pylons</code>, et des groupes de plusieurs hélicoptères.</p>
+<blockquote>
+<p>Vérifié en jeu le 2026-10-02 : <code>orbit</code> tourne à 1,5–2 km de son point, <code>transport</code> se pose à 30 m du sien sur terrain dégagé. <code>patrol</code>, <code>attack</code> et <code>escort</code> aussi (l'escorte tourne à moins de 3 km de son groupe).</p>
 </blockquote>
 <h3 id="faire-apparaître-une-patrouille-cap">Faire apparaître une patrouille CAP<a class="headerlink" href="#faire-apparaître-une-patrouille-cap" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_spawn cap, name Su-27, alt 25000, capradius 20000
