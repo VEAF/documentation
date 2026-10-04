@@ -2625,6 +2625,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tower-frequencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fréquences de la tour
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#voir-aussi" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3467,6 +3478,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tower-frequencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fréquences de la tour
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#voir-aussi" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3569,7 +3591,7 @@
 <tr>
 <td>ATC on closest airbase</td>
 <td>Par groupe</td>
-<td>Piste en service, QFE/QNH, informations de circuit sur la base la plus proche</td>
+<td>Piste en service, QFE/QNH, informations de circuit et <a href="#tower-frequencies">fréquences de la tour</a> sur la base la plus proche</td>
 </tr>
 <tr>
 <td>ATC and weather in one go</td>
@@ -3677,6 +3699,7 @@ sont interchangeables ; c'est le mot qui suit qui choisit l'action :</p>
 proche, la <strong>piste en service</strong> déduite du vent, et la météo du moment.</p>
 <div class="highlight"><pre><span></span><code>Bienvenue à Kobuleti — piste en service 13
 WIND 270/10 QNH 1013 ...
+Tour 262.000 UHF / 133.000 VHF / 40.800 FM — TACAN 67X
 </code></pre></div>
 <p>Le message va <strong>à son groupe seulement</strong>, pas à la coalition : il parle de <em>son</em> terrain, et diffusé à
 tout le monde il deviendrait du bruit dès que deux pilotes prennent des slots sur des bases différentes.</p>
@@ -3689,8 +3712,13 @@ tout le monde il deviendrait du bruit dès que deux pilotes prennent des slots s
 <li><strong>Un porte-avions n'a pas de piste en service</strong> — il se met au vent, donc la piste est mobile. Il
   annonce à la place son <strong>cap actuel (vrai)</strong>, dans les mêmes termes que l'ATC du groupe aéronaval.
   Une <strong>hélisurface</strong> n'a ni l'un ni l'autre : elle donne la météo seule.</li>
-<li>Le rapport <strong>complet</strong> (ATIS) reste disponible dans le menu radio. L'accueil est volontairement plus
-  court : un message qui remplit l'écran à chaque changement de slot cesse d'être lu.</li>
+<li>
+<p>Le rapport <strong>complet</strong> (ATIS) reste disponible dans le menu radio. L'accueil est volontairement plus
+  court : un message qui remplit l'écran à chaque changement de slot cesse d'être lu.</p>
+</li>
+<li>
+<p>Il finit par les <a href="#tower-frequencies">fréquences de la tour</a>, comme l'ATIS.</p>
+</li>
 </ul>
 <p>Pour le désactiver — par exemple si votre mission fait son propre briefing :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -3698,6 +3726,22 @@ tout le monde il deviendrait du bruit dès que deux pilotes prennent des slots s
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">welcomeBrief</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<hr />
+<h2 id="tower-frequencies">Fréquences de la tour<a class="headerlink" href="#tower-frequencies" title="Permanent link">&para;</a></h2>
+<p>L'accueil à la prise de slot et l'ATIS du menu radio se terminent par la ligne qui dit comment appeler la tour du terrain : ses fréquences UHF, VHF et FM, puis son TACAN.
+Ce sont celles que DCS donne au terrain, celles que montre sa fiche dans la vue F10.</p>
+<div class="highlight"><pre><span></span><code>Tour 260.000 UHF / 131.000 VHF / 40.400 FM — TACAN 16X
+</code></pre></div>
+<p>Les scripts de mission n'ont aucun moyen de demander ces fréquences à DCS : elles viennent d'une table livrée avec les scripts (<code>veafAirfieldFrequencies.lua</code>), relevée dans DCS et régénérée par <code>veaf-build update-dcs-data --airfield-freqs</code>.
+Un porte-avions, une FARP ou un terrain absent de la table n'ont pas de ligne du tout, plutôt qu'une ligne vide ou inventée.</p>
+<p>Si le plan radio de la mission donne au terrain <strong>son propre canal</strong> — une entrée de la collection <code>bases</code> de <code>src/presets.yaml</code> —, et que ce canal diffère de la tour DCS, une seconde ligne le donne, sous le titre que le pilote lit dans ses presets :</p>
+<div class="highlight"><pre><span></span><code>Tour 260.000 UHF / 131.000 VHF / 40.400 FM — TACAN 16X
+Canal de la mission Batumi / 16X : 270.300 UHF / 130.300 VHF
+</code></pre></div>
+<p>Le canal est rattaché au terrain comme le fait <code>veaf-tools content airfield-channels</code> : par le nom DCS, ou par son premier mot quand aucun autre terrain de la carte ne le partage.
+Quand il reprend les fréquences de la tour, il n'ajoute rien et la seconde ligne n'apparaît pas.</p>
+<p>Une mission qui <strong>rend l'ATC silencieux</strong> (<code>mission.silence_atc_on_all_airbases</code>) laisse une tour qui ne répond à personne : quand le terrain a un canal de mission, ce canal est alors la seule ligne donnée.
+Quand il n'en a pas — le cas courant —, la fréquence DCS est quand même donnée, puisque c'est la seule qui existe.</p>
 <hr />
 <h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
 <ul>
