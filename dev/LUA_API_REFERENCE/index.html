@@ -5117,10 +5117,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pnumberoftasksaddedbywatchdog" class="md-nav__link">
+  <a href="#veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pengagedtargetids" class="md-nav__link">
     <span class="md-ellipsis">
       
-        veafSpawn.startCapWatchdog(capGroupName, capCoalition, capZone, pTargetsList, pNumberOfTasksAddedByWatchdog)
+        veafSpawn.startCapWatchdog(capGroupName, capCoalition, capZone, pTargetsList, pEngagedTargetIds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafspawntargetaspecttargetposition-targetvelocity-capposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veafSpawn.targetAspect(targetPosition, targetVelocity, capPosition)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafspawnspreadcaptargetsunitnames-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veafSpawn.spreadCapTargets(unitNames, targets)
       
     </span>
   </a>
@@ -9479,10 +9501,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pnumberoftasksaddedbywatchdog" class="md-nav__link">
+  <a href="#veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pengagedtargetids" class="md-nav__link">
     <span class="md-ellipsis">
       
-        veafSpawn.startCapWatchdog(capGroupName, capCoalition, capZone, pTargetsList, pNumberOfTasksAddedByWatchdog)
+        veafSpawn.startCapWatchdog(capGroupName, capCoalition, capZone, pTargetsList, pEngagedTargetIds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafspawntargetaspecttargetposition-targetvelocity-capposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veafSpawn.targetAspect(targetPosition, targetVelocity, capPosition)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#veafspawnspreadcaptargetsunitnames-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veafSpawn.spreadCapTargets(unitNames, targets)
       
     </span>
   </a>
@@ -13495,18 +13539,27 @@ Le dispatcher central (<code>veafCommands.dispatchMarker</code>) gère automatiq
 <div class="highlight"><pre><span></span><code><span class="c1">-- Spawner un AFAC A-10C</span>
 <span class="nv">veafSpawn</span><span class="p">.</span><span class="nf">spawnAFAC</span><span class="p">(</span><span class="nv">pos</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;A-10C&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="mi">15000</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">133.0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;AM&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1688</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
 </code></pre></div></p>
-<h5 id="veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pnumberoftasksaddedbywatchdog"><code>veafSpawn.startCapWatchdog(capGroupName, capCoalition, capZone, pTargetsList, pNumberOfTasksAddedByWatchdog)</code><a class="headerlink" href="#veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pnumberoftasksaddedbywatchdog" title="Permanent link">&para;</a></h5>
+<h5 id="veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pengagedtargetids"><code>veafSpawn.startCapWatchdog(capGroupName, capCoalition, capZone, pTargetsList, pEngagedTargetIds)</code><a class="headerlink" href="#veafspawnstartcapwatchdogcapgroupname-capcoalition-capzone-ptargetslist-pengagedtargetids" title="Permanent link">&para;</a></h5>
 <p>Démarre le watchdog d'engagement de la CAP.</p>
 <p><strong>Paramètres :</strong></p>
 <ul>
 <li><code>capGroupName</code> (string) — Nom du groupe CAP</li>
 <li><code>capCoalition</code> (coalition) — Coalition</li>
 <li><code>capZone</code> (table) — Définition de la zone</li>
-<li><code>pTargetsList</code> (table, optionnel) — Cibles spécifiques</li>
-<li><code>pNumberOfTasksAddedByWatchdog</code> (number, optionnel) — Tâches maximum</li>
+<li><code>pTargetsList</code> (table, optionnel) — Cibles suivies, du passage précédent</li>
+<li><code>pEngagedTargetIds</code> (table, optionnel) — Cibles ayant déjà un <code>EngageUnit</code>, du passage précédent</li>
 </ul>
 <p><strong>Retourne :</strong> Rien</p>
-<p><strong>Description :</strong> Surveille la zone et missionne la CAP pour engager les appareils ennemis.</p>
+<p><strong>Description :</strong> Surveille la zone et missionne la CAP pour engager les appareils ennemis.
+Les cibles sont classées par type, distance et aspect ; une cible cold au-delà de <code>veafSpawn.CAP_COLD_CUTOFF</code> (40 000 m) n'est pas engagée.
+Face à plusieurs cibles, chaque avion reçoit la sienne sur son propre contrôleur (<code>veafSpawn.spreadCapTargets</code>).</p>
+<h5 id="veafspawntargetaspecttargetposition-targetvelocity-capposition"><code>veafSpawn.targetAspect(targetPosition, targetVelocity, capPosition)</code><a class="headerlink" href="#veafspawntargetaspecttargetposition-targetvelocity-capposition" title="Permanent link">&para;</a></h5>
+<p>Renvoie <code>"hot"</code>, <code>"flanking"</code> ou <code>"cold"</code> selon l'angle entre la trajectoire de la cible et la ligne cible → CAP, dans le plan horizontal : jusqu'à <code>veafSpawn.CAP_ASPECT_HOT_MAX</code> (60°) hot, à partir de <code>veafSpawn.CAP_ASPECT_COLD_MIN</code> (120°) cold.
+Sans vitesse lisible, <code>"flanking"</code>.
+Renvoie aussi l'angle en degrés (nil sans vitesse).</p>
+<h5 id="veafspawnspreadcaptargetsunitnames-targets"><code>veafSpawn.spreadCapTargets(unitNames, targets)</code><a class="headerlink" href="#veafspawnspreadcaptargetsunitnames-targets" title="Permanent link">&para;</a></h5>
+<p>Répartit les cibles (triées, la plus prioritaire d'abord) entre les avions de la CAP, en tournant.
+Renvoie une table nom d'avion → id de cible, vide avec une seule cible ou un seul avion.</p>
 <h4 id="cargo-et-logistique">Cargo et logistique<a class="headerlink" href="#cargo-et-logistique" title="Permanent link">&para;</a></h4>
 <h5 id="veafspawnspawncargospawnspot-radius-cargotype-country-weightbias-cargosmoke-unitname-silent-hiddenonmfd"><code>veafSpawn.spawnCargo(spawnSpot, radius, cargoType, country, weightBias, cargoSmoke, unitName, silent, hiddenOnMFD)</code><a class="headerlink" href="#veafspawnspawncargospawnspot-radius-cargotype-country-weightbias-cargosmoke-unitname-silent-hiddenonmfd" title="Permanent link">&para;</a></h5>
 <p>Spawne un cargo CTLD.</p>
