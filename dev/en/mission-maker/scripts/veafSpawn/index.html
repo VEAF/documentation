@@ -2486,6 +2486,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#awacs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn an AWACS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn an escort
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spawn-an-afacjtac" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3522,6 +3544,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#awacs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn an AWACS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn an escort
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spawn-an-afacjtac" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3901,6 +3945,44 @@ return fire only.</p>
 <p>A patrol built from a group template whose first waypoint carries no instructions flies without the
 settings its template's author intended (radar, ECM, rules of engagement). That case is reported in the
 DCS log, naming the template at fault.</p>
+<h3 id="awacs">Spawn an AWACS<a class="headerlink" href="#awacs" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_spawn awacs, type E-3A, alt 30000, hdg 90, dist 30, freq 251, escort f15-fox3
+</code></pre></div>
+<p>The <code>-awacs</code> alias does the same: <code>-awacs escort f15-fox3</code>.</p>
+<p>The AWACS appears on the marker, airborne, and flies a race-track that starts at the marker and runs along <code>hdg</code>.
+It needs no template: it is built from its type.</p>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>type</code> — <code>E-3A</code>, <code>E-2C</code> (the E-2D), <code>A-50</code> or <code>KJ-2000</code>; an E-3A for blue and an A-50 for red by default</li>
+<li><code>alt</code> — altitude (feet, 30,000 by default); raised to 150 m above the ground when needed, as for a CAP</li>
+<li><code>hdg</code> — direction of the race-track (degrees, 0 by default)</li>
+<li><code>dist</code> — length of the race-track (nautical miles, 30 by default)</li>
+<li><code>speed</code> — speed (knots indicated); Mach 0.5 by default</li>
+<li><code>freq</code> — the AWACS radio frequency (MHz, AM, 251 by default)</li>
+<li><code>skynet false</code> — keep it out of its side's Skynet network; <strong>it is added by default</strong></li>
+<li><code>eplrs false</code> (or <code>datalink false</code>) — turn its datalink off; <strong>it is on by default</strong></li>
+<li><code>escort &lt;template&gt;</code> — spawn an escort too, as <code>-escort</code> would (see below); <code>escort</code> alone takes any fighter template of the side</li>
+</ul>
+<p>The escort of an AWACS is named <code>&lt;AWACS name&gt; escort</code>.
+An AWACS spawned during the mission has no Mission Editor record: <code>_move</code> and the assets menu can neither move it nor respawn it, nor its escort.</p>
+<blockquote>
+<p>⚠️ An AWACS added to Skynet covers its side's SAM sites and keeps them under network control.
+The <code>INVESTIGATE-SKYNET-AWACS-BLIND</code> lot is looking into enrolled A-50s that saw no contact for a whole session.
+If your mission's SAMs stay dark with an AWACS in the air, try <code>skynet false</code>.</p>
+</blockquote>
+<h3 id="escort">Spawn an escort<a class="headerlink" href="#escort" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>_spawn escort, name f15-fox3
+</code></pre></div>
+<p>The <code>-escort</code> alias does the same: <code>-escort f15-fox3</code>.</p>
+<p>Place the marker <strong>next to an airplane</strong>, friendly or neutral: the airplane nearest the marker, within 10 nautical miles, is the one escorted.
+An enemy airplane is never escorted, and a helicopter cannot be.
+<code>name</code> searches the side's <code>veafSpawn-</code> templates, as for <code>-cap</code>; without <code>name</code>, any template will do.</p>
+<p>The escort appears 3 km behind the airplane it escorts, at its altitude.
+It is given the DCS <code>Escort</code> task: it follows its charge and engages enemy aircraft up to 60 km from it.
+Its rules of engagement are set to "open fire" after the template's own settings, so that a template written to hold fire does not make an escort that defends nothing.</p>
+<p><strong>To escort your own airplane, the F10 menu is enough</strong>: <em>F10 → VEAF → SPAWN → +Escort me (fox3)</em> or <em>(fox2)</em> (the <code>+</code> marks a protected command).
+It asks the same level as <code>-escort</code> (known pilot).
+A mission can change the entries offered by replacing <code>veafSpawn.EscortRadioMenuTemplates</code> (<code>{ "fox3", "fox2" }</code> by default).</p>
 <h3 id="spawn-an-afacjtac">Spawn an AFAC/JTAC<a class="headerlink" href="#spawn-an-afacjtac" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>_spawn afac, name A-10C, freq 133.0, mod AM, laser 1688, alt 15000
 </code></pre></div>
