@@ -3790,6 +3790,10 @@
 <span class="w">        </span><span class="nt">max_seconds_outside_ia</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">     </span><span class="c1"># secondes avant de considérer une unité IA hors zone comme perdue</span>
 <span class="w">        </span><span class="nt">minimum_life_percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1"># pourcentage de vie (0–100) sous lequel une unité IA est considérée comme détruite (défaut : 0)</span>
 <span class="w">        </span><span class="nt">reset_when_dying</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># réinitialiser toutes les vagues quand un joueur meurt</span>
+<span class="w">        </span><span class="nt">closed_once_active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># true = mort c&#39;est mort : un intrus est averti, pris sous le feu, puis détruit</span>
+<span class="w">        </span><span class="nt">max_seconds_outside_players</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"> </span><span class="c1"># délai de l&#39;escalade (sortie de zone, intrus d&#39;une zone fermée)</span>
+<span class="w">        </span><span class="c1"># links: [&quot;Maykop&quot;]             # bases, FARP, navires, groupes ou statics dont dépend la zone</span>
+<span class="w">        </span><span class="c1"># follow_unit: &quot;CVN-74&quot;         # la zone suit cette unité</span>
 <span class="w">        </span><span class="nt">message_start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zone</span><span class="nv"> </span><span class="s">active</span><span class="nv"> </span><span class="s">!&quot;</span><span class="w">  </span><span class="c1"># message personnalisé de début de zone (optionnel)</span>
 <span class="w">        </span><span class="nt">message_wait_for_humans</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;En</span><span class="nv"> </span><span class="s">attente</span><span class="nv"> </span><span class="s">des</span><span class="nv"> </span><span class="s">joueurs...&quot;</span>
 <span class="w">        </span><span class="nt">message_wave_deployed</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Vague</span><span class="nv"> </span><span class="s">en</span><span class="nv"> </span><span class="s">approche</span><span class="nv"> </span><span class="s">!&quot;</span>
@@ -3802,6 +3806,8 @@
 <span class="w">            </span><span class="nt">bias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">                     </span><span class="c1"># décaler la sélection aléatoire vers les entrées plus difficiles</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;su30sm-flight&quot;</span>
 <span class="w">            </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
+<span class="w">            </span><span class="nt">friendly_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Tanker&quot;</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># à défendre : s&#39;ils meurent tous, la zone est perdue</span>
+<span class="w">            </span><span class="nt">support_groups</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;AWACS</span><span class="nv"> </span><span class="s">rouge&quot;</span><span class="w"> </span><span class="c1"># de décor : ne comptent ni pour la fin de vague ni pour la défaite</span>
 </code></pre></div>
 <h3 id="champs-communs-de-airwave_zones">Champs communs de <code>airwave_zones[]</code><a class="headerlink" href="#champs-communs-de-airwave_zones" title="Permanent link">&para;</a></h3>
 <table>
@@ -3841,7 +3847,28 @@
 <td>string[]</td>
 <td>—</td>
 <td>Non</td>
-<td>Coalitions dont les joueurs déclenchent les vagues (<code>BLUE</code>, <code>RED</code>)</td>
+<td>Coalitions dont les joueurs déclenchent les vagues (<code>BLUE</code>, <code>RED</code>). Les vagues apparaissent pour le camp opposé</td>
+</tr>
+<tr>
+<td><code>links</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Ce dont dépend la zone : bases aériennes, FARP, navires, groupes ou statics, par leur nom DCS. Une base ou un FARP qui n'est plus tenu par le camp des vagues, ou trop endommagé, <strong>met la zone en pause</strong> (la vague en cours disparaît) jusqu'à sa reprise ; un navire, un groupe ou un static détruit <strong>l'arrête pour de bon</strong></td>
+</tr>
+<tr>
+<td><code>follow_unit</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Nom d'une unité que la zone suit (un porte-avions, par exemple). Une trigger zone liée à une unité dans l'éditeur la suit aussi, sans cette clé. Le tracé sur la carte, lui, reste où il a été posé au démarrage</td>
+</tr>
+<tr>
+<td><code>closed_once_active</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td><strong>Mort c'est mort</strong> : une fois la zone lancée, un humain qui n'y était pas à l'activation — ou qui revient dans le slot d'un avion abattu — est averti, puis pris sous la flak, puis détruit, avec le délai de <code>max_seconds_outside_players</code> (30 s sans lui)</td>
 </tr>
 </tbody>
 </table>
@@ -3942,6 +3969,12 @@ se lit pas.</p>
 <td>Secondes avant qu'un groupe IA hors zone soit éliminé</td>
 </tr>
 <tr>
+<td><code>max_seconds_outside_players</code></td>
+<td>entier</td>
+<td>—</td>
+<td>Délai de l'escalade appliquée à un joueur sorti de la zone, ou à un intrus d'une zone fermée : flak passé ce délai, destruction passé le double</td>
+</tr>
+<tr>
 <td><code>minimum_life_percent</code></td>
 <td>nombre</td>
 <td><code>0</code></td>
@@ -3983,6 +4016,18 @@ se lit pas.</p>
 <td>entier</td>
 <td><code>0</code></td>
 <td>Décaler l'index de début aléatoire vers les entrées plus difficiles</td>
+</tr>
+<tr>
+<td><code>friendly_groups</code></td>
+<td>string ou string[]</td>
+<td>—</td>
+<td>Groupes ou commandes VEAF <strong>à défendre</strong>, spawnés avec la vague pour le camp des joueurs. S'ils meurent tous, la zone est perdue — même message et même reset que la mort des joueurs. Les survivants disparaissent avec la vague</td>
+</tr>
+<tr>
+<td><code>support_groups</code></td>
+<td>string ou string[]</td>
+<td>—</td>
+<td>Groupes ou commandes VEAF <strong>sans importance</strong> (soutien, défense), spawnés avec la vague pour le camp des vagues. Ils ne comptent ni pour la fin de la vague ni pour la défaite, et disparaissent avec elle</td>
 </tr>
 </tbody>
 </table>
@@ -4121,7 +4166,27 @@ pour que ce pilote doive en plus avoir le niveau de sécurité requis.</p>
 </tr>
 <tr>
 <td><code>:setMaxSecondsOutsideOfZonePlayers(n)</code></td>
-<td>Secondes avant que la zone se réinitialise si tous les joueurs sortent</td>
+<td>Délai de l'escalade d'un joueur sorti de la zone (ou d'un intrus d'une zone fermée) : flak passé ce délai, destruction passé le double</td>
+</tr>
+<tr>
+<td><code>:setClosedOnceActive(bool)</code></td>
+<td>Fermer la zone une fois lancée : mort c'est mort</td>
+</tr>
+<tr>
+<td><code>:setFollowUnit(unitName)</code></td>
+<td>La zone suit cette unité, un porte-avions par exemple</td>
+</tr>
+<tr>
+<td><code>:addLink(name)</code></td>
+<td>Faire dépendre la zone d'une base, d'un FARP, d'un navire, d'un groupe ou d'un static</td>
+</tr>
+<tr>
+<td><code>:setLinkMinLifePercent(pct)</code></td>
+<td>Santé minimale d'une base liée (0–1, défaut <code>0,9</code>)</td>
+</tr>
+<tr>
+<td><code>:setCoalition(side)</code></td>
+<td>Camp des vagues (défaut : l'opposé des joueurs)</td>
 </tr>
 <tr>
 <td><code>:setDelayBetweenWaves(n)</code></td>
@@ -4422,6 +4487,10 @@ sa route.</p>
 <tr>
 <td><code>OVER</code></td>
 <td>Toutes les vagues ont été détruites — la zone est terminée.</td>
+</tr>
+<tr>
+<td><code>PAUSED</code></td>
+<td>Une base liée est perdue : la vague en cours a disparu, la zone attend que la base soit reprise, puis redémarre.</td>
 </tr>
 </tbody>
 </table>

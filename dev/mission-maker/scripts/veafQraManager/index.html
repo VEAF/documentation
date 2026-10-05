@@ -2379,10 +2379,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#lien-à-une-base-aérienne" class="md-nav__link">
+  <a href="#liens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lien à une base aérienne
+        Liens
       
     </span>
   </a>
@@ -2473,7 +2473,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#chaîne-logistique" class="md-nav__link">
+  <a href="#logistics-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
         Chaîne logistique
@@ -3684,10 +3684,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#lien-à-une-base-aérienne" class="md-nav__link">
+  <a href="#liens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lien à une base aérienne
+        Liens
       
     </span>
   </a>
@@ -3778,7 +3778,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#chaîne-logistique" class="md-nav__link">
+  <a href="#logistics-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
         Chaîne logistique
@@ -3917,7 +3917,12 @@
 <span class="w">        </span><span class="nt">delay_before_rearming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># secondes avant réinitialisation après départ des intrus</span>
 <span class="w">        </span><span class="nt">delay_before_activating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">      </span><span class="c1"># secondes après :start() avant mise en ligne de la QRA</span>
 <span class="w">        </span><span class="nt">react_on_helicopters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = déclencher aussi sur les hélicoptères ennemis</span>
-<span class="w">        </span><span class="nt">airport_link</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi&quot;</span><span class="w">           </span><span class="c1"># la QRA se désactive si cette base est détruite</span>
+<span class="w">        </span><span class="nt">airport_link</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi&quot;</span><span class="w">           </span><span class="c1"># en pause tant que cette base est perdue (raccourci de links)</span>
+<span class="w">        </span><span class="c1"># links: [&quot;Batumi&quot;, &quot;SA-10 Nord&quot;]   # bases, FARP, navires, groupes ou statics dont dépend la QRA</span>
+<span class="w">        </span><span class="c1"># follow_unit: &quot;CVN-74&quot;             # la zone suit cette unité (un porte-avions, par exemple)</span>
+<span class="w">        </span><span class="nt">logistics</span><span class="p">:</span><span class="w">                       </span><span class="c1"># stock d&#39;avions fini (sans ce bloc : illimité)</span>
+<span class="w">          </span><span class="nt">groups_available</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">            </span><span class="c1"># groupes en stock au départ</span>
+<span class="w">          </span><span class="nt">resupply_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1800</span><span class="w">           </span><span class="c1"># un ravitaillement toutes les 30 min</span>
 </code></pre></div>
 <h3 id="champs-de-modulesqra">Champs de <code>modules.QRA</code><a class="headerlink" href="#champs-de-modulesqra" title="Permanent link">&para;</a></h3>
 <table>
@@ -4055,7 +4060,28 @@
 <td>string</td>
 <td>—</td>
 <td>Non</td>
-<td>Nom de base aérienne DCS liée — QRA hors ligne si détruite</td>
+<td>Nom d'une base aérienne DCS liée : la QRA se met en pause tant que la base est capturée ou trop endommagée, et repart quand elle est reprise. Raccourci d'une entrée de <code>links</code></td>
+</tr>
+<tr>
+<td><code>links</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>Non</td>
+<td>Ce dont dépend la QRA : bases aériennes, FARP, navires, groupes ou statics, par leur nom DCS. Une base ou un FARP perdu <strong>met la QRA en pause</strong> jusqu'à sa reprise ; un navire, un groupe ou un static détruit <strong>l'arrête pour de bon</strong>. Un seul lien perdu suffit</td>
+</tr>
+<tr>
+<td><code>follow_unit</code></td>
+<td>string</td>
+<td>—</td>
+<td>Non</td>
+<td>Nom d'une unité que la zone suit (un porte-avions, par exemple) ; le centre est relu à chaque vérification. Une trigger zone liée à une unité dans l'éditeur la suit aussi, sans cette clé. Si l'unité meurt, la zone reste là où elle l'a vue en dernier</td>
+</tr>
+<tr>
+<td><code>logistics</code></td>
+<td>objet</td>
+<td>—</td>
+<td>Non</td>
+<td>Stock d'avions fini et ravitaillement — voir <a href="#logistics-chain">Chaîne logistique</a></td>
 </tr>
 <tr>
 <td><code>respawn_default_offset</code></td>
@@ -4176,6 +4202,10 @@ doive en plus avoir le niveau de sécurité requis.</p>
 <td><code>:setZoneRadius(meters)</code></td>
 <td>Rayon en mètres (quand on n'utilise pas de zone trigger)</td>
 </tr>
+<tr>
+<td><code>:setFollowUnit(unitName)</code></td>
+<td>La zone suit cette unité, un porte-avions par exemple</td>
+</tr>
 </tbody>
 </table>
 <h3 id="défenseurs">Défenseurs<a class="headerlink" href="#défenseurs" title="Permanent link">&para;</a></h3>
@@ -4279,7 +4309,7 @@ doive en plus avoir le niveau de sécurité requis.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="lien-à-une-base-aérienne">Lien à une base aérienne<a class="headerlink" href="#lien-à-une-base-aérienne" title="Permanent link">&para;</a></h3>
+<h3 id="liens">Liens<a class="headerlink" href="#liens" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -4289,8 +4319,12 @@ doive en plus avoir le niveau de sécurité requis.</p>
 </thead>
 <tbody>
 <tr>
+<td><code>:addLink(name)</code></td>
+<td>Faire dépendre la QRA d'une base, d'un FARP, d'un navire, d'un groupe ou d'un static : une base perdue la met en pause, le reste détruit l'arrête</td>
+</tr>
+<tr>
 <td><code>:setAirportLink(name)</code></td>
-<td>Lier à une base — la QRA passe hors ligne si la base est détruite</td>
+<td>Lier à une base — la QRA se met en pause tant que la base est perdue (raccourci de <code>:addLink</code>)</td>
 </tr>
 <tr>
 <td><code>:setAirportMinLifePercent(pct)</code></td>
@@ -4450,7 +4484,7 @@ doive en plus avoir le niveau de sécurité requis.</p>
 </tr>
 <tr>
 <td><code>NOAIRBASE</code></td>
-<td>La base aérienne liée a été détruite — la QRA se met en retrait</td>
+<td>Une base aérienne liée est capturée ou trop endommagée — la QRA attend qu'elle soit reprise</td>
 </tr>
 </tbody>
 </table>
@@ -4501,7 +4535,7 @@ signale par un avertissement. Un groupe d'une autre tâche (<code>CAS</code>, <c
 sa route.</p>
 <p>Une commande <code>-cap</code> listée dans <code>simple_groups</code> défend elle aussi la zone de la QRA, et non la zone de
 60 NM qu'elle dessine autour de sa propre branche.</p>
-<h3 id="chaîne-logistique">Chaîne logistique<a class="headerlink" href="#chaîne-logistique" title="Permanent link">&para;</a></h3>
+<h3 id="logistics-chain">Chaîne logistique<a class="headerlink" href="#logistics-chain" title="Permanent link">&para;</a></h3>
 <p>Par défaut, une QRA dispose d'aéronefs en nombre illimité. Le système de logistique permet de modéliser un stock d'aérodrome fini avec ravitaillement optionnel — utile pour les missions persistantes de longue durée :</p>
 <table>
 <thead>
@@ -4538,6 +4572,62 @@ sa route.</p>
 </tbody>
 </table>
 <p>Voyez cela comme un entrepôt : <code>QRAcount</code> est ce qui est en rayon, <code>resupplyDelay</code> le délai de livraison du camion, et <code>minCountforResupply</code> le point de recommande.</p>
+<p>Dans <code>mission.yaml</code>, le bloc <code>logistics:</code> d'une définition règle la même chose, une clé par méthode :</p>
+<table>
+<thead>
+<tr>
+<th>Clé de <code>logistics</code></th>
+<th>Méthode</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>groups_available</code></td>
+<td><code>setQRAcount</code></td>
+<td>Groupes en stock au départ ; à <code>0</code>, la QRA démarre vide et attend un ravitaillement</td>
+</tr>
+<tr>
+<td><code>max_ready</code></td>
+<td><code>setQRAmaxCount</code></td>
+<td>Plafond de groupes en stock</td>
+</tr>
+<tr>
+<td><code>resupply_delay</code></td>
+<td><code>setQRAresupplyDelay</code></td>
+<td>Secondes entre la commande et la livraison</td>
+</tr>
+<tr>
+<td><code>resupply_amount</code></td>
+<td><code>setResupplyAmount</code></td>
+<td>Groupes livrés à chaque ravitaillement</td>
+</tr>
+<tr>
+<td><code>max_resupplies</code></td>
+<td><code>setQRAmaxResupplyCount</code></td>
+<td>Groupes livrables au total (<code>-1</code> = illimité, <code>0</code> = aucun ravitaillement)</td>
+</tr>
+<tr>
+<td><code>resupply_below</code></td>
+<td><code>setQRAminCountforResupply</code></td>
+<td>Stock sous lequel un ravitaillement part ; absent, il part dès qu'un groupe est perdu</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">definitions</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QRA-LIMITED&quot;</span>
+<span class="w">        </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED</span>
+<span class="w">        </span><span class="nt">trigger_zone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ZONE-LIMITED&quot;</span>
+<span class="w">        </span><span class="nt">simple_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;F-15C</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;F-15C</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">2&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">logistics</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">groups_available</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">          </span><span class="nt">max_ready</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">          </span><span class="nt">resupply_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1800</span>
+<span class="w">          </span><span class="nt">resupply_amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div>
+<p><code>validate</code> signale une clé de <code>logistics</code> qu'il ne connaît pas.</p>
 <hr />
 <h2 id="configuration-globale">Configuration globale<a class="headerlink" href="#configuration-globale" title="Permanent link">&para;</a></h2>
 <table>

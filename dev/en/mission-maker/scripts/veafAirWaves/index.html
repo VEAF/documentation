@@ -3790,6 +3790,10 @@
 <span class="w">        </span><span class="nt">max_seconds_outside_ia</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">     </span><span class="c1"># seconds before an AI group is considered lost outside zone</span>
 <span class="w">        </span><span class="nt">minimum_life_percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1"># life percentage (0–100) below which an AI unit counts as destroyed (default: 0)</span>
 <span class="w">        </span><span class="nt">reset_when_dying</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># reset all waves when a player dies</span>
+<span class="w">        </span><span class="nt">closed_once_active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># true = dead is dead: an intruder is warned, shot at, then destroyed</span>
+<span class="w">        </span><span class="nt">max_seconds_outside_players</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"> </span><span class="c1"># the escalation delay (leaving the zone, intruder in a closed zone)</span>
+<span class="w">        </span><span class="c1"># links: [&quot;Maykop&quot;]             # airbases, FARPs, ships, groups or statics the zone depends on</span>
+<span class="w">        </span><span class="c1"># follow_unit: &quot;CVN-74&quot;         # the zone follows this unit</span>
 <span class="w">        </span><span class="nt">message_start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Zone</span><span class="nv"> </span><span class="s">active!&quot;</span><span class="w">   </span><span class="c1"># custom zone-start message (optional)</span>
 <span class="w">        </span><span class="nt">message_wait_for_humans</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Waiting</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">players...&quot;</span>
 <span class="w">        </span><span class="nt">message_wave_deployed</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Wave</span><span class="nv"> </span><span class="s">inbound!&quot;</span>
@@ -3802,6 +3806,8 @@
 <span class="w">            </span><span class="nt">bias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">                     </span><span class="c1"># shift random selection towards harder groups</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;su30sm-flight&quot;</span>
 <span class="w">            </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
+<span class="w">            </span><span class="nt">friendly_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Tanker&quot;</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># to defend: if they all die, the zone is lost</span>
+<span class="w">            </span><span class="nt">support_groups</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Red</span><span class="nv"> </span><span class="s">AWACS&quot;</span><span class="w">   </span><span class="c1"># scenery: they count neither for the end of the wave nor for its loss</span>
 </code></pre></div>
 <h3 id="airwave_zones-common-fields"><code>airwave_zones[]</code> common fields<a class="headerlink" href="#airwave_zones-common-fields" title="Permanent link">&para;</a></h3>
 <table>
@@ -3841,7 +3847,28 @@
 <td>string[]</td>
 <td>—</td>
 <td>No</td>
-<td>Coalitions whose players trigger waves (<code>BLUE</code>, <code>RED</code>)</td>
+<td>Coalitions whose players trigger waves (<code>BLUE</code>, <code>RED</code>). The waves spawn for the opposite side</td>
+</tr>
+<tr>
+<td><code>links</code></td>
+<td>string[]</td>
+<td><code>[]</code></td>
+<td>No</td>
+<td>What the zone depends on: airbases, FARPs, ships, groups or statics, by DCS name. An airbase or FARP no longer held by the waves' side, or too damaged, <strong>pauses the zone</strong> (the current wave goes) until it is retaken; a ship, group or static destroyed <strong>stops it for good</strong></td>
+</tr>
+<tr>
+<td><code>follow_unit</code></td>
+<td>string</td>
+<td>—</td>
+<td>No</td>
+<td>Name of a unit the zone follows (a carrier, for instance). A trigger zone linked to a unit in the editor follows it too, without this key. The drawing on the map stays where it was put at start</td>
+</tr>
+<tr>
+<td><code>closed_once_active</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td><strong>Dead is dead</strong>: once the zone runs, a human who was not in it at activation — or who comes back in the slot of an aircraft shot down — is warned, then put under flak, then destroyed, on the delay of <code>max_seconds_outside_players</code> (30 s without it)</td>
 </tr>
 </tbody>
 </table>
@@ -3945,6 +3972,12 @@ now checks the file it generates and refuses to ship one that does not parse.</p
 <td><code>0</code></td>
 <td>Life percentage (0–100, compared to <code>100 × life / initial life</code>) below which an AI unit counts as destroyed</td>
 </tr>
+<tr>
+<td><code>max_seconds_outside_players</code></td>
+<td>integer</td>
+<td>—</td>
+<td>Delay of the escalation applied to a player who left the zone, or to an intruder in a closed zone: flak past this delay, destruction past twice it</td>
+</tr>
 </tbody>
 </table>
 <h3 id="waves-fields"><code>waves[]</code> fields<a class="headerlink" href="#waves-fields" title="Permanent link">&para;</a></h3>
@@ -3981,6 +4014,18 @@ now checks the file it generates and refuses to ship one that does not parse.</p
 <td>integer</td>
 <td><code>0</code></td>
 <td>Shift random start index toward harder entries</td>
+</tr>
+<tr>
+<td><code>friendly_groups</code></td>
+<td>string or string[]</td>
+<td>—</td>
+<td>Groups or VEAF commands <strong>to defend</strong>, spawned with the wave for the players' side. If they all die, the zone is lost — the same message and reset as the players' death. Survivors go with the wave</td>
+</tr>
+<tr>
+<td><code>support_groups</code></td>
+<td>string or string[]</td>
+<td>—</td>
+<td><strong>Unimportant</strong> groups or VEAF commands (support, defence), spawned with the wave for the waves' side. They count neither for the end of the wave nor for its loss, and go with it</td>
 </tr>
 </tbody>
 </table>
@@ -4118,7 +4163,27 @@ in turn — and add <code>radio_menu_secured: true</code> so that pilot must als
 </tr>
 <tr>
 <td><code>:setMaxSecondsOutsideOfZonePlayers(n)</code></td>
-<td>Seconds before the zone resets if all players leave</td>
+<td>Escalation delay for a player who left the zone (or an intruder in a closed zone): flak past this delay, destruction past twice it</td>
+</tr>
+<tr>
+<td><code>:setClosedOnceActive(bool)</code></td>
+<td>Close the zone once it runs: dead is dead</td>
+</tr>
+<tr>
+<td><code>:setFollowUnit(unitName)</code></td>
+<td>The zone follows this unit, a carrier for instance</td>
+</tr>
+<tr>
+<td><code>:addLink(name)</code></td>
+<td>Make the zone depend on an airbase, FARP, ship, group or static</td>
+</tr>
+<tr>
+<td><code>:setLinkMinLifePercent(pct)</code></td>
+<td>Minimum health of a linked airbase (0–1, default <code>0.9</code>)</td>
+</tr>
+<tr>
+<td><code>:setCoalition(side)</code></td>
+<td>The waves' side (default: opposite the players)</td>
 </tr>
 <tr>
 <td><code>:setDelayBetweenWaves(n)</code></td>
@@ -4418,6 +4483,10 @@ its own leg.</p>
 <tr>
 <td><code>OVER</code></td>
 <td>All waves have been destroyed — the zone is finished.</td>
+</tr>
+<tr>
+<td><code>PAUSED</code></td>
+<td>A linked airbase is lost: the current wave is gone, the zone waits for the airbase to be retaken, then starts again.</td>
 </tr>
 </tbody>
 </table>
