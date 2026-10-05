@@ -4141,6 +4141,9 @@
 
 <h1 id="veafcombatzone--zones-de-combat-activables">veafCombatZone — Zones de combat activables<a class="headerlink" href="#veafcombatzone--zones-de-combat-activables" title="Permanent link">&para;</a></h1>
 <p><strong>Module ID:</strong> <code>COMBATZONE</code> | <strong>Fichier:</strong> <code>veafCombatZone.lua</code></p>
+<blockquote>
+<p><strong>Voir en jeu</strong> : étapes 04 « Entraînement de Khoni : trois niveaux », 07 « Mission chaînée : le port d'Ochamchire », 08 « Opération Tkvarcheli : tâches et dépendances » et 09 « Convoi en mouvement » de la <a href="https://github.com/VEAF/VEAF-Demo-Mission-v6#la-visite-guidée">mission de démo</a>.</p>
+</blockquote>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
 <p>Définit des zones de combat nommées dans l'éditeur de mission que les joueurs peuvent activer et désactiver via le menu radio F10. Chaque zone suit l'état des unités ennemies, déclenche des événements de completion d'objectif, supporte la notation et peut contenir plusieurs groupes d'unités avec des règles de spawn.</p>
@@ -5247,6 +5250,12 @@ aujourd'hui immobiles.</p>
 <span class="nv">operation</span><span class="p">:</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p><code>VeafCombatOperation = VeafCombatZone:new()</code> — l'opération étend <code>VeafCombatZone</code>. Les tâches sont ajoutées avec <code>:addTaskingOrder(zone, requiredComplete)</code>, où <code>zone</code> est une <code>VeafCombatZone</code> et <code>requiredComplete</code> la liste optionnelle des noms de zones devant être terminées avant que celle-ci soit activée. L'opération apparaît dans le menu radio comme une seule entrée.</p>
+<p>Son menu propose les infos, le briefing de chaque tâche active et, comme celui d'une zone, la commande <strong>Activer la zone</strong> (ou <strong>Désactiver la zone</strong> quand elle tourne — le libellé est celui des zones).
+Cette commande est sécurisée, sauf en mode entraînement, et absente quand l'activation par les joueurs est coupée (<code>disableUserActivation()</code>).
+Désactiver l'opération désactive aussi ses zones, et retire donc leurs unités ; la réactiver ne fait pas réapparaître une zone qui tourne déjà.
+Une opération peut aussi démarrer seule (<code>active_at_start: true</code>) ou par la commande de marqueur <code>-zonestart</code>.</p>
+<p>Par défaut l'opération se range directement sous le menu des zones de combat.
+Le sous-menu <strong>Opérations</strong> n'existe que si <code>operation_menu_name</code> est renseigné dans <code>combat_zone_settings</code>.</p>
 <hr />
 <h2 id="chaînage-de-zones">Chaînage de zones<a class="headerlink" href="#chaînage-de-zones" title="Permanent link">&para;</a></h2>
 <p>Une zone peut activer automatiquement une ou plusieurs zones suivantes lorsqu'elle est terminée. Cela permet de construire des progressions de campagne dynamiques sans scripting manuel :</p>

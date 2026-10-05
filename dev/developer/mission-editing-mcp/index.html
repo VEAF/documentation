@@ -3146,6 +3146,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add_combat_operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_combat_operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#create_qra" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4277,6 +4288,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add_combat_operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_combat_operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#create_qra" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4706,6 +4728,9 @@ de valider et de mentir.</p>
 <p>Écriture. Deux couches : la <strong>route</strong> (<code>add</code>, <code>insert</code>, <code>remove</code>, <code>reorder</code>, <code>set</code>) est pour l'essentiel
 une opération de liste sur <code>route.points</code> ; les <strong>tâches</strong> d'un point de passage (<code>add_task</code>,
 <code>clear_tasks</code>) sont ce qui fait qu'un vol fait quelque chose.</p>
+<p><strong>Route ou hors route.</strong> Sur un groupe <strong>terrestre</strong>, <code>road: true</code> écrit l'action <code>On Road</code> d'un <code>Turning Point</code> (les véhicules suivent les routes), <code>road: false</code> écrit <code>Off Road</code> ; pour <code>add</code>, <code>insert</code> et <code>set</code>.
+Refusé sur un autre groupe et sur un autre type de point.
+Tous les points étaient écrits <code>Turning Point</code>, et le convoi de la mission de démo coupait à travers champs (FIX-DEMO-MISSION-FINDINGS 07).</p>
 <p><strong>L'invariant qui en fait de la chirurgie et pas de l'édition de liste.</strong>
 <code>FIX-WAYPOINTS-ETA-LOCKED</code> a établi que DCS <strong>refuse d'enregistrer</strong> une mission dont une route n'a
 aucun point de passage à heure verrouillée (« Route has no waypoints with locked time! »), et que sa
@@ -5136,6 +5161,7 @@ déclarer ouvrirait toutes ses bases).</p>
 <li><code>add_sound(mission_path, sound_path, resource_name)</code> — copie un <code>.ogg</code>/<code>.wav</code> dans <code>l10n/DEFAULT</code> et
   le déclare dans <code>mapResource</code> sous <code>MCP_Sound_&lt;nom&gt;</code> ; <code>edit_route</code> <code>transmit_message</code> le diffuse
   (<code>TransmitMessage</code> enveloppé, <code>file</code> = la clé, <code>loop</code>, <code>duration</code>, <code>subtitle</code> écrit au dictionnaire).</li>
+<li><code>set_briefing_picture(mission_path, source_path, side, resource_name)</code> — copie un <code>.png</code>/<code>.jpg</code> dans <code>l10n/DEFAULT</code>, le déclare dans <code>mapResource</code> sous <code>MCP_Picture_&lt;nom&gt;</code> et ajoute la clé au <code>pictureFileNameB</code> / <code>R</code> / <code>N</code> du camp, en gardant les images qu'il avait (FIX-DEMO-MISSION-FINDINGS 07).</li>
 </ul>
 <h3 id="open-training-syrie-fix-open-training-syria-findings">Open Training Syrie (FIX-OPEN-TRAINING-SYRIA-FINDINGS)<a class="headerlink" href="#open-training-syrie-fix-open-training-syria-findings" title="Permanent link">&para;</a></h3>
 <ul>
@@ -5366,6 +5392,11 @@ runtime, coalition indifférente) + bloc <code>modules.COMBATZONE.combat_zones[]
 Chaque groupe accepte <code>route</code> et <code>patrol</code>, de la même forme qu'<code>add_group</code> : un convoi qui traverse la
 zone est un groupe de la zone, pas un appel séparé. En catégorie <code>ship</code>, les navires sont espacés de
 600 m (ceux d'un véhicule, 20 m, les faisaient se percuter à l'apparition).</p>
+<h3 id="add_combat_operation"><code>add_combat_operation</code><a class="headerlink" href="#add_combat_operation" title="Permanent link">&para;</a></h3>
+<p>Écrit dans <code>mission.yaml</code> seulement une entrée <code>combat_zones[]</code> de type <code>operation</code> : <code>tasking_orders</code> (chaque tâche, ses <code>dependencies</code>), <code>friendly_name</code>, <code>briefing</code>, <code>active_at_start</code>.
+Le nom d'une opération est une étiquette, pas une zone de déclenchement : rien n'est écrit dans <code>src/mission/</code>.
+Refuse une tâche ou une dépendance qui ne nomme pas une zone de combat déclarée (ou qui nomme une autre opération) : le <code>GetZone()</code> généré vaudrait <code>nil</code> au runtime (FIX-DEMO-MISSION-FINDINGS 07).
+Activer l'opération fait apparaître toutes ses zones d'un coup ; les <code>dependencies</code> ne décident que du moment où une tâche devient l'objectif en cours.</p>
 <h3 id="create_qra"><code>create_qra</code><a class="headerlink" href="#create_qra" title="Permanent link">&para;</a></h3>
 <p>Zone + intercepteurs <strong>Late Activation</strong> (coalition significative) + entrée
 <code>modules.QRA.definitions[]</code> référençant les groupes <strong>par nom exact</strong> (<code>simple_groups</code>). La
@@ -5423,7 +5454,8 @@ réel projeté</strong>, ce socle relie <code>x/y DCS ↔ lat/lon réel</code>.<
 <h3 id="describe_map"><code>describe_map</code><a class="headerlink" href="#describe_map" title="Permanent link">&para;</a></h3>
 <p>Lecture seule. Depuis un <code>.miz</code> <strong>ou</strong> un dossier de mission : renvoie le <strong>théâtre</strong>, les
 <strong>bullseyes</strong> par coalition, et les zones/groupes existants comme <strong>points de repère</strong> — pour que le
-LLM s'oriente sans DCS.</p>
+LLM s'oriente sans DCS.
+Chaque zone porte son <code>x</code>/<code>y</code>/<code>radius</code>, chaque groupe son <code>x</code>/<code>y</code> et son nombre d'unités (<code>units</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz-ou-dossier&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="list_airfields"><code>list_airfields</code><a class="headerlink" href="#list_airfields" title="Permanent link">&para;</a></h3>
