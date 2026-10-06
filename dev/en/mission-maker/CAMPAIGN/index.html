@@ -1667,6 +1667,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#debriefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The debriefing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#strategic-briefing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3468,6 +3479,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#debriefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The debriefing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#strategic-briefing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3574,6 +3596,7 @@ It is an <strong>episodic</strong> campaign, in the spirit of DCS Liberation: ea
     ├── mission-01/
     │   ├── mission/         the mission folder of mission 1
     │   ├── mission-01.state the state file the mission wrote
+    │   ├── debriefing.fr.txt / debriefing.en.txt
     │   ├── campaign-state.before.yaml
     │   └── campaign-state.after.yaml
     └── mission-02/
@@ -3632,7 +3655,7 @@ A zone renamed or removed in <code>campaign.yaml</code> after the start is repor
 Its composition is recorded, and every following mission spawns it again <strong>minus its losses</strong>: a SAM site that lost two launchers starts without them.
 A zone that loses its whole garrison turns <strong>neutral</strong>, and can be captured.</p>
 <h3 id="size-classes">Size classes<a class="headerlink" href="#size-classes" title="Permanent link">&para;</a></h3>
-<p>A size class is a set of parameters of the CAS generators:</p>
+<p>A size class is a set of parameters of the CAS generators: the garrison has as many infantry sections, armour platoons and air defence groups as a CAS mission of the same size, <strong>without its transport company</strong> — a garrison has no use for fifteen lorries.</p>
 <table>
 <thead>
 <tr>
@@ -3641,25 +3664,29 @@ A zone that loses its whole garrison turns <strong>neutral</strong>, and can be 
 <th><code>defense</code></th>
 <th><code>armor</code></th>
 <th>long-range SAM</th>
+<th>units (average, min – max)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>outpost</code></td>
-<td>2</td>
+<td>1</td>
 <td>1</td>
 <td>1</td>
 <td>no</td>
+<td>23 (12 – 36)</td>
 </tr>
 <tr>
 <td><code>airfield</code></td>
-<td>4</td>
+<td>1</td>
 <td>3</td>
 <td>2</td>
 <td>yes</td>
+<td>51 (35 – 74), of which ≈ 20 for the SAM</td>
 </tr>
 </tbody>
 </table>
+<p>Measured over 40 draws on 2026-10-06; the example campaign thus has about 470 ground units.</p>
 <p><code>size</code> runs from 1 to 5, <code>defense</code> and <code>armor</code> from 0 to 5, as for a <code>_cas</code> marker.
 A new class must set <code>size</code>, <code>defense</code> and <code>armor</code>.</p>
 <h3 id="first-mission">Before the first mission<a class="headerlink" href="#first-mission" title="Permanent link">&para;</a></h3>
@@ -3719,6 +3746,9 @@ Otherwise it merges the file, then plays the <strong>turn</strong> with fixed ru
 </table>
 <p>Destroying an enemy depot means a smaller reserve, so fewer repairs and thinner garrisons behind it: an empty reserve only allows a token garrison.</p>
 <p>The enemy's <strong>intent</strong> — where it puts its effort, what the next mission asks of the players — is not in the rules: Claude decides it while building the next mission, and writes it in the briefing.</p>
+<h2 id="debriefing">The debriefing<a class="headerlink" href="#debriefing" title="Permanent link">&para;</a></h2>
+<p><code>campaign apply</code> also writes the debriefing of the mission flown, in French and English, in <code>missions/mission-NN/</code> (<code>debriefing.fr.txt</code>, <code>debriefing.en.txt</code>): the ground that changed hands, each side's losses zone by zone and unit type by unit type, the scenery destroyed, what the turn did next, and where the objectives stand.
+It is a text to read after the evening or to post as it is; the AI assistant tells it as a story for the squadron when asked, keeping to its facts.</p>
 <h2 id="strategic-briefing">The strategic briefing<a class="headerlink" href="#strategic-briefing" title="Permanent link">&para;</a></h2>
 <p><code>campaign next</code> writes, at the root of the mission folder, the factual part of the strategic briefing in French and English (<code>strategic-situation.fr.txt</code>, <code>strategic-situation.en.txt</code>): the front, what changed in the last mission, the enemy's reserve and garrisons, the objectives and the missions left.
 Claude adds the narrative part while designing the mission.</p>

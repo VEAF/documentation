@@ -1667,6 +1667,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#debriefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le débriefing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#strategic-briefing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3468,6 +3479,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#debriefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le débriefing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#strategic-briefing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3574,6 +3596,7 @@ C'est une campagne <strong>épisodique</strong>, dans l'esprit de DCS Liberation
     ├── mission-01/
     │   ├── mission/         le dossier de mission de la mission 1
     │   ├── mission-01.state le fichier d&#39;état écrit par la mission
+    │   ├── debriefing.fr.txt / debriefing.en.txt
     │   ├── campaign-state.before.yaml
     │   └── campaign-state.after.yaml
     └── mission-02/
@@ -3632,7 +3655,7 @@ Une zone renommée ou supprimée dans <code>campaign.yaml</code> après le déma
 Sa composition est enregistrée, et chaque mission suivante la fait réapparaître <strong>moins ses pertes</strong> : un site SAM qui a perdu deux lanceurs démarre sans eux.
 Une zone qui perd toute sa garnison devient <strong>neutre</strong>, et peut être prise.</p>
 <h3 id="size-classes">Les classes de taille<a class="headerlink" href="#size-classes" title="Permanent link">&para;</a></h3>
-<p>Une classe de taille est un jeu de paramètres des générateurs CAS :</p>
+<p>Une classe de taille est un jeu de paramètres des générateurs CAS : la garnison compte autant de sections d'infanterie, de pelotons blindés et de groupes de défense aérienne qu'une mission CAS de la même taille, <strong>sans sa compagnie de transport</strong> — une garnison n'a que faire de quinze camions.</p>
 <table>
 <thead>
 <tr>
@@ -3641,25 +3664,29 @@ Une zone qui perd toute sa garnison devient <strong>neutre</strong>, et peut êt
 <th><code>defense</code></th>
 <th><code>armor</code></th>
 <th>SAM longue portée</th>
+<th>unités (moyenne, min – max)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>outpost</code></td>
-<td>2</td>
+<td>1</td>
 <td>1</td>
 <td>1</td>
 <td>non</td>
+<td>23 (12 – 36)</td>
 </tr>
 <tr>
 <td><code>airfield</code></td>
-<td>4</td>
+<td>1</td>
 <td>3</td>
 <td>2</td>
 <td>oui</td>
+<td>51 (35 – 74), dont ≈ 20 pour le SAM</td>
 </tr>
 </tbody>
 </table>
+<p>Mesuré sur 40 tirages, le 2026-10-06 ; la campagne d'exemple compte ainsi environ 470 unités au sol.</p>
 <p><code>size</code> va de 1 à 5, <code>defense</code> et <code>armor</code> de 0 à 5, comme pour un marqueur <code>_cas</code>.
 Une classe nouvelle doit fixer <code>size</code>, <code>defense</code> et <code>armor</code>.</p>
 <h3 id="first-mission">Avant la première mission<a class="headerlink" href="#first-mission" title="Permanent link">&para;</a></h3>
@@ -3719,6 +3746,9 @@ Sinon il fusionne le fichier, puis joue le <strong>tour</strong> avec des règle
 </table>
 <p>Détruire un dépôt ennemi, c'est moins de réserve, donc moins de réparations et des garnisons plus maigres derrière : une réserve vide ne permet plus qu'une garnison minimale.</p>
 <p>L'<strong>intention</strong> de l'ennemi — où il porte son effort, ce que la prochaine mission demande aux joueurs — n'est pas dans les règles : c'est Claude qui la décide en construisant la mission suivante, et qui l'écrit dans le briefing.</p>
+<h2 id="debriefing">Le débriefing<a class="headerlink" href="#debriefing" title="Permanent link">&para;</a></h2>
+<p><code>campaign apply</code> écrit aussi le débriefing de la mission jouée, en français et en anglais, dans <code>missions/mission-NN/</code> (<code>debriefing.fr.txt</code>, <code>debriefing.en.txt</code>) : le terrain qui a changé de mains, les pertes de chaque camp zone par zone et type d'unité par type d'unité, le décor détruit, ce que le tour a fait ensuite, et l'état des objectifs.
+C'est un texte à lire après la soirée ou à poster tel quel ; l'assistant IA en fait le récit pour l'escadrille quand on le lui demande, en s'en tenant à ses faits.</p>
 <h2 id="strategic-briefing">Le briefing stratégique<a class="headerlink" href="#strategic-briefing" title="Permanent link">&para;</a></h2>
 <p><code>campaign next</code> écrit, à la racine du dossier de mission, la partie factuelle du briefing stratégique en français et en anglais (<code>strategic-situation.fr.txt</code>, <code>strategic-situation.en.txt</code>) : le front, ce qui a changé à la dernière mission, la réserve et les garnisons ennemies, les objectifs et les missions restantes.
 Claude y ajoute la partie narrative en concevant la mission.</p>
