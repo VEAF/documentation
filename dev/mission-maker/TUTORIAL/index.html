@@ -937,10 +937,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-10-next" class="md-nav__link">
+  <a href="#step-10-server-profile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Étape 10 — Et ensuite
+        Étape 10 — Préparer la version serveur
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-11-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 11 — Mettre à jour les outils
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-12-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 12 — Et ensuite
       
     </span>
   </a>
@@ -3377,10 +3399,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-10-next" class="md-nav__link">
+  <a href="#step-10-server-profile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Étape 10 — Et ensuite
+        Étape 10 — Préparer la version serveur
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-11-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 11 — Mettre à jour les outils
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-12-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 12 — Et ensuite
       
     </span>
   </a>
@@ -3439,6 +3483,27 @@ l'updater.</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">about</span>
 </code></pre></div>
 <p>affiche la version installée.</p>
+<p><strong>Dans quelle langue l'outil vous répond.</strong> Il suit la langue de Windows.
+Pour voir celle qu'il a retenue, et d'où il la tient :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">user-config</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>Paramètres effectifs
+Langue : fr (source : OS/default)
+</code></pre></div>
+<p>Ce tutoriel cite les messages de l'outil en français.
+Si les vôtres sortent en anglais, fixez la langue une fois pour toutes :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">user-config</span> <span class="p">-</span><span class="n">-set</span> <span class="n">lang</span><span class="p">=</span><span class="n">fr</span>
+</code></pre></div>
+<p>Le réglage est écrit dans <code>veafmct.yaml</code>, à la racine de votre dossier utilisateur (<code>C:\Users\&lt;vous&gt;\veafmct.yaml</code>), et vaut pour tous vos dossiers de mission sur cette machine.
+<code>user-config</code> donne désormais ce fichier comme source de la langue.
+Les autres réglages qu'il peut contenir : <a href="../GUIDE/#global-user-configuration">configuration globale utilisateur</a>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Le jour où vous demandez de l'aide</p>
+<p><code>.\veaf-tools.exe doctor</code> affiche la version de l'outil, celle de DCS, le système et les dernières erreurs de l'outil, puis les répète dans un bloc prêt à copier dans un message Discord ou une issue GitHub.
+Votre nom d'utilisateur Windows y est déjà masqué.
+Collez ce bloc tel quel : c'est la première chose qu'on vous demanderait.
+→ <a href="../../SUPPORT/#doctor">Lancer <code>doctor</code></a></p>
+</div>
 <hr />
 <h2 id="step-1-prepare">Étape 1 — Créer le dossier de mission<a class="headerlink" href="#step-1-prepare" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">prepare</span> <span class="p">-</span><span class="n">-template</span> <span class="n">standard</span> <span class="p">-</span><span class="n">-theatre</span> <span class="n">Caucasus</span>
@@ -3549,7 +3614,8 @@ est commenté : ce sont des exemples prêts à décommenter, pas de la configura
 activations de zone de combat exigent alors une radio authentifiée ou un mot de passe. En solo,
 hors serveur, ça se manifeste par des commandes qui ne font rien — et on cherche le bug
 ailleurs. Le bloc <code>security:</code> va à la <strong>racine</strong> du fichier, pas dans <code>modules:</code>. Remettez-la
-avant de déployer sur un serveur.</p>
+avant de déployer sur un serveur — l'<a href="#step-10-server-profile">étape 10</a> montre comment le faire
+une fois pour toutes.</p>
 </div>
 <p>→ <a href="../concepts/mission-yaml/">fiche : <code>mission.yaml</code> et ses modules</a> ·
 <a href="../scripts/veafSecurity/">veafSecurity</a></p>
@@ -3797,7 +3863,65 @@ réellement accueillir. Un terrain qui n'a que des emplacements hélicoptères n
 d'avions, quel que soit le stock.</p>
 <p>→ <a href="../concepts/dynamic-slots/">fiche : slots dynamiques</a></p>
 <hr />
-<h2 id="step-10-next">Étape 10 — Et ensuite<a class="headerlink" href="#step-10-next" title="Permanent link">&para;</a></h2>
+<h2 id="step-10-server-profile">Étape 10 — Préparer la version serveur<a class="headerlink" href="#step-10-server-profile" title="Permanent link">&para;</a></h2>
+<p>À l'étape 2, vous avez coupé la sécurité le temps d'apprendre.
+Elle doit revenir avant que la mission parte sur un serveur : sans elle, n'importe quel joueur peut faire apparaître ou détruire ce qu'il veut avec un marqueur.
+La remettre à la main avant chaque déploiement, c'est l'oublier un jour ; un <strong>profil de build</strong> s'en charge.</p>
+<p>Dans <code>mission.yaml</code>, remplacez le bloc <code>security:</code> de l'étape 2 par :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">TEST</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">security</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Le bloc reste à la <strong>racine</strong> du fichier, là où était <code>security:</code>.
+Un profil ne contient que ce qui change : ici, la seule différence entre votre version de test et celle du serveur.
+Sans profil, la configuration de base s'applique, et elle a désormais la sécurité active.</p>
+<p>Pour jouer et tester, construisez <strong>avec</strong> le profil :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span> <span class="n">Mon-Premier-Vol</span><span class="p">.</span><span class="n">miz</span>
+</code></pre></div>
+<p>C'est la nouvelle forme de la boucle <strong>éditeur → <code>extract</code> → <code>build</code></strong> : seul le <code>build</code> change.</p>
+<p>Pour le serveur, construisez <strong>sans</strong> profil, dans un fichier à part :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="n">Mon-Premier-Vol-serveur</span><span class="p">.</span><span class="n">miz</span>
+</code></pre></div>
+<p>Le fichier à rouvrir dans l'éditeur reste <code>Mon-Premier-Vol.miz</code>. <code>Mon-Premier-Vol-serveur.miz</code> est un produit, comme les variantes de <code>missions/</code> : on l'envoie sur le serveur, on ne l'édite pas.</p>
+<p><strong>Comment savoir</strong> : le build avec profil l'annonce dans ses premières lignes,</p>
+<blockquote>
+<p>Construction avec le profil : TEST</p>
+</blockquote>
+<p>et le build sans profil n'affiche rien de tel.</p>
+<div class="admonition warning">
+<p class="admonition-title">Un profil mal orthographié ne bloque pas le build</p>
+<p><code>--profile TSET</code> affiche « Profil 'TSET' introuvable dans mission.yaml — configuration de base utilisée », puis construit <strong>sans</strong> profil : sécurité active, et des commandes de marqueur qui ne font plus rien en solo.
+Si <code>-shilka</code> cesse de marcher après cette étape, relisez la sortie du build avant de chercher ailleurs.
+Les majuscules, elles, ne comptent pas : <code>--profile test</code> trouve <code>TEST</code>.</p>
+</div>
+<p>Sur le serveur, la sécurité laisse passer les pilotes inscrits dans le fichier <code>veaf-pilots.txt</code> du serveur, selon leur niveau ; les autres doivent donner un mot de passe.
+Avant d'ouvrir la mission au public, définissez vos propres mots de passe : ceux livrés par défaut sont publiés avec les outils.</p>
+<p>→ <a href="../scripts/veafSecurity/">veafSecurity</a> · <a href="../GUIDE/#build-profiles">profils de build</a></p>
+<hr />
+<h2 id="step-11-update">Étape 11 — Mettre à jour les outils<a class="headerlink" href="#step-11-update" title="Permanent link">&para;</a></h2>
+<p>Les outils évoluent : correctifs, nouveaux modules, nouvelles commandes.
+Pour mettre à jour, relancez l'updater depuis le dossier de mission :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools-updater</span><span class="p">.</span><span class="n">exe</span>
+</code></pre></div>
+<p><strong>Ce qui doit se passer</strong> : il interroge la dernière release, la compare à la version installée, et ne télécharge que si elle est plus récente.
+Déjà à jour, il s'arrête là :</p>
+<div class="highlight"><pre><span></span><code>Version de la release trouvée : X.Y.Z
+La version installée X.Y.Z est déjà à jour
+Traitement terminé !
+</code></pre></div>
+<p>Sinon il annonce « Nouvelle version disponible : … → … », puis télécharge, vérifie et installe.</p>
+<p>La mise à jour remplace le dossier <code>published/</code> et les deux exécutables.
+Elle ne touche ni à <code>mission.yaml</code>, ni à <code>src/</code>, ni à vos <code>.miz</code>.</p>
+<p><strong>Puis reconstruisez.</strong> Les scripts VEAF voyagent <em>dans</em> le <code>.miz</code> : c'est le build qui les y copie.
+Une mission construite avant la mise à jour garde donc les anciens scripts tant que vous ne l'avez pas reconstruite :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">TEST</span> <span class="n">Mon-Premier-Vol</span><span class="p">.</span><span class="n">miz</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">build</span> <span class="n">Mon-Premier-Vol-serveur</span><span class="p">.</span><span class="n">miz</span>
+</code></pre></div>
+<p><strong>Comment savoir</strong> : <code>.\veaf-tools.exe about</code> affiche la nouvelle version, et le build l'écrit sur sa première ligne.</p>
+<p>Pour rester sur une version précise, par exemple le temps d'un événement : <a href="../GUIDE/#updates">mises à jour</a>.</p>
+<hr />
+<h2 id="step-12-next">Étape 12 — Et ensuite<a class="headerlink" href="#step-12-next" title="Permanent link">&para;</a></h2>
 <p>Vous avez une mission qui tourne, versionnable, reconstructible. La suite se choisit à la carte :</p>
 <table>
 <thead>
@@ -3826,6 +3950,22 @@ d'avions, quel que soit le stock.</p>
 <tr>
 <td>Protéger votre serveur par mot de passe</td>
 <td><a href="../scripts/veafSecurity/">veafSecurity</a></td>
+</tr>
+<tr>
+<td>Voir chaque fonctionnalité tourner en jeu</td>
+<td><a href="../GUIDE/#demo-mission">la mission de démo</a></td>
+</tr>
+<tr>
+<td>Reprendre une mission faite avec la v5 des outils</td>
+<td><a href="../MIGRATION_GUIDE/">Migration vers la v6</a></td>
+</tr>
+<tr>
+<td>Adopter une mission qui n'a pas été faite avec VMCT</td>
+<td><a href="../CONVERT_OTHER/">Adopter une mission tierce</a></td>
+</tr>
+<tr>
+<td>Construire ou modifier une mission en le demandant à un assistant IA</td>
+<td><a href="../AI_ASSISTANT_INSTALL/">Installer l'assistant IA</a></td>
 </tr>
 <tr>
 <td>Toutes les options de configuration</td>
