@@ -1689,6 +1689,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#briefing-deck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le document de briefing de campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#to-verify" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3501,6 +3512,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#briefing-deck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le document de briefing de campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#to-verify" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3590,12 +3612,14 @@ C'est une campagne <strong>épisodique</strong>, dans l'esprit de DCS Liberation
 <h2 id="campaign-folder">Le dossier de campagne<a class="headerlink" href="#campaign-folder" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>Caucase/
 ├── campaign.yaml            ce que vous déclarez ; les outils ne le réécrivent jamais
+├── briefing.yaml            le texte du briefing de campagne (voir plus bas) ; facultatif
 ├── campaign-state.yaml      ce que la campagne est devenue ; réécrit après chaque mission
 ├── template/                un dossier de mission ordinaire : chaque mission en part
 └── missions/
     ├── mission-01/
     │   ├── mission/         le dossier de mission de la mission 1
     │   ├── mission-01.state le fichier d&#39;état écrit par la mission
+    │   ├── briefing-campagne.pptx / carte-strategique.png
     │   ├── debriefing.fr.txt / debriefing.en.txt
     │   ├── campaign-state.before.yaml
     │   └── campaign-state.after.yaml
@@ -3634,6 +3658,8 @@ Chaque mission de la campagne commence comme une copie de ce dossier.</p>
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">outpost</span>
 <span class="w">    </span><span class="nt">side</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span>
 <span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">logistics</span><span class="w">          </span><span class="c1"># alimente la réserve de son camp entre les missions</span>
+<span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dépôt de Gudauta</span><span class="w">   </span><span class="c1"># le nom que lisent les joueurs ; le nom reste la clé</span>
+<span class="w">    </span><span class="nt">intel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dépôt actif, gardé.</span><span class="w">       </span><span class="c1"># ce que dit le renseignement, à la place du texte généré</span>
 <span class="w">    </span><span class="nt">garrison</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sa8</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">shilka</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">T-72B</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># remplace le tirage, pour le camp qui le déclare</span>
 <span class="nt">connections</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Kobuleti</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Senaki</span><span class="p p-Indicator">]</span>
@@ -3753,6 +3779,99 @@ C'est un texte à lire après la soirée ou à poster tel quel ; l'assistant IA 
 <h2 id="strategic-briefing">Le briefing stratégique<a class="headerlink" href="#strategic-briefing" title="Permanent link">&para;</a></h2>
 <p><code>campaign next</code> écrit, à la racine du dossier de mission, la partie factuelle du briefing stratégique en français et en anglais (<code>strategic-situation.fr.txt</code>, <code>strategic-situation.en.txt</code>) : le front, ce qui a changé à la dernière mission, la réserve et les garnisons ennemies, les objectifs et les missions restantes.
 Le texte, dans la langue des outils, devient aussi le briefing de la mission à sa création, pour qu'une mission construite telle quelle ne parte pas sans briefing ; Claude y ajoute la partie narrative en concevant la mission, et un second <code>campaign next</code> sur le même dossier ne l'écrase pas.</p>
+<h2 id="briefing-deck">Le document de briefing de campagne<a class="headerlink" href="#briefing-deck" title="Permanent link">&para;</a></h2>
+<p><code>campaign next</code> écrit aussi, dans <code>missions/mission-NN/</code>, le <strong>briefing stratégique de la campagne</strong> en PPTX (<code>briefing-campagne.pptx</code>) et sa carte (<code>carte-strategique.png</code>).
+C'est un briefing de situation au format des briefings VEAF — 16:9, fond blanc, titre en gras en haut à gauche — qui s'importe tel quel dans Google Slides.
+<code>.\veaf-tools.exe campaign briefing &lt;dossier&gt;</code> le régénère à tout moment, par exemple après avoir retouché le texte.</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>D'où elle vient</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Situation stratégique — politique, économique</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Situation militaire — forces ennemies, forces amies, terrain neutre</td>
+<td>les outils, et le mode d'action ennemi de <code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Carte stratégique</td>
+<td>les outils : chaque zone à son rayon, dans la couleur de son propriétaire, et les axes</td>
+</tr>
+<tr>
+<td>Mission et intention — mission, but, effet majeur, méthode, état final recherché</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Objectifs de la campagne — politiques, militaires, économiques, conditions de victoire</td>
+<td><code>briefing.yaml</code>, et les objectifs de <code>campaign.yaml</code></td>
+</tr>
+<tr>
+<td>Concept d'opération — une phase par mission, points de vigilance</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Règles d'engagement — ciblage, protection des civils et des infrastructures, autodéfense</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Mission N — ses tâches</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Annexe — Règles de la campagne</td>
+<td>les outils, d'après les règles de <code>campaign.yaml</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Les faits sont générés, la prose est écrite.</strong>
+Les outils écrivent ce que la campagne sait ; la situation, l'intention, le concept et les règles d'engagement s'écrivent dans <code>briefing.yaml</code>, à côté de <code>campaign.yaml</code>, par Claude ou à la main.
+Sans <code>briefing.yaml</code>, le document ne contient que la partie générée, et le dit ; <code>campaign validate</code> contrôle le fichier.
+Seule l'annexe parle de la mécanique du jeu : le reste se lit comme un état-major parlerait.</p>
+<p><strong>L'ennemi reste mystérieux.</strong>
+Le document ne donne jamais un effectif ennemi, ni sa réserve : seulement ce que le renseignement en dit, avec la fiabilité de sa source.
+Un site fixe — le SAM longue portée d'une zone — est nommé dès que l'état de la campagne l'enregistre : sa batterie est tirée au démarrage de la mission, donc il est « probable, type non confirmé » avant la mission 1, puis nommé (« Batterie SA-10 confirmée ») à partir de la mission 2.
+Une zone peut porter son propre texte de renseignement (<code>intel:</code>) et le nom que les joueurs lisent (<code>display_name: Dépôt de Khobi</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kolkhida</span>
+<span class="nt">situation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">political</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Il y a dix jours, les forces rouges ont franchi l&#39;Inguri et pris pied dans la plaine de Colchide.</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Une négociation s&#39;ouvre ; chaque kilomètre tenu par l&#39;adversaire à son ouverture lui sera acquis.</span>
+<span class="w">  </span><span class="nt">economic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Le port de Poti ne tourne plus.</span>
+<span class="w">  </span><span class="nt">enemy_course_of_action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tenir Senaki sous sa défense aérienne, puis reprendre l&#39;offensive.</span>
+<span class="nt">mission</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">En 3 missions, la coalition reprend Senaki et détruit le dépôt de Khobi.</span>
+<span class="nt">intent</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">purpose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Priver l&#39;adversaire de sa capacité à reprendre l&#39;offensive.</span>
+<span class="w">  </span><span class="nt">main_effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Priver Senaki de son soutien logistique.</span>
+<span class="w">  </span><span class="nt">end_state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Senaki et Poti tenues, Khobi détruit, les villes épargnées.</span>
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">political</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Rétablir l&#39;autorité du gouvernement jusqu&#39;à l&#39;Inguri.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">military</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Reprendre l&#39;aérodrome de Senaki.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Détruire le dépôt de Khobi.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">economic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Rouvrir le port de Poti</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">intact.</span><span class="p p-Indicator">]</span>
+<span class="nt">concept</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">phases</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Phase</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">mission</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">la</span><span class="nv"> </span><span class="s">porte</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">Poti&quot;</span><span class="p p-Indicator">,</span><span class="nt"> text</span><span class="p">:</span><span class="w"> </span><span class="nv">Prendre Poti et commencer l&#39;attrition de Khobi.</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">attention</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Zugdidi n&#39;est pas un objectif.</span><span class="p p-Indicator">]</span>
+<span class="nt">rules_of_engagement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">targeting</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Identification positive de toute cible avant le tir.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">civilians</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Pas de bombardement de zone dans les agglomérations.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">self_defence</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Le droit de légitime défense n&#39;est jamais restreint.</span><span class="p p-Indicator">]</span>
+<span class="nt">missions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">La porte de Poti</span>
+<span class="w">    </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> title</span><span class="p">:</span><span class="w"> </span><span class="nv">Prendre Poti — priorité 1</span><span class="p p-Indicator">,</span><span class="nt"> text</span><span class="p">:</span><span class="w"> </span><span class="nv">Sécuriser le port avec des troupes héliportées.</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>Chaque texte est une chaîne ou une liste de paragraphes.
+Un texte qui contient « : » se met entre guillemets (<code>"Cibles autorisées : les unités rouges."</code>) : sans eux, YAML le lit comme une clé et sa valeur, et <code>campaign validate</code> le signale.
+Après chaque mission, la page de la mission suivante et l'avancée du concept se réécrivent d'après le débriefing ; le reste se garde tant que la situation ne le change pas.</p>
+<p>La carte est tracée sur les tuiles d'OpenStreetMap, gardées en cache dans <code>%LOCALAPPDATA%\veaf-tools\tiles</code> ; les outils s'identifient au serveur par leur adresse GitHub, et rien d'autre.
+Sans réseau, la carte est tracée sur un fond uni et le document le signale : relancez <code>campaign briefing</code> une fois en ligne.</p>
 <h2 id="to-verify">Ce qui reste à vérifier en jeu<a class="headerlink" href="#to-verify" title="Permanent link">&para;</a></h2>
 <p>Ces points sont écrits et testés hors de DCS, mais pas encore mesurés en jeu :</p>
 <ul>
