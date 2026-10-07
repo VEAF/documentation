@@ -1689,10 +1689,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mission-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A mission's date, time and weather
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#briefing-deck" class="md-nav__link">
     <span class="md-ellipsis">
       
         The campaign briefing deck
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mission-briefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The mission briefing
       
     </span>
   </a>
@@ -3512,10 +3534,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mission-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A mission's date, time and weather
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#briefing-deck" class="md-nav__link">
     <span class="md-ellipsis">
       
         The campaign briefing deck
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mission-briefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The mission briefing
       
     </span>
   </a>
@@ -3620,6 +3664,7 @@ It is an <strong>episodic</strong> campaign, in the spirit of DCS Liberation: ea
     │   ├── mission/         the mission folder of mission 1
     │   ├── mission-01.state the state file the mission wrote
     │   ├── briefing-campagne.pptx / carte-strategique.png
+    │   ├── briefing-mission.pptx / carte-tactique.png / zoom-&lt;zone&gt;.png
     │   ├── debriefing.fr.txt / debriefing.en.txt
     │   ├── campaign-state.before.yaml
     │   └── campaign-state.after.yaml
@@ -3638,6 +3683,8 @@ Every mission of the campaign starts as a copy of it.</p>
 <span class="w">  </span><span class="nt">player_side</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span><span class="w">          </span><span class="c1"># the players&#39; side; blue by default</span>
 <span class="w">  </span><span class="nt">capture_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w">       </span><span class="c1"># ground presence needed to take a neutral zone</span>
 <span class="w">  </span><span class="nt">state_write_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">    </span><span class="c1"># how often the state file is written in flight</span>
+<span class="w">  </span><span class="nt">start_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2016-06-01</span><span class="w">     </span><span class="c1"># the first mission&#39;s date; the template&#39;s otherwise</span>
+<span class="w">  </span><span class="nt">start_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sunrise+30*60</span><span class="w">  </span><span class="c1"># start time: &quot;06:30&quot; or a solar expression; this is the default</span>
 <span class="w">  </span><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">capture</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Senaki</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Kutaisi</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">destroy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> zone</span><span class="p">:</span><span class="w"> </span><span class="nv">Gudauta depot</span><span class="p p-Indicator">,</span><span class="nt"> kind</span><span class="p">:</span><span class="w"> </span><span class="nv">logistics</span><span class="w"> </span><span class="p p-Indicator">}</span>
@@ -3779,6 +3826,18 @@ It is a text to read after the evening or to post as it is; the AI assistant tel
 <h2 id="strategic-briefing">The strategic briefing<a class="headerlink" href="#strategic-briefing" title="Permanent link">&para;</a></h2>
 <p><code>campaign next</code> writes, at the root of the mission folder, the factual part of the strategic briefing in French and English (<code>strategic-situation.fr.txt</code>, <code>strategic-situation.en.txt</code>): the front, what changed in the last mission, the enemy's reserve and garrisons, the objectives and the missions left.
 The text, in the language the tools run in, also becomes the mission's briefing when the folder is created, so a mission built as it is does not fly without one; Claude adds the narrative part while designing the mission, and a second <code>campaign next</code> on the same folder does not overwrite it.</p>
+<h2 id="mission-conditions">A mission's date, time and weather<a class="headerlink" href="#mission-conditions" title="Permanent link">&para;</a></h2>
+<p>A campaign mission is <strong>one</strong> mission: no weather variants.
+The folder <code>campaign next</code> creates has <code>pipeline.weather: false</code> as the last block of <code>mission.yaml</code> and no <code>src/versions.yaml</code>; date, time and weather are <strong>fixed in the mission</strong> itself.</p>
+<ul>
+<li><strong>The date moves on with the campaign</strong>: mission N+1 takes place the day after mission N, whose date <code>campaign apply</code> keeps in the campaign state. The first one takes <code>start_date</code> from <code>campaign.yaml</code>, or the template's date.</li>
+<li><strong>The time serves the mission</strong>: <code>start_time</code> from <code>campaign.yaml</code>, a clock time (<code>"06:30"</code>) or a solar expression (<code>sunrise+30*60</code>, the default). The expression is computed for the campaign's ground — the centre of its zones — and the mission's date, on the theatre's clock: sunrise over Colchis, not over Damascus as the shipped <code>versions.yaml</code> has it.</li>
+<li><strong>The weather may change from one mission to the next, the ground stays visible</strong>: no clouds, few or scattered, based between 1,500 and 3,500 m, visibility 8 km or more, neither fog nor rain — CAVOK or nearly. The draw depends on the campaign's name and the mission's number: the same mission draws the same sky again.</li>
+</ul>
+<p>DCS rains only under its "rainy" clouds, which are overcast: light rain under a clear sky does not exist, so a campaign's weather never has rain.</p>
+<p>What <code>campaign next</code> set is a starting point: Claude, preparing the mission, moves the date on when the story wants it and sets the hour the mission needs (action <code>set_mission_date</code>), and may change the weather (<code>set_weather</code>) while keeping the ground visible.
+A second <code>campaign next</code> on the same folder keeps what was set.
+The DCS briefing shows the mission's date, time and weather; the mission briefing writes them too.</p>
 <h2 id="briefing-deck">The campaign briefing deck<a class="headerlink" href="#briefing-deck" title="Permanent link">&para;</a></h2>
 <p><code>campaign next</code> also writes, in <code>missions/mission-NN/</code>, the <strong>campaign's strategic briefing</strong> as a PPTX (<code>briefing-campagne.pptx</code>) and its map (<code>carte-strategique.png</code>).
 It is a situation brief after the VEAF briefing template — 16:9, white, bold title top left — that imports as it is into Google Slides.
@@ -3872,6 +3931,56 @@ A text holding ": " goes in quotes (<code>"Targets: red units."</code>): without
 After each mission, the coming mission's page and the concept's progress are rewritten from the debriefing; the rest is kept as long as the situation does not change it.</p>
 <p>The map is drawn on OpenStreetMap tiles, cached in <code>%LOCALAPPDATA%\veaf-tools\tiles</code>; the tools identify themselves to the server by their GitHub address, and nothing else.
 Without the network, the map is drawn on a plain background and the deck says so: run <code>campaign briefing</code> again once online.</p>
+<h2 id="mission-briefing">The mission briefing<a class="headerlink" href="#mission-briefing" title="Permanent link">&para;</a></h2>
+<p>Next to the campaign briefing, each mission has its <strong>mission briefing</strong>: <code>missions/mission-NN/briefing-mission.pptx</code>, after the VEAF mission briefing, with its tactical map (<code>carte-tactique.png</code>) and one zoom per objective (<code>zoom-&lt;zone&gt;.png</code>).
+It is read from the <strong>built</strong> mission: <code>campaign briefing</code> writes it as soon as a <code>.miz</code> exists in <code>missions/mission-NN/mission</code> (at its root or in <code>build/</code>), and says how to get one otherwise.
+Run <code>campaign briefing</code> again after every change to the mission.</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>What it says</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cover</td>
+<td>the operation and the mission's number, its title (<code>briefing.yaml</code>), the date and time</td>
+</tr>
+<tr>
+<td>General situation</td>
+<td>context, mission (the tasks), bullseye (DMS, bearing and range from a friendly base), departures, threat (the intelligence, and the enemy's interception alert), weather and time <strong>read from the mission</strong></td>
+</tr>
+<tr>
+<td>ATO</td>
+<td>the players' flights (callsign, type, count, base, pilot lines, free loadout), the airfields with dynamic slots, the support (AWACS, tankers) with frequency and TACAN, the control (the carrier's tower in VHF, airfields)</td>
+</tr>
+<tr>
+<td>Tactical situation</td>
+<td>zones, axes, interception alert zone, carrier, AWACS orbit, tanker track, bullseye, a scale in nm</td>
+</tr>
+<tr>
+<td>One page per objective</td>
+<td>the zone at its radius, its intelligence, the task naming it</td>
+</tr>
+<tr>
+<td>Mission flow</td>
+<td>objectives, air opposition, air defences, other information (refuelling, diversion fields, rescue)</td>
+</tr>
+<tr>
+<td>Frequency plan</td>
+<td>UHF then VHF, guard first</td>
+</tr>
+<tr>
+<td>Objective coordinates</td>
+<td>each zone's centre in DMS, and its elevation when a terrain grid has been swept (<code>terrain-sweep</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>The objectives are the zones the mission's task titles name in <code>briefing.yaml</code> ("Frapper le dépôt de Khobi" names the zone <em>Dépôt de Khobi</em>), or else the campaign's objectives.
+The flights are the players': neither the dynamic-slot templates nor the VEAF spawn templates are flights; a support aircraft appears once, by its task; the wind is said from where it comes, as a pilot reads it.</p>
+<p><strong>No target coordinate and no flight plan</strong>: a garrison is drawn when the mission starts, so no unit's position is known when the briefing is written, and it says so — exact positions are found in flight.
+The maps' labels never overlap one another or a symbol.</p>
 <h2 id="to-verify">What is still to verify in game<a class="headerlink" href="#to-verify" title="Permanent link">&para;</a></h2>
 <p>These points are written and tested outside DCS, but not measured in game yet:</p>
 <ul>
