@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#veafgroundai--piloter-une-batterie-dartillerie-au-marqueur" class="md-skip">
+        <a href="#veafgroundai--lartillerie-au-marqueur-et-les-convois-sous-le-feu" class="md-skip">
           Aller au contenu
         </a>
       
@@ -2167,6 +2167,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#convoy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le convoi sous le feu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Le convoi sous le feu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#convoy-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qu'il fait tout seul
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quels groupes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-orders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les ordres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srs-voice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faire parler la mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#aliases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3424,6 +3485,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#convoy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le convoi sous le feu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Le convoi sous le feu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#convoy-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qu'il fait tout seul
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quels groupes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-orders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les ordres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srs-voice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faire parler la mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#aliases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3487,14 +3609,16 @@
   
 
 
-<h1 id="veafgroundai--piloter-une-batterie-dartillerie-au-marqueur">veafGroundAI — Piloter une batterie d'artillerie au marqueur<a class="headerlink" href="#veafgroundai--piloter-une-batterie-dartillerie-au-marqueur" title="Permanent link">&para;</a></h1>
+<h1 id="veafgroundai--lartillerie-au-marqueur-et-les-convois-sous-le-feu">veafGroundAI — L'artillerie au marqueur et les convois sous le feu<a class="headerlink" href="#veafgroundai--lartillerie-au-marqueur-et-les-convois-sous-le-feu" title="Permanent link">&para;</a></h1>
 <p><strong>Module ID:</strong> <code>GROUNDAI</code> | <strong>Fichier:</strong> <code>veafGroundAI.lua</code></p>
 <hr />
 <h2 id="objectif">Objectif<a class="headerlink" href="#objectif" title="Permanent link">&para;</a></h2>
 <p>Donne à un groupe de véhicules au sol un <strong>pilote automatique</strong> que les joueurs commandent depuis la
-carte F10, avec le marqueur <code>_gc</code>. Aujourd'hui un seul type de pilote existe : l'artillerie
-(<code>ArtilleryUnitHandler</code>), à qui on ordonne de tirer sur des coordonnées — quelques obus pour se
-régler, puis un tir d'efficacité.</p>
+carte F10, avec le marqueur <code>_gc</code>. Deux types de pilote existent :</p>
+<ul>
+<li><strong>l'artillerie</strong> (<code>ArtilleryUnitHandler</code>), à qui on ordonne de tirer sur des coordonnées — quelques obus pour se régler, puis un tir d'efficacité ;</li>
+<li><strong>le convoi</strong> (<code>ConvoyUnitHandler</code>), qui se débrouille seul : il guette l'ennemi devant lui, se scinde quand il le voit, appelle l'appui aérien et se replie à couvert (<a href="#convoy">le convoi sous le feu</a>).</li>
+</ul>
 <p>Le module est <strong>actif par défaut</strong> (<code>veaf.registerModule(..., { enable = true }, 190)</code>), et ses
 commandes sont réservées aux <strong>pilotes connus du serveur</strong> : <code>KNOWN_PILOT</code>, soit tout pilote inscrit
 dans <code>veaf-pilots.txt</code>. Un pilote non inscrit doit fournir le mot de passe correspondant.</p>
@@ -3731,6 +3855,77 @@ la distance collée derrière : <code>09050</code> c'est 50 m à l'est, <code>90
 (le message rappelle alors la forme attendue), et quand la batterie n'a <strong>aucun tir en cours</strong> à corriger
 — tirer sur le seul décalage mettrait les obus là où la batterie se trouve.</p>
 <hr />
+<h2 id="convoy">Le convoi sous le feu<a class="headerlink" href="#convoy" title="Permanent link">&para;</a></h2>
+<p>Livré à lui-même, un convoi DCS traverse une embuscade à pleine vitesse sans tirer un coup, et meurt.
+Mesuré le 2026-10-08 : quatre véhicules détruits sur quatre, aucune riposte ; et quand on lui donne une nouvelle route en plein feu, seul le véhicule de tête obéit, le reste de la colonne reste planté.
+Le pilote automatique de convoi fait le travail à sa place, <strong>sans personne aux commandes</strong>.</p>
+<h3 id="convoy-behaviour">Ce qu'il fait tout seul<a class="headerlink" href="#convoy-behaviour" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Il guette.</strong> Toutes les 30 s, il cherche les véhicules ennemis à moins de 5 km (plus une minute de route à sa vitesse). Tant qu'il y en a, il vérifie toutes les 3 s s'il les voit — le relief entre eux compte, la végétation non (voir les <a href="#limitations">limites</a>).</li>
+<li><strong>Il réagit au premier qui compte</strong> : un ennemi en vue à moins de 3 km, ou le premier tir reçu (artillerie, avion, embuscade invisible).</li>
+<li><strong>Il se scinde.</strong> Les véhicules non armés (camions…) partent <strong>immédiatement</strong> se replier, dans leur propre groupe, nommé <code>&lt;convoi&gt; unarmed</code>. Les véhicules armés restent dans le groupe du convoi, qui garde son nom.</li>
+<li><strong>Les armés combattent ou se replient.</strong> Chaque véhicule a une valeur de combat : char 4, véhicule de combat d'infanterie 3, blindé de transport, AAA ou autre véhicule armé 1, non armé 0. Si les armés valent au moins 1,5 fois les ennemis en vue, ils <strong>vont au contact</strong> jusqu'à 900 m de l'ennemi le plus proche, alarme rouge, feu à volonté ; sinon ils se replient à leur tour. Un avion ou un tir venu de plus de 3 km ne se combat pas : on se replie.</li>
+<li><strong>Il appelle à l'aide</strong>, à sa coalition, sous la forme d'un appel <em>troops in contact</em> : sa position (coordonnées et MGRS), le nombre et le type d'ennemis, leur cap et leur distance. Un <strong>fumigène rouge</strong> marque l'ennemi le plus proche, un <strong>vert</strong> le convoi, renouvelés toutes les 5 minutes tant que le contact dure. Si la mission sait parler (<a href="#srs-voice">SRS configuré</a>), le même appel passe en voix sur 243 et 121,5 MHz AM.</li>
+<li><strong>Il se replie à couvert</strong> : vers le lieu ami le plus proche (une zone de campagne de son camp, un de ses aérodromes), en passant par un point que le relief ou une ville cache à l'ennemi ; s'il n'y en a aucun, le plus court chemin hors de portée.</li>
+<li><strong>Il tient.</strong> Une minute sans rien voir ni rien recevoir : il le dit, s'arrête et attend un ordre — il ne repart pas tout seul dans la même embuscade.</li>
+</ol>
+<p>Un convoi rouge fait exactement la même chose, du côté rouge.</p>
+<h3 id="convoy-groups">Quels groupes<a class="headerlink" href="#convoy-groups" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Chaque convoi apparu par <code>_spawn convoy</code></strong>, automatiquement. Son nom est celui que le spawn lui donne (<code>[b]-Convoy-3</code>…) ; un fragment suffit dans <code>_gc</code>, comme pour <code>groupname</code>.</li>
+<li>Un groupe de l'éditeur de missions, listé dans <code>mission.yaml</code> (<a href="#configuration-missionyaml">plus bas</a>).</li>
+<li>N'importe quel groupe, en jeu : <code>_gc &lt;nom&gt;, convoy</code>, le marqueur posé sur le groupe (ou avec <code>groupname</code>).</li>
+</ul>
+<h3 id="convoy-orders">Les ordres<a class="headerlink" href="#convoy-orders" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Ce que vous écrivez</th>
+<th>Ce que ça fait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_gc convoy-3, retreat</code></td>
+<td>repli par la route vers le lieu ami le plus proche</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, retreat KOBULETI</code></td>
+<td>repli vers ce point nommé, ou ces coordonnées</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, hold</code></td>
+<td>arrêt sur place, des deux groupes</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, resume</code></td>
+<td>repart : les combattants reprennent la route, les non armés les rejoignent, et le convoi se reforme en un seul groupe à moins de 300 m</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, status</code></td>
+<td>ce que fait le convoi (en route, en alerte, au combat, en repli, à l'arrêt…)</td>
+</tr>
+<tr>
+<td><code>_gc ravito, convoy, groupname Ravitaillement</code></td>
+<td>confie le groupe <code>Ravitaillement</code> au pilote de convoi, sous le nom <code>ravito</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ce sont aussi ces marqueurs qu'un maître du jeu envoie pour diriger un convoi.</p>
+<h3 id="srs-voice">Faire parler la mission<a class="headerlink" href="#srs-voice" title="Permanent link">&para;</a></h3>
+<p>La voix passe par SRS (<code>DCS-SR-ExternalAudio.exe</code>). VEAF lit sa configuration dans <code>Saved Games\DCS\DCS-SimpleRadio-Standalone\SRS_for_scripting_config.lua</code>, sur la machine qui héberge la mission ; sans ce fichier, l'appel part en texte seulement :</p>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="kr">end</span>
+<span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_DIRECTORY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">DCS-SimpleRadio-Standalone</span><span class="se">\\</span><span class="s2">ExternalAudio&quot;</span>
+<span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_PORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5002</span>
+<span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_EXECUTABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;DCS-SR-ExternalAudio.exe&quot;</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">STTS</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">STTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="kr">end</span>
+<span class="nv">STTS</span><span class="p">.</span><span class="py">DIRECTORY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_DIRECTORY</span>
+<span class="nv">STTS</span><span class="p">.</span><span class="py">SRS_PORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_PORT</span>
+<span class="nv">STTS</span><span class="p">.</span><span class="py">EXECUTABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_EXECUTABLE</span>
+</code></pre></div>
+<p><code>SRS_DIRECTORY</code> est le dossier qui contient <code>DCS-SR-ExternalAudio.exe</code> (un sous-dossier <code>ExternalAudio</code> sur les versions récentes de SRS), <code>SRS_PORT</code> le port du serveur SRS.
+Il faut aussi que la mission ait accès à <code>os</code> : un <code>MissionScripting.lua</code> qui le retire, comme le fait celui d'origine de DCS, rend la mission muette.</p>
+<hr />
 <h2 id="aliases">Les alias fournis<a class="headerlink" href="#aliases" title="Permanent link">&para;</a></h2>
 <p><code>veafShortcuts</code> livre des raccourcis prêts à l'emploi, et c'est par eux que la plupart des pilotes
 utilisent ce module :</p>
@@ -3768,16 +3963,27 @@ coordonnées juste après, et elles complètent l'ordre.</p>
 </code></pre></div>
 <hr />
 <h2 id="configuration-missionyaml">Configuration <code>mission.yaml</code><a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
-<p>Le module n'a <strong>aucune option de configuration</strong>. Il s'active et se désactive comme les autres :</p>
+<p>Le module s'active et se désactive comme les autres :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># actif par défaut ; `false` retire le marqueur _gc</span>
+<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># actif par défaut ; `false` retire le marqueur _gc et la surveillance des convois</span>
+</code></pre></div>
+<p>Sa seule option est la liste des groupes de l'éditeur à surveiller comme des convois — les <code>_spawn convoy</code> le sont toujours, sans rien déclarer :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">convoys</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ravitaillement Nord</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Convoi Kutaisi</span>
 </code></pre></div>
 <hr />
 <h2 id="limitations">Limites connues<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Un seul type de pilote automatique existe</strong> : l'artillerie. Le module est bâti pour en accueillir
-  d'autres (<code>veafGroundAI.add</code> / <code>.remove</code> / <code>.get</code> prennent n'importe quel gestionnaire nommé), mais
-  aucun autre n'est livré.</li>
+<li><strong>Deux types de pilote automatique existent</strong> : l'artillerie et le convoi. Le module est bâti pour en accueillir
+  d'autres (<code>veafGroundAI.add</code> / <code>.remove</code> / <code>.get</code> prennent n'importe quel gestionnaire nommé).</li>
+<li><strong>La veille du convoi ne voit pas la végétation.</strong> <code>land.isVisible</code> ne tient compte que du relief : le convoi peut juger « en vue » un ennemi que les arbres cachent à l'IA de DCS. C'est pourquoi ses armés vont au contact au lieu de s'arrêter : arrêtés à 1,9 km d'un ennemi « en vue », deux Bradley n'ont pas tiré un coup en deux minutes (mesuré le 2026-10-08).</li>
+<li><strong>Les arbres ne servent pas de couvert au repli</strong> : <code>world.searchObjects</code> ne les trouve pas. Seuls le relief et les villes cachent le point de repli.</li>
+<li><strong>Le fumigène n'aveugle pas l'IA de DCS</strong> (mesuré le 2026-10-08) : il marque, pour les pilotes. Le convoi ne pose donc pas de rideau de fumée.</li>
+<li><strong>Un véhicule détaché ou regroupé repart neuf</strong> : DCS ne permet pas de recréer une unité avec ses dégâts. La veille scinde presque toujours le convoi avant le premier coup reçu.</li>
 <li><strong>Le rayon de recherche de 250 mètres n'est pas configurable.</strong></li>
 <li>Les ordres passent par la carte F10 uniquement : <strong>ce module n'a pas de menu radio</strong>.</li>
 <li><strong>La correction n'a pas d'observateur automatique</strong> : c'est le pilote qui regarde où les obus tombent et qui annonce le décalage. Le module ne mesure pas l'écart

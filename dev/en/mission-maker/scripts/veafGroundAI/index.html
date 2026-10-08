@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#veafgroundai--driving-an-artillery-battery-from-a-marker" class="md-skip">
+        <a href="#veafgroundai--artillery-from-a-marker-and-convoys-under-fire" class="md-skip">
           Skip to content
         </a>
       
@@ -2167,6 +2167,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#convoy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convoys under fire
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Convoys under fire">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#convoy-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it does by itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-orders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The orders
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srs-voice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making the mission speak
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#aliases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3424,6 +3485,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#convoy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convoys under fire
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Convoys under fire">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#convoy-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it does by itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convoy-orders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The orders
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srs-voice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making the mission speak
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#aliases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3487,13 +3609,16 @@
   
 
 
-<h1 id="veafgroundai--driving-an-artillery-battery-from-a-marker">veafGroundAI — Driving an artillery battery from a marker<a class="headerlink" href="#veafgroundai--driving-an-artillery-battery-from-a-marker" title="Permanent link">&para;</a></h1>
+<h1 id="veafgroundai--artillery-from-a-marker-and-convoys-under-fire">veafGroundAI — Artillery from a marker, and convoys under fire<a class="headerlink" href="#veafgroundai--artillery-from-a-marker-and-convoys-under-fire" title="Permanent link">&para;</a></h1>
 <p><strong>Module ID:</strong> <code>GROUNDAI</code> | <strong>File:</strong> <code>veafGroundAI.lua</code></p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>Gives a group of ground vehicles an <strong>autopilot</strong> that players command from the F10 map, with the
-<code>_gc</code> marker. One kind of autopilot exists today: artillery (<code>ArtilleryUnitHandler</code>), told to
-shell a set of coordinates — a few rounds to range in, then a fire-for-effect.</p>
+<code>_gc</code> marker. Two kinds of autopilot exist:</p>
+<ul>
+<li><strong>artillery</strong> (<code>ArtilleryUnitHandler</code>), told to shell a set of coordinates — a few rounds to range in, then a fire-for-effect;</li>
+<li><strong>the convoy</strong> (<code>ConvoyUnitHandler</code>), which looks after itself: it watches ahead for the enemy, splits when it sees one, calls for air support and falls back behind cover (<a href="#convoy">convoys under fire</a>).</li>
+</ul>
 <p>The module is <strong>enabled by default</strong> (<code>veaf.registerModule(..., { enable = true }, 190)</code>), and its
 commands are reserved to <strong>pilots the server knows</strong>: <code>KNOWN_PILOT</code>, meaning anyone listed in
 <code>veaf-pilots.txt</code>. An unlisted pilot must supply the matching password.</p>
@@ -3731,6 +3856,77 @@ refused.</p>
 (the message then recalls the expected form), and when the battery has <strong>no fire mission</strong> to correct —
 firing at the offset alone would put the rounds wherever the battery happens to stand.</p>
 <hr />
+<h2 id="convoy">Convoys under fire<a class="headerlink" href="#convoy" title="Permanent link">&para;</a></h2>
+<p>Left to itself, a DCS convoy drives through an ambush at full speed without firing a round, and dies.
+Measured on 2026-10-08: four vehicles destroyed out of four, no return fire; and when it is given a new route under fire, only its lead obeys while the rest of the column stays where it is.
+The convoy autopilot does the work instead, <strong>with nobody at the controls</strong>.</p>
+<h3 id="convoy-behaviour">What it does by itself<a class="headerlink" href="#convoy-behaviour" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>It watches.</strong> Every 30 s it looks for enemy vehicles within 5 km (plus a minute of driving at its speed). While there are some, it checks every 3 s whether it can see them — terrain in between counts, vegetation does not (see the <a href="#limitations">limits</a>).</li>
+<li><strong>It reacts to the first one that matters</strong>: an enemy in sight within 3 km, or the first shot received (artillery, aircraft, an ambush it could not see).</li>
+<li><strong>It splits.</strong> The unarmed vehicles (trucks…) leave <strong>at once</strong> to fall back, as their own group, named <code>&lt;convoy&gt; unarmed</code>. The armed vehicles stay in the convoy's group, which keeps its name.</li>
+<li><strong>The armed vehicles fight or fall back.</strong> Each vehicle has a combat value: tank 4, infantry fighting vehicle 3, armoured personnel carrier, AAA or other armed vehicle 1, unarmed 0. When the armed ones are worth at least 1.5 times the enemies in sight, they <strong>close in</strong> to 900 m of the nearest enemy, alarm red, weapons free; otherwise they fall back as well. An aircraft, or fire from beyond 3 km, cannot be fought: they fall back.</li>
+<li><strong>It calls for help</strong>, to its coalition, in the shape of a <em>troops in contact</em> call: its position (coordinates and MGRS), how many enemies and of what type, their bearing and distance. A <strong>red smoke</strong> marks the nearest enemy, a <strong>green</strong> one the convoy, renewed every 5 minutes while the contact lasts. When the mission can speak (<a href="#srs-voice">SRS configured</a>), the same call goes out in voice on 243 and 121.5 MHz AM.</li>
+<li><strong>It falls back behind cover</strong>: toward the nearest friendly place (a campaign zone its side owns, one of its airbases), through a point terrain or a town hides from the enemy; when there is none, the shortest way out of range.</li>
+<li><strong>It holds.</strong> A minute with nothing in sight and nothing received: it says so, stops and waits for an order — it does not drive back into the same ambush by itself.</li>
+</ol>
+<p>A red convoy does exactly the same, on the red side.</p>
+<h3 id="convoy-groups">Which groups<a class="headerlink" href="#convoy-groups" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Every convoy spawned by <code>_spawn convoy</code></strong>, automatically. Its name is the one the spawn gives it (<code>[b]-Convoy-3</code>…); a part of it is enough in <code>_gc</code>, as with <code>groupname</code>.</li>
+<li>A Mission Editor group listed in <code>mission.yaml</code> (<a href="#configuration-missionyaml">below</a>).</li>
+<li>Any group, in game: <code>_gc &lt;name&gt;, convoy</code>, with the marker on the group (or with <code>groupname</code>).</li>
+</ul>
+<h3 id="convoy-orders">The orders<a class="headerlink" href="#convoy-orders" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>What you write</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_gc convoy-3, retreat</code></td>
+<td>falls back by road to the nearest friendly place</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, retreat KOBULETI</code></td>
+<td>falls back to this named point, or these coordinates</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, hold</code></td>
+<td>stops where it stands, both groups</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, resume</code></td>
+<td>drives on: the armed vehicles take the road again, the unarmed ones join them, and the convoy becomes one group again within 300 m</td>
+</tr>
+<tr>
+<td><code>_gc convoy-3, status</code></td>
+<td>what the convoy is doing (driving, alerted, fighting, falling back, holding…)</td>
+</tr>
+<tr>
+<td><code>_gc supply, convoy, groupname Supply North</code></td>
+<td>hands the group <code>Supply North</code> to the convoy autopilot, under the name <code>supply</code></td>
+</tr>
+</tbody>
+</table>
+<p>These are also the markers a game master sends to steer a convoy.</p>
+<h3 id="srs-voice">Making the mission speak<a class="headerlink" href="#srs-voice" title="Permanent link">&para;</a></h3>
+<p>The voice goes through SRS (<code>DCS-SR-ExternalAudio.exe</code>). VEAF reads its configuration from <code>Saved Games\DCS\DCS-SimpleRadio-Standalone\SRS_for_scripting_config.lua</code>, on the machine hosting the mission; without that file the call goes out as text only:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="kr">end</span>
+<span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_DIRECTORY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">DCS-SimpleRadio-Standalone</span><span class="se">\\</span><span class="s2">ExternalAudio&quot;</span>
+<span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_PORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5002</span>
+<span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_EXECUTABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;DCS-SR-ExternalAudio.exe&quot;</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">STTS</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">STTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="kr">end</span>
+<span class="nv">STTS</span><span class="p">.</span><span class="py">DIRECTORY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_DIRECTORY</span>
+<span class="nv">STTS</span><span class="p">.</span><span class="py">SRS_PORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_PORT</span>
+<span class="nv">STTS</span><span class="p">.</span><span class="py">EXECUTABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">SERVER_CONFIG</span><span class="p">.</span><span class="py">SRS_EXECUTABLE</span>
+</code></pre></div>
+<p><code>SRS_DIRECTORY</code> is the folder holding <code>DCS-SR-ExternalAudio.exe</code> (an <code>ExternalAudio</code> subfolder in recent SRS versions), <code>SRS_PORT</code> the SRS server's port.
+The mission also needs <code>os</code>: a <code>MissionScripting.lua</code> that removes it, as DCS's own does, leaves the mission mute.</p>
+<hr />
 <h2 id="aliases">The shipped aliases<a class="headerlink" href="#aliases" title="Permanent link">&para;</a></h2>
 <p><code>veafShortcuts</code> ships ready-made shortcuts, and they are how most pilots use this module:</p>
 <table>
@@ -3767,15 +3963,27 @@ after, and they complete the order.</p>
 </code></pre></div>
 <hr />
 <h2 id="configuration-missionyaml"><code>mission.yaml</code> configuration<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
-<p>The module has <strong>no configuration options</strong>. It is enabled and disabled like the others:</p>
+<p>The module is enabled and disabled like the others:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># on by default; `false` removes the _gc marker</span>
+<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># on by default; `false` removes the _gc marker and the convoy watch</span>
+</code></pre></div>
+<p>Its one option is the list of Mission Editor groups to watch as convoys — <code>_spawn convoy</code> ones always are, with nothing to declare:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">GROUNDAI</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">convoys</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Supply North</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kutaisi Convoy</span>
 </code></pre></div>
 <hr />
 <h2 id="limitations">Known limits<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>One kind of autopilot exists</strong>: artillery. The module is built to host others
-  (<code>veafGroundAI.add</code> / <code>.remove</code> / <code>.get</code> take any named handler), but no other one ships.</li>
+<li><strong>Two kinds of autopilot exist</strong>: artillery and the convoy. The module is built to host others
+  (<code>veafGroundAI.add</code> / <code>.remove</code> / <code>.get</code> take any named handler).</li>
+<li><strong>The convoy's watch does not see vegetation.</strong> <code>land.isVisible</code> only accounts for terrain: the convoy may judge "in sight" an enemy that trees hide from DCS's AI. That is why its armed vehicles close in rather than halt: halted 1.9 km from an enemy "in sight", two Bradleys did not fire a round in two minutes (measured 2026-10-08).</li>
+<li><strong>Trees are no cover for the fall-back</strong>: <code>world.searchObjects</code> does not find them. Only terrain and towns hide the rally point.</li>
+<li><strong>Smoke does not blind DCS's AI</strong> (measured 2026-10-08): it marks, for the pilots. So the convoy lays no smoke screen.</li>
+<li><strong>A vehicle split off or merged back comes back whole</strong>: DCS cannot recreate a unit with its damage. The watch almost always splits the convoy before the first hit.</li>
 <li><strong>The 250-metre search radius is not configurable.</strong></li>
 <li>Orders go through the F10 map only: <strong>this module has no radio menu</strong>.</li>
 <li><strong>A correction has no automatic spotter</strong>: the pilot is the one who watches where the rounds land and calls the offset in. The module does not measure the miss
