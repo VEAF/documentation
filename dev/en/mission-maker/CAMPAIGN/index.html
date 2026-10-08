@@ -1625,6 +1625,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="In flight">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assault-convoys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assault convoys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1660,6 +1677,17 @@
     <span class="md-ellipsis">
       
         Between missions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#players" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The opposition sized to the squadron
       
     </span>
   </a>
@@ -3470,6 +3498,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="In flight">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assault-convoys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assault convoys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3505,6 +3550,17 @@
     <span class="md-ellipsis">
       
         Between missions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#players" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The opposition sized to the squadron
       
     </span>
   </a>
@@ -3685,6 +3741,7 @@ Every mission of the campaign starts as a copy of it.</p>
 <span class="w">  </span><span class="nt">state_write_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">    </span><span class="c1"># how often the state file is written in flight</span>
 <span class="w">  </span><span class="nt">start_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2016-06-01</span><span class="w">     </span><span class="c1"># the first mission&#39;s date; the template&#39;s otherwise</span>
 <span class="w">  </span><span class="nt">start_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sunrise+30*60</span><span class="w">  </span><span class="c1"># start time: &quot;06:30&quot; or a solar expression; this is the default</span>
+<span class="w">  </span><span class="nt">players</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5-7</span><span class="w">               </span><span class="c1"># the squadron&#39;s expected size: a count (6) or a range</span>
 <span class="w">  </span><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">capture</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Senaki</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Kutaisi</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">destroy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> zone</span><span class="p">:</span><span class="w"> </span><span class="nv">Gudauta depot</span><span class="p p-Indicator">,</span><span class="nt"> kind</span><span class="p">:</span><span class="w"> </span><span class="nv">logistics</span><span class="w"> </span><span class="p p-Indicator">}</span>
@@ -3715,6 +3772,7 @@ Every mission of the campaign starts as a copy of it.</p>
 <span class="w">  </span><span class="nt">red</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> reserve</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> armor</span><span class="p">:</span><span class="w"> </span><span class="nv">12</span><span class="p p-Indicator">,</span><span class="nt"> air_defense</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nt"> transport</span><span class="p">:</span><span class="w"> </span><span class="nv">6</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="nt">rules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">repairs_per_mission</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">  </span><span class="nt">assault_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span><span class="w">       </span><span class="c1"># delay before an assault convoy leaves (see &quot;In flight&quot;)</span>
 </code></pre></div>
 <p>A complete campaign, ready to copy — western Georgia in 12 zones and 10 missions — ships with the tools: <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/defaults/campaign-folder/campaign.yaml"><code>src/defaults/campaign-folder/campaign.yaml</code></a>.</p>
 <p>A zone is <strong>on an airfield</strong> (<code>at: { airfield: &lt;DCS name&gt; }</code>) or <strong>at coordinates</strong> (<code>at: { lat, lon }</code>).
@@ -3773,8 +3831,18 @@ The first briefing therefore speaks in intelligence terms ("estimated strength")
   Both sides present stop the clock; everybody gone cancels it.
   An aircraft in flight never counts, nor does a wreck.
   The DCS log (<code>dcs.log</code>) says, at each change, who holds a neutral zone and through which unit: that is where to read why a capture does not start.
-  The zone taken gets its new side's garrison at once, paid from that side's reserve.</li>
+  The zone taken gets its new side's garrison at once, paid from that side's reserve — unless an assault convoy takes it: its survivors become the garrison.</li>
 </ul>
+<h3 id="assault-convoys">Assault convoys<a class="headerlink" href="#assault-convoys" title="Permanent link">&para;</a></h3>
+<p>A neutral zone is the target of every side that holds a neighbouring (connected) zone.
+After <code>rules.assault_seconds</code> (600 s by default, sooner when the <a href="../scripts/veafQraManager/#opposition-level">opposition level</a> is above 4 players: half as long at 8), a convoy leaves by road from that side's first neighbour for the target — for a mission starting with a neutral zone as for a zone turning neutral in flight.
+One convoy at a time per side and target; it does not leave if its start zone changed hands.
+It is armour after its start zone's size class plus a few trucks, <strong>paid from its side's reserve</strong>, unit by unit; an empty reserve sends nothing.
+It behaves like any convoy under fire (<a href="../scripts/veafGroundAI/">veafGroundAI</a>): it watches ahead, splits, calls for help, falls back.
+Its side is told it leaves, the other side hears it as intelligence ("an enemy column is leaving Senaki towards Poti"), and an arrow in its colour marks its axis on the F10 map.
+Once there, it holds the zone like any ground unit and takes it after <code>capture_seconds</code>: its survivors in the zone become the garrison, with no second draw from the reserve.
+Blue players also send them from the <strong>Campaign → Assaults</strong> menu, from a blue zone to a neighbour that is not, at the mission's security level.
+<code>rules.assault_convoys: false</code> turns the rule off; the menu stays.</p>
 <h2 id="state-file">The state file<a class="headerlink" href="#state-file" title="Permanent link">&para;</a></h2>
 <p>The mission writes everything the next one depends on — each zone's owner, garrisons and losses, reserves, destroyed scenery, the missiles the SAMs have left, the warehouses' content — to:</p>
 <div class="highlight"><pre><span></span><code>&lt;Saved Games&gt;\DCS\Missions\Saves\&lt;campaign name&gt;\mission-NN.state
@@ -3816,10 +3884,27 @@ Otherwise it merges the file, then plays the <strong>turn</strong> with fixed ru
 <td><code>rules.counter_attack</code></td>
 <td><code>true</code></td>
 </tr>
+<tr>
+<td>an assault convoy still on the road when the flight ends returns its survivors to its side's reserve; its dead are campaign losses</td>
+<td>—</td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
 <p>Destroying an enemy depot means a smaller reserve, so fewer repairs and thinner garrisons behind it: an empty reserve only allows a token garrison.</p>
 <p>The enemy's <strong>intent</strong> — where it puts its effort, what the next mission asks of the players — is not in the rules: Claude decides it while building the next mission, and writes it in the briefing.</p>
+<h2 id="players">The opposition sized to the squadron<a class="headerlink" href="#players" title="Permanent link">&para;</a></h2>
+<p>What scales with the number of players is the <strong>enemy air</strong>: the QRAs and the on-demand CAPs.
+The ground garrisons are the campaign's books — reserves, losses, repairs — and do not depend on who came tonight.</p>
+<p><code>players</code> in <code>campaign.yaml</code> says the usual attendance; <code>campaign next --players 6</code> says tonight's, and wins:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">campaign</span> <span class="n">next</span> <span class="p">.</span> <span class="p">-</span><span class="n">-players</span> <span class="n">6</span>
+</code></pre></div>
+<p><code>campaign next</code> then writes the mission's <a href="../scripts/veafQraManager/#opposition-level"><code>opposition:</code></a> block: a level equal to the most expected, which then follows the players connected on the players' side — if the squadron comes four-strong, the opposition comes down to four after a few minutes.
+A second <code>campaign next</code> on the same folder changes the level only: a follow mode or a delay set in the mission since is kept.
+With neither <code>players</code> nor <code>--players</code>, the mission's block is left alone.</p>
+<p>The mission's enemy QRAs need tiers up to that size (<code>groups_by_enemy_count</code>); Claude writes them when designing the mission.
+The mission briefing says it as intelligence — "the enemy reinforces its alert against a large package" — never as tiers or numbers.
+It likewise announces an <a href="#assault-convoys">expected ground counter-attack</a> towards a neutral zone the enemy borders, without its strength.</p>
 <h2 id="debriefing">The debriefing<a class="headerlink" href="#debriefing" title="Permanent link">&para;</a></h2>
 <p><code>campaign apply</code> also writes the debriefing of the mission flown, in French and English, in <code>missions/mission-NN/</code> (<code>debriefing.fr.txt</code>, <code>debriefing.en.txt</code>): the ground that changed hands, each side's losses zone by zone and unit type by unit type, the scenery destroyed, what the turn did next, and where the objectives stand.
 It is a text to read after the evening or to post as it is; the AI assistant tells it as a story for the squadron when asked, keeping to its facts.</p>

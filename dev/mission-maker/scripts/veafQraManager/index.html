@@ -2352,6 +2352,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#opposition-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dimensionner l'opposition au nombre de joueurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#exemple-minimal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3657,6 +3668,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#opposition-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dimensionner l'opposition au nombre de joueurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#exemple-minimal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3969,11 +3991,12 @@
 <span class="w">        </span><span class="nt">groups_by_enemy_count</span><span class="p">:</span><span class="w">           </span><span class="c1"># réponse proportionnelle au nombre d&#39;intrus</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># scramble quand 1 intrus détecté</span>
 <span class="w">            </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Duo-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Duo-2&quot;</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># pool de groupes</span>
-<span class="w">            </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># combien de groupes choisir dans le pool</span>
+<span class="w">            </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">               </span><span class="c1"># tirer 1 groupe du pool (sans random_pick : tous décollent)</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enemy_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-<span class="w">            </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Vol-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Vol-2&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">            </span><span class="nt">random_pick</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">            </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Duo-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Vol-2&quot;</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># pas de random_pick : les deux décollent</span>
 <span class="w">        </span><span class="nt">delay_before_rearming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># secondes avant réinitialisation après départ des intrus</span>
+<span class="w">        </span><span class="nt">rearm_while_occupied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># réarmer sans attendre que la zone se vide</span>
+<span class="w">        </span><span class="nt">scale_with_opposition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># palier choisi aussi d&#39;après le niveau d&#39;opposition</span>
 <span class="w">        </span><span class="nt">delay_before_activating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">      </span><span class="c1"># secondes après :start() avant mise en ligne de la QRA</span>
 <span class="w">        </span><span class="nt">react_on_helicopters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = déclencher aussi sur les hélicoptères ennemis</span>
 <span class="w">        </span><span class="nt">airport_link</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi&quot;</span><span class="w">           </span><span class="c1"># en pause tant que cette base est perdue (raccourci de links)</span>
@@ -4089,9 +4112,9 @@
 <tr>
 <td><code>groups_by_enemy_count[].random_pick</code></td>
 <td>entier</td>
-<td><code>1</code></td>
+<td>—</td>
 <td>Non</td>
-<td>Combien de groupes choisir dans le pool</td>
+<td>Combien de groupes <strong>tirer</strong> dans le pool, sans remise : jamais deux fois le même groupe, jamais plus que la liste n'en contient. <strong>Absent : tous les groupes du palier décollent.</strong> Le palier retenu est le plus grand dont <code>enemy_count</code> ne dépasse pas le nombre d'intrus, dans quelque ordre que les paliers soient écrits</td>
 </tr>
 <tr>
 <td><code>delay_before_rearming</code></td>
@@ -4106,6 +4129,20 @@
 <td><code>0</code></td>
 <td>Non</td>
 <td>Secondes après le démarrage avant mise en ligne</td>
+</tr>
+<tr>
+<td><code>rearm_while_occupied</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Une QRA détruite se réarme <strong>même si des intrus sont encore dans sa zone</strong>. Sans cette clé, elle attend que la zone soit vide — avec plusieurs joueurs sur l'objectif, presque jamais</td>
+</tr>
+<tr>
+<td><code>scale_with_opposition</code></td>
+<td>booléen</td>
+<td><code>false</code></td>
+<td>Non</td>
+<td>Choisir le palier d'après le <a href="#opposition-level">niveau d'opposition</a> quand il dépasse le nombre d'intrus dans la zone — le seuil du plus petit palier aussi : une paire déclenche une QRA dont le premier palier est 3 si la mission est dimensionnée pour six. Le déclenchement reste sur la zone : personne dedans, pas de scramble</td>
 </tr>
 <tr>
 <td><code>react_on_helicopters</code></td>
@@ -4203,6 +4240,64 @@ de ce groupe voit le menu à son tour — et ajoutez <code>radio_menu_secured: t
 doive en plus avoir le niveau de sécurité requis.</p>
 </div>
 <p>C'est le <strong>mécanisme 1</strong> (raccourci par module). Pour un menu MM personnalisé, structuré ou combinant plusieurs actions (QRA, AirWaves, flags, messages, Lua), utilisez le <strong>mécanisme 2</strong> décrit dans <a href="../veafRadio/#radio-menus-in-yaml">veafRadio → Menus radio en YAML</a>.</p>
+<h3 id="opposition-level">Dimensionner l'opposition au nombre de joueurs<a class="headerlink" href="#opposition-level" title="Permanent link">&para;</a></h3>
+<p>Des paliers par <code>enemy_count</code> répondent à <strong>ce qui entre dans la zone</strong>. Une paire qui s'y présente devant un dispositif de six reçoit le palier d'une paire, pendant que les quatre autres sont encore à l'écart. Le <strong>niveau d'opposition</strong> dit pour combien d'avions joueurs la chasse adverse est dimensionnée, dans la même unité que <code>enemy_count</code> ; une QRA marquée <code>scale_with_opposition: true</code> prend le palier du plus grand des deux nombres.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">opposition</span><span class="p">:</span><span class="w">                 </span><span class="c1"># bloc racine de mission.yaml, à côté de modules:</span>
+<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span><span class="w">                  </span><span class="c1"># dimensionnée pour 6 avions joueurs</span>
+<span class="w">  </span><span class="nt">follow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">players</span><span class="w">           </span><span class="c1"># off (défaut) | players : joueurs connectés | airborne : joueurs en vol</span>
+<span class="w">  </span><span class="nt">lower_after</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">          </span><span class="c1"># secondes pendant lesquelles un compte plus bas doit tenir avant de baisser le niveau</span>
+<span class="w">  </span><span class="nt">players_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span><span class="w">   </span><span class="c1"># BLUE (défaut) | RED : la coalition dont on compte les joueurs</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>level</code></td>
+<td>entier ≥ 0</td>
+<td>—</td>
+<td>Le niveau au démarrage. Sans niveau ni suivi, les QRA répondent à leur zone seule</td>
+</tr>
+<tr>
+<td><code>follow</code></td>
+<td>string</td>
+<td><code>off</code></td>
+<td><code>players</code> : le niveau suit les joueurs connectés de la coalition ; <code>airborne</code> : ceux qui sont en vol. Relu toutes les 60 s</td>
+</tr>
+<tr>
+<td><code>lower_after</code></td>
+<td>secondes</td>
+<td><code>300</code></td>
+<td>Une hausse est prise <strong>tout de suite</strong> (un joueur qui arrive doit être servi) ; une baisse seulement quand le compte est resté plus bas pendant ce délai — une déconnexion, ou un crash suivi d'un respawn, ne change rien</td>
+</tr>
+<tr>
+<td><code>players_coalition</code></td>
+<td>string</td>
+<td><code>BLUE</code></td>
+<td>La coalition dont les joueurs sont comptés</td>
+</tr>
+</tbody>
+</table>
+<p>Le bloc ajoute aussi, en jeu :</p>
+<ul>
+<li>un menu radio <strong>Opposition</strong> : niveau actuel (pour tous), niveau +1 / −1 et changement de mode (commandes sécurisées) ;</li>
+<li>un marqueur <strong><code>_opposition</code></strong>, réservé au niveau de sécurité <em>SENIOR_PILOT</em> : <code>_opposition 6</code> fixe le niveau (et arrête le suivi), <code>_opposition players</code> / <code>_opposition airborne</code> / <code>_opposition off</code> change de mode, <code>_opposition</code> seul l'annonce ;</li>
+<li>dans le menu des <a href="../veafCombatMission/">combat missions</a>, sous chaque niveau de compétence, une entrée <strong>Taille auto</strong> qui active le <em>scale</em> d'un groupe ennemi par deux joueurs (arrondi au-dessus), dans la limite des <em>scales</em> proposés.</li>
+</ul>
+<p>Chaque changement de niveau est annoncé à tout le monde.</p>
+<p><strong>Comment choisir.</strong> Écrivez les paliers jusqu'à la taille attendue du dispositif : pour un groupe de 5 à 7 joueurs, par exemple <code>1</code> → une paire, <code>3</code> → deux paires, <code>5</code> → trois. Jamais une seule paire fixe face à 5 joueurs ou plus. Ensuite :</p>
+<ul>
+<li>soirée dont on connaît l'effectif → <code>level</code> fixe ;</li>
+<li>effectif inconnu, ou qui change en cours de vol → <code>follow: players</code> ;</li>
+<li>c'est ce qui est <strong>en l'air</strong> qui compte, pas ce qui attend au parking → <code>follow: airborne</code>.</li>
+</ul>
+<p>Une campagne écrit ce bloc toute seule à partir de son <code>players</code> ou de <code>campaign next --players</code> — voir <a href="../../CAMPAIGN/#players">Campagnes</a>.</p>
 <h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">QRA</span><span class="p">:</span>
@@ -4286,11 +4381,11 @@ doive en plus avoir le niveau de sécurité requis.</p>
 </tr>
 <tr>
 <td><code>:setGroupsToDeployByEnemyQuantity(n, groups)</code></td>
-<td>Adapter la réponse : déployer <code>groups</code> quand <code>n</code> ennemis sont dans la zone</td>
+<td>Adapter la réponse : déployer <strong>tous</strong> les <code>groups</code> quand au moins <code>n</code> ennemis sont dans la zone (le plus grand palier atteint l'emporte)</td>
 </tr>
 <tr>
 <td><code>:setRandomGroupsToDeployByEnemyQuantity(n, groups, number, bias)</code></td>
-<td>Adaptation aléatoire au nombre d'ennemis</td>
+<td>Même chose, en tirant <code>number</code> groupes sans remise</td>
 </tr>
 </tbody>
 </table>
@@ -4340,7 +4435,11 @@ doive en plus avoir le niveau de sécurité requis.</p>
 </tr>
 <tr>
 <td><code>:setNoNeedToLeaveZoneBeforeRearming()</code></td>
-<td>Autoriser le réarmement même si des ennemis sont encore dans la zone</td>
+<td>Autoriser le réarmement même si des ennemis sont encore dans la zone (<code>rearm_while_occupied</code>)</td>
+</tr>
+<tr>
+<td><code>:setScaleWithOpposition()</code></td>
+<td>Choisir le palier d'après le niveau d'opposition quand il dépasse le nombre d'intrus (<code>scale_with_opposition</code>)</td>
 </tr>
 <tr>
 <td><code>:setResetWhenLeavingZone()</code></td>
