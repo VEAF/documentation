@@ -1728,6 +1728,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#objective-waypoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les waypoints des joueurs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#briefing-deck" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3601,6 +3612,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#objective-waypoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les waypoints des joueurs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#briefing-deck" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3927,6 +3949,16 @@ Le dossier que <code>campaign next</code> crée a <code>pipeline.weather: false<
 <p>Ce que <code>campaign next</code> a fixé est un point de départ : Claude, en préparant la mission, avance la date si l'histoire le demande et met l'heure que la mission veut (action <code>set_mission_date</code>), et peut changer la météo (<code>set_weather</code>) en gardant le sol visible.
 Un second <code>campaign next</code> sur le même dossier garde ce qui a été réglé.
 Le briefing DCS affiche la date, l'heure et la météo de la mission ; le briefing de mission les écrit aussi.</p>
+<h2 id="objective-waypoints">Les waypoints des joueurs<a class="headerlink" href="#objective-waypoints" title="Permanent link">&para;</a></h2>
+<p><code>campaign next</code> écrit le <code>src/waypoints.yaml</code> de la mission à partir de ses objectifs, au lieu de garder l'exemple du template : un waypoint par zone que nomment les tâches de la mission dans <code>briefing.yaml</code> (à défaut, les objectifs de la campagne), au centre de la zone, dans l'ordre des tâches, pour le camp des joueurs.</p>
+<ul>
+<li><strong>Les avions</strong> les reçoivent à 10 000 ft (<code>BARO</code>), <strong>les hélicoptères</strong> à 500 ft sol (<code>RADIO</code>) ; le cockpit affiche le même nom aux deux.</li>
+<li><strong>Le nom</strong> est le premier mot de la zone, en majuscules et sans accent : <em>Khobi depot</em> devient <code>KHOBI</code>. Deux zones qui commencent par le même mot gardent leur nom entier (<code>SENAKI_NORTH</code>).</li>
+<li><strong>Le build ajoute <code>BULLSEYE</code></strong> à chaque plan de vol.</li>
+</ul>
+<p>Une fois modifié, le fichier est à vous : il porte l'empreinte de ce que <code>campaign next</code> a écrit, et un second <code>campaign next</code> ne le réécrit que tant qu'elle correspond.
+Un fichier écrit à la main dans un dossier déjà créé est gardé de même.
+Le format du fichier est décrit dans la <a href="../../PIPELINE_REFERENCE/#waypoints-by-key">référence du pipeline</a>.</p>
 <h2 id="briefing-deck">Le document de briefing de campagne<a class="headerlink" href="#briefing-deck" title="Permanent link">&para;</a></h2>
 <p><code>campaign next</code> écrit aussi, dans <code>missions/mission-NN/</code>, le <strong>briefing stratégique de la campagne</strong> en PPTX (<code>briefing-campagne.pptx</code>) et sa carte (<code>carte-strategique.png</code>).
 C'est un briefing de situation au format des briefings VEAF — 16:9, fond blanc, titre en gras en haut à gauche — qui s'importe tel quel dans Google Slides.
@@ -4046,7 +4078,7 @@ Relancez <code>campaign briefing</code> après chaque modification de la mission
 </tr>
 <tr>
 <td>Situation tactique</td>
-<td>zones, axes, zone d'alerte d'interception, porte-avions, orbite AWACS, hippodrome du ravitailleur, bullseye, échelle en nm</td>
+<td>zones, axes, zone d'alerte d'interception, porte-avions, orbite AWACS, hippodrome du ravitailleur, bullseye, les waypoints des joueurs numérotés comme au plan de navigation, échelle en nm</td>
 </tr>
 <tr>
 <td>Une page par objectif</td>
@@ -4061,6 +4093,10 @@ Relancez <code>campaign briefing</code> après chaque modification de la mission
 <td>UHF puis VHF, la garde en tête</td>
 </tr>
 <tr>
+<td>Plan de navigation</td>
+<td>les waypoints que portent les avions puis les hélicoptères des joueurs après leur point de départ, <code>BULLSEYE</code> compris : nom, position en DMS, altitude et sa référence (<code>BARO</code>, ou <code>AGL</code> au-dessus du sol) ; les types d'appareil quand une catégorie porte plusieurs routes</td>
+</tr>
+<tr>
 <td>Coordonnées des objectifs</td>
 <td>le centre de chaque zone en DMS, et son altitude quand une grille de terrain a été relevée (<code>terrain-sweep</code>)</td>
 </tr>
@@ -4068,7 +4104,8 @@ Relancez <code>campaign briefing</code> après chaque modification de la mission
 </table>
 <p>Les objectifs sont les zones que nomment les titres des tâches de la mission dans <code>briefing.yaml</code> (« Frapper le dépôt de Khobi » nomme la zone <em>Dépôt de Khobi</em>), à défaut les objectifs de la campagne.
 Les vols sont ceux des joueurs : ni les gabarits de slots dynamiques ni les modèles de spawn VEAF n'en sont ; un avion de soutien n'apparaît qu'une fois, selon sa tâche ; le vent se dit d'où il vient, comme le lit un pilote.</p>
-<p><strong>Pas de coordonnées de cible ni de plan de vol</strong> : une garnison est tirée au démarrage de la mission, donc aucune position d'unité n'est connue quand le briefing s'écrit, et il le dit — les positions exactes se relèvent en vol.
+<p>Le plan de navigation se lit dans les vols des joueurs et dans les gabarits de slots dynamiques, d'où partent les joueurs d'une campagne : ce sont les <a href="#objective-waypoints">waypoints</a> que le build y a injectés.</p>
+<p><strong>Pas de coordonnées de cible</strong> : une garnison est tirée au démarrage de la mission, donc aucune position d'unité n'est connue quand le briefing s'écrit, et il le dit — les positions exactes se relèvent en vol.
 Les étiquettes des cartes ne se chevauchent jamais, ni entre elles ni sur un symbole.</p>
 <h2 id="to-verify">Ce qui reste à vérifier en jeu<a class="headerlink" href="#to-verify" title="Permanent link">&para;</a></h2>
 <p>Ces points sont écrits et testés hors de DCS, mais pas encore mesurés en jeu :</p>

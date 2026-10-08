@@ -3200,6 +3200,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#waypoints-by-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un plan prend ses waypoints par clé
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#priorité-de-correspondance" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3907,6 +3918,17 @@
     <span class="md-ellipsis">
       
         Schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waypoints-by-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un plan prend ses waypoints par clé
       
     </span>
   </a>
@@ -4651,7 +4673,7 @@ Aussi accepté : waypoints.yaml  (racine du dossier mission)
 <span class="w">    </span><span class="nt">speed_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TAS&quot;</span><span class="w">                   </span><span class="c1"># TAS | IAS</span>
 <span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">75869</span><span class="w">                            </span><span class="c1"># coordonnée X mission</span>
 <span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">48674</span><span class="w">                            </span><span class="c1"># coordonnée Y mission</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BULLSEYE&quot;</span><span class="w">                    </span><span class="c1"># libellé du waypoint (optionnel)</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;POTI&quot;</span><span class="w">                        </span><span class="c1"># ce qu&#39;affiche le cockpit (optionnel, la clé sinon)</span>
 <span class="w">    </span><span class="nt">ETA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">364.89</span><span class="w">                         </span><span class="c1"># temps d&#39;arrivée estimé en secondes (optionnel)</span>
 <span class="w">    </span><span class="nt">ETA_locked</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                   </span><span class="c1"># verrouiller l&#39;ETA (optionnel)</span>
 
@@ -4662,9 +4684,13 @@ Aussi accepté : waypoints.yaml  (racine du dossier mission)
 <span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="w">                   </span><span class="c1"># blue | red (filtre optionnel)</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;F-16C_50&quot;</span><span class="w">                    </span><span class="c1"># type d&#39;aéronef DCS (filtre optionnel)</span>
 <span class="w">    </span><span class="nt">country</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;USA&quot;</span><span class="w">                      </span><span class="c1"># nom du pays (filtre optionnel)</span>
-<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">&lt;NOM_WAYPOINT&gt;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;NOM_WAYPOINT&gt;&quot;</span><span class="w">  </span><span class="c1"># associer la définition du waypoint au slot</span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span><span class="w">                          </span><span class="c1"># les CLÉS des waypoints, dans l&#39;ordre du vol</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NOM_WAYPOINT&gt;</span>
 </code></pre></div>
+<h3 id="waypoints-by-key">Un plan prend ses waypoints par clé<a class="headerlink" href="#waypoints-by-key" title="Permanent link">&para;</a></h3>
+<p>Un waypoint a une <strong>clé</strong> (<code>&lt;NOM_WAYPOINT&gt;</code>) et un <code>name:</code>. Un plan le désigne par sa clé ; le cockpit affiche son <code>name:</code>, ou sa clé s'il n'en a pas. Deux waypoints peuvent partager un nom, jamais une clé : <code>POTI</code> à 10 000 ft pour les avions et <code>POTI_LOW</code> à 500 ft sol pour les hélicoptères, affichés tous deux <code>POTI</code>.</p>
+<p>Un plan liste ses waypoints sous forme d'une liste de clés. L'ancienne forme en mapping — <code>HOLDING_POINT: "HOLDING_POINT"</code> — se charge toujours, mais <strong>seules ses clés sont lues</strong> : la valeur est ignorée, donc <code>POTI: "POTI_LOW"</code> mène à <code>POTI</code>. Le build prévient quand une valeur nomme un autre waypoint.</p>
+<p>Le build ajoute aussi à chaque plan de vol un waypoint <code>BULLSEYE</code>, au bullseye de la mission : ne pas en déclarer.</p>
 <h3 id="priorité-de-correspondance">Priorité de correspondance<a class="headerlink" href="#priorité-de-correspondance" title="Permanent link">&para;</a></h3>
 <p>Les plans de vol sont associés aux groupes selon cet ordre de priorité :
 1. Type d'aéronef (<code>type</code>)
@@ -4674,23 +4700,22 @@ Aussi accepté : waypoints.yaml  (racine du dossier mission)
 5. Tous les autres groupes (sans filtre = joker)</p>
 <h3 id="exemple-minimal_1">Exemple minimal<a class="headerlink" href="#exemple-minimal_1" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">waypoints</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">BULLSEYE</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">POTI</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Turning</span><span class="nv"> </span><span class="s">Point&quot;</span>
 <span class="w">    </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Turning</span><span class="nv"> </span><span class="s">Point&quot;</span>
-<span class="w">    </span><span class="nt">alt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6096</span>
+<span class="w">    </span><span class="nt">alt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3048</span>
 <span class="w">    </span><span class="nt">alt_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BARO&quot;</span>
-<span class="w">    </span><span class="nt">speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">999</span>
+<span class="w">    </span><span class="nt">speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span>
 <span class="w">    </span><span class="nt">speed_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TAS&quot;</span>
-<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">75869</span>
-<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">48674</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BULLSEYE&quot;</span>
+<span class="w">    </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-295152</span>
+<span class="w">    </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">617091</span>
 
 <span class="nt">settings</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">AVIONS_BLEUS</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plane&quot;</span>
 <span class="w">    </span><span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;blue&quot;</span>
 <span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">BULLSEYE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BULLSEYE&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POTI</span>
 </code></pre></div>
 <hr />
 <h2 id="pipeline-step-3-aircraft-groups">Étape 3 — Groupes d'aéronefs : spawnables (B) et modèles de slot dynamique (C)<a class="headerlink" href="#pipeline-step-3-aircraft-groups" title="Permanent link">&para;</a></h2>
