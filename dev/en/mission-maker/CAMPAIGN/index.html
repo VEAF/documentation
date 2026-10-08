@@ -3773,6 +3773,7 @@ Every mission of the campaign starts as a copy of it.</p>
 <span class="nt">rules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">repairs_per_mission</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
 <span class="w">  </span><span class="nt">assault_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span><span class="w">       </span><span class="c1"># delay before an assault convoy leaves (see &quot;In flight&quot;)</span>
+<span class="w">  </span><span class="nt">intel_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1200</span><span class="w">        </span><span class="c1"># delay before the other side hears it left; 0: at once</span>
 </code></pre></div>
 <p>A complete campaign, ready to copy — western Georgia in 12 zones and 10 missions — ships with the tools: <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/defaults/campaign-folder/campaign.yaml"><code>src/defaults/campaign-folder/campaign.yaml</code></a>.</p>
 <p>A zone is <strong>on an airfield</strong> (<code>at: { airfield: &lt;DCS name&gt; }</code>) or <strong>at coordinates</strong> (<code>at: { lat, lon }</code>).
@@ -3839,7 +3840,8 @@ After <code>rules.assault_seconds</code> (600 s by default, sooner when the <a h
 One convoy at a time per side and target; it does not leave if its start zone changed hands.
 It is armour after its start zone's size class plus a few trucks, <strong>paid from its side's reserve</strong>, unit by unit; an empty reserve sends nothing.
 It behaves like any convoy under fire (<a href="../scripts/veafGroundAI/">veafGroundAI</a>): it watches ahead, splits, calls for help, falls back.
-Its side is told it leaves, the other side hears it as intelligence ("an enemy column is leaving Senaki towards Poti"), and a line in its colour, over the link, marks its axis on the F10 map until it arrives or is destroyed.
+Its side is told it leaves and sees its axis on the F10 map at once: a line in its colour, over the link, until it arrives or is destroyed.
+The other side hears of it as intelligence <code>rules.intel_seconds</code> later (1,200 s, 20 minutes, by default; 0: at once): the message ("an enemy column is leaving Senaki towards Poti") and the same line on its map come together, and a convoy destroyed before then is never reported.
 Once there, it holds the zone like any ground unit and takes it after <code>capture_seconds</code>: its survivors in the zone become the garrison, with no second draw from the reserve.
 Blue players also send them from the <strong>Campaign → Assaults</strong> menu, from a blue zone to a neighbour that is not, at the mission's security level.
 <code>rules.assault_convoys: false</code> turns the rule off; the menu stays.</p>
