@@ -3866,17 +3866,24 @@ The convoy autopilot does the work instead, <strong>with nobody at the controls<
 <li><strong>It reacts to the first one that matters</strong>: an enemy in sight within 3 km, or the first shot received (artillery, aircraft, an ambush it could not see).</li>
 <li><strong>It splits.</strong> The unarmed vehicles (trucks…) leave <strong>at once</strong> to fall back, as their own group, named <code>&lt;convoy&gt; unarmed</code>. The armed vehicles stay in the convoy's group, which keeps its name.</li>
 <li><strong>The armed vehicles fight or fall back.</strong> Each vehicle has a combat value: tank 4, infantry fighting vehicle 3, armoured personnel carrier, AAA or other armed vehicle 1, unarmed 0. When the armed ones are worth at least 1.5 times the enemies in sight, they <strong>close in</strong> to 900 m of the nearest enemy, alarm red, weapons free; otherwise they fall back as well. An aircraft, or fire from beyond 3 km, cannot be fought: they fall back.</li>
-<li><strong>It calls for help</strong>, to its coalition, in the shape of a <em>troops in contact</em> call: its position (coordinates and MGRS), how many enemies and of what type, their bearing and distance. A <strong>red smoke</strong> marks the nearest enemy, a <strong>green</strong> one the convoy, renewed every 5 minutes while the contact lasts. When the mission can speak (<a href="#srs-voice">SRS configured</a>), the same call goes out in voice on 243 and 121.5 MHz AM.</li>
+<li><strong>When it falls back, it calls for help</strong>, to its coalition, in the shape of a <em>troops in contact</em> call: its position (coordinates and MGRS), how many enemies and of what type, their bearing and distance. A <strong>red smoke</strong> marks the nearest enemy, a <strong>green</strong> one the convoy, renewed every 5 minutes while the contact lasts. When the mission can speak (<a href="#srs-voice">SRS configured</a>), the same call goes out in voice on 243 and 121.5 MHz AM.
+   Strong enough to fight, it asks for nothing: an information message gives the contact, how many enemies, their bearing and distance, with no smoke.
+   Either way, an <strong>F10 marker</strong> shows the convoy to its coalition while the contact lasts ("Mule — convoy in contact"), moved every 15 s and removed once the contact is over.</li>
 <li><strong>It falls back behind cover</strong>: toward the nearest friendly place (a campaign zone its side owns, one of its airbases), through a point terrain or a town hides from the enemy; when there is none, the shortest way out of range.</li>
-<li><strong>It holds.</strong> A minute with nothing in sight and nothing received: it says so, stops and waits for an order — it does not drive back into the same ambush by itself.</li>
+<li><strong>After the contact.</strong> A minute with nothing in sight and nothing received:</li>
+<li><strong>after a fight</strong>, once no enemy is left alive around it (an enemy merely out of its sight, it goes back for), it drives on by itself: the armed vehicles go and fetch the unarmed ones, which wait where they fell back, the convoy becomes one again, then drives on by road rather than across country (when they have not met within 10 minutes, each drives on by itself);</li>
+<li><strong>after a fall back</strong>, it says so, stops and waits for an order: the enemy it fled is still there, and it does not drive back into the same ambush by itself.</li>
 </ol>
 <p>A red convoy does exactly the same, on the red side.</p>
+<p><strong>It speaks like a crew on the radio</strong>, opening with its <strong>callsign</strong>: "Mule, contact ahead, 3 enemies at 2500 m bearing 045, engaging." The direction (ahead, behind, left, right) is given from the convoy's heading. The contact report comes first; the tactical messages ("the unarmed vehicles are falling back") follow 15 s later.</p>
 <h3 id="convoy-groups">Which groups<a class="headerlink" href="#convoy-groups" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Every convoy spawned by <code>_spawn convoy</code></strong>, automatically. Its name is the one the spawn gives it (<code>[b]-Convoy-3</code>…); a part of it is enough in <code>_gc</code>, as with <code>groupname</code>.</li>
+<li><strong>Every convoy spawned by <code>_spawn convoy</code></strong>, automatically.
+  Beware: <code>-convoy</code> spawns a <strong>red</strong> convoy by default — a target. For a friendly one, add <code>side blue</code>: <code>-convoy, dest ALPHA, side blue</code>.</li>
 <li>A Mission Editor group listed in <code>mission.yaml</code> (<a href="#configuration-missionyaml">below</a>).</li>
 <li>Any group, in game: <code>_gc &lt;name&gt;, convoy</code>, with the marker on the group (or with <code>groupname</code>).</li>
 </ul>
+<p>Each convoy has a <strong>callsign</strong>, which is also the name <code>_gc</code> uses for it: the name given in <code>_gc &lt;name&gt;, convoy</code>, otherwise the first free one of a list of beasts of burden (Mule, Bison, Yak, Lama, Zebu, Buffle, Chameau…), without accents so that it types easily; once the list is used up, it starts again with a number (<code>Mule 2</code>). <code>_gc &lt;callsign&gt;, status</code> recalls it, with the group's DCS name; a part of the callsign is enough.</p>
 <h3 id="convoy-orders">The orders<a class="headerlink" href="#convoy-orders" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -3887,28 +3894,28 @@ The convoy autopilot does the work instead, <strong>with nobody at the controls<
 </thead>
 <tbody>
 <tr>
-<td><code>_gc convoy-3, retreat</code></td>
+<td><code>_gc mule, retreat</code></td>
 <td>falls back by road to the nearest friendly place</td>
 </tr>
 <tr>
-<td><code>_gc convoy-3, retreat KOBULETI</code></td>
+<td><code>_gc mule, retreat KOBULETI</code></td>
 <td>falls back to this named point, or these coordinates</td>
 </tr>
 <tr>
-<td><code>_gc convoy-3, hold</code></td>
+<td><code>_gc mule, hold</code></td>
 <td>stops where it stands, both groups</td>
 </tr>
 <tr>
-<td><code>_gc convoy-3, resume</code></td>
-<td>drives on: the armed vehicles take the road again, the unarmed ones join them, and the convoy becomes one group again within 300 m</td>
+<td><code>_gc mule, resume</code></td>
+<td>drives on (by itself after a won fight): the armed vehicles go and fetch the unarmed ones, which wait for them, the convoy becomes one group again within 300 m and takes the road</td>
 </tr>
 <tr>
-<td><code>_gc convoy-3, status</code></td>
+<td><code>_gc mule, status</code></td>
 <td>what the convoy is doing (driving, alerted, fighting, falling back, holding…)</td>
 </tr>
 <tr>
 <td><code>_gc supply, convoy, groupname Supply North</code></td>
-<td>hands the group <code>Supply North</code> to the convoy autopilot, under the name <code>supply</code></td>
+<td>hands the group <code>Supply North</code> to the convoy autopilot, under the callsign <code>supply</code></td>
 </tr>
 </tbody>
 </table>
@@ -3983,6 +3990,7 @@ after, and they complete the order.</p>
 <li><strong>The convoy's watch does not see vegetation.</strong> <code>land.isVisible</code> only accounts for terrain: the convoy may judge "in sight" an enemy that trees hide from DCS's AI. That is why its armed vehicles close in rather than halt: halted 1.9 km from an enemy "in sight", two Bradleys did not fire a round in two minutes (measured 2026-10-08).</li>
 <li><strong>Trees are no cover for the fall-back</strong>: <code>world.searchObjects</code> does not find them. Only terrain and towns hide the rally point.</li>
 <li><strong>Smoke does not blind DCS's AI</strong> (measured 2026-10-08): it marks, for the pilots. So the convoy lays no smoke screen.</li>
+<li><strong>A living enemy the convoy cannot reach keeps it fighting</strong>: while one is left within its watch, it goes back for it rather than drive on. <code>_gc &lt;callsign&gt;, resume</code> sends it on its way.</li>
 <li><strong>A vehicle split off or merged back comes back whole</strong>: DCS cannot recreate a unit with its damage. The watch almost always splits the convoy before the first hit.</li>
 <li><strong>The 250-metre search radius is not configurable.</strong></li>
 <li>Orders go through the F10 map only: <strong>this module has no radio menu</strong>.</li>
