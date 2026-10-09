@@ -4244,7 +4244,7 @@ doive en plus avoir le niveau de sécurité requis.</p>
 <p>Des paliers par <code>enemy_count</code> répondent à <strong>ce qui entre dans la zone</strong>. Une paire qui s'y présente devant un dispositif de six reçoit le palier d'une paire, pendant que les quatre autres sont encore à l'écart. Le <strong>niveau d'opposition</strong> dit pour combien d'avions joueurs la chasse adverse est dimensionnée, dans la même unité que <code>enemy_count</code> ; une QRA marquée <code>scale_with_opposition: true</code> prend le palier du plus grand des deux nombres.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">opposition</span><span class="p">:</span><span class="w">                 </span><span class="c1"># bloc racine de mission.yaml, à côté de modules:</span>
 <span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span><span class="w">                  </span><span class="c1"># dimensionnée pour 6 avions joueurs</span>
-<span class="w">  </span><span class="nt">follow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">players</span><span class="w">           </span><span class="c1"># off (défaut) | players : joueurs connectés | airborne : joueurs en vol</span>
+<span class="w">  </span><span class="nt">follow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_to_air</span><span class="w">        </span><span class="c1"># off (défaut) | air_to_air : joueurs en CAP | players : connectés | airborne : en vol</span>
 <span class="w">  </span><span class="nt">lower_after</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">          </span><span class="c1"># secondes pendant lesquelles un compte plus bas doit tenir avant de baisser le niveau</span>
 <span class="w">  </span><span class="nt">players_coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLUE</span><span class="w">   </span><span class="c1"># BLUE (défaut) | RED : la coalition dont on compte les joueurs</span>
 </code></pre></div>
@@ -4268,7 +4268,7 @@ doive en plus avoir le niveau de sécurité requis.</p>
 <td><code>follow</code></td>
 <td>string</td>
 <td><code>off</code></td>
-<td><code>players</code> : le niveau suit les joueurs connectés de la coalition ; <code>airborne</code> : ceux qui sont en vol. Relu toutes les 60 s</td>
+<td><code>air_to_air</code> : le niveau suit les joueurs <strong>en vol qui emportent au moins un missile air-air à guidage radar</strong> (Fox 1 ou Fox 3) — ceux qui font de la CAP ; <code>players</code> : tous les joueurs connectés de la coalition, hélicoptères et avions d'attaque au sol compris ; <code>airborne</code> : tous ceux qui sont en vol. Relu toutes les 60 s</td>
 </tr>
 <tr>
 <td><code>lower_after</code></td>
@@ -4286,17 +4286,20 @@ doive en plus avoir le niveau de sécurité requis.</p>
 </table>
 <p>Le bloc ajoute aussi, en jeu :</p>
 <ul>
-<li>un menu radio <strong>Opposition</strong> : niveau actuel (pour tous), niveau +1 / −1 et changement de mode (commandes sécurisées) ;</li>
-<li>un marqueur <strong><code>_opposition</code></strong>, réservé au niveau de sécurité <em>SENIOR_PILOT</em> : <code>_opposition 6</code> fixe le niveau (et arrête le suivi), <code>_opposition players</code> / <code>_opposition airborne</code> / <code>_opposition off</code> change de mode, <code>_opposition</code> seul l'annonce ;</li>
+<li>un menu radio <strong>Opposition</strong> : <em>Niveau actuel</em> (pour tous), <em>Niveau</em> → « 1 joueur(s) en CAP » … « 8 joueur(s) en CAP », qui fixe le niveau en un clic et arrête le suivi, et <em>Mode</em> → le mode de suivi (commandes sécurisées) ;</li>
+<li>un marqueur <strong><code>_opposition</code></strong>, réservé au niveau de sécurité <em>SENIOR_PILOT</em> : <code>_opposition 6</code> fixe le niveau (et arrête le suivi), <code>_opposition air_to_air</code> / <code>_opposition players</code> / <code>_opposition airborne</code> / <code>_opposition off</code> change de mode, <code>_opposition</code> seul l'annonce ;</li>
 <li>dans le menu des <a href="../veafCombatMission/">combat missions</a>, sous chaque niveau de compétence, une entrée <strong>Taille auto</strong> qui active le <em>scale</em> d'un groupe ennemi par deux joueurs (arrondi au-dessus), dans la limite des <em>scales</em> proposés.</li>
 </ul>
 <p>Chaque changement de niveau est annoncé à tout le monde.</p>
 <p><strong>Comment choisir.</strong> Écrivez les paliers jusqu'à la taille attendue du dispositif : pour un groupe de 5 à 7 joueurs, par exemple <code>1</code> → une paire, <code>3</code> → deux paires, <code>5</code> → trois. Jamais une seule paire fixe face à 5 joueurs ou plus. Ensuite :</p>
 <ul>
 <li>soirée dont on connaît l'effectif → <code>level</code> fixe ;</li>
-<li>effectif inconnu, ou qui change en cours de vol → <code>follow: players</code> ;</li>
-<li>c'est ce qui est <strong>en l'air</strong> qui compte, pas ce qui attend au parking → <code>follow: airborne</code>.</li>
+<li>effectif inconnu, ou qui change en cours de vol → <code>follow: air_to_air</code> : seuls les joueurs en CAP comptent, pas ceux qui sont venus faire de l'attaque au sol, de l'hélico ou du transport ;</li>
+<li>tous les joueurs doivent compter, quel que soit leur rôle → <code>follow: players</code>, ou <code>follow: airborne</code> pour ne compter que ceux qui sont en l'air.</li>
 </ul>
+<p><code>air_to_air</code> lit l'armement <strong>en vol</strong> (<code>getAmmo</code>) : ce que l'avion emporte à cet instant, donc ce que le pilote a choisi au réarmement, pas le chargement posé dans la mission.
+Deux AIM-9 d'autodéfense sur un avion chargé de bombes ne comptent pas ; un chasseur qui n'emporte que des missiles infrarouges non plus.
+Un multirôle en attaque au sol qui garde deux AIM-120 d'escorte compte : le menu <em>Niveau</em> corrige le compte le soir où il se trompe.</p>
 <p>Une campagne écrit ce bloc toute seule à partir de son <code>players</code> ou de <code>campaign next --players</code> — voir <a href="../../CAMPAIGN/#players">Campagnes</a>.</p>
 <h3 id="exemple-minimal">Exemple minimal<a class="headerlink" href="#exemple-minimal" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
