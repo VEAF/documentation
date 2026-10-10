@@ -4992,8 +4992,9 @@ collision sur la même seconde est désambiguïsée (<code>-2</code>, <code>-3</
 <li><code>route</code> — optionnelle ; par défaut un unique point stationnaire à <code>position</code>. Avec
   <code>patrol: true</code> (et au moins 2 points), le dernier point boucle sur le premier via une tâche
   <code>GoToWaypoint</code> — une patrouille terrestre DCS classique.</li>
-<li><strong>Pas de déduplication</strong> : appeler deux fois avec les mêmes paramètres crée deux groupes
-  distincts, exactement comme deux clics dans l'éditeur DCS.</li>
+<li><strong>Un nom déjà pris est refusé</strong>, nom de groupe comme nom d'unité, en citant le groupe qui le porte.
+  DCS ne refuse pas deux objets du même nom : <code>Group.getByName</code> en renvoie un des deux sans rien dire, et tout ce qui désigne un groupe par son nom (QRA, combat zone, <code>remove_group</code>) se trompe de groupe.
+  Vaut pour toutes les actions qui créent un groupe (<code>add_air_group</code>, <code>add_player_slot</code>, <code>create_qra</code>…), qui passent par la même insertion.</li>
 <li>Les <code>groupId</code>/<code>unitId</code> sont toujours frais (<code>mission_tools.group_insertion.max_ids</code>), y compris
   sur une mission aux plages d'ids déjà trouées.</li>
 </ul>
@@ -5131,6 +5132,8 @@ dossier (durable) ou un <code>.miz</code> (transitoire), sauvegarde horodatée a
 <li><strong>Nom exact exigé.</strong> Un fragment est refusé, comme pour <code>set_group_properties</code> : une suppression
   qui atterrit sur le premier groupe correspondant n'est pas rattrapable. Un nom introuvable liste ce
   qui existe, et <strong>rien n'est écrit</strong>.</li>
+<li><strong>Un nom porté par plusieurs groupes est refusé</strong>, en listant leurs <code>groupId</code> : <code>group_id</code> désigne celui à retirer, l'autre reste.
+  Avant, l'action les retirait tous et n'en annonçait qu'un.</li>
 <li><strong>Nomme ce qu'il casse, sans refuser</strong> — le créateur de mission veut peut-être précisément ça :
   une combat zone qui capture le groupe par préfixe de nom, une tâche <code>Escort</code> qui pointe son
   <code>groupId</code> (y compris imbriquée dans un <code>ComboTask</code>, la forme réelle de DCS), et une entrée

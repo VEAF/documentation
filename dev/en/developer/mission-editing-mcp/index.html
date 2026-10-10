@@ -4976,8 +4976,9 @@ silently overwritten.</p>
 <li><code>route</code> — optional; defaults to a single stationary point at <code>position</code>. With <code>patrol: true</code>
   (and at least 2 points), the last point loops back to the first via a <code>GoToWaypoint</code> task — a
   classic DCS ground-unit patrol.</li>
-<li><strong>No deduplication</strong>: calling this twice with the same parameters creates two distinct groups,
-  exactly like two clicks in the DCS Mission Editor.</li>
+<li><strong>A name already taken is refused</strong>, group name and unit name alike, naming the group that holds it.
+  DCS does not refuse two objects of one name: <code>Group.getByName</code> returns either one and says nothing, and everything that names a group (a QRA, a combat zone, <code>remove_group</code>) works on the wrong one.
+  Applies to every action that creates a group (<code>add_air_group</code>, <code>add_player_slot</code>, <code>create_qra</code>…), which share the same insertion.</li>
 <li><code>groupId</code>/<code>unitId</code>s are always fresh (<code>mission_tools.group_insertion.max_ids</code>), even on a
   mission with gaps in its existing id ranges.</li>
 </ul>
@@ -5112,6 +5113,8 @@ while <code>edit_zone</code> and <code>edit_map_drawing</code> both have a <code
 <li><strong>Exact name required.</strong> A fragment is refused, as <code>set_group_properties</code> refuses one: a removal
   landing on whichever group matched first is not recoverable. An unknown name lists what exists, and
   <strong>nothing is written</strong>.</li>
+<li><strong>A name several groups share is refused</strong>, listing their <code>groupId</code>s: <code>group_id</code> says which one goes, the other stays.
+  It used to remove all of them and report one.</li>
 <li><strong>Names what it breaks without refusing</strong> — the mission maker may well mean it: a combat zone
   capturing the group by name prefix, an <code>Escort</code> task pointing at its <code>groupId</code> (nested inside a
   <code>ComboTask</code>, which is how DCS actually writes it), and a <code>mission.yaml</code>
