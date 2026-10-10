@@ -2318,6 +2318,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#menu-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watching the F10 menu
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3518,6 +3529,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#menu-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watching the F10 menu
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3783,7 +3805,7 @@
 <p>After all modules are initialised, call:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">refreshRadioMenu</span><span class="p">()</span>
 </code></pre></div>
-<p>This rebuilds the entire F10 tree. It is safe to call multiple times — it debounces internally (1-second delay).</p>
+<p>The F10 tree is rendered again, but only the entries that changed are touched in DCS: an unchanged entry is never removed nor recreated. It is safe to call multiple times — it debounces internally (1-second delay).</p>
 <hr />
 <h2 id="configuration-missionyaml">Configuration (<code>mission.yaml</code>)<a class="headerlink" href="#configuration-missionyaml" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
@@ -3792,6 +3814,7 @@
 <span class="w">    </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w">        </span><span class="c1"># optional log level override</span>
 <span class="w">    </span><span class="nt">init</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">help_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># show built-in &quot;Help&quot; entries in radio menus (default: true)</span>
+<span class="w">    </span><span class="nt">menu_stats</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1"># log the F10 menu&#39;s size and changes (default: false)</span>
 </code></pre></div>
 <table>
 <thead>
@@ -3825,6 +3848,13 @@
 <td>No</td>
 <td>Show built-in "Help" entries in the generated radio menus</td>
 </tr>
+<tr>
+<td><code>menu_stats</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>No</td>
+<td>Write to <code>dcs.log</code>, on every refresh, the F10 menu's size and what changed — see <a href="#menu-stats">Watching the F10 menu</a></td>
+</tr>
 </tbody>
 </table>
 <h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
@@ -3832,6 +3862,18 @@
 <span class="w">  </span><span class="nt">RADIO</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
+<h3 id="menu-stats">Watching the F10 menu<a class="headerlink" href="#menu-stats" title="Permanent link">&para;</a></h3>
+<p><code>menu_stats: true</code> is a diagnostic option, to turn on <strong>temporarily</strong> in a real mission (an operation, an evening on the server) to see how the F10 menu behaves in multiplayer.
+On every menu refresh, an <code>info</code> line goes to the server's <code>dcs.log</code>:</p>
+<div class="highlight"><pre><span></span><code>radio menu stats: 3 added, 1 removed since the last report; 412 live entries (everyone 38, coalitions 6, groups 368 across 23 groups); 57 ids parked in all
+</code></pre></div>
+<ul>
+<li><strong>added / removed</strong>: the entries created and removed in DCS since the previous line. A <code>0 added, 0 removed</code> line is a refresh that changed nothing.</li>
+<li><strong>live entries</strong>: the VEAF menu's size at that moment, <code>user_menus</code> menus excluded since they are built apart, split between the entries everyone sees, those one coalition sees, and those a single group sees.</li>
+<li><strong>ids parked</strong>: the total number of invisible commands created since the mission started. DCS gives the id of a removed entry to the next entry created, which sent a click on a menu left open to another command; each freed id is therefore "parked" on an invisible command that does nothing. They pile up for the whole mission.</li>
+</ul>
+<p>The lines are at <code>info</code> level. A mission that lowers its log level (<code>global_log_level: warning</code> or <code>error</code>) hides them: then add <code>logLevel: info</code> under <code>RADIO</code>, which outranks the global level.
+Once the measurement is done, remove the option.</p>
 <hr />
 <h2 id="creating-a-custom-menu">Creating a custom menu<a class="headerlink" href="#creating-a-custom-menu" title="Permanent link">&para;</a></h2>
 <p>Use <code>veafRadio.createUserMenu()</code> to build a structured menu tree from a simple Lua table, using three helpers:</p>
