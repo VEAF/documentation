@@ -1,0 +1,4261 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tools and Lua scripts for dynamic DCS World missions">
+      
+      
+      
+        <link rel="canonical" href="https://veaf.github.io/documentation/6.29.0/mission-maker/CAMPAIGN/">
+      
+      
+        <link rel="prev" href="../FOOTHOLD/">
+      
+      
+        <link rel="next" href="../LOGS/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../en/mission-maker/CAMPAIGN/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Campagne multi-missions - VEAF Mission Creation Tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/chatbot/veaf-chatbot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#campagne-multi-missions" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../.." title="VEAF Mission Creation Tools" class="md-header__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VEAF Mission Creation Tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Campagne multi-missions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/mission-maker/CAMPAIGN/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../SUPPORT/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Obtenir de l'aide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../pilot/" class="md-tabs__link">
+          
+  
+  
+  Guide Pilote
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Créateur de Mission
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../developer/" class="md-tabs__link">
+          
+  
+  
+  Développeur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../MISSION_YAML_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  Références
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="VEAF Mission Creation Tools" class="md-nav__button md-logo" aria-label="VEAF Mission Creation Tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VEAF Mission Creation Tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VEAF/VEAF-Mission-Creation-Tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SUPPORT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Obtenir de l'aide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide Pilote
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide Pilote
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pilot/dcs-trouble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS se comporte mal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créateur de Mission
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Créateur de Mission
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DISCOVER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Découvrir VMCT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutoriel — votre première mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AI_ASSISTANT_INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Créer avec une IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AI_ASSISTANT_CATALOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ce qu'on peut demander à l'IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Les fiches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Les fiches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/mission-folder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Le dossier de mission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/mission-yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mission.yaml et ses modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Le build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/custom-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/radio-presets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préréglages radio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/combat-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zones de combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/dynamic-slots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slots dynamiques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/spawnables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groupes spawnables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/weather-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variantes météo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Les messages du build
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Les messages du build
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-messages/coalitions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coalitions et pays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-messages/missing-references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références manquantes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-messages/lua-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Les fichiers Lua du dossier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-messages/routes-and-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Routes et tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-messages/modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules et scripts communautaires
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MIGRATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide de Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONVERT_OTHER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adopter une mission tierce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FOOTHOLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moulinette Foothold
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campagne multi-missions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campagne multi-missions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La boucle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#campaign-folder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le dossier de campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#declare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Déclarer une campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#garrisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les garnisons
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les garnisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#size-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les classes de taille
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant la première mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-flight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        En vol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="En vol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assault-convoys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les convois d'assaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le fichier d'état
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Le fichier d&#39;état">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fetch-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Récupérer le fichier sur un serveur
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#between-missions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entre les missions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#players" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L'opposition à la taille de l'escadrille
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debriefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le débriefing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#strategic-briefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le briefing stratégique
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mission-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date, heure et météo des missions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Date, heure et météo des missions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server-rewrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un serveur qui réécrit les missions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#squadron-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce que campaign next règle pour l'escadrille
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objective-waypoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les waypoints des joueurs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#briefing-deck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le document de briefing de campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mission-briefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le briefing de mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui reste à vérifier en jeu
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LOGS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lire les journaux de DCS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ALIASES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_15" id="__nav_4_15_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAirWaves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirWaves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAirbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAirbases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAssets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafAssets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafAssist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklists guidées (veafAssist)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCarrierOperations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCarrierOperations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCampaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCampaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCasMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCasMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCombatMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Menu MISSIONS (veafCombatMission)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCombatZone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCombatZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafCommands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafGrass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafGrass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafGroundAI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IA au sol (veafGroundAI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafI18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafI18n
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafInterpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafInterpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafMissileGuardian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMissileGuardian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafMove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafMove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafNamedPoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafNamedPoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafQraManager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafQraManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafRadio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafRadio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSanctuary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSecurity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & permissions (veafSecurity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafServerHook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafServerHook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafShortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafShortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSkynetIadsHelper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSkynetIadsHelper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafSpawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSpawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafTransportMission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafTransportMission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafUnits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafUnits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripts/veafWeather/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafWeather
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Développeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Développeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperçu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/dcs-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS data generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/capture-airbases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Récupérer les aérodromes d'une carte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/mission-editing-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mission editing MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/radio-preset-projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radio preset projection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/export-json-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export JSON contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/diagnostic-block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Format du bloc de diagnostic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/report-block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Format du bloc de rapport
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/smoke-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Smoke harness (in-DCS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Références
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Références
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MISSION_YAML_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence mission.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PIPELINE_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dcs-radio-specs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Radio Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LUA_API_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence de l'API Lua
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CLI_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mise à jour & publication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feuille de route
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La boucle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#campaign-folder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le dossier de campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#declare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Déclarer une campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#garrisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les garnisons
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les garnisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#size-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les classes de taille
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-mission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avant la première mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-flight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        En vol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="En vol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assault-convoys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les convois d'assaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le fichier d'état
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Le fichier d&#39;état">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fetch-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Récupérer le fichier sur un serveur
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#between-missions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entre les missions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#players" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L'opposition à la taille de l'escadrille
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debriefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le débriefing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#strategic-briefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le briefing stratégique
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mission-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date, heure et météo des missions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Date, heure et météo des missions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server-rewrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un serveur qui réécrit les missions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#squadron-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce que campaign next règle pour l'escadrille
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objective-waypoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Les waypoints des joueurs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#briefing-deck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le document de briefing de campagne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mission-briefing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le briefing de mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ce qui reste à vérifier en jeu
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="campagne-multi-missions">Campagne multi-missions<a class="headerlink" href="#campagne-multi-missions" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Une campagne pour l'escadrille, jouée mission après mission.
+Chaque mission part de ce que la précédente a laissé : un pont détruit reste détruit, une base libérée reste à nous, une garnison qui a perdu deux lanceurs les a perdus pour de bon.
+C'est une campagne <strong>épisodique</strong>, dans l'esprit de DCS Liberation : chaque mission est une session de vol bornée, et la campagne avance entre deux missions.</p>
+</blockquote>
+<h2 id="loop">La boucle<a class="headerlink" href="#loop" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>étape</th>
+<th>qui</th>
+<th>comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>déclarer la campagne</td>
+<td>le mission maker, souvent avec Claude</td>
+<td>un dossier de campagne et son <code>campaign.yaml</code></td>
+</tr>
+<tr>
+<td>démarrer</td>
+<td>les outils</td>
+<td><code>campaign init</code> crée l'état de départ</td>
+</tr>
+<tr>
+<td>construire la mission N</td>
+<td>les outils, puis Claude</td>
+<td><code>campaign next</code> prépare le dossier de mission à partir de l'état ; Claude y conçoit la mission par le MCP</td>
+</tr>
+<tr>
+<td>voler</td>
+<td>l'escadrille</td>
+<td>la mission écrit son <strong>fichier d'état</strong> pendant le vol et à la fin</td>
+</tr>
+<tr>
+<td>récupérer le fichier d'état</td>
+<td>le mission maker ou Claude</td>
+<td>depuis le <code>Saved Games</code> du serveur</td>
+</tr>
+<tr>
+<td>appliquer</td>
+<td>les outils</td>
+<td><code>campaign apply</code> fusionne le fichier d'état et joue le tour entre les missions</td>
+</tr>
+</tbody>
+</table>
+<p>Puis on recommence à <code>campaign next</code>, jusqu'à ce que les objectifs soient atteints ou que les missions prévues soient jouées.</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">campaign</span> <span class="n">init</span> <span class="n">C</span><span class="p">:\</span><span class="n">Campagnes</span><span class="p">\</span><span class="n">Caucase</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">campaign</span> <span class="n">next</span> <span class="n">C</span><span class="p">:\</span><span class="n">Campagnes</span><span class="p">\</span><span class="n">Caucase</span>
+<span class="c"># … la mission est conçue, construite, jouée …</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">campaign</span> <span class="n">apply</span> <span class="s2">&quot;C:\Saved Games\DCS\Missions\Saves\Caucasus Front\mission-01.state&quot;</span> <span class="n">C</span><span class="p">:\</span><span class="n">Campagnes</span><span class="p">\</span><span class="n">Caucase</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">campaign</span> <span class="n">next</span> <span class="n">C</span><span class="p">:\</span><span class="n">Campagnes</span><span class="p">\</span><span class="n">Caucase</span>
+</code></pre></div>
+<p>Avec l'assistant IA, les mêmes étapes passent par les actions <code>campaign_status</code>, <code>campaign_apply</code> et <code>campaign_next</code> (voir le <a href="../AI_ASSISTANT_CATALOG/">catalogue</a>).</p>
+<h2 id="campaign-folder">Le dossier de campagne<a class="headerlink" href="#campaign-folder" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>Caucase/
+├── campaign.yaml            ce que vous déclarez ; les outils ne le réécrivent jamais
+├── briefing.yaml            le texte du briefing de campagne (voir plus bas) ; facultatif
+├── campaign-state.yaml      ce que la campagne est devenue ; réécrit après chaque mission
+├── template/                un dossier de mission ordinaire : chaque mission en part
+└── missions/
+    ├── mission-01/
+    │   ├── mission/         le dossier de mission de la mission 1
+    │   ├── mission-01.state le fichier d&#39;état écrit par la mission
+    │   ├── briefing-campagne.pptx / carte-strategique.png
+    │   ├── briefing-mission.pptx / carte-tactique.png / zoom-&lt;zone&gt;.png
+    │   ├── debriefing.fr.txt / debriefing.en.txt
+    │   ├── campaign-state.before.yaml
+    │   └── campaign-state.after.yaml
+    └── mission-02/
+        └── mission/
+</code></pre></div>
+<p><code>template/</code> se prépare une fois, comme n'importe quel dossier de mission (<code>.\veaf-tools.exe prepare</code>, ou l'action MCP <code>scaffold_mission</code>) : la carte, les slots, les presets, les scripts.
+Chaque mission de la campagne commence comme une copie de ce dossier.</p>
+<p>L'historique est gardé en entier : pour annuler une fusion, remettez <code>campaign-state.before.yaml</code> à la place de <code>campaign-state.yaml</code>.</p>
+<h2 id="declare">Déclarer une campagne<a class="headerlink" href="#declare" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">campaign</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Caucasus Front</span>
+<span class="w">  </span><span class="nt">theatre</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Caucasus</span>
+<span class="w">  </span><span class="nt">era</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MODERN</span><span class="w">                </span><span class="c1"># MODERN, COLD_WAR ou WW2 : ce que les garnisons tirent</span>
+<span class="w">  </span><span class="nt">missions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">               </span><span class="c1"># les objectifs sont dimensionnés pour à peu près ce nombre</span>
+<span class="w">  </span><span class="nt">player_side</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span><span class="w">          </span><span class="c1"># le camp des joueurs ; blue par défaut</span>
+<span class="w">  </span><span class="nt">capture_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w">       </span><span class="c1"># présence au sol pour prendre une zone neutre</span>
+<span class="w">  </span><span class="nt">state_write_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">    </span><span class="c1"># intervalle d&#39;écriture du fichier d&#39;état en vol</span>
+<span class="w">  </span><span class="nt">start_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2016-06-01</span><span class="w">     </span><span class="c1"># date de la première mission ; celle du template sinon</span>
+<span class="w">  </span><span class="nt">start_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sunrise+30*60</span><span class="w">  </span><span class="c1"># heure de début : &quot;06:30&quot; ou expression solaire ; c&#39;est le défaut</span>
+<span class="w">  </span><span class="nt">players</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5-7</span><span class="w">               </span><span class="c1"># effectif attendu de l&#39;escadrille : un nombre (6) ou une fourchette</span>
+<span class="w">  </span><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">capture</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Senaki</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Kutaisi</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">destroy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> zone</span><span class="p">:</span><span class="w"> </span><span class="nv">Gudauta depot</span><span class="p p-Indicator">,</span><span class="nt"> kind</span><span class="p">:</span><span class="w"> </span><span class="nv">logistics</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="nt">size_classes</span><span class="p">:</span><span class="w">                </span><span class="c1"># surcharge des classes livrées, ou nouvelles classes</span>
+<span class="w">  </span><span class="nt">outpost</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> size</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="nt">zones</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kobuleti</span>
+<span class="w">    </span><span class="nt">at</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> airfield</span><span class="p">:</span><span class="w"> </span><span class="nv">Kobuleti</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airfield</span>
+<span class="w">    </span><span class="nt">side</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blue</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Senaki</span>
+<span class="w">    </span><span class="nt">at</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> airfield</span><span class="p">:</span><span class="w"> </span><span class="nv">Senaki-Kolkhi</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airfield</span>
+<span class="w">    </span><span class="nt">side</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span>
+<span class="w">    </span><span class="nt">radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span><span class="w">             </span><span class="c1"># en mètres ; 2000 par défaut</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gudauta depot</span>
+<span class="w">    </span><span class="nt">at</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> lat</span><span class="p">:</span><span class="w"> </span><span class="nv">43.10</span><span class="p p-Indicator">,</span><span class="nt"> lon</span><span class="p">:</span><span class="w"> </span><span class="nv">40.58</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">outpost</span>
+<span class="w">    </span><span class="nt">side</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">logistics</span><span class="w">          </span><span class="c1"># alimente la réserve de son camp entre les missions</span>
+<span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dépôt de Gudauta</span><span class="w">   </span><span class="c1"># le nom que lisent les joueurs ; le nom reste la clé</span>
+<span class="w">    </span><span class="nt">intel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dépôt actif, gardé.</span><span class="w">       </span><span class="c1"># ce que dit le renseignement, à la place du texte généré</span>
+<span class="w">    </span><span class="nt">garrison</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sa8</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">shilka</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">T-72B</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># remplace le tirage, pour le camp qui le déclare</span>
+<span class="nt">connections</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Kobuleti</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Senaki</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Senaki</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Gudauta depot</span><span class="p p-Indicator">]</span>
+<span class="nt">sides</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">red</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> reserve</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> armor</span><span class="p">:</span><span class="w"> </span><span class="nv">12</span><span class="p p-Indicator">,</span><span class="nt"> air_defense</span><span class="p">:</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nt"> transport</span><span class="p">:</span><span class="w"> </span><span class="nv">6</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="nt">rules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">repairs_per_mission</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">  </span><span class="nt">assault_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span><span class="w">       </span><span class="c1"># délai avant qu&#39;un convoi d&#39;assaut parte (voir « En vol »)</span>
+<span class="w">  </span><span class="nt">intel_seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1200</span><span class="w">        </span><span class="c1"># délai avant que l&#39;autre camp apprenne son départ ; 0 : tout de suite</span>
+</code></pre></div>
+<p>Une campagne complète, prête à copier — la Géorgie occidentale en 12 zones et 10 missions — est livrée avec les outils : <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/src/defaults/campaign-folder/campaign.yaml"><code>src/defaults/campaign-folder/campaign.yaml</code></a>.</p>
+<p>Une zone est <strong>sur un aérodrome</strong> (<code>at: { airfield: &lt;nom DCS&gt; }</code>) ou <strong>à des coordonnées</strong> (<code>at: { lat, lon }</code>).
+Une zone d'aérodrome donne sa base à son propriétaire : slots dynamiques pour son camp, aucun pour une base neutre.</p>
+<p>Un objectif <code>capture</code> est atteint quand le camp des joueurs tient toutes les zones qu'il nomme.
+Un objectif <code>destroy</code> l'est quand l'ennemi ne tient plus la zone : garnison détruite, ou zone prise.</p>
+<p><code>.\veaf-tools.exe campaign validate &lt;dossier&gt;</code> contrôle le fichier, et l'état par rapport à lui : aérodrome inconnu, zone en double, connexion vers une zone inconnue, graphe en morceaux, objectif sur une zone inconnue, alias de garnison inconnu, paramètre hors bornes.
+Une zone renommée ou supprimée dans <code>campaign.yaml</code> après le démarrage est signalée, jamais oubliée en silence.</p>
+<h2 id="garrisons">Les garnisons<a class="headerlink" href="#garrisons" title="Permanent link">&para;</a></h2>
+<p>Une garnison est tirée <strong>une fois</strong> par les générateurs des missions CAS (<code>veafCasMission</code>), pour le camp qui tient la zone et l'ère de la campagne.
+Sa composition est enregistrée, et chaque mission suivante la fait réapparaître <strong>moins ses pertes</strong> : un site SAM qui a perdu deux lanceurs démarre sans eux.
+Une zone qui perd toute sa garnison devient <strong>neutre</strong>, et peut être prise.</p>
+<p><strong>Aucune unité de garnison sur le béton d'un aérodrome</strong> : ni piste, ni taxiway, ni parking.
+DCS classe toutes ces surfaces en <code>RUNWAY</code> — à Batumi et Senaki, les 82 postes de stationnement le sont, et le béton s'étend à plus de 300 m de l'axe de piste.
+Un groupe tiré dessus est replacé ailleurs dans la zone, et une unité enregistrée dessus par une mission plus ancienne est déplacée sur le sol nu le plus proche quand elle réapparaît, là où le fichier d'état la garde ensuite.
+Sur <em>Kolkhida</em>, un Patriot posé sur la piste de Batumi a été la seule perte bleue de la soirée, et la garnison de Senaki aurait cloué sa QRA au sol.</p>
+<h3 id="size-classes">Les classes de taille<a class="headerlink" href="#size-classes" title="Permanent link">&para;</a></h3>
+<p>Une classe de taille est un jeu de paramètres des générateurs CAS : la garnison compte autant de sections d'infanterie, de pelotons blindés et de groupes de défense aérienne qu'une mission CAS de la même taille, <strong>sans sa compagnie de transport</strong> — une garnison n'a que faire de quinze camions.</p>
+<table>
+<thead>
+<tr>
+<th>classe livrée</th>
+<th><code>size</code></th>
+<th><code>defense</code></th>
+<th><code>armor</code></th>
+<th>SAM longue portée</th>
+<th>unités (moyenne, min – max)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>outpost</code></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>non</td>
+<td>23 (12 – 36)</td>
+</tr>
+<tr>
+<td><code>airfield</code></td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>oui</td>
+<td>51 (35 – 74), dont ≈ 20 pour le SAM</td>
+</tr>
+</tbody>
+</table>
+<p>Mesuré sur 40 tirages, le 2026-10-06 ; la campagne d'exemple compte ainsi environ 470 unités au sol.</p>
+<p><code>size</code> va de 1 à 5, <code>defense</code> et <code>armor</code> de 0 à 5, comme pour un marqueur <code>_cas</code>.
+Une classe nouvelle doit fixer <code>size</code>, <code>defense</code> et <code>armor</code>.</p>
+<h3 id="first-mission">Avant la première mission<a class="headerlink" href="#first-mission" title="Permanent link">&para;</a></h3>
+<p>Les garnisons de départ sont tirées par la mission 1 elle-même, en jeu.
+Le premier briefing parle donc en termes de renseignement (« force estimée ») ; les chiffres réels arrivent avec le fichier d'état de la mission 1.</p>
+<h2 id="in-flight">En vol<a class="headerlink" href="#in-flight" title="Permanent link">&para;</a></h2>
+<ul>
+<li>La <strong>carte F10</strong> montre chaque zone en cercle de la couleur de son propriétaire, avec son nom et la force de sa garnison, et les connexions en pointillés.</li>
+<li>Le menu radio <strong>Campagne → Situation</strong> donne les zones, les objectifs et le numéro de la mission.</li>
+<li><strong>Prendre une zone neutre</strong> : des unités au sol d'un seul camp y restent <code>capture_seconds</code> (120 s par défaut) — troupes ou véhicules CTLD 2, convoi, groupe <code>_spawn</code>, véhicule Combined Arms, hélicoptère <strong>posé</strong>, caisse CTLD 2.
+  Les deux camps présents arrêtent le compteur ; tout le monde parti l'annule.
+  Un avion en vol ne compte jamais, une épave non plus.
+  Le journal DCS (<code>dcs.log</code>) note, à chaque changement, qui tient une zone neutre et par quelle unité : c'est là qu'on lit pourquoi une prise ne démarre pas.
+  La zone prise reçoit aussitôt la garnison de son nouveau camp, payée sur sa réserve — sauf quand c'est un convoi d'assaut qui la prend : ses survivants deviennent la garnison.</li>
+</ul>
+<h3 id="assault-convoys">Les convois d'assaut<a class="headerlink" href="#assault-convoys" title="Permanent link">&para;</a></h3>
+<p>Une zone neutre est la cible de chaque camp qui tient une zone voisine (connectée).
+Après <code>rules.assault_seconds</code> (600 s par défaut, plus tôt quand le <a href="../scripts/veafQraManager/#opposition-level">niveau d'opposition</a> dépasse 4 joueurs : moitié moins à 8), un convoi part par la route de la première voisine de ce camp vers la cible — à la mission qui démarre avec une zone neutre comme à la zone qui le devient en vol.
+Un seul convoi à la fois par camp et par cible ; il ne part pas si sa zone de départ a changé de mains.
+Il est fait de blindés à la mesure de la classe de taille de sa zone de départ et de quelques camions, <strong>payés sur la réserve</strong> de son camp, unité par unité ; une réserve vide n'envoie rien.
+Ses blindés sont des chars et des véhicules de combat d'infanterie de son camp et de l'ère de la campagne — deux par niveau d'<code>armor</code> de la classe, plus deux : 4 depuis un <code>outpost</code>, 6 depuis un <code>airfield</code> —, tirés parmi les blindés des missions CAS, sans éclaireurs ni transports de troupes.
+Il emmène deux camions et au plus un ou deux canons antiaériens (Vulcan, Gepard ; ZU-23, ZSU-57, Shilka), jamais de missiles, quelle que soit la défense aérienne de sa zone de départ.
+Il se conduit comme tout convoi sous le feu (<a href="../scripts/veafGroundAI/">veafGroundAI</a>) : il regarde devant lui, se scinde, appelle à l'aide, se replie — sauf qu'assez fort pour combattre, il ne s'arrête pas devant la garnison : il entre dans la zone en tirant.
+Son camp est prévenu de son départ et voit aussitôt son axe sur la carte F10 : un trait à sa couleur, posé sur la liaison, jusqu'à ce qu'il arrive ou soit détruit.
+L'autre camp l'apprend en renseignement, <code>rules.intel_seconds</code> plus tard (1 200 s, 20 minutes, par défaut ; 0 : tout de suite) : le message (« une colonne ennemie quitte Senaki en direction de Poti ») et le même trait sur sa carte arrivent ensemble, et un convoi détruit avant n'est jamais signalé.
+Arrivé, il tient la zone comme toute unité au sol, et la prend au bout de <code>capture_seconds</code> : ses survivants dans la zone en deviennent la garnison, sans second tirage sur la réserve.
+Les unités qui ont pris la zone sont celles qui en deviennent la garnison : « dans la zone », c'est ce que trouve la recherche de DCS sur le cercle de la zone, qui déborde de quelques pour cent son rayon — un convoi arrêté juste au bord, à 2 040 m d'une zone de 2 000 m, la prend et la garde.
+Les joueurs bleus en lancent aussi depuis le menu <strong>Campagne → Assauts</strong>, d'une zone bleue vers une voisine qui ne l'est pas, au niveau de sécurité de la mission.
+<code>rules.assault_convoys: false</code> coupe la règle ; le menu reste.</p>
+<h2 id="state-file">Le fichier d'état<a class="headerlink" href="#state-file" title="Permanent link">&para;</a></h2>
+<p>La mission écrit tout ce dont la suivante dépend — propriétaire de chaque zone, garnisons et pertes, réserves, décor détruit, missiles restant aux SAM, contenu des entrepôts — dans :</p>
+<div class="highlight"><pre><span></span><code>&lt;Saved Games&gt;\DCS\Missions\Saves\&lt;nom de la campagne&gt;\mission-NN.state
+</code></pre></div>
+<p>Elle l'écrit toutes les <code>state_write_seconds</code> pendant le vol, et à la fin de la mission : un serveur qui plante ne perd qu'un intervalle.
+Chaque écriture commence par un temporaire complet (<code>mission-NN.state.tmp</code>).
+Quand <code>os</code> est disponible, le temporaire remplace le fichier ; sinon le fichier est écrit à son tour.
+Dans les deux cas, une écriture coupée laisse un fichier entier, et <code>campaign apply</code> se rabat sur le temporaire quand le fichier lui-même est tronqué.</p>
+<p>Il faut <code>io</code> et <code>lfs</code> dans l'environnement des scripts de mission (<code>MissionScripting.lua</code> non assaini sur ces deux-là).
+C'est le cas des serveurs VEAF, qui n'assainissent que <code>os</code> et <code>loadlib</code> (mesuré le 2026-10-03).
+Sans <code>io</code> ou <code>lfs</code>, la mission le dit une fois et tourne quand même : la campagne ne peut simplement pas l'enregistrer.</p>
+<h3 id="fetch-state">Récupérer le fichier sur un serveur<a class="headerlink" href="#fetch-state" title="Permanent link">&para;</a></h3>
+<p>Le fichier est dans le <code>Saved Games</code> de l'instance DCS qui a fait tourner la mission : sur dcs.veaf.org, <code>C:/Users/veaf/Saved Games/&lt;instance&gt;_server/Missions/Saves/&lt;nom de la campagne&gt;/</code>, accessible en SFTP.
+Copiez <code>mission-NN.state</code> sur votre poste — avec son <code>.tmp</code> s'il y en a un — puis passez son chemin à <code>campaign apply</code>.</p>
+<h2 id="between-missions">Entre les missions<a class="headerlink" href="#between-missions" title="Permanent link">&para;</a></h2>
+<p><code>campaign apply</code> refuse un fichier déjà appliqué, celui d'une autre campagne, ou celui qui saute une mission ; dans ces cas rien n'est écrit.
+Sinon il fusionne le fichier, puis joue le <strong>tour</strong> avec des règles fixes, pour les deux camps :</p>
+<table>
+<thead>
+<tr>
+<th>règle</th>
+<th>réglage</th>
+<th>défaut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>chaque zone <code>logistics</code> tenue alimente la réserve de son camp</td>
+<td><code>rules.logistics_output</code></td>
+<td><code>{armor: 2, air_defense: 1, transport: 1}</code></td>
+</tr>
+<tr>
+<td>les unités perdues sont remplacées sur la réserve, catégorie par catégorie</td>
+<td><code>rules.repairs_per_mission</code></td>
+<td>4 unités par camp</td>
+</tr>
+<tr>
+<td>une zone neutre bordée par un seul camp est reprise par lui</td>
+<td><code>rules.counter_attack</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>un convoi d'assaut encore en route à la fin du vol rend ses survivants à la réserve de son camp ; ses morts sont des pertes de la campagne</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Détruire un dépôt ennemi, c'est moins de réserve, donc moins de réparations et des garnisons plus maigres derrière : une réserve vide ne permet plus qu'une garnison minimale.</p>
+<p>L'<strong>intention</strong> de l'ennemi — où il porte son effort, ce que la prochaine mission demande aux joueurs — n'est pas dans les règles : c'est Claude qui la décide en construisant la mission suivante, et qui l'écrit dans le briefing.</p>
+<h2 id="players">L'opposition à la taille de l'escadrille<a class="headerlink" href="#players" title="Permanent link">&para;</a></h2>
+<p>Ce qui s'adapte au nombre de joueurs, c'est la <strong>chasse adverse</strong> : les QRA et les CAP à la demande.
+Les garnisons au sol, elles, sont les comptes de la campagne — réserves, pertes, réparations — et ne dépendent pas de qui est venu ce soir.</p>
+<p><code>players</code> de <code>campaign.yaml</code> dit l'effectif habituel ; <code>campaign next --players 6</code> dit celui de ce soir, et prime :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">campaign</span> <span class="n">next</span> <span class="p">.</span> <span class="p">-</span><span class="n">-players</span> <span class="n">6</span>
+</code></pre></div>
+<p><code>campaign next</code> écrit alors le bloc <a href="../scripts/veafQraManager/#opposition-level"><code>opposition:</code></a> de la mission : un niveau égal au plus grand effectif attendu, qui suit ensuite les joueurs <strong>en CAP</strong> du camp des joueurs (<code>follow: air_to_air</code>, ceux qui volent avec des missiles air-air à guidage radar) — si l'escadrille vient à quatre dont deux en CAP, l'opposition redescend à deux après quelques minutes.
+Un second <code>campaign next</code> sur le même dossier ne change que le niveau : un mode de suivi ou un délai réglés depuis dans la mission sont gardés.
+Sans <code>players</code> ni <code>--players</code>, le bloc de la mission n'est pas touché.</p>
+<p>Les QRA ennemies de la mission doivent avoir des paliers jusqu'à cet effectif (<code>groups_by_enemy_count</code>) ; c'est ce que Claude écrit en concevant la mission.
+Le briefing de mission le dit en renseignement — « la chasse adverse renforce son alerte face à un dispositif important » — jamais en paliers ni en nombres.
+Il annonce de même une <a href="#assault-convoys">contre-attaque terrestre attendue</a> vers une zone neutre que l'ennemi borde, sans sa force.</p>
+<h2 id="debriefing">Le débriefing<a class="headerlink" href="#debriefing" title="Permanent link">&para;</a></h2>
+<p><code>campaign apply</code> écrit aussi le débriefing de la mission jouée, en français et en anglais, dans <code>missions/mission-NN/</code> (<code>debriefing.fr.txt</code>, <code>debriefing.en.txt</code>) : le terrain qui a changé de mains, les pertes de chaque camp zone par zone et type d'unité par type d'unité, le décor détruit, ce que le tour a fait ensuite, et l'état des objectifs.
+C'est un texte à lire après la soirée ou à poster tel quel ; l'assistant IA en fait le récit pour l'escadrille quand on le lui demande, en s'en tenant à ses faits.</p>
+<h2 id="strategic-briefing">Le briefing stratégique<a class="headerlink" href="#strategic-briefing" title="Permanent link">&para;</a></h2>
+<p><code>campaign next</code> écrit, à la racine du dossier de mission, la partie factuelle du briefing stratégique en français et en anglais (<code>strategic-situation.fr.txt</code>, <code>strategic-situation.en.txt</code>) : le front, ce qui a changé à la dernière mission, la réserve et les garnisons ennemies, les objectifs et les missions restantes.
+Le texte, dans la langue des outils, devient aussi le briefing de la mission à sa création, pour qu'une mission construite telle quelle ne parte pas sans briefing ; Claude y ajoute la partie narrative en concevant la mission, et un second <code>campaign next</code> sur le même dossier ne l'écrase pas.</p>
+<h2 id="mission-conditions">Date, heure et météo des missions<a class="headerlink" href="#mission-conditions" title="Permanent link">&para;</a></h2>
+<p>Une mission de campagne est <strong>une</strong> mission : pas de variantes météo.
+Le dossier que <code>campaign next</code> crée a <code>pipeline.weather: false</code> en dernier bloc de <code>mission.yaml</code> et pas de <code>src/versions.yaml</code> ; la date, l'heure et la météo sont <strong>fixées dans la mission</strong> elle-même.</p>
+<ul>
+<li><strong>La date avance avec la campagne</strong> : la mission N+1 a lieu le lendemain de la mission N, dont <code>campaign apply</code> garde la date dans l'état de la campagne. La première prend <code>start_date</code> de <code>campaign.yaml</code>, ou la date du template.</li>
+<li><strong>L'heure sert la mission</strong> : <code>start_time</code> de <code>campaign.yaml</code>, une heure (<code>"06:30"</code>) ou une expression solaire (<code>sunrise+30*60</code>, la valeur par défaut). L'expression est calculée pour le terrain de la campagne — le centre de ses zones — et la date de la mission, à l'heure du théâtre : le lever du soleil de la Colchide, pas celui de Damas que prend le <code>versions.yaml</code> livré.</li>
+<li><strong>La météo peut changer d'une mission à l'autre, le sol reste visible</strong> : nuages absents, peu nombreux ou épars, base entre 1 500 et 3 500 m, visibilité de 8 km ou plus, ni brouillard ni pluie — CAVOK ou presque. Le tirage dépend du nom de la campagne et du numéro de la mission : la même mission retire le même ciel.</li>
+</ul>
+<p>DCS ne fait pleuvoir que sous ses nuages « pluvieux », qui sont couvrants : une pluie légère sous un ciel dégagé n'existe pas, donc la météo d'une campagne n'a jamais de pluie.</p>
+<p>Ce que <code>campaign next</code> a fixé est un point de départ : Claude, en préparant la mission, avance la date si l'histoire le demande et met l'heure que la mission veut (action <code>set_mission_date</code>), et peut changer la météo (<code>set_weather</code>) en gardant le sol visible.
+Un second <code>campaign next</code> sur le même dossier garde ce qui a été réglé.
+Le briefing DCS affiche la date, l'heure et la météo de la mission ; le briefing de mission les écrit aussi.</p>
+<h3 id="server-rewrite">Un serveur qui réécrit les missions<a class="headerlink" href="#server-rewrite" title="Permanent link">&para;</a></h3>
+<p>Un serveur DCSServerBot dont RealWeather ou MizEdit est actif <strong>remplace la date, l'heure et la météo</strong> de toute mission qu'il sert, celles de la campagne comprises : sur <em>Kolkhida</em>, la mission 1 a volé le 8 octobre, sous le ciel de Kutaisi plafonné à 3 000 m, au lieu du 1er juin CAVOK que le briefing annonçait.
+Le suffixe <code>ICAO_xxxx</code> d'un nom de mission ne fait que choisir la station météo : sans lui, le bot prend celle de sa propre configuration.
+C'est pourquoi <code>campaign next</code> nomme la mission <code>Campaign_&lt;campagne&gt;_Mission_&lt;NN&gt;_&lt;titre&gt;_NoMizedit</code> (voir <a href="#squadron-settings">ce que <code>campaign next</code> règle</a>).
+Ce qu'il faut demander aux administrateurs du serveur, sur l'instance qui sert la campagne : que <strong>MizEdit ignore les missions dont le nom contient <code>_NoMizedit</code></strong> (<code>filter: '^(?!.*_NoMizedit)'</code>), et <strong>couper RealWeather au niveau de l'instance</strong>, qui n'a pas de filtre — le preset MizEdit continue de l'appliquer aux autres missions.
+Le build ajoute sa date après le nom (<code>…_NoMizedit_20261015.miz</code>) : le filtre cherche le marqueur n'importe où.</p>
+<h2 id="squadron-settings">Ce que <code>campaign next</code> règle pour l'escadrille<a class="headerlink" href="#squadron-settings" title="Permanent link">&para;</a></h2>
+<p>À chaque passage, <code>campaign next</code> écrit dans le <code>mission.yaml</code> de la mission :</p>
+<ul>
+<li><strong>son nom</strong>, <code>Campaign_&lt;campagne&gt;_Mission_&lt;NN&gt;_&lt;titre&gt;_NoMizedit</code> : le titre est celui de la mission dans <code>briefing.yaml</code>, une fois conçue, en lettres ASCII, chiffres et tirets ; pas de titre encore, pas de partie titre. Le nom ne contient jamais <code>ICAO_</code>.</li>
+<li><strong><code>silence_atc_on_all_airbases: true</code></strong>, comme sur les autres missions VEAF, sauf si la clé y est déjà : une valeur mise à <code>false</code> exprès est gardée.</li>
+<li><strong>la sécurité du serveur</strong> : il retire <code>security.disabled</code> et les mots de passe. Un pilote inscrit dans le <code>veaf-pilots.txt</code> du serveur passe par son niveau, sans mot de passe. C'est une <strong>copie de test</strong> qu'on passe en sécurité coupée, jamais la campagne : le template de <em>Kolkhida</em> l'avait, et l'escadrille a volé la mission 1 avec toutes les commandes protégées ouvertes.</li>
+</ul>
+<h2 id="objective-waypoints">Les waypoints des joueurs<a class="headerlink" href="#objective-waypoints" title="Permanent link">&para;</a></h2>
+<p><code>campaign next</code> écrit le <code>src/waypoints.yaml</code> de la mission à partir de ses objectifs, au lieu de garder l'exemple du template : un waypoint par zone que nomment les tâches de la mission dans <code>briefing.yaml</code> (à défaut, les objectifs de la campagne), au centre de la zone, dans l'ordre des tâches, pour le camp des joueurs.</p>
+<ul>
+<li><strong>Au sol</strong>, pour les avions comme pour les hélicoptères (<code>RADIO</code>, 0 m) : l'objectif est au sol, et c'est là que regardent une nacelle de désignation ou une arme asservie au steerpoint. Avions et hélicoptères partagent le même waypoint ; le briefing de mission écrit « sol ».</li>
+<li><strong>Le nom</strong> est le premier mot de la zone, en majuscules et sans accent : <em>Khobi depot</em> devient <code>KHOBI</code>. Deux zones qui commencent par le même mot gardent leur nom entier (<code>SENAKI_NORTH</code>).</li>
+<li><strong>Le build ajoute <code>BULLSEYE</code></strong> à chaque plan de vol.</li>
+</ul>
+<p>Une fois modifié, le fichier est à vous : il porte l'empreinte de ce que <code>campaign next</code> a écrit, et un second <code>campaign next</code> ne le réécrit que tant qu'elle correspond.
+Un fichier écrit à la main dans un dossier déjà créé est gardé de même.
+Le format du fichier est décrit dans la <a href="../../PIPELINE_REFERENCE/#waypoints-by-key">référence du pipeline</a>.</p>
+<h2 id="briefing-deck">Le document de briefing de campagne<a class="headerlink" href="#briefing-deck" title="Permanent link">&para;</a></h2>
+<p><code>campaign next</code> écrit aussi, dans <code>missions/mission-NN/</code>, le <strong>briefing stratégique de la campagne</strong> en PPTX (<code>briefing-campagne.pptx</code>) et sa carte (<code>carte-strategique.png</code>).
+C'est un briefing de situation au format des briefings VEAF — 16:9, fond blanc, titre en gras en haut à gauche — qui s'importe tel quel dans Google Slides.
+<code>.\veaf-tools.exe campaign briefing &lt;dossier&gt;</code> le régénère à tout moment, par exemple après avoir retouché le texte.</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>D'où elle vient</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Situation stratégique — politique, économique</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Situation militaire — forces ennemies, forces amies, terrain neutre</td>
+<td>les outils, et le mode d'action ennemi de <code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Carte stratégique</td>
+<td>les outils : chaque zone à son rayon, dans la couleur de son propriétaire, et les axes</td>
+</tr>
+<tr>
+<td>Mission et intention — mission, but, effet majeur, méthode, état final recherché</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Objectifs de la campagne — politiques, militaires, économiques, conditions de victoire</td>
+<td><code>briefing.yaml</code>, et les objectifs de <code>campaign.yaml</code></td>
+</tr>
+<tr>
+<td>Concept d'opération — une phase par mission, points de vigilance</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Règles d'engagement — ciblage, protection des civils et des infrastructures, autodéfense</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Mission N — ses tâches</td>
+<td><code>briefing.yaml</code></td>
+</tr>
+<tr>
+<td>Annexe — Règles de la campagne</td>
+<td>les outils, d'après les règles de <code>campaign.yaml</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Les faits sont générés, la prose est écrite.</strong>
+Les outils écrivent ce que la campagne sait ; la situation, l'intention, le concept et les règles d'engagement s'écrivent dans <code>briefing.yaml</code>, à côté de <code>campaign.yaml</code>, par Claude ou à la main.
+Sans <code>briefing.yaml</code>, le document ne contient que la partie générée, et le dit ; <code>campaign validate</code> contrôle le fichier.
+Seule l'annexe parle de la mécanique du jeu : le reste se lit comme un état-major parlerait.</p>
+<p><strong>L'ennemi reste mystérieux.</strong>
+Le document ne donne jamais un effectif ennemi, ni sa réserve : seulement ce que le renseignement en dit, avec la fiabilité de sa source.
+Un site fixe — le SAM longue portée d'une zone — est nommé dès que l'état de la campagne l'enregistre : sa batterie est tirée au démarrage de la mission, donc il est « probable, type non confirmé » avant la mission 1, puis nommé (« Batterie SA-10 confirmée ») à partir de la mission 2.
+Une zone peut porter son propre texte de renseignement (<code>intel:</code>) et le nom que les joueurs lisent (<code>display_name: Dépôt de Khobi</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kolkhida</span>
+<span class="nt">situation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">political</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Il y a dix jours, les forces rouges ont franchi l&#39;Inguri et pris pied dans la plaine de Colchide.</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Une négociation s&#39;ouvre ; chaque kilomètre tenu par l&#39;adversaire à son ouverture lui sera acquis.</span>
+<span class="w">  </span><span class="nt">economic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Le port de Poti ne tourne plus.</span>
+<span class="w">  </span><span class="nt">enemy_course_of_action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tenir Senaki sous sa défense aérienne, puis reprendre l&#39;offensive.</span>
+<span class="nt">mission</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">En 3 missions, la coalition reprend Senaki et détruit le dépôt de Khobi.</span>
+<span class="nt">intent</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">purpose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Priver l&#39;adversaire de sa capacité à reprendre l&#39;offensive.</span>
+<span class="w">  </span><span class="nt">main_effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Priver Senaki de son soutien logistique.</span>
+<span class="w">  </span><span class="nt">end_state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Senaki et Poti tenues, Khobi détruit, les villes épargnées.</span>
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">political</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Rétablir l&#39;autorité du gouvernement jusqu&#39;à l&#39;Inguri.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">military</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Reprendre l&#39;aérodrome de Senaki.</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Détruire le dépôt de Khobi.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">economic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Rouvrir le port de Poti</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">intact.</span><span class="p p-Indicator">]</span>
+<span class="nt">concept</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">phases</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Phase</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">mission</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">la</span><span class="nv"> </span><span class="s">porte</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">Poti&quot;</span><span class="p p-Indicator">,</span><span class="nt"> text</span><span class="p">:</span><span class="w"> </span><span class="nv">Prendre Poti et commencer l&#39;attrition de Khobi.</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">attention</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Zugdidi n&#39;est pas un objectif.</span><span class="p p-Indicator">]</span>
+<span class="nt">rules_of_engagement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">targeting</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Identification positive de toute cible avant le tir.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">civilians</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Pas de bombardement de zone dans les agglomérations.</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">self_defence</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Le droit de légitime défense n&#39;est jamais restreint.</span><span class="p p-Indicator">]</span>
+<span class="nt">missions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">La porte de Poti</span>
+<span class="w">    </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> title</span><span class="p">:</span><span class="w"> </span><span class="nv">Prendre Poti — priorité 1</span><span class="p p-Indicator">,</span><span class="nt"> text</span><span class="p">:</span><span class="w"> </span><span class="nv">Sécuriser le port avec des troupes héliportées.</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>Chaque texte est une chaîne ou une liste de paragraphes.
+Un texte qui contient « : » se met entre guillemets (<code>"Cibles autorisées : les unités rouges."</code>) : sans eux, YAML le lit comme une clé et sa valeur, et <code>campaign validate</code> le signale.
+Après chaque mission, la page de la mission suivante et l'avancée du concept se réécrivent d'après le débriefing ; le reste se garde tant que la situation ne le change pas.</p>
+<p>La carte est tracée sur les tuiles d'OpenStreetMap, gardées en cache dans <code>%LOCALAPPDATA%\veaf-tools\tiles</code> ; les outils s'identifient au serveur par leur adresse GitHub, et rien d'autre.
+Sans réseau, la carte est tracée sur un fond uni et le document le signale : relancez <code>campaign briefing</code> une fois en ligne.</p>
+<h2 id="mission-briefing">Le briefing de mission<a class="headerlink" href="#mission-briefing" title="Permanent link">&para;</a></h2>
+<p>À côté du briefing de campagne, chaque mission a son <strong>briefing de mission</strong> : <code>missions/mission-NN/briefing-mission.pptx</code>, au format du briefing de mission VEAF, avec sa carte tactique (<code>carte-tactique.png</code>) et un zoom par objectif (<code>zoom-&lt;zone&gt;.png</code>).
+Il se lit dans la mission <strong>construite</strong> : <code>campaign briefing</code> l'écrit dès qu'un <code>.miz</code> existe dans <code>missions/mission-NN/mission</code> (à la racine ou dans <code>build/</code>), et dit sinon comment en obtenir un.
+Relancez <code>campaign briefing</code> après chaque modification de la mission.</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Ce qu'elle dit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Couverture</td>
+<td>l'opération et le numéro de la mission, son titre (<code>briefing.yaml</code>), la date et l'heure</td>
+</tr>
+<tr>
+<td>Situation générale</td>
+<td>contexte, mission (les tâches), bullseye (DMS, relèvement et distance depuis une base amie), départs, menace (le renseignement, et l'alerte d'interception ennemie), météo et horaire <strong>lus dans la mission</strong></td>
+</tr>
+<tr>
+<td>ATO</td>
+<td>les vols des joueurs (indicatif, type, nombre, base, lignes de pilotes, armement libre), les terrains à slots dynamiques, le soutien (AWACS, ravitailleurs) avec fréquence et TACAN, le contrôle (tour du porte-avions en VHF, terrains)</td>
+</tr>
+<tr>
+<td>Situation tactique</td>
+<td>zones, axes, zone d'alerte d'interception, porte-avions, orbite AWACS, hippodrome du ravitailleur, bullseye, les waypoints des joueurs numérotés comme au plan de navigation, échelle en nm</td>
+</tr>
+<tr>
+<td>Une page par objectif</td>
+<td>la zone à son rayon, son renseignement, la tâche qui la nomme</td>
+</tr>
+<tr>
+<td>Déroulement mission</td>
+<td>objectifs, opposition aérienne, défenses antiaériennes, autres informations (ravitaillement, dégagements, sauvetage)</td>
+</tr>
+<tr>
+<td>Plan de fréquences</td>
+<td>UHF puis VHF, la garde en tête</td>
+</tr>
+<tr>
+<td>Plan de navigation</td>
+<td>les waypoints que portent les avions puis les hélicoptères des joueurs après leur point de départ, <code>BULLSEYE</code> compris : nom, position en DMS, altitude et sa référence (<code>BARO</code>, ou <code>AGL</code> au-dessus du sol) ; les types d'appareil quand une catégorie porte plusieurs routes</td>
+</tr>
+<tr>
+<td>Coordonnées des objectifs</td>
+<td>le centre de chaque zone en DMS, et son altitude quand une grille de terrain a été relevée (<code>terrain-sweep</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Les objectifs sont les zones que nomment les titres des tâches de la mission dans <code>briefing.yaml</code> (« Frapper le dépôt de Khobi » nomme la zone <em>Dépôt de Khobi</em>), à défaut les objectifs de la campagne.
+Les vols sont ceux des joueurs : ni les gabarits de slots dynamiques ni les modèles de spawn VEAF n'en sont ; un avion de soutien n'apparaît qu'une fois, selon sa tâche ; le vent se dit d'où il vient, comme le lit un pilote.</p>
+<p>Le plan de navigation se lit dans les vols des joueurs et dans les gabarits de slots dynamiques, d'où partent les joueurs d'une campagne : ce sont les <a href="#objective-waypoints">waypoints</a> que le build y a injectés.</p>
+<p><strong>Pas de coordonnées de cible</strong> : une garnison est tirée au démarrage de la mission, donc aucune position d'unité n'est connue quand le briefing s'écrit, et il le dit — les positions exactes se relèvent en vol.
+Les étiquettes des cartes ne se chevauchent jamais, ni entre elles ni sur un symbole.</p>
+<h2 id="to-verify">Ce qui reste à vérifier en jeu<a class="headerlink" href="#to-verify" title="Permanent link">&para;</a></h2>
+<p>Ces points sont écrits et testés hors de DCS, mais pas encore mesurés en jeu :</p>
+<ul>
+<li>l'effet de <code>Airbase.setCoalition</code> et <code>Airbase.autoCapture(false)</code> sur les slots dynamiques et les entrepôts d'une base qui change de camp ;</li>
+<li>l'exactitude du contenu des entrepôts lu en vol, et sa réécriture dans la mission suivante (pas encore faite) ;</li>
+<li>la possibilité de faire démarrer un SAM avec moins de missiles (le nombre restant est enregistré, pas encore rejoué) ;</li>
+<li>la façon de faire réapparaître détruit un pont ou un bâtiment (le décor détruit est enregistré, pas encore rejoué) ;</li>
+<li>les garnisons d'aérodrome tenues hors du béton, et une unité ancienne déplacée hors de la piste, à Batumi et Senaki ;</li>
+<li>l'altitude qu'un module affiche pour un steerpoint d'objectif posé au sol (<code>RADIO</code>, 0 m).</li>
+</ul>
+<p>Voir aussi la <a href="../scripts/veafCampaign/">référence du module <code>veafCampaign</code></a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot-config.js"></script>
+      
+        <script src="../../assets/chatbot/veaf-chatbot.js"></script>
+      
+    
+  </body>
+</html>
