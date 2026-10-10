@@ -3429,6 +3429,9 @@
 <div class="highlight"><pre><span></span><code><span class="nv">veafSecurity</span><span class="p">.</span><span class="nf">initialize</span><span class="p">()</span>
 </code></pre></div>
 <p>Call before other modules so that security checks are active when they initialise.</p>
+<p>Listing <code>SECURITY</code> in <code>mission.yaml</code> is not what turns the checks on: a secured F10 command is checked whatever the <code>modules:</code> block says, and only <code>security: disabled: true</code> switches the checks off.
+What the module adds is its verbs — <code>/secu elevate</code>, the one a refused command tells the pilot to type.
+So a mission with <code>RADIO</code> always initialises it: the build adds <code>SECURITY</code> (with a warning) when it is missing or set to <code>false</code>.</p>
 <hr />
 <h2 id="permission-levels">Permission Levels<a class="headerlink" href="#permission-levels" title="Permanent link">&para;</a></h2>
 <p><strong>A bigger number is a tighter tier.</strong> A check passes when the pilot's level is <em>at least</em> the
