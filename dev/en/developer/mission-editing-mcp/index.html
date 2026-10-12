@@ -3008,6 +3008,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#marianas-open-training-fix-open-training-marianas-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Marianas Open Training (FIX-OPEN-TRAINING-MARIANAS-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mission-settings-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4172,6 +4183,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#marianas-open-training-fix-open-training-marianas-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Marianas Open Training (FIX-OPEN-TRAINING-MARIANAS-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mission-settings-fix-scratch-mission-findings-ticket-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5288,6 +5310,23 @@ is written when the file is absent (the step does not run) or the side is not de
   writes nothing when there is nothing to fill. <code>validate</code>'s message names it (ticket 17).</li>
 <li>The backups of a file under <code>src/mission/l10n/DEFAULT/</code> go into <code>.veaf-backups/</code> (they stayed beside it
   and went into the <code>.miz</code>), and a folder save rewrites <code>mapResource</code> (tickets 15, 16).</li>
+</ul>
+<h3 id="marianas-open-training-fix-open-training-marianas-findings">Marianas Open Training (FIX-OPEN-TRAINING-MARIANAS-FINDINGS)<a class="headerlink" href="#marianas-open-training-fix-open-training-marianas-findings" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>create_qra</code>: a group carries <strong>no task</strong> on its point, whatever its <code>task</code> (<code>CAP</code> or <code>Intercept</code>).
+  With <code>task: "CAP"</code>, the editor's automatic <code>EngageTargets</code> made the build fly the route as written: one point, no orbit, and the interceptor landed instead of defending its zone (ticket 01).</li>
+<li><code>add_carrier_group</code>: the recovery tanker takes the <code>Shell</code> family from flight 9 down (<code>Shell91</code>, then <code>Shell81</code> for the next carrier), and <code>tanker_callsign</code> (<code>"Arco 5"</code>) imposes one; the result says which in <code>tanker_callsign</code>.
+  The tankers named <code>Texaco 1</code>, <code>Arco 1</code> placed afterwards keep theirs (ticket 02).</li>
+<li><code>add_air_group</code> takes <code>loadout_from</code>, as the composites do: a group of the mission, then of the folder's catalogues, then of the shipped ones (a <code>veafSpawn-*</code> template).
+  It is the only sourced loadout of a module aircraft with no DCS named payload (J-11A, F-16C); one of <code>pylons</code>, <code>payload</code> and <code>loadout_from</code> at most (ticket 03).</li>
+<li>Shipped dynamic-slot catalogue: the J-11A templates carry the air-to-air loadout of the Marianas Open Training v5 (<code>veafSpawn-J-11A - FOX3 - ECM ON - Radar ON - HARD X1</code>), so <code>loadout_from: "J-11A Template Red"</code> arms a flight.
+  The <code>A-4E-C</code>, <code>OV-10A</code> and <code>T-45</code> templates, three mods, leave it, and the build warns when a template names a type the DCS unit database does not know (ticket 04).</li>
+<li><code>describe_mission</code> reads a mission folder; <code>describe_units</code> gives each group's <code>group_id</code> and each unit's <code>unit_id</code> (<code>edit_route add_task attack_group</code> takes the former); <code>terrain_elevation</code> takes <code>mission_path</code> and reads the theatre from it (<code>theatre</code> still works) (ticket 05).</li>
+<li><code>geocode</code> warns when it answers an island or an area for a place inside it: « Umatac, Guam » gave the centre of Guam without a word (ticket 05).</li>
+<li><code>add_group</code> and each group of <code>create_combat_zone</code> take <code>roe</code> (<code>weapons_free</code>, <code>return_fire</code>, <code>weapons_hold</code>) and <code>disperse</code>, written on the first point as the editor writes them (<code>Option</code> 0; <code>Option</code> 8 with no value for "does not disperse").
+  <code>roe: "weapons_hold"</code> and <code>disperse: false</code> make an inert target (ticket 06).</li>
+<li>With no elevation grid or no clear-ground catalogue, the placement warning says what was not checked (the sea, the trees, the buildings) and how to check it: <code>veaf-tools dcs clear-ground-check</code> on the built mission.
+  On MarianaIslands nothing is checked until the sweeps are done (known limitation <code>marianas-placement-checks-nothing</code>, ticket 07).</li>
 </ul>
 <h3 id="mission-settings-fix-scratch-mission-findings-ticket-07">Mission settings (FIX-SCRATCH-MISSION-FINDINGS ticket 07)<a class="headerlink" href="#mission-settings-fix-scratch-mission-findings-ticket-07" title="Permanent link">&para;</a></h3>
 <p>What the editor sets outside any group, and GermanyCW-v6 had to patch through a Lua serializer. Each
