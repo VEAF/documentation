@@ -5265,8 +5265,8 @@ déclarer ouvrirait toutes ses bases).</p>
 <h3 id="farp">FARP<a class="headerlink" href="#farp" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>add_farp(target, name, position, coalition, country_id, country_name, farp_type="FARP",
-  frequency_mhz=127.5, modulation="AM", callsign_id=1, ammo_dump=True, keep_position=False,
-  clear_scenery_radius=None)</code> — un FARP <strong>complet</strong> : le statique
+  frequency_mhz=127.5, modulation="AM", callsign_id=1, ammo_dump=True, keep_position=False)</code> — un
+  FARP <strong>complet</strong> : le statique
   d'héliport (<code>category = "Heliports"</code>, <code>shape_name</code> du type), sa radio et son indicatif, et l'entrée
   d'entrepôt <code>warehouses.warehouses[&lt;unitId&gt;]</code> qui permet de s'y ravitailler. <code>add_group</code> en <code>static</code>
   ne posait que l'objet (ticket 19). Forme mesurée sur les 372 héliports des missions de
@@ -5277,7 +5277,7 @@ déclarer ouvrirait toutes ses bases).</p>
   (sol à 0 m sur la grille d'altitude) est signalé (ticket 04).
   Le pad est vérifié (<code>FIX-FARP-PLACEMENT</code> ticket 01) : là où le catalogue de sol dégagé couvre l'endroit, un pad dans les arbres ou les bâtiments est déplacé avec son dépôt sur le sol dégagé le plus proche, à 1 km au plus (<code>keep_position=True</code> refuse le déplacement et se contente d'avertir) ; là où la grille d'altitude le couvre, plus de 3 m de dénivelé entre le centre et un anneau à 40 m est signalé comme une pente.
   Là où ni l'un ni l'autre ne couvre l'endroit, l'avertissement dit ce qui n'a pas été vérifié et donne la commande <a href="../../CLI_REFERENCE/#farp-spot"><code>veaf-tools dcs farp-spot</code></a>, qui cherche dans DCS une place plate et dégagée ; <code>position</code> dans le résultat dit où le pad est allé.
-  <code>clear_scenery_radius</code> (mètres) retire les arbres autour du pad (ticket 02) : une zone <code>&lt;nom&gt; - Clear</code> et un trigger ONCE, 1 s après le début de la mission, avec l'action DCS <code>a_remove_scene_objects</code> en <code>objects_mask = 1</code> (« TREES ONLY » dans la liste de l'éditeur, <code>me_trigrules.lua</code>), la forme de la v5 Mariannes pour son FARP de Tinian.</li>
+  Retirer les arbres autour du pad par un trigger (ticket 02) a été essayé puis retiré : l'action DCS « SCENERY REMOVE OBJECTS ZONE » n'a enlevé aucun arbre, ni sur MarianaIslands ni sur Caucasus (limitation connue <code>scenery-remove-objects-zone-leaves-the-forest</code>).</li>
 </ul>
 <h3 id="groupe-aéronaval-slots-sur-le-pont-sons-fix-open-training-prompt-findings">Groupe aéronaval, slots sur le pont, sons (FIX-OPEN-TRAINING-PROMPT-FINDINGS)<a class="headerlink" href="#groupe-aéronaval-slots-sur-le-pont-sons-fix-open-training-prompt-findings" title="Permanent link">&para;</a></h3>
 <ul>
