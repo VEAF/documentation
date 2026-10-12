@@ -5244,7 +5244,8 @@ is written when the file is absent (the step does not run) or the side is not de
 <h3 id="farp">FARP<a class="headerlink" href="#farp" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>add_farp(target, name, position, coalition, country_id, country_name, farp_type="FARP",
-  frequency_mhz=127.5, modulation="AM", callsign_id=1, ammo_dump=True)</code> — a <strong>complete</strong> FARP: the heliport static
+  frequency_mhz=127.5, modulation="AM", callsign_id=1, ammo_dump=True, keep_position=False,
+  clear_scenery_radius=None)</code> — a <strong>complete</strong> FARP: the heliport static
   (<code>category = "Heliports"</code>, the type's <code>shape_name</code>), its radio and callsign, and the
   <code>warehouses.warehouses[&lt;unitId&gt;]</code> entry that lets helicopters refuel there. <code>add_group</code> in <code>static</code>
   placed the object alone (ticket 19). Shape measured on the 372 heliports of the missions under
@@ -5252,7 +5253,10 @@ is written when the file is absent (the step does not run) or the side is not de
   its <strong>ammunition dump</strong> (<code>FARP Ammo Dump Coating</code>, <code>&lt;name&gt; - Ammo</code>, 120 m east, <code>Fortifications</code> /
   <code>SetkaKP</code> like the 68 of the OT missions) that CTLD takes as a loading point; <code>ammo_dump=False</code> skips
   it (<code>FIX-OPEN-TRAINING-SYRIA-FINDINGS</code> ticket 05). A pad in the sea (ground 0 m on the elevation grid)
-  is warned about (ticket 04).</li>
+  is warned about (ticket 04).
+  The pad is checked (<code>FIX-FARP-PLACEMENT</code> ticket 01): where the clear-ground catalogue covers the place, a pad in trees or buildings is moved with its dump onto the nearest clear ground, within 1 km (<code>keep_position=True</code> refuses the move and only warns); where the elevation grid covers it, more than 3 m of height difference between the centre and a 40 m ring is warned as a slope.
+  Where neither covers the place, the warning says what was not checked and gives the <a href="../../CLI_REFERENCE/#farp-spot"><code>veaf-tools dcs farp-spot</code></a> command, which finds a flat, clear spot in DCS; <code>position</code> in the result says where the pad went.
+  <code>clear_scenery_radius</code> (metres) removes the trees around the pad (ticket 02): a zone <code>&lt;name&gt; - Clear</code> and a ONCE trigger, 1 s after mission start, with the DCS action <code>a_remove_scene_objects</code> at <code>objects_mask = 1</code> (« TREES ONLY » in the editor's list, <code>me_trigrules.lua</code>), the shape the Marianas v5 used for its Tinian FARP.</li>
 </ul>
 <h3 id="carrier-group-deck-slots-sounds-fix-open-training-prompt-findings">Carrier group, deck slots, sounds (FIX-OPEN-TRAINING-PROMPT-FINDINGS)<a class="headerlink" href="#carrier-group-deck-slots-sounds-fix-open-training-prompt-findings" title="Permanent link">&para;</a></h3>
 <ul>

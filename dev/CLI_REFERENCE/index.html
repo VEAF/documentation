@@ -3544,6 +3544,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#farp-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs farp-spot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#terrain-sweep" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4183,6 +4194,17 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs scenery-objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#farp-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs farp-spot
       
     </span>
   </a>
@@ -6482,6 +6504,122 @@ en mètres).</p>
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>scenery-objects<span class="w"> </span>Syria<span class="w"> </span>--around<span class="w"> </span>-64230,352140,100
 </code></pre></div>
 <p><em>Alias plat : <code>veaf-tools scenery-objects</code></em></p>
+<h3 id="farp-spot"><code>veaf-tools dcs farp-spot</code><a class="headerlink" href="#farp-spot" title="Permanent link">&para;</a></h3>
+<p>Cherche les <strong>places plates et dégagées d'arbres et de bâtiments</strong> près d'un point, où poser un FARP, et les liste de la plus proche à la plus lointaine avec leur distance et leur dénivelé. C'est la commande à lancer quand <code>add_farp</code> prévient qu'il n'a pas pu vérifier les arbres ou la pente (un théâtre sans catalogue de sol dégagé ni grille d'altitude, comme MarianaIslands), ou que le pad est en pente : l'avertissement donne la commande, point compris.</p>
+<p>Une place est retenue quand le sol y est de la terre (ni eau, ni route, ni piste), quand DCS trouve une place de 5 m libre à 20 m sur la place <strong>et</strong> en 8 points à 40 m autour, et quand le dénivelé entre ces 9 points ne dépasse pas <code>--max-drop</code> mètres. La recherche parcourt une grille de 50 m, par bandes de 300 m pour que chaque appel à <code>dcs-serve</code> reste court. Même déroulé que <code>clear-ground-check</code> : <code>dcs-serve</code>, mission d'arpentage vide, consignes, attente. Le point est en coordonnées de mission (<code>x</code> vers le nord, <code>y</code> vers l'est, en mètres).</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>oui</td>
+<td>Le théâtre, tel que DCS l'écrit (Caucasus, MarianaIslands…).</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--at</code></td>
+<td><code>str</code></td>
+<td><em>(obligatoire)</em></td>
+<td>Le point autour duquel chercher, en <code>x,y</code>.</td>
+</tr>
+<tr>
+<td><code>--radius</code></td>
+<td><code>float</code></td>
+<td><code>1200</code></td>
+<td>Jusqu'où chercher autour du point, en mètres.</td>
+</tr>
+<tr>
+<td><code>--max-drop</code></td>
+<td><code>float</code></td>
+<td><code>3</code></td>
+<td>Le plus grand dénivelé accepté sur une place (son centre et l'anneau de 40 m), en mètres.</td>
+</tr>
+<tr>
+<td><code>--limit</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td>Combien de places afficher.</td>
+</tr>
+<tr>
+<td><code>--report</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Écrire aussi toutes les places trouvées en JSON dans ce fichier.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;théâtre&gt;.miz</code></td>
+<td>Où écrire la mission d'arpentage.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>dcs-bridge.lua local à embarquer (défaut : téléchargement).</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>Combien de secondes attendre que la mission d'arpentage réponde.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Jeton Bearer superuser de dcs-serve (par défaut : lu dans dcs-serve.yaml). (variable d'environnement <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>Chemin d'un dcs-serve.yaml / dcs-client.yaml où lire la clé.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>URL de base de dcs-serve.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(aucun)</em></td>
+<td>L'exécutable dcs-serve à lancer quand aucun ne tourne.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Si activé, affiche des informations de débogage détaillées.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.
+eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>farp-spot<span class="w"> </span>MarianaIslands<span class="w"> </span>--at<span class="w"> </span>-22300,-12450
+</code></pre></div>
+<p>Le point se donne avec <code>--at</code> plutôt qu'en deux arguments : un nombre négatif en deuxième position serait lu comme une option.</p>
+<p><em>Alias plat : <code>veaf-tools farp-spot</code></em></p>
 <h3 id="terrain-sweep"><code>veaf-tools dcs terrain-sweep</code><a class="headerlink" href="#terrain-sweep" title="Permanent link">&para;</a></h3>
 <p>Relève l'<strong>altitude du sol</strong> de tout un théâtre (<code>land.getHeight</code>, tous les 250 m par défaut) et l'écrit
 dans <code>&lt;VEAF home&gt;/terrain/&lt;théâtre&gt;.terrain</code>. L'action MCP <code>terrain_elevation</code> lit ensuite cette

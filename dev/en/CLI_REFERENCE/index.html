@@ -3544,6 +3544,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#farp-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs farp-spot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#terrain-sweep" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4183,6 +4194,17 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs scenery-objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#farp-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs farp-spot
       
     </span>
   </a>
@@ -6476,6 +6498,122 @@ instructions, waiting. Points are in mission coordinates (<code>x</code> north, 
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>scenery-objects<span class="w"> </span>Syria<span class="w"> </span>--around<span class="w"> </span>-64230,352140,100
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools scenery-objects</code></em></p>
+<h3 id="farp-spot"><code>veaf-tools dcs farp-spot</code><a class="headerlink" href="#farp-spot" title="Permanent link">&para;</a></h3>
+<p>Finds the <strong>flat spots clear of trees and buildings</strong> near a point, where a FARP can go, and lists them nearest first with their distance and height difference. It is what to run when <code>add_farp</code> warns that it could not check the trees or the slope (a theatre with no clear-ground catalogue and no elevation grid, such as MarianaIslands), or that the pad is on a slope: the warning gives the command, point included.</p>
+<p>A spot is kept when the ground there is earth (not water, road or runway), when DCS finds a free 5 m spot within 20 m at the spot <strong>and</strong> at 8 points 40 m around it, and when the height difference over those 9 points is at most <code>--max-drop</code> metres. The search goes over a 50 m grid, in bands of 300 m so that each call to <code>dcs-serve</code> stays short. Same flow as <code>clear-ground-check</code>: <code>dcs-serve</code>, empty survey mission, instructions, waiting. The point is in mission coordinates (<code>x</code> north, <code>y</code> east, metres).</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THEATRE</code></td>
+<td><code>str</code></td>
+<td>yes</td>
+<td>The theatre, as DCS spells it (Caucasus, MarianaIslands…).</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--at</code></td>
+<td><code>str</code></td>
+<td><em>(required)</em></td>
+<td>The point to search around, as <code>x,y</code>.</td>
+</tr>
+<tr>
+<td><code>--radius</code></td>
+<td><code>float</code></td>
+<td><code>1200</code></td>
+<td>How far from the point to search, in metres.</td>
+</tr>
+<tr>
+<td><code>--max-drop</code></td>
+<td><code>float</code></td>
+<td><code>3</code></td>
+<td>The largest height difference accepted over a spot (its centre and the 40 m ring), in metres.</td>
+</tr>
+<tr>
+<td><code>--limit</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td>How many spots to list.</td>
+</tr>
+<tr>
+<td><code>--report</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Also write every spot found as JSON to this file.</td>
+</tr>
+<tr>
+<td><code>--survey-mission</code></td>
+<td><code>str</code></td>
+<td><code>&lt;Saved Games&gt;/DCS/Missions/veaf-survey-&lt;theatre&gt;.miz</code></td>
+<td>Where to write the survey mission.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Local dcs-bridge.lua to embed (default: download).</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>900</code></td>
+<td>How many seconds to wait for the survey mission to answer.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>dcs-serve superuser Bearer token (default: read from dcs-serve.yaml). (environment variable <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Path of a dcs-serve.yaml / dcs-client.yaml to read the key from.</td>
+</tr>
+<tr>
+<td><code>--serve-url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>dcs-serve base URL.</td>
+</tr>
+<tr>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The dcs-serve executable to start when none is running.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debugging information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>.
+eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>farp-spot<span class="w"> </span>MarianaIslands<span class="w"> </span>--at<span class="w"> </span>-22300,-12450
+</code></pre></div>
+<p>The point is given with <code>--at</code> rather than as two arguments: a negative number in second position would be read as an option.</p>
+<p><em>Flat alias : <code>veaf-tools farp-spot</code></em></p>
 <h3 id="terrain-sweep"><code>veaf-tools dcs terrain-sweep</code><a class="headerlink" href="#terrain-sweep" title="Permanent link">&para;</a></h3>
 <p>Sweeps the <strong>ground elevation</strong> of a whole theatre (<code>land.getHeight</code>, every 250 m by default) and writes
 it to <code>&lt;VEAF home&gt;/terrain/&lt;theatre&gt;.terrain</code>. The MCP action <code>terrain_elevation</code> then reads that
