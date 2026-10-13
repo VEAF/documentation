@@ -5466,7 +5466,14 @@ par <code>bfr-claude-plugins</code>) — le plugin = mains MCP + cerveau skill.<
 nom (« R-40T<em>2,R-33</em>4 » pour un MiG-31), avec leurs pylônes — ce que prend <code>payload</code> dans
 <code>add_air_group</code>, <code>create_qra</code> et <code>create_cap_mission</code>. Sans <code>unit_type</code>, la liste des types qui en ont.
 Lus dans <code>veaf_libs/data/payloads.yaml</code>, généré depuis une installation DCS
-(<code>veaf-build update-dcs-data --payloads --dcs-path &lt;DCS&gt;</code>) : le datamine n'a pas ces fichiers.</p>
+(<code>veaf-build update-dcs-data --payloads --dcs-path &lt;DCS&gt;</code>) : le datamine n'a pas ces fichiers.
+Le générateur lit le dossier <code>UnitPayloads</code> de l'éditeur <strong>et</strong> celui de chaque module
+(<code>CoreMods/**/UnitPayloads</code>) : les avions de module (P-51D, P-47D, Fw 190, F-16C, FA-18C…) y sont. Il
+liste les rares fichiers qui sont du vrai Lua et non des données (un CLSID calculé depuis un <code>local</code>) et
+laisse leurs types de côté — le Spitfire n'a aucun fichier dans l'installation. Les deux bombardiers IA
+d'une mission WW2 n'en ont pas non plus : leurs emports par défaut (<code>Ju-88A4</code> « SC500<em>2,SC50</em>10 »,
+<code>B-17G</code> « M64*12 ») sont écrits à la main dans <code>veaf_libs/data/payloads-ai-bombers.yaml</code>, lus dans le
+<code>db.Units.lua</code> de l'installation.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;unit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MiG-31&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="list_shortcuts"><code>list_shortcuts</code><a class="headerlink" href="#list_shortcuts" title="Permanent link">&para;</a></h3>
@@ -5475,15 +5482,28 @@ Lus dans <code>veaf_libs/data/payloads.yaml</code>, généré depuis une install
 plus les raccourcis <code>#command</code> (<code>-samLR</code>, <code>-armor</code>…) avec <code>randomParameters</code> : la plage
 <code>{min, max}</code> de chaque paramètre tiré à chaque usage — <code>-samLR</code> et <code>-samSR</code> lancent la même
 commande et ne diffèrent que par leur plage <code>defense</code>. Filtrable par <code>name_contains</code>.</p>
+<p>Chaque entrée porte une <code>era</code>, lue dans ce qu'elle fait apparaître et jamais saisie à côté
+(<code>veaf_libs/shortcut_eras.py</code>) : <code>follows_era</code> (<code>-aaa</code>, <code>-samSR</code>, <code>-samLR</code>, <code>-samVLR</code>, <code>-armor</code>,
+<code>-infantry</code>, <code>-transport</code>, <code>-combat</code>, <code>-convoy</code>, <code>-cas</code> : les unités viennent de tables indexées par
+<code>mission.era</code>), <code>ww2</code> (<code>-freya</code>, <code>-wurzburg</code>, <code>-flak88</code>, <code>-lefh</code>, <code>-pak40</code>, <code>-wespe</code>), <code>post_ww2</code> (du
+matériel fixe d'une époque postérieure : <code>-ewr</code>, <code>-arty</code>, <code>-sa6</code>…), <code>era_free</code> (n'apparaît rien) ou
+<code>unknown</code> (<code>-jtac</code>, <code>-afac</code>, <code>-cargo</code> : non mesuré, donc non affirmé). <code>era</code> (<code>WW2</code>, <code>COLD_WAR</code>, <code>MODERN</code>)
+garde ce qui vaut d'être proposé dans une mission de cette époque. <code>validate</code> avertit d'un <code>#command</code> ou
+d'un <code>#veafInterpreter</code> à raccourci <code>post_ww2</code> dans une mission WW2.</p>
 <h3 id="describe_known_limitations"><code>describe_known_limitations</code><a class="headerlink" href="#describe_known_limitations" title="Permanent link">&para;</a></h3>
 <p>Lecture seule. Pour la version de veaf-tools en cours, les entrées de
 <code>veaf_libs/data/known-limitations.yaml</code> : les limites des outils pas encore corrigées
 (<code>kind: tool</code>, retirées à partir de la version de leur <code>fixed_in</code>) et les comportements de DCS qui
 ne lèvent aucune erreur (<code>kind: dcs</code>, toujours renvoyés, avec la date de leur mesure). Chaque
-entrée : <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</code>, <code>symptom</code>, <code>workaround</code>, éventuellement <code>cost</code>. Filtre
-<code>kind</code> optionnel. Le fichier est la seule source : <code>docs/agents/dcs-runtime-traps.md</code> en est
-généré.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dcs&quot;</span><span class="p">}</span>
+entrée : <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</code>, <code>symptom</code>, <code>workaround</code>, éventuellement <code>cost</code> et <code>theatres</code>. Le
+fichier est la seule source : <code>docs/agents/dcs-runtime-traps.md</code> en est généré.</p>
+<p>Le texte entier fait environ 74 000 caractères, plus qu'un résultat d'outil n'en porte. <strong>Sans argument,
+l'action renvoie une liste courte</strong> — <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</code>, environ 12 000 caractères — et le nombre
+d'entrées de chaque <code>area</code>. Lisez en entier celles dont vous avez besoin avec <code>area</code> (<code>spawning</code>,
+<code>air-defence</code>, <code>players</code>, <code>radio</code>, <code>ground-ai</code>, <code>scripting</code>, <code>mcp</code>, <code>pipeline</code>, <code>runtime</code>), <code>kind</code>, <code>id</code> ou <code>ids</code>
+(une liste). <code>theatre</code> écarte les entrées qui ne concernent que d'autres théâtres (une entrée sans
+<code>theatres</code> vaut partout). <code>full: true</code> renvoie tout.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;radio&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="describe_authoring_guide-lot-feat-ai-assistant-any-client"><code>describe_authoring_guide</code> (lot FEAT-AI-ASSISTANT-ANY-CLIENT)<a class="headerlink" href="#describe_authoring_guide-lot-feat-ai-assistant-any-client" title="Permanent link">&para;</a></h3>
 <p>Lecture seule, sans paramètre. Renvoie <code>{"guide": …}</code> : le texte de la skill <code>veaf-mission-authoring</code> du plugin, tel quel.

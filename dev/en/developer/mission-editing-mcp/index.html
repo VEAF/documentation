@@ -5443,7 +5443,13 @@ read from the <strong>canonical sources</strong> the build already uses, so they
 (« R-40T<em>2,R-33</em>4 » for a MiG-31), with their pylons — what <code>payload</code> takes in <code>add_air_group</code>,
 <code>create_qra</code> and <code>create_cap_mission</code>. Without <code>unit_type</code>, the types that have some. Read from
 <code>veaf_libs/data/payloads.yaml</code>, generated from a DCS install
-(<code>veaf-build update-dcs-data --payloads --dcs-path &lt;DCS&gt;</code>): the datamine does not carry these files.</p>
+(<code>veaf-build update-dcs-data --payloads --dcs-path &lt;DCS&gt;</code>): the datamine does not carry these files.
+The generator reads the editor's own <code>UnitPayloads</code> folder <strong>and</strong> every module's
+(<code>CoreMods/**/UnitPayloads</code>): the module aircraft (P-51D, P-47D, Fw 190, F-16C, FA-18C…) are in. It lists
+the few files that are real Lua rather than data (a CLSID computed from a <code>local</code>) and leaves their types
+out — the Spitfire has no file at all in the install. The two AI bombers of a WW2 mission have no file
+either: their default loads (<code>Ju-88A4</code> « SC500<em>2,SC50</em>10 », <code>B-17G</code> « M64*12 ») are written by hand in
+<code>veaf_libs/data/payloads-ai-bombers.yaml</code>, read from the install's <code>db.Units.lua</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;unit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MiG-31&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="list_shortcuts"><code>list_shortcuts</code><a class="headerlink" href="#list_shortcuts" title="Permanent link">&para;</a></h3>
@@ -5452,14 +5458,27 @@ and composite group aliases (<code>_spawn group &lt;alias&gt;</code>: SAM sites,
 shortcuts (<code>-samLR</code>, <code>-armor</code>…) with <code>randomParameters</code>: the <code>{min, max}</code> range of each parameter
 they draw on every use — <code>-samLR</code> and <code>-samSR</code> run the same command and differ only by their
 <code>defense</code> range. Filterable by <code>name_contains</code>.</p>
+<p>Every entry carries an <code>era</code>, read from what it spawns and never typed beside it
+(<code>veaf_libs/shortcut_eras.py</code>): <code>follows_era</code> (<code>-aaa</code>, <code>-samSR</code>, <code>-samLR</code>, <code>-samVLR</code>, <code>-armor</code>, <code>-infantry</code>,
+<code>-transport</code>, <code>-combat</code>, <code>-convoy</code>, <code>-cas</code>: the units come from tables keyed by <code>mission.era</code>), <code>ww2</code>
+(<code>-freya</code>, <code>-wurzburg</code>, <code>-flak88</code>, <code>-lefh</code>, <code>-pak40</code>, <code>-wespe</code>), <code>post_ww2</code> (fixed equipment of a later
+age: <code>-ewr</code>, <code>-arty</code>, <code>-sa6</code>…), <code>era_free</code> (spawns nothing) or <code>unknown</code> (<code>-jtac</code>, <code>-afac</code>, <code>-cargo</code>: not
+measured, so not claimed). <code>era</code> (<code>WW2</code>, <code>COLD_WAR</code>, <code>MODERN</code>) keeps what is worth offering in a mission of
+that era. <code>validate</code> warns about a <code>#command</code> or <code>#veafInterpreter</code> of a <code>post_ww2</code> shortcut in a WW2 mission.</p>
 <h3 id="describe_known_limitations"><code>describe_known_limitations</code><a class="headerlink" href="#describe_known_limitations" title="Permanent link">&para;</a></h3>
 <p>Read-only. For the running veaf-tools version, the entries of
 <code>veaf_libs/data/known-limitations.yaml</code>: the tool limitations not yet fixed (<code>kind: tool</code>, dropped
 from the version in their <code>fixed_in</code>) and the DCS behaviours that raise no error (<code>kind: dcs</code>,
 always returned, with the date they were measured). Each entry: <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</code>,
-<code>symptom</code>, <code>workaround</code>, optionally <code>cost</code>. Optional <code>kind</code> filter. The file is the one source:
+<code>symptom</code>, <code>workaround</code>, optionally <code>cost</code> and <code>theatres</code>. The file is the one source:
 <code>docs/agents/dcs-runtime-traps.md</code> is generated from it.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dcs&quot;</span><span class="p">}</span>
+<p>The whole text is about 74 000 characters, more than a tool result carries. <strong>With no argument the action
+returns a short listing</strong> — <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</code>, about 12 000 characters — and the count of each
+<code>area</code>. Read the entries you need in full with <code>area</code> (<code>spawning</code>, <code>air-defence</code>, <code>players</code>, <code>radio</code>,
+<code>ground-ai</code>, <code>scripting</code>, <code>mcp</code>, <code>pipeline</code>, <code>runtime</code>), <code>kind</code>, <code>id</code> or <code>ids</code> (a list). <code>theatre</code> drops the
+entries that concern other theatres only (an entry with no <code>theatres</code> applies everywhere). <code>full: true</code>
+returns everything.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;radio&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="describe_authoring_guide-feat-ai-assistant-any-client-lot"><code>describe_authoring_guide</code> (FEAT-AI-ASSISTANT-ANY-CLIENT lot)<a class="headerlink" href="#describe_authoring_guide-feat-ai-assistant-any-client-lot" title="Permanent link">&para;</a></h3>
 <p>Read-only, no parameter. Returns <code>{"guide": …}</code>: the text of the plugin's <code>veaf-mission-authoring</code> skill, verbatim.
