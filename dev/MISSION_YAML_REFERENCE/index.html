@@ -3089,6 +3089,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ground-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ground_control : slots game master, JTAC, observateur, et conduite des véhicules
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3736,6 +3747,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ground-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ground_control : slots game master, JTAC, observateur, et conduite des véhicules
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4270,6 +4292,8 @@
 <span class="w">  </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span><span class="w">                </span><span class="c1"># langue des messages VEAF en jeu : fr | en (défaut : langue des outils)</span>
 <span class="w">  </span><span class="nt">silence_atc_on_all_airbases</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># option globale : coupe l&#39;ATC DCS sur tous les aérodromes</span>
 <span class="w">  </span><span class="nt">third_party_mods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w">        </span><span class="c1"># mods DCS tiers à rendre non bloquants (voir ci-dessous)</span>
+<span class="w">  </span><span class="nt">ground_control</span><span class="p">:</span><span class="w">             </span><span class="c1"># slots game master, JTAC… et conduite des véhicules (voir ci-dessous)</span>
+<span class="w">    </span><span class="nt">game_master</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </code></pre></div>
 <table>
 <thead>
@@ -4324,6 +4348,13 @@
 <td>Non</td>
 <td>Mods DCS <strong>tiers</strong> (avions payants/communautaires) à rendre <strong>non bloquants</strong> : leurs identifiants sont retirés de la table <code>requiredModules</code> du <code>.miz</code> au build, si bien qu'un pilote qui ne possède pas le mod peut quand même <strong>charger</strong> la mission (le slot correspondant est simplement indisponible). La liste est <strong>unie</strong> à une liste VEAF par défaut couvrant les mods courants (Hercules, UH-60L, A-4E-C, T-45, AM2, SU-30/FlankerEx, Bronco-OV-10A) — n'y déclarer que les mods non déjà pris en charge. À ne pas confondre avec les <em>Modules</em> VEAF (bloc <code>modules:</code>, qui sont des capacités, pas des add-ons DCS)</td>
 </tr>
+<tr>
+<td><code>ground_control</code></td>
+<td>dictionnaire</td>
+<td><em>absent</em></td>
+<td>Non</td>
+<td>Slots des rôles sans avion et conduite des véhicules — voir <a href="#ground-control">ci-dessous</a></td>
+</tr>
 </tbody>
 </table>
 <h4 id="icao-naming">Le nom du <code>.miz</code> est une interface — <code>_ICAO_&lt;code&gt;</code> et la météo réelle<a class="headerlink" href="#icao-naming" title="Permanent link">&para;</a></h4>
@@ -4355,6 +4386,26 @@ seize jours, Bagram un jour ; six aérodromes n'ont aucune station) : soit on <s
 ce qui laisse RealWeather tranquille et conserve la météo choisie, soit on <strong>prend la moins
 mauvaise</strong> en sachant ce qu'on obtient. Le Foothold Afghanistan de VEAF utilise <code>OAIX</code> (Bagram,
 environ un jour de retard) — un choix assumé, pas un oubli.</p>
+<h4 id="ground-control"><code>ground_control</code> : slots game master, JTAC, observateur, et conduite des véhicules<a class="headerlink" href="#ground-control" title="Permanent link">&para;</a></h4>
+<p>DCS garde dans la mission combien de joueurs peuvent prendre chaque rôle qui ne vole pas, dans chaque camp, et si un pilote peut conduire les véhicules au sol.
+Une mission v6 naît sans aucun de ces slots : pas de game master tant qu'on ne les ouvre pas.
+Le bloc les fixe à chaque build :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ground_control</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">game_master</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">             </span><span class="c1"># « Game Master » (instructor dans la mission)</span>
+<span class="w">    </span><span class="nt">tactical_commander</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">      </span><span class="c1"># « Tactical Commander » (artillery_commander)</span>
+<span class="w">    </span><span class="nt">jtac</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">blue</span><span class="p">:</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">,</span><span class="nt"> red</span><span class="p">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">}</span><span class="w">    </span><span class="c1"># « JTAC/Operator » (forward_observer), par camp</span>
+<span class="w">    </span><span class="nt">observer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">                </span><span class="c1"># « Observer »</span>
+<span class="w">    </span><span class="nt">pilot_control_vehicles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># un pilote peut prendre le contrôle des véhicules</span>
+</code></pre></div>
+<ul>
+<li>Un nombre vaut pour les deux camps ; <code>{blue: n, red: m}</code> les règle séparément.</li>
+<li>Un rôle, un camp ou <code>pilot_control_vehicles</code> absent du bloc garde la valeur de la mission.</li>
+<li><strong>Bloc absent : le build ne touche à rien</strong>, une mission réglée dans l'éditeur garde ses slots.</li>
+<li>Un rôle ou un camp inconnu, un nombre négatif : <code>validate</code> le signale et le build s'arrête.</li>
+<li>Les mots de passe des rôles restent hors de portée : écrits dans <code>mission.yaml</code>, ils seraient committés en clair.</li>
+</ul>
+<p>Les Open Training VEAF ouvrent 5 slots par rôle et par camp, véhicules pilotables, comme en v5.</p>
 <hr />
 <h3 id="security"><code>security:</code><a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
 <p>Contrôle le système de sécurité VEAF. <strong>La sécurité est active par défaut</strong> (<code>veaf.SecurityDisabled = false</code> dans <code>veaf.lua</code>) : sans bloc <code>security:</code>, rien n'est émis et les commandes sensibles exigent un niveau de pilote ou un mot de passe. <code>disabled: true</code> la coupe pour toute la mission.</p>

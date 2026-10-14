@@ -1519,6 +1519,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-ctld-catalogue-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTLD: ctld-config.yaml is written against another catalogue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#builder-community-sounds-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3411,6 +3422,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validate-ctld-catalogue-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTLD: ctld-config.yaml is written against another catalogue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#builder-community-sounds-missing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3614,6 +3636,24 @@ since starts with both lists empty.</p>
 <p><strong>The ways out.</strong> Empty the list in <code>ctld-tools</code>, or keep only the groups (<code>extractableGroups</code>) and
 units (<code>logisticUnits</code>) the mission actually holds. Write <code>[]</code> alone on its line: CTLD's YAML reader
 reads <code>extractableGroups: []   # note</code> as the text <code>"[]   # note"</code>.</p>
+<h2 id="validate-ctld-catalogue-gap">CTLD: ctld-config.yaml is written against another catalogue<a class="headerlink" href="#validate-ctld-catalogue-gap" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>ctld-config.yaml is written against CTLD catalogue 2.0.0, the tools vendor 2.2.0. Settings it
+lacks, run on CTLD's default: enableParachuteDrop, crateDropExtraDistance, crateSpawnGap.
+<code>veaf-tools ctld-upgrade</code> writes them in.</p>
+</blockquote>
+<p><strong>What it means.</strong> Your file carries the version of the CTLD catalogue it was written against (<code>configVersion</code>), and a newer release of the tools ships a newer CTLD.
+The mission works: CTLD runs each missing setting on its default, and tells the players so at mission start.
+It is a warning, not an error.</p>
+<p><strong>The way out.</strong> <code>veaf-tools mission ctld-upgrade</code> in the mission folder: it adds each missing setting at its default, in the section the catalogue puts it in, and updates <code>configVersion</code>.
+None of your values changes, and lists are not touched: a missing list is an intentional removal.</p>
+<p>Two messages may come with it, which the command leaves to you:</p>
+<ul>
+<li><strong>settings the catalogue no longer knows</strong>: CTLD ignores them, you may remove them in <code>ctld-tools</code>;</li>
+<li><strong>new keys inside tables the mission holds</strong> (<code>capabilitiesByType.UH-1H.crateSpawnSector</code>, for example): CTLD reads these tables whole, with no fallback to the catalogue, so the mission keeps the older behaviour.
+  Adding them changes the game; that is your call, in <code>ctld-tools</code>.</li>
+</ul>
+<p>Both lists only show while the versions differ: <code>ctld-upgrade</code> prints them one last time, then <code>validate</code> says no more about them. Note them before running the command if you mean to come back to them.</p>
 <h2 id="builder-community-sounds-missing">Sound files are missing<a class="headerlink" href="#builder-community-sounds-missing" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Sound file(s) required by an enabled community module are shipped by neither the tools nor the

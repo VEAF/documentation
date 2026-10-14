@@ -5152,6 +5152,10 @@ comme dépréciés — un script ou un message de forum écrit avant ce changeme
 <td>Vérifie le dossier de mission <strong>avant</strong> le build — signale les erreurs de config et les risques runtime sans builder (sortie non nulle en cas d'erreur ; <code>--strict</code> échoue aussi sur les avertissements)</td>
 </tr>
 <tr>
+<td><code>ctld-upgrade</code></td>
+<td>Met <code>ctld-config.yaml</code> au niveau du catalogue CTLD livré avec les outils : ajoute les réglages absents à leur valeur par défaut, sans changer les vôtres ni toucher aux listes (<a href="../build-messages/modules/#validate-ctld-catalogue-gap">détail</a>)</td>
+</tr>
+<tr>
 <td><code>extract</code></td>
 <td>Extrait un <code>.miz</code> vers un dossier source (à exécuter une fois pour initialiser votre dépôt)</td>
 </tr>
@@ -5504,6 +5508,8 @@ avez posées dans l'éditeur, non. C'est exactement ce que ce réglage corrige.<
 <p>CTLD 2 ne fusionne rien. Un réglage simple absent retombe sur la valeur par défaut du moteur (et il vous le dit au démarrage de la mission), mais une <strong>liste</strong> absente — une section de caisses, un groupe de troupes, une zone — est réellement supprimée. C'est ainsi qu'on retire un élément. Partez toujours du fichier existant plutôt que d'en écrire un de zéro.</p>
 </div>
 <p>Si vous montez CTLD de version et que votre fichier a été écrit pour la précédente, <code>ctld-tools</code> vous liste ce qui est apparu, ce qui a disparu et ce qui diffère du défaut avant que vous ne réenregistriez.</p>
+<p>Les outils livrent leur propre CTLD : une nouvelle version des outils peut donc apporter un catalogue plus récent que celui de votre fichier, sans que vous ayez touché à CTLD.
+<code>veaf-tools mission validate</code> le signale (<a href="../build-messages/modules/#validate-ctld-catalogue-gap">le message</a>), et <code>veaf-tools mission ctld-upgrade</code> ajoute les réglages manquants à leur valeur par défaut, sans changer aucune des vôtres ni toucher aux listes.</p>
 <h4 id="ctld-airbase-logistics">Les aérodromes deviennent des zones logistiques<a class="headerlink" href="#ctld-airbase-logistics" title="Permanent link">&para;</a></h4>
 <p>Jusqu'ici, un avion de transport posé sur un aérodrome capturé lisait <em>« Aucune logistique à portée »</em> : CTLD 2 ne reconnaît comme points de chargement que les types d'unité déclarés dans <code>logisticUnitTypes</code> (les FARP et porte-avions de la section précédente) et les zones <code>LGZ_</code> posées dans l'éditeur. Un aérodrome — un <code>Airbase</code> de la carte, pas une unité — n'est ni l'un ni l'autre. VEAF comble l'écart : au démarrage, il enregistre <strong>chaque aérodrome de la carte</strong> comme zone logistique CTLD, puis la tient à jour au fil de la partie.</p>
 <p>La même zone est aussi une <strong>zone d'embarquement de troupes</strong>, au même endroit, du même rayon et pour le même camp : elle s'éteint et revient avec la zone logistique, et change de camp avec elle. Sans elle, sur <em>Kolkhida</em>, les troupes ne s'embarquaient que sur le porte-avions.

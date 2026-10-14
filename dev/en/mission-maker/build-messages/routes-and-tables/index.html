@@ -1469,6 +1469,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#presets-dropped-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A preset channel lacks its list's band
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#validate-waypoints-no-aircraft" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3312,6 +3323,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#presets-dropped-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A preset channel lacks its list's band
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#validate-waypoints-no-aircraft" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3445,6 +3467,16 @@ the slots pilots sit in. Your mission has none, so the step has nothing to do.</
 </code></pre></div>
 <p><strong>What it is not.</strong> Not an error in your <code>presets.yaml</code>, whose contents were not even examined. And
 for a server-side mission or a template library, this is a perfectly normal situation.</p>
+<h2 id="presets-dropped-channel">A preset channel lacks its list's band<a class="headerlink" href="#presets-dropped-channel" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>presets: channel 12 (S-3B Stennis) of channel_lists.blue.primary_2 has no VHF frequency, so no
+aircraft gets it. Move it to a list of a band it has, or give it a VHF frequency.</p>
+</blockquote>
+<p><strong>What it means.</strong> Each <code>channel_lists</code> list serves one band: <code>primary_1</code> UHF, <code>primary_2</code> VHF, the <code>fm_*</code> lists FM.
+A channel with no frequency in that band is left out of the list, and so of <strong>every</strong> aircraft.
+<code>validate</code> says so before the build, the build says it again, and the <code>presets-validation-report.md</code> report lists it.</p>
+<p><strong>The ways out.</strong> Move the channel to a list whose band it has (a UHF AWACS goes in <code>primary_1</code>), or add the missing band's frequency to its definition.
+Mind the mission's README or briefing: if they announce this channel to the pilots, they announce a channel no aircraft has.</p>
 <h2 id="validate-waypoints-no-aircraft">Waypoints with no aircraft groups<a class="headerlink" href="#validate-waypoints-no-aircraft" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>waypoints.yaml is configured but the mission has no aircraft groups to inject waypoints into.</p>
