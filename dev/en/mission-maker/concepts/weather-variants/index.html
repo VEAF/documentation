@@ -3350,10 +3350,10 @@ the base mission, under <code>missions/</code>. One source mission, several mood
 </code></pre></div>
 <p><code>build My-Mission.miz</code> then produces <code>My-Mission.miz</code> <strong>and</strong> <code>missions/My-Mission_noon.miz</code>.</p>
 <h2 id="solar-and-metar">Solar times and real weather<a class="headerlink" href="#solar-and-metar" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span><span class="w">                    </span><span class="c1"># required by solar expressions</span>
-<span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span>
-<span class="w">  </span><span class="nt">longitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.5</span>
-<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Damascus&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span><span class="w">                    </span><span class="c1"># optional: otherwise, the point of the mission&#39;s map</span>
+<span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">41.93</span>
+<span class="w">  </span><span class="nt">longitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">41.86</span>
+<span class="w">  </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Tbilisi&quot;</span>
 
 <span class="nt">base_date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-03-15&quot;</span>
 
@@ -3369,6 +3369,10 @@ the base mission, under <code>missions/</code>. One source mission, several mood
 <span class="w">    </span><span class="nt">metar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;METAR</span><span class="nv"> </span><span class="s">OSDI</span><span class="nv"> </span><span class="s">151420Z</span><span class="nv"> </span><span class="s">27015G25KT</span><span class="nv"> </span><span class="s">9999</span><span class="nv"> </span><span class="s">BKN025</span><span class="nv"> </span><span class="s">18/12</span><span class="nv"> </span><span class="s">Q1018</span><span class="nv"> </span><span class="s">NOSIG&quot;</span>
 </code></pre></div>
 <ul>
+<li><strong><code>position:</code></strong> says where sunrise and sunset are computed.
+  Without it, the build computes them on the mission's map, at one point per theatre (near Batumi on the Caucasus, Hama on Syria…), and says so in the log.
+  On a wide map, a mission far from that point is a few minutes off: give <code>position:</code> near the mission then.
+  A <code>position:</code> outside the mission's map (the Damascus of the former default file, left in a Caucasus mission) gets a warning.</li>
 <li><strong>Times</strong>: <code>"HH:MM"</code>, a solar expression (<code>sunrise</code>, <code>sunset-30*60</code>), or seconds.
   All of them are on the <strong>theatre's local clock</strong>, the one DCS shows: each theatre has a fixed
   offset from UTC, with no daylight saving time (Caucasus UTC+4, Syria UTC+3, GermanyCW UTC+2…).
@@ -3381,8 +3385,9 @@ the base mission, under <code>missions/</code>. One source mission, several mood
 <p><strong>The file ships non-empty, so the step runs on your very first build.</strong> Your first mission produces
 two <code>.miz</code> files without you asking: the one at the root and <code>missions/…_noon.miz</code>. Not a duplicate —
 the second carries the weather.</p>
-<p>Second gotcha: a solar expression with no <code>position:</code> block is <strong>skipped silently</strong>. If your "dawn"
-variant comes out at the base time, that is where to look.</p>
+<p>Second gotcha: up to 6.29, the shipped <code>versions.yaml</code> wrote a <code>position:</code> at Damascus, whatever the map.
+A mission created before keeps that position, and its "dawn" on the Caucasus comes 25 to 50 minutes after sunrise.
+Remove the <code>position:</code> block from your <code>versions.yaml</code>: the build then computes on the mission's map.</p>
 <p>To switch the step off entirely:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
