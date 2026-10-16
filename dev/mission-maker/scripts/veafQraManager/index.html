@@ -4286,11 +4286,16 @@ doive en plus avoir le niveau de sécurité requis.</p>
 </table>
 <p>Le bloc ajoute aussi, en jeu :</p>
 <ul>
-<li>un menu radio <strong>Opposition</strong> : <em>Niveau actuel</em> (pour tous), <em>Niveau</em> → « 1 joueur(s) en CAP » … « 8 joueur(s) en CAP », qui fixe le niveau en un clic et arrête le suivi, et <em>Mode</em> → le mode de suivi (commandes sécurisées) ;</li>
-<li>un marqueur <strong><code>_opposition</code></strong>, réservé au niveau de sécurité <em>SENIOR_PILOT</em> : <code>_opposition 6</code> fixe le niveau (et arrête le suivi), <code>_opposition air_to_air</code> / <code>_opposition players</code> / <code>_opposition airborne</code> / <code>_opposition off</code> change de mode, <code>_opposition</code> seul l'annonce ;</li>
+<li>un menu radio <strong>Opposition</strong> : <em>Niveau actuel</em> (pour tous), <em>Niveau</em> → « 0 avion », « 1 joueur(s) en CAP » … « 8 joueur(s) en CAP », qui fixe le niveau en un clic et arrête le suivi, et <em>Mode</em> → le mode de suivi (commandes sécurisées) ;</li>
+<li>un marqueur <strong><code>_opposition</code></strong>, réservé au niveau de sécurité <em>SENIOR_PILOT</em> : <code>_opposition 6</code> fixe le niveau (et arrête le suivi), <code>_opposition 0</code> coupe la chasse adverse, <code>_opposition air_to_air</code> / <code>_opposition players</code> / <code>_opposition airborne</code> / <code>_opposition off</code> change de mode, <code>_opposition</code> seul l'annonce ;</li>
 <li>dans le menu des <a href="../veafCombatMission/">combat missions</a>, sous chaque niveau de compétence, une entrée <strong>Taille auto</strong> qui active le <em>scale</em> d'un groupe ennemi par deux joueurs (arrondi au-dessus), dans la limite des <em>scales</em> proposés.</li>
 </ul>
 <p>Chaque changement de niveau est annoncé à tout le monde.</p>
+<p><strong>Zéro avion.</strong> « 0 avion » dans le menu, ou <code>_opposition 0</code>, <strong>coupe</strong> la chasse adverse : une QRA marquée <code>scale_with_opposition: true</code> reste prête mais ne décolle pas, quoi qu'il entre dans sa zone, jusqu'à ce qu'on fixe un niveau au-dessus de 0 ou qu'on rechoisisse un mode de suivi (<em>Mode</em> → <em>fixe</em> la laisse coupée).
+<em>Niveau actuel</em> affiche alors « aucune chasse adverse (fixe) ».
+Un 0 qui n'est pas choisi à la main reste un <strong>compte</strong> : le niveau qu'un mode de suivi fait descendre à 0 (personne en CAP), ou <code>level: 0</code> dans <code>mission.yaml</code>, laisse les paliers de la zone répondre — sinon une minute creuse éteindrait la chasse adverse sans que personne le voie.
+Une QRA déjà en l'air au moment du « 0 avion » n'est pas rappelée : la coupure vaut pour les prochains décollages.
+Une QRA sans <code>scale_with_opposition</code> n'est jamais coupée.</p>
 <p><strong>Comment choisir.</strong> Écrivez les paliers jusqu'à la taille attendue du dispositif : pour un groupe de 5 à 7 joueurs, par exemple <code>1</code> → une paire, <code>3</code> → deux paires, <code>5</code> → trois. Jamais une seule paire fixe face à 5 joueurs ou plus. Ensuite :</p>
 <ul>
 <li>soirée dont on connaît l'effectif → <code>level</code> fixe ;</li>

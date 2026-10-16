@@ -4285,11 +4285,16 @@ in turn — and add <code>radio_menu_secured: true</code> so that pilot must als
 </table>
 <p>The block also adds, in game:</p>
 <ul>
-<li>an <strong>Opposition</strong> radio menu: <em>Current level</em> (for everyone), <em>Level</em> → "1 player(s) on CAP" … "8 player(s) on CAP", which sets the level in one click and stops following, and <em>Mode</em> → the follow mode (secured commands);</li>
-<li>an <strong><code>_opposition</code></strong> marker, for the <em>SENIOR_PILOT</em> security level: <code>_opposition 6</code> sets the level (and stops following), <code>_opposition air_to_air</code> / <code>_opposition players</code> / <code>_opposition airborne</code> / <code>_opposition off</code> changes the mode, <code>_opposition</code> alone announces it;</li>
+<li>an <strong>Opposition</strong> radio menu: <em>Current level</em> (for everyone), <em>Level</em> → "0 aircraft", "1 player(s) on CAP" … "8 player(s) on CAP", which sets the level in one click and stops following, and <em>Mode</em> → the follow mode (secured commands);</li>
+<li>an <strong><code>_opposition</code></strong> marker, for the <em>SENIOR_PILOT</em> security level: <code>_opposition 6</code> sets the level (and stops following), <code>_opposition 0</code> switches the enemy fighters off, <code>_opposition air_to_air</code> / <code>_opposition players</code> / <code>_opposition airborne</code> / <code>_opposition off</code> changes the mode, <code>_opposition</code> alone announces it;</li>
 <li>in the <a href="../veafCombatMission/">combat missions</a> menu, under each skill, an <strong>Auto scale</strong> entry that activates the scale of one enemy group per two players (rounded up), within the scales offered.</li>
 </ul>
 <p>Every change of level is announced to everybody.</p>
+<p><strong>Zero aircraft.</strong> "0 aircraft" in the menu, or <code>_opposition 0</code>, <strong>switches the enemy fighters off</strong>: a QRA set to <code>scale_with_opposition: true</code> stays ready but does not take off, whatever enters its zone, until a level above 0 is set or a follow mode is chosen again (<em>Mode</em> → <em>fixed</em> leaves it off).
+<em>Current level</em> then shows "no enemy fighters (fixed)".
+A 0 not chosen by hand stays a <strong>count</strong>: the level a follow mode lowers to 0 (nobody on CAP), or <code>level: 0</code> in <code>mission.yaml</code>, lets the zone's tiers answer — otherwise a quiet minute would switch the enemy fighters off without anybody seeing it.
+A QRA already airborne when "0 aircraft" is chosen is not recalled: the switch-off applies to the next scrambles.
+A QRA without <code>scale_with_opposition</code> is never switched off.</p>
 <p><strong>How to choose.</strong> Write the tiers up to the package size you expect: for 5 to 7 players, for instance <code>1</code> → a pair, <code>3</code> → two pairs, <code>5</code> → three. Never a single fixed pair against 5 players or more. Then:</p>
 <ul>
 <li>an evening whose attendance you know → a fixed <code>level</code>;</li>
