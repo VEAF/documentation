@@ -3645,19 +3645,18 @@ Foothold de Lekaa), ré-importez-la dans votre dossier déjà adopté avec <code
   <code>custom_scripts:</code> restent stables d'une version à l'autre (p. ex.
   <code>Moose_&lt;nouvelle-date&gt;.lua</code> → <code>Moose.lua</code>) ;</li>
 <li><strong>préserve votre <code>mission.yaml</code> réglé</strong> — il n'est jamais régénéré, donc vos
-  modules, votre <code>config_override</code> et vos <code>custom_scripts</code> survivent ;</li>
+  modules, votre <code>config_override</code> et vos propres <code>custom_scripts</code> survivent ;</li>
 <li><strong>supprime les scripts que la nouvelle version ne fournit plus</strong>, à condition
-  qu'ils viennent bien de l'amont (voir ci-dessous) ; leur entrée reste dans
-  <code>custom_scripts:</code>, donc <code>validate</code> échoue jusqu'à ce que vous l'ôtiez — c'est
-  voulu : sans ça, le build embarquait la copie de la version précédente ;</li>
+  qu'ils viennent bien de l'amont (voir ci-dessous) ;</li>
+<li><strong>réécrit la liste <code>custom_scripts:</code> sur ce que charge la version amont</strong>, dans son ordre de chargement : un script qu'elle ne charge plus en sort, un script qu'elle charge pour la première fois y entre avec son délai.
+  Vos propres scripts restent, après ceux de l'amont et dans leur ordre.
+  C'est ce qui couvre un renommage amont (<code>zoneCommander.lua</code> → <code>zoneCommanderv2.lua</code> en 5.3.0) : sans ça, le build chargeait l'ancien moteur avec la nouvelle config ;</li>
 <li><strong>aligne <code>delay_seconds:</code> sur l'étalement de la version amont</strong> — voir
   <a href="#load-staging">Étalement du chargement</a> ;</li>
 <li><strong>rapporte tout ce qu'il a fait</strong> : scripts ajoutés, mis à jour, supprimés, et
   chaque délai écrit.</li>
 </ul>
-<p>Relisez le rapport, ajoutez au besoin les scripts nouveaux à <code>custom_scripts:</code> (leur
-position dans l'ordre de chargement est une décision humaine), puis reconstruisez et
-testez dans DCS.</p>
+<p>Relisez le rapport, vérifiez la place de vos propres scripts dans <code>custom_scripts:</code>, puis reconstruisez et testez dans DCS.</p>
 <h3 id="ownership">Ce qui vous appartient, et ce qui appartient à l'amont<a class="headerlink" href="#ownership" title="Permanent link">&para;</a></h3>
 <p>Un script que la nouvelle version ne fournit plus n'est pas forcément périmé : ce peut
 être un script que <strong>vous</strong> avez écrit et déclaré dans <code>custom_scripts:</code>. Vu du dossier,
@@ -3667,8 +3666,8 @@ des scripts que la version amont charge. <strong>Versionnez-le avec la mission.<
 jour suivante, un script absent de la nouvelle version <em>et</em> présent dans cette liste est
 un script amont abandonné (supprimé) ; tout le reste est à vous (laissé strictement
 intact).</p>
-<p>Un dossier converti avant l'apparition de ce fichier n'a pas cette liste : rien n'y est
-supprimé, tout est signalé, exactement comme avant.</p>
+<p>Un dossier converti avant l'apparition de ce fichier n'a pas cette liste.
+Les scripts de la version précédente y sont alors lus dans la base de mission qu'elle a laissée : le <code>mapResource</code> de <code>src/mission/</code> nomme chaque script qu'elle embarquait.</p>
 <h3 id="load-staging">Étalement du chargement<a class="headerlink" href="#load-staging" title="Permanent link">&para;</a></h3>
 <p>Les missions tierces échelonnent souvent le chargement de leurs scripts (Foothold charge
 AIEN 12 s après les autres). L'amont décide de cet étalement, pas vous : <code>--update</code> écrit
