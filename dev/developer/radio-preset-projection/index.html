@@ -3607,10 +3607,12 @@ planchette : voir <a href="../../mission-maker/dcs-radio-specs/#kneeboard-only">
 <p>Le build génère <strong>une planchette par <code>(coalition, type)</code> réellement injecté</strong>,
 déposée dans le dossier DCS du type : <code>KNEEBOARD/&lt;type&gt;/IMAGES/presets.png</code>
 (suffixée <code>-&lt;coalition&gt;</code> seulement si le même type vole dans les deux camps).
-Remplace l'ancien dossier générique <code>KNEEBOARD/IMAGES/</code>. Le titre est le type
-concret. Les bandeaux radio sont <strong>gris</strong> (fini le codage rouge/vert/orange).
-Pour l'AJS-37, la colonne CH affiche les <strong>libellés pilote</strong> (<code>100</code>-<code>139</code> puis
-<code>Sp1/Sp2/Sp3/E/F/G/H</code>) et la radio (47 slots) est <strong>répartie sur deux colonnes</strong>.</p>
+Remplace l'ancien dossier générique <code>KNEEBOARD/IMAGES/</code>.</p>
+<p>La page fait toujours <strong>1536 × 2304</strong>, du 2:3 : DCS étire l'image pour remplir la fenêtre de la planchette (<code>KNEEBOARD/indicator/init.lua</code>, coordonnées de texture 0..1), et la planchette du cockpit mesure 0,142 × 0,214.
+Le titre est le nom lisible du type (<code>name</code> des specs). Chaque radio est un bloc titré par sa position et le poste des specs (<code>COMM 1: ARC-210</code> devient <code>1. COMM 1 · ARC-210</code>) ; <code>kneeboard_title</code> dans <code>dcs-radio-layouts.yaml</code> le remplace (l'AJS-37 : <code>FR22 / FR24</code>).
+Un bloc s'arrête à son dernier slot, libellés compris, et les blocs s'écoulent en deux colonnes (<code>_paginate_blocks</code>) : un bloc passe entier à la colonne suivante quand il y tient, seul un bloc plus haut qu'une colonne est coupé, et le surplus va sur <code>presets_2.png</code>.
+Pour l'AJS-37, la colonne CH affiche les <strong>libellés pilote</strong> (<code>100</code>-<code>139</code> puis <code>Sp1/Sp2/Sp3/E/F/G/H</code>).
+Toute mission qui a des planchettes reçoit aussi <code>KNEEBOARD/IMAGES/00-veaf-calibration.png</code>, la mire qui sert à remettre une fenêtre redimensionnée au 2:3.</p>
 <h2 id="ajouter-ou-corriger-un-type">Ajouter ou corriger un type<a class="headerlink" href="#ajouter-ou-corriger-un-type" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Identifier les radios physiques de l'appareil dans

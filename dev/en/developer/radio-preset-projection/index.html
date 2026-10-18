@@ -3605,10 +3605,12 @@ lives directly in
 <p>The build renders <strong>one kneeboard per injected <code>(coalition, type)</code></strong>, dropped in
 that type's DCS folder: <code>KNEEBOARD/&lt;type&gt;/IMAGES/presets.png</code> (coalition-suffixed
 only when the same type flies for both sides). This replaces the old generic
-<code>KNEEBOARD/IMAGES/</code> folder. The title is the concrete type. Radio header bars are
-<strong>grey</strong> (the old red/green/orange coding is gone). For the AJS-37, the CH column
-shows <strong>pilot labels</strong> (<code>100</code>-<code>139</code> then <code>Sp1/Sp2/Sp3/E/F/G/H</code>) and its 47-slot
-radio is <strong>split across two columns</strong>.</p>
+<code>KNEEBOARD/IMAGES/</code> folder.</p>
+<p>The page is always <strong>1536 × 2304</strong>, a 2:3: DCS stretches the image to fill the kneeboard window (<code>KNEEBOARD/indicator/init.lua</code>, texture coordinates 0..1), and the cockpit kneeboard measures 0.142 × 0.214.
+The title is the type's readable name (the specs <code>name</code>). Each radio is a block titled with its position and the specs set (<code>COMM 1: ARC-210</code> reads <code>1. COMM 1 · ARC-210</code>); <code>kneeboard_title</code> in <code>dcs-radio-layouts.yaml</code> replaces it (the AJS-37: <code>FR22 / FR24</code>).
+A block stops at its last slot, labels included, and the blocks flow into two columns (<code>_paginate_blocks</code>): a block moves whole to the next column when it fits there, only a block taller than a column is split, and what overflows goes to <code>presets_2.png</code>.
+For the AJS-37, the CH column shows <strong>pilot labels</strong> (<code>100</code>-<code>139</code> then <code>Sp1/Sp2/Sp3/E/F/G/H</code>).
+Every mission with kneeboards also gets <code>KNEEBOARD/IMAGES/00-veaf-calibration.png</code>, the test pattern that puts a resized window back to 2:3.</p>
 <h2 id="adding-or-fixing-a-type">Adding or fixing a type<a class="headerlink" href="#adding-or-fixing-a-type" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Identify the aircraft's physical radios in
