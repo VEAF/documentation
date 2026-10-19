@@ -1588,6 +1588,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mission-maker/EDITOR_TIPS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Editor tips
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ALIASES/" class="md-nav__link">
         
   
@@ -1631,10 +1659,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_15" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_16" >
         
           
-          <label class="md-nav__link" for="__nav_4_15" id="__nav_4_15_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="0">
             
   
   
@@ -1652,8 +1680,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_15_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_15">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_16">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3100,6 +3128,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#forced-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        forced_options: the options enforced on every player
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3758,6 +3797,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#forced-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        forced_options: the options enforced on every player
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4294,6 +4344,8 @@
 <span class="w">  </span><span class="nt">third_party_mods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w">        </span><span class="c1"># third-party DCS mods to make non-blocking (see below)</span>
 <span class="w">  </span><span class="nt">ground_control</span><span class="p">:</span><span class="w">             </span><span class="c1"># game master, JTAC… slots and vehicle control (see below)</span>
 <span class="w">    </span><span class="nt">game_master</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">forced_options</span><span class="p">:</span><span class="w">             </span><span class="c1"># options enforced on every player (see below)</span>
+<span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
 </code></pre></div>
 <table>
 <thead>
@@ -4355,6 +4407,13 @@
 <td>No</td>
 <td>Slots of the roles that fly no aircraft, and vehicle control — see <a href="#ground-control">below</a></td>
 </tr>
+<tr>
+<td><code>forced_options</code></td>
+<td>mapping</td>
+<td><em>absent</em></td>
+<td>No</td>
+<td>Options enforced on every player (labels, F10 view…) — see <a href="#forced-options">below</a></td>
+</tr>
 </tbody>
 </table>
 <h4 id="icao-naming">The <code>.miz</code> file name is an interface — <code>_ICAO_&lt;code&gt;</code> and real weather<a class="headerlink" href="#icao-naming" title="Permanent link">&para;</a></h4>
@@ -4404,6 +4463,174 @@ The block sets them at every build:</p>
 <li>Role passwords stay out of reach: written in <code>mission.yaml</code>, they would be committed in clear.</li>
 </ul>
 <p>The VEAF Open Training missions open 5 slots per role and per side, with vehicle control, as in v5.</p>
+<h4 id="forced-options"><code>forced_options</code>: the options enforced on every player<a class="headerlink" href="#forced-options" title="Permanent link">&para;</a></h4>
+<p>The editor's <em>Mission options</em> panel enforces some options on every player, whatever their own settings: labels, F10 map view, external views, wake turbulence…
+The block sets them at every build, in the mission's <code>forcedOptions</code> table:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">forced_options</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w">               </span><span class="c1"># full | abbreviated | symbol_only | dot_neutral | none</span>
+<span class="w">    </span><span class="nt">f10_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fog_of_war</span><span class="w">       </span><span class="c1"># all | fog_of_war | allies_only | map_only | my_aircraft</span>
+<span class="w">    </span><span class="nt">external_views</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">f10_marks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">            </span><span class="c1"># players&#39; F10 marks (the VEAF marker commands need them)</span>
+<span class="w">    </span><span class="nt">wake_turbulence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">civil_traffic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">off</span><span class="w">         </span><span class="c1"># off | low | medium | high</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Editor label</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>labels</code></td>
+<td>Labels</td>
+<td><code>full</code>, <code>abbreviated</code>, <code>symbol_only</code>, <code>dot_neutral</code>, <code>none</code></td>
+</tr>
+<tr>
+<td><code>spotting_dot</code></td>
+<td>Spotting dot</td>
+<td><code>off</code>, <code>auto</code>, <code>one_pixel</code>, <code>two_pixels</code></td>
+</tr>
+<tr>
+<td><code>f10_view</code></td>
+<td>F10 View Options</td>
+<td><code>all</code>, <code>fog_of_war</code>, <code>allies_only</code>, <code>map_only</code>, <code>my_aircraft</code></td>
+</tr>
+<tr>
+<td><code>f10_view_by_role</code></td>
+<td>F10 View Options → Extended</td>
+<td>see below</td>
+</tr>
+<tr>
+<td><code>f10_marks</code></td>
+<td>F10 Map User Marks</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>external_views</code></td>
+<td>External views</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>padlock</code></td>
+<td>Padlock</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>permit_crash</code></td>
+<td>Permit crash recovery</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>easy_flight</code></td>
+<td>Easy flight</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>easy_communication</code></td>
+<td>Easy communication</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>radio_assist</code></td>
+<td>Radio assist</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>mini_hud</code></td>
+<td>Mini HUD</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>cockpit_visual_recon_mode</code></td>
+<td>Cockpit visual recon mode</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>cockpit_status_bar</code></td>
+<td>Cockpit Status Bar</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>battle_damage_assessment</code></td>
+<td>Battle Damage Assessment</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>unlimited_fuel</code></td>
+<td>Unlimited fuel</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>unlimited_weapons</code></td>
+<td>Unlimited weapons</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>immortal</code></td>
+<td>Immortal</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>g_effects</code></td>
+<td>G-effect</td>
+<td><code>none</code>, <code>reduced</code>, <code>realistic</code></td>
+</tr>
+<tr>
+<td><code>g_warm_up</code></td>
+<td>G warm up in air</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>wake_turbulence</code></td>
+<td>Wake turbulence</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>unrestricted_satnav</code></td>
+<td>Unrestricted SATNAV</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>birds</code></td>
+<td>Birds</td>
+<td>a number from 0 to 1000</td>
+</tr>
+<tr>
+<td><code>civil_traffic</code></td>
+<td>Civ traffic</td>
+<td><code>off</code>, <code>low</code>, <code>medium</code>, <code>high</code></td>
+</tr>
+<tr>
+<td><code>random_failures</code></td>
+<td>Random System Failures</td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>An option the block does not name keeps the mission's value; the block never removes one. To stop enforcing an option, untick it in the editor.</li>
+<li><strong>Block absent: the build changes nothing</strong>, a mission set up in the editor keeps its options.</li>
+<li>An unknown option or value: <code>validate</code> reports it and the build stops.</li>
+<li>DCS does not apply enforced options to a player who ticked the global preset of the GAMEPLAY tab of their options (the editor panel's note).</li>
+<li>In a campaign, put the block in the <code>mission.yaml</code> of the <code>template/</code> folder: <code>campaign next</code> copies it into every mission.</li>
+</ul>
+<p><strong>The F10 view per role.</strong> <code>f10_view_by_role</code> replaces <code>f10_view</code> (both together are refused) and sets each role's map:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">forced_options</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">f10_view_by_role</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">pilot</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">view</span><span class="p">:</span><span class="w"> </span><span class="nv">fog_of_war</span><span class="p p-Indicator">,</span><span class="nt"> hide</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">enemies_weapons</span><span class="p p-Indicator">]}</span>
+<span class="w">      </span><span class="nt">jtac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">      </span><span class="nt">spectator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+</code></pre></div>
+<ul>
+<li>Roles: <code>pilot</code>, <code>jtac</code>, <code>tactical_commander</code>, <code>observer</code>, <code>spectator</code>, <code>airboss</code>; a role not named sees everything.</li>
+<li>A view alone, or <code>{view: …, hide: […]}</code> with the layers to hide: <code>&lt;side&gt;_&lt;category&gt;</code>, side <code>allies</code>, <code>enemies</code> or <code>neutral</code>, category <code>planes</code>, <code>helicopters</code>, <code>ground</code>, <code>naval</code> or <code>weapons</code>.</li>
+<li>What DCS does with it in game is not seen yet: the shape comes from the editor's code, no saved mission used it.</li>
+</ul>
 <hr />
 <h3 id="security"><code>security:</code><a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
 <p>Controls the VEAF security system. <strong>Security is active by default</strong> (<code>veaf.SecurityDisabled = false</code> in <code>veaf.lua</code>): with no <code>security:</code> block nothing is emitted and the sensitive commands require a pilot level or a password. <code>disabled: true</code> turns it off for the whole mission.</p>
