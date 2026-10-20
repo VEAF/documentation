@@ -3208,6 +3208,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#read_mission_file--edit_mission_file-feat-ai-zero-setup-lot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_mission_file / edit_mission_file (FEAT-AI-ZERO-SETUP lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#describe_mission_prompt-feat-ai-zero-setup-lot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_mission_prompt (FEAT-AI-ZERO-SETUP lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#offer_clear_ground_check-feat-clear-ground-at-authoring-lot" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4383,6 +4405,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#read_mission_file--edit_mission_file-feat-ai-zero-setup-lot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_mission_file / edit_mission_file (FEAT-AI-ZERO-SETUP lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#describe_mission_prompt-feat-ai-zero-setup-lot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe_mission_prompt (FEAT-AI-ZERO-SETUP lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#offer_clear_ground_check-feat-clear-ground-at-authoring-lot" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4709,13 +4753,18 @@ and <code>CONTEXT.md</code> (section "LLM-assisted mission editing") for the voc
 <h2 id="running-the-server-locally">Running the server locally<a class="headerlink" href="#running-the-server-locally" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>install
 poetry<span class="w"> </span>run<span class="w"> </span>veaf-mission-mcp<span class="w">   </span><span class="c1"># in dev</span>
-<span class="c1"># or, from the shipped binary (what the Claude plugin invokes):</span>
+<span class="c1"># or, from the shipped binary (what `veaf-tools ai-setup` declares in the AI clients):</span>
 veaf-tools<span class="w"> </span>mcp
 </code></pre></div>
 <p>Starts an MCP server over <code>stdio</code> (the <code>mcp</code> SDK's default transport). No configuration: every
 action receives the <code>.miz</code> path to edit as a parameter. The <code>veaf-tools mcp</code> subcommand embeds the
-server in the already-shipped <code>veaf-tools</code> binary (no separate binary to build) — this is what the
-Claude plugin declares in its <code>.mcp.json</code>.</p>
+server in the already-shipped <code>veaf-tools</code> binary (no separate binary to build) — this is what
+<code>veaf-tools ai-setup</code> declares in Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI and OpenCode.</p>
+<p>Started from the shipped binary, the server also <strong>updates itself</strong>: in a background thread, at most once every
+4 hours, only when <code>check_updates</code> is on and no pre-release is pinned (<code>VEAF_MCP_UPDATER_TAG</code>), it compares its version with the <code>published-latest</code> release and,
+when that is newer, starts <code>veaf-tools-updater</code> in its own folder, in a hidden console
+(<code>veaf_mission_mcp/self_update.py</code>). The updater sets the running <code>veaf-tools.exe</code> aside rather than overwriting
+it, which Windows refuses; the new version is used from the client's next start.</p>
 <h2 id="action-catalog-v1">Action catalog (v1)<a class="headerlink" href="#action-catalog-v1" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
 <p class="admonition-title">The mission is <code>mission_path</code>, everywhere (FIX-OPEN-TRAINING-PROMPT-FINDINGS, ticket 05)</p>
@@ -5494,9 +5543,9 @@ read from the <strong>canonical sources</strong> the build already uses, so they
 <li>vendored artifacts (<code>vendored.yaml</code>, <code>check-vendored</code>);</li>
 <li>upstream datamining repos (provenance).</li>
 </ul>
-<p>Implementation: <code>veaf_mission_mcp/oracle.py</code>. The "prose / how to reason" half lives in the
-<code>veaf-mission-authoring</code> Claude skill (<code>plugin/skills/veaf-mission-authoring/SKILL.md</code>, bundled by
-<code>bfr-claude-plugins</code>) — the plugin = MCP hands + skill brain.</p>
+<p>Implementation: <code>veaf_mission_mcp/oracle.py</code>. The "prose / how to reason" half is the authoring guide,
+<code>veaf_mission_mcp/data/authoring-guide.md</code>, served by <code>describe_authoring_guide</code> — the server = hands, the guide =
+brain.</p>
 <h3 id="list_unit_types"><code>list_unit_types</code><a class="headerlink" href="#list_unit_types" title="Permanent link">&para;</a></h3>
 <p>Read-only. DCS unit types from the generated database, filterable by <code>category</code> and/or
 <code>name_contains</code>, so the LLM can pick concrete types.</p>
@@ -5545,13 +5594,27 @@ returns everything.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;radio&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="describe_authoring_guide-feat-ai-assistant-any-client-lot"><code>describe_authoring_guide</code> (FEAT-AI-ASSISTANT-ANY-CLIENT lot)<a class="headerlink" href="#describe_authoring_guide-feat-ai-assistant-any-client-lot" title="Permanent link">&para;</a></h3>
-<p>Read-only, no parameter. Returns <code>{"guide": …}</code>: the text of the plugin's <code>veaf-mission-authoring</code> skill, verbatim.
-Claude Code and Gemini CLI load that skill from the plugin; another MCP client has no plugin, and reads it here.
-The file exists once, <code>plugin/skills/veaf-mission-authoring/SKILL.md</code>: the build bundles it into the exe under <code>veaf_mission_mcp/data/</code>, and in development the action reads it from the repository.</p>
-<p>The <strong>server instructions</strong> (the MCP protocol's <code>instructions</code>, sent to the client on connection) ask it to read this guide first — by loading the skill if the client has it, by calling this action otherwise.
-They are a few lines on purpose: Claude Code puts them in every session's prompt, where the plugin's skill already is.
+<p>Read-only, no parameter. Returns <code>{"guide": …}</code>: the authoring guide, <code>veaf_mission_mcp/data/authoring-guide.md</code>, verbatim.
+The build bundles the whole <code>veaf_mission_mcp/data/</code> folder into the exe; in development the action reads the package's file.</p>
+<p>The <strong>server instructions</strong> (the MCP protocol's <code>instructions</code>, sent to the client on connection) ask it to call this action first, then <code>describe_known_limitations</code>.
+They are a few lines on purpose: a client puts them in every session's prompt, so they point at the guide rather than carry it.
 Not every client honours them; <a href="../../mission-maker/AI_ASSISTANT_INSTALL/#other-mcp-client">the install page</a> therefore opens the conversation with the explicit request.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{}</span>
+</code></pre></div>
+<h3 id="read_mission_file--edit_mission_file-feat-ai-zero-setup-lot"><code>read_mission_file</code> / <code>edit_mission_file</code> (FEAT-AI-ZERO-SETUP lot)<a class="headerlink" href="#read_mission_file--edit_mission_file-feat-ai-zero-setup-lot" title="Permanent link">&para;</a></h3>
+<p>A mission folder's YAML sources — <code>mission.yaml</code> and <code>src/*.yaml</code>, nothing else, no <code>..</code>, no absolute path — for an assistant with no direct file access.
+In Claude Desktop's chat mode, an assistant asked to rename a mission answered that no action could; <code>mission.name</code>, <code>mission.era</code> and the <code>src/*.yaml</code> files the guide's checklist asks it to adapt had no action at all.
+<code>read_mission_file</code> returns <code>{file, first_line, last_line, total_lines, content}</code>, 400 lines by default (<code>start_line</code>, <code>line_count</code>): the slot catalogue runs to 11 000.
+<code>edit_mission_file</code> replaces one exact passage (<code>search</code> / <code>replace</code>), refused when it occurs zero or several times or when the result no longer reads as YAML; backed up first, line endings kept.
+Implementation: <code>veaf_mission_mcp/mission_files.py</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C:/VEAF/missions/convoi&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mission.yaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;search&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name: My-Mission&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;replace&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name: helico_convoi_Montagnes&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="describe_mission_prompt-feat-ai-zero-setup-lot"><code>describe_mission_prompt</code> (FEAT-AI-ZERO-SETUP lot)<a class="headerlink" href="#describe_mission_prompt-feat-ai-zero-setup-lot" title="Permanent link">&para;</a></h3>
+<p>Read-only. Returns <code>{"kind", "lang", "prompt"}</code>: the instructions that build one kind of mission end to end — the questions to ask, the design rules, the build order.
+<code>kind</code> is <code>objective</code> (a mission played once, in one session) or <code>open-training</code> (a VEAF training mission on a whole map); <code>lang</code> is <code>en</code> (default) or <code>fr</code>.
+The prompts live in <code>veaf_mission_mcp/data/mission-prompts/</code>, bundled with the guide; they used to sit in the repository's <code>.prompts/</code>, for the user to paste.
+The authoring guide sends a user who asks for a new mission here, so "create a mission" is enough.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objective&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lang&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fr&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="offer_clear_ground_check-feat-clear-ground-at-authoring-lot"><code>offer_clear_ground_check</code> (FEAT-CLEAR-GROUND-AT-AUTHORING lot)<a class="headerlink" href="#offer_clear_ground_check-feat-clear-ground-at-authoring-lot" title="Permanent link">&para;</a></h3>
 <p>Read-only, and it <strong>launches nothing</strong>. On a built <code>.miz</code>, returns what it takes to <strong>offer</strong> the user
