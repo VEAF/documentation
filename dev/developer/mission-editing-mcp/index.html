@@ -3164,6 +3164,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#list_countries-lot-fix-opencode-test-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_countries (lot FIX-OPENCODE-TEST-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#list_payloads" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3478,6 +3489,17 @@
     <span class="md-ellipsis">
       
         validate_mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect_built_mission-lot-fix-opencode-test-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        inspect_built_mission (lot FIX-OPENCODE-TEST-FINDINGS)
       
     </span>
   </a>
@@ -4361,6 +4383,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#list_countries-lot-fix-opencode-test-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_countries (lot FIX-OPENCODE-TEST-FINDINGS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#list_payloads" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4675,6 +4708,17 @@
     <span class="md-ellipsis">
       
         validate_mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect_built_mission-lot-fix-opencode-test-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        inspect_built_mission (lot FIX-OPENCODE-TEST-FINDINGS)
       
     </span>
   </a>
@@ -5575,6 +5619,12 @@ que le build utilise déjà, donc <strong>sans dérive possible</strong> :</p>
 <code>name_contains</code>. Pour que le LLM choisisse des types concrets.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plane&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name_contains&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;su-27&quot;</span><span class="p">}</span>
 </code></pre></div>
+<h3 id="list_countries-lot-fix-opencode-test-findings"><code>list_countries</code> (lot FIX-OPENCODE-TEST-FINDINGS)<a class="headerlink" href="#list_countries-lot-fix-opencode-test-findings" title="Permanent link">&para;</a></h3>
+<p>Lecture seule, sans mission. Les pays DCS en <code>{id, name, short?}</code>, par id, depuis <code>veaf_libs/data/dcs-countries.yaml</code> : le <code>country_id</code> et le <code>country_name</code> que prennent <code>add_group</code>, <code>add_air_group</code>, <code>add_farp</code> et les composites.
+<code>name_contains</code> cherche dans le nom, le nom de l'éditeur de mission et le code court.
+Faute d'action, une IA lisait le fichier dans le dossier dépaqueté de l'exécutable.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;name_contains&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;turk&quot;</span><span class="p">}</span>
+</code></pre></div>
 <h3 id="list_payloads"><code>list_payloads</code><a class="headerlink" href="#list_payloads" title="Permanent link">&para;</a></h3>
 <p>Lecture seule. Les emports par défaut que l'éditeur de mission propose pour un type d'avion d'IA, par
 nom (« R-40T<em>2,R-33</em>4 » pour un MiG-31), avec leurs pylônes — ce que prend <code>payload</code> dans
@@ -5613,11 +5663,11 @@ entrée : <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</co
 fichier est la seule source : <code>docs/agents/dcs-runtime-traps.md</code> en est généré.</p>
 <p>Le texte entier fait environ 74 000 caractères, plus qu'un résultat d'outil n'en porte. <strong>Sans argument,
 l'action renvoie une liste courte</strong> — <code>id</code>, <code>kind</code>, <code>area</code> et <code>theatres</code> s'il y en a, sans titre, environ 7 000 caractères — et le nombre
-d'entrées de chaque <code>area</code>. Lisez en entier celles dont vous avez besoin avec <code>area</code> (<code>spawning</code>,
-<code>air-defence</code>, <code>players</code>, <code>radio</code>, <code>ground-ai</code>, <code>scripting</code>, <code>mcp</code>, <code>pipeline</code>, <code>runtime</code>), <code>kind</code>, <code>id</code> ou <code>ids</code>
-(une liste). <code>theatre</code> écarte les entrées qui ne concernent que d'autres théâtres (une entrée sans
-<code>theatres</code> vaut partout). <code>full: true</code> renvoie tout.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;radio&quot;</span><span class="p">}</span>
+d'entrées de chaque <code>area</code>. <code>area</code> (<code>spawning</code>, <code>air-defence</code>, <code>players</code>, <code>radio</code>, <code>ground-ai</code>, <code>scripting</code>, <code>mcp</code>, <code>pipeline</code>, <code>runtime</code>),
+<code>kind</code> et <code>theatre</code> resserrent cette liste et la gardent courte ; <code>theatre</code> écarte les entrées qui ne concernent que d'autres théâtres
+(une entrée sans <code>theatres</code> vaut partout). Lisez en entier celles dont vous avez besoin avec <code>id</code> ou <code>ids</code> (une liste) ; <code>full: true</code> renvoie
+tout ce qui est retenu. Une <code>area</code> revenait en entier : trois d'entre elles faisaient 46 000 caractères en un appel, portés jusqu'à la fin de la session (FIX-OPENCODE-TEST-FINDINGS).</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;no-parking-data-outside-three-theatres&quot;</span><span class="p">]}</span>
 </code></pre></div>
 <h3 id="describe_authoring_guide-lot-feat-ai-assistant-any-client"><code>describe_authoring_guide</code> (lot FEAT-AI-ASSISTANT-ANY-CLIENT)<a class="headerlink" href="#describe_authoring_guide-lot-feat-ai-assistant-any-client" title="Permanent link">&para;</a></h3>
 <p>Lecture seule, sans paramètre. Renvoie <code>{"guide": …}</code> : le guide de création, <code>veaf_mission_mcp/data/authoring-guide.md</code>, tel quel.
@@ -5631,7 +5681,10 @@ Tous les clients n'en tiennent pas compte ; <a href="../../mission-maker/AI_ASSI
 <p>Les sources YAML d'un dossier de mission — <code>mission.yaml</code> et <code>src/*.yaml</code>, rien d'autre, ni <code>..</code> ni chemin absolu — pour une IA sans accès direct aux fichiers.
 En mode chat de Claude Desktop, une IA à qui l'on demandait de renommer une mission a répondu qu'aucune action ne le pouvait ; <code>mission.name</code>, <code>mission.era</code> et les fichiers <code>src/*.yaml</code> que la liste du guide lui demande d'adapter n'avaient aucune action.
 <code>read_mission_file</code> renvoie <code>{file, first_line, last_line, total_lines, content}</code>, 400 lignes par défaut (<code>start_line</code>, <code>line_count</code>) : le catalogue de slots en compte 11 000.
-<code>edit_mission_file</code> remplace un passage exact (<code>search</code> / <code>replace</code>), refusé s'il apparaît zéro ou plusieurs fois, ou si le résultat ne se relit plus en YAML ; sauvegarde avant écriture, fins de ligne conservées.
+Ses lignes finissent par <code>\n</code>, quel que soit le fichier.
+Sans <code>mission_path</code>, elle lit le gabarit livré avec les outils — ce que <code>scaffold_mission</code> pose : les templates de slots dynamiques, le plan de presets, <code>mission.yaml</code> avec l'exemple commenté de chaque module — et le dit par <code>shipped: true</code>, pour vérifier un plan avant qu'un dossier existe.
+<code>edit_mission_file</code> remplace un passage exact (<code>search</code> / <code>replace</code>), refusé s'il apparaît zéro ou plusieurs fois, ou si le résultat ne se relit plus en YAML ; sauvegarde avant écriture.
+Les fins de ligne sont comparées normalisées, et le fichier garde les siennes : un passage recopié avec <code>\n</code> depuis un fichier CRLF était « introuvable » (FIX-OPENCODE-TEST-FINDINGS).
 Implémentation : <code>veaf_mission_mcp/mission_files.py</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C:/VEAF/missions/convoi&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mission.yaml&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;search&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name: My-Mission&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;replace&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name: helico_convoi_Montagnes&quot;</span><span class="p">}</span>
 </code></pre></div>
@@ -5639,7 +5692,9 @@ Implémentation : <code>veaf_mission_mcp/mission_files.py</code>.</p>
 <p>Lecture seule. Renvoie <code>{"kind", "lang", "prompt"}</code> : les consignes qui construisent une sorte de mission de bout en bout — les questions à poser, les règles de conception, l'ordre de construction.
 <code>kind</code> vaut <code>objective</code> (une mission jouée une fois, en une séance) ou <code>open-training</code> (une mission d'entraînement VEAF sur une carte entière) ; <code>lang</code> vaut <code>en</code> (par défaut) ou <code>fr</code>.
 Les prompts vivent dans <code>veaf_mission_mcp/data/mission-prompts/</code>, embarqués avec le guide ; ils étaient dans le <code>.prompts/</code> du dépôt, à coller par l'utilisateur.
-Le guide de création envoie ici un utilisateur qui demande une nouvelle mission : « crée une mission » suffit.</p>
+Le guide de création envoie ici un utilisateur qui demande une nouvelle mission : « crée une mission » suffit.
+Le prompt objectif vient en deux parties, coupées à une ligne <code>&lt;!-- part: build --&gt;</code> : <code>part: scenario</code> (par défaut, environ 13 000 caractères, qui finit en disant comment charger la suite) et <code>part: build</code>, une fois un scénario approuvé ; <code>part: all</code> renvoie les deux.
+Les sections 4 à 9, 21 000 de ses 34 000 caractères, ne servent qu'après l'approbation, et étaient portées à chaque tour de la discussion du scénario (FIX-OPENCODE-TEST-FINDINGS).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objective&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lang&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fr&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="offer_clear_ground_check-lot-feat-clear-ground-at-authoring"><code>offer_clear_ground_check</code> (lot FEAT-CLEAR-GROUND-AT-AUTHORING)<a class="headerlink" href="#offer_clear_ground_check-lot-feat-clear-ground-at-authoring" title="Permanent link">&para;</a></h3>
@@ -5774,12 +5829,14 @@ Chaque zone porte son <code>x</code>/<code>y</code>/<code>radius</code>, chaque 
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/mission.miz-ou-dossier&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="list_airfields"><code>list_airfields</code><a class="headerlink" href="#list_airfields" title="Permanent link">&para;</a></h3>
-<p>Lecture seule. Liste les bases d'un théâtre — nom, id d'aérodrome DCS, lat/lon, et <code>x</code>/<code>y</code> DCS quand
-la projection du théâtre est connue — depuis la donnée livrée avec les outils
+<p>Lecture seule. Liste les bases d'un théâtre — nom, id d'aérodrome DCS, et <code>x</code>/<code>y</code> DCS en mètres entiers quand
+la projection du théâtre est connue (<code>lat</code>/<code>lon</code> sinon), plus la <code>coalition</code> de chaque base avec une mission — depuis la donnée livrée avec les outils
 (<code>veaf_libs/data/airdrome-positions.yaml</code>, générée avec <code>airdromes.yaml</code> depuis la base de référence <code>dcs-world-schema</code> par
 <code>veaf-build update-dcs-data --airdromes</code>). La position est le point de référence de l'aérodrome, au centre des pistes. Avec <code>mission_path</code>, le théâtre de la mission ; sans
-mission, <code>theatre</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GermanyCW&quot;</span><span class="p">}</span>
+mission, <code>theatre</code>.
+<code>name_contains</code> garde les bases dont le nom contient un texte ; <code>details: true</code> ajoute <code>lat</code>/<code>lon</code>, <code>parking</code> (les places utilisables par des <code>planes</code> et par des <code>helicopters</code>) et <code>atc</code> (<code>uhf</code>, <code>vhf</code>, <code>fm</code> en MHz et <code>tacan</code>, tels que DCS les donne).
+Court par défaut : tous les champs pour Syria faisaient 37 000 caractères, 21 000 maintenant (FIX-OPENCODE-TEST-FINDINGS).</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Syria&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name_contains&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;incirlik&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="describe_airfield_channels"><code>describe_airfield_channels</code><a class="headerlink" href="#describe_airfield_channels" title="Permanent link">&para;</a></h3>
 <p>Lecture seule. Liste, pour un <strong>dossier</strong> de mission, les aérodromes qu'elle utilise — camp (depuis
@@ -5803,7 +5860,7 @@ n'utilise encore. Idempotent.</p>
 <h3 id="resolve_coordinates"><code>resolve_coordinates</code><a class="headerlink" href="#resolve_coordinates" title="Permanent link">&para;</a></h3>
 <p>Utilitaire. Convertit une position entre <code>{x, y}</code> (local DCS) et <code>{lat, lon}</code> (degrés décimaux) pour
 le théâtre de la mission (lu depuis la mission — l'appelant ne fournit jamais de paramètres de
-projection).</p>
+projection), ou pour un <code>theatre</code> nommé avant qu'une mission existe.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;lat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">42.18</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lon&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">41.68</span><span class="p">}}</span>
 </code></pre></div>
 <p>Pour convertir plusieurs points en un appel, <code>positions</code> (une liste) à la place de <code>position</code> : la
@@ -5815,7 +5872,7 @@ théâtre de la mission — les cartes DCS étant le monde réel projeté. Géoc
 OpenStreetMap Nominatim par défaut (gratuit, sans clé ; attribution © OpenStreetMap requise), Google
 Maps si <code>GOOGLE_MAPS_API_KEY</code> est défini. <code>bearing</code>+<code>distance_km</code> optionnels (« à 10 km au nord de
 X »). Renvoie <code>{found, display_name, latlon, xy, in_theatre_bounds, warnings}</code> — approximatif, à
-confirmer visuellement ; les lieux nommés marchent, le terrain vague non.</p>
+confirmer visuellement ; les lieux nommés marchent, le terrain vague non. Sans mission, <code>theatre</code> nomme la carte.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kobuleti&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;bearing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;distance_km&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">}</span>
 </code></pre></div>
 <h2 id="build--validation-vague-11">Build &amp; validation (vague 11)<a class="headerlink" href="#build--validation-vague-11" title="Permanent link">&para;</a></h2>
@@ -5828,6 +5885,15 @@ serveur <strong>autonome de bout en bout</strong> : dossier vide → scaffold �
 process. Renvoie <code>{ok, errors[], warnings[]}</code> (<code>ok = false</code> dès qu'une erreur). À lancer avant
 <code>build_mission</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="inspect_built_mission-lot-fix-opencode-test-findings"><code>inspect_built_mission</code> (lot FIX-OPENCODE-TEST-FINDINGS)<a class="headerlink" href="#inspect_built_mission-lot-fix-opencode-test-findings" title="Permanent link">&para;</a></h3>
+<p>Lecture seule. Ce que contient une mission <strong>construite</strong>, pour le contrôle d'après build, de façon compacte — une ligne par élément, jamais une table brute :
+<code>dynamic_slot_templates</code> (les types de templates de chaque camp, une fois), <code>airbases</code> et <code>farps_and_ships</code> (camp, slots dynamiques, démarrage à chaud, les templates liés — « every blue template linked (61) » plutôt que la liste à nouveau — et combien de types sont en stock sans template), <code>presets</code> (par camp et disposition des radios, les types qui la portent, ou <code>no presets</code>), <code>bullseye</code>, <code>weather</code> (heure, ciel, vent au sol et visibilité de la mission et de chaque variante de <code>missions/</code>), <code>support</code> (ravitailleurs et AWACS, fréquence, TACAN, activation différée) et <code>counters</code> (<code>presets_injected</code>, <code>routes_on_player_groups</code>, <code>warehouse_links</code>, <code>dead_links</code>, <code>variants</code>), pour qu'un zéro se voie.
+Une section que la mission n'a pas vaut <code>absent</code>. <code>mission_path</code> est le dossier (son dernier build) ou un <code>.miz</code>.
+Le guide demandait d'« ouvrir le <code>.miz</code> construit et vérifier » : avec ses seules actions, une IA le dézippait et parsait ses tables Lua en PowerShell.
+La mission par défaut livrée, construite, se lit en environ 5 000 caractères.
+Implémentation : <code>veaf_mission_mcp/inspect_built.py</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="build_mission"><code>build_mission</code><a class="headerlink" href="#build_mission" title="Permanent link">&para;</a></h3>
 <p>Écriture. Construit le dossier en <code>.miz</code> jouable en pilotant <strong><code>veaf-tools mission build</code></strong> dans le dossier
