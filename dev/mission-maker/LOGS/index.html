@@ -3710,12 +3710,8 @@ et LotAtc (voir <a href="#other-logs">Autres journaux d'un serveur</a>).</p>
 <p>Sans argument, il rouvre les fichiers de la dernière session ; à défaut, le
 <code>dcs.log</code> courant (<code>Saved Games\DCS\Logs\dcs.log</code>). On peut aussi lui passer un
 chemin, ou faire glisser un fichier dessus.</p>
-<p>Depuis les sources :</p>
-<div class="highlight"><pre><span></span><code>poetry install --all-extras
-poetry run veaf-logs
-</code></pre></div>
-<p>L'interface graphique demande PySide6, déclaré en dépendance optionnelle
-(<code>--all-extras</code>, ou <code>--extras logs</code>). Le reste de <code>veaf-tools</code> n'en a pas besoin.</p>
+<p><code>veaf-logs.exe</code> est un programme Windows autonome, écrit en Go : un seul fichier d'une quinzaine de Mo, sans Python ni rien d'autre à installer.
+Ses sources sont dans <code>src/go/veaf-logs/</code>, dont le <code>README.md</code> dit comment le construire.</p>
 <h2 id="remote">Journal d'un serveur distant<a class="headerlink" href="#remote" title="Permanent link">&para;</a></h2>
 <p><code>Fichier › Ouvrir un journal distant…</code> (Ctrl+Maj+O) suit le <code>dcs.log</code> d'un serveur
 DCS par SSH, avec les mêmes filtres, règles et profils qu'un fichier local. Une
@@ -4076,7 +4072,7 @@ présentes dans le journal ouvert.</p>
 <code>dcssb: C:/Users/veaf/VEAF-DCSServerBot/logs/dcssb-dcs-veaf-org.log</code>.</p>
 <h2 id="gros-journaux">Gros journaux<a class="headerlink" href="#gros-journaux" title="Permanent link">&para;</a></h2>
 <p>Le texte n'est pas chargé en mémoire : seul un index compact l'est, et les lignes
-sont décodées à l'affichage. Sur un journal de serveur de 119 Mo (991 392 lignes) :</p>
+sont décodées à l'affichage. Sur un journal de serveur de 130 Mo (954 086 entrées) :</p>
 <table>
 <thead>
 <tr>
@@ -4086,20 +4082,16 @@ sont décodées à l'affichage. Sur un journal de serveur de 119 Mo (991 392 lig
 </thead>
 <tbody>
 <tr>
-<td>Premières lignes lisibles</td>
-<td>0,3 s</td>
+<td>Fenêtre affichée</td>
+<td>0,04 s</td>
 </tr>
 <tr>
 <td>Indexation complète</td>
-<td>8,6 s, en tâche de fond</td>
+<td>2,4 s, en tâche de fond</td>
 </tr>
 <tr>
-<td>Mémoire</td>
-<td>37 Mo</td>
-</tr>
-<tr>
-<td>Recherche</td>
-<td>0,65 s</td>
+<td>Mémoire, journal ouvert</td>
+<td>116 Mo</td>
 </tr>
 </tbody>
 </table>
@@ -4186,9 +4178,9 @@ reste utilisable.</p>
 </tbody>
 </table>
 <h2 id="ajouter-ses-propres-règles">Ajouter ses propres règles<a class="headerlink" href="#ajouter-ses-propres-règles" title="Permanent link">&para;</a></h2>
-<p>Les sources reconnues, les couleurs et les familles de bruit vivent dans un seul
-fichier, <code>veaf_logs/rules.json</code>, que le menu <strong>Règles</strong> ouvre et recharge (<code>F5</code>)
-sans quitter l'application.</p>
+<p>Les sources reconnues, les couleurs et les familles de bruit vivent dans un seul catalogue, <code>rules.json</code>, intégré à l'exécutable.
+Le menu <strong>Règles</strong> en ouvre une copie modifiable, que <code>F5</code> recharge sans quitter l'application.
+Cette copie ne vaut que pour la session en cours : une règle qui doit durer va dans <code>src/python/veaf-tools/veaf_logs/rules.json</code> du dépôt, et arrive avec la release suivante.</p>
 <p>Un script maison tient en une entrée :</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;monscript&quot;</span><span class="p">,</span>
@@ -4226,11 +4218,11 @@ eux, qu'aux lignes de <code>dcs.log</code>.</p>
 <tbody>
 <tr>
 <td>Session (fichiers ouverts, filtres, géométrie, police, panneaux affichés)</td>
-<td><code>%APPDATA%\veaf-logs\session.json</code></td>
+<td><code>%APPDATA%\veaf_logs\session.json</code></td>
 </tr>
 <tr>
 <td>Profils</td>
-<td><code>%APPDATA%\veaf-logs\profiles.json</code></td>
+<td><code>%APPDATA%\veaf_logs\profiles.json</code></td>
 </tr>
 <tr>
 <td>Serveurs distants (<code>servers:</code>)</td>

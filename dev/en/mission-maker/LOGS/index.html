@@ -3709,12 +3709,8 @@ DCSServerBot, Real Weather and LotAtc (see <a href="#other-logs">Other server lo
 <p>With no argument it reopens the last session's files, falling back to the current
 <code>dcs.log</code> (<code>Saved Games\DCS\Logs\dcs.log</code>). You can also pass it a path, or drop a
 file onto it.</p>
-<p>From the sources:</p>
-<div class="highlight"><pre><span></span><code>poetry install --all-extras
-poetry run veaf-logs
-</code></pre></div>
-<p>The window needs PySide6, declared as an optional dependency (<code>--all-extras</code>, or
-<code>--extras logs</code>). Nothing else in <code>veaf-tools</code> requires it.</p>
+<p><code>veaf-logs.exe</code> is a standalone Windows program written in Go: one file of about fifteen megabytes, with no Python or anything else to install.
+Its sources are in <code>src/go/veaf-logs/</code>, whose <code>README.md</code> says how to build it.</p>
 <h2 id="remote">A remote server's log<a class="headerlink" href="#remote" title="Permanent link">&para;</a></h2>
 <p><code>File › Open a remote log…</code> (Ctrl+Shift+O) follows the <code>dcs.log</code> of a DCS server over
 SSH, with the same filters, rules and profiles as a local file. One machine often
@@ -4056,7 +4052,7 @@ filter panel lists only the sources and noise families present in the open log.<
 <code>dcssb: C:/Users/veaf/VEAF-DCSServerBot/logs/dcssb-dcs-veaf-org.log</code>.</p>
 <h2 id="large-logs">Large logs<a class="headerlink" href="#large-logs" title="Permanent link">&para;</a></h2>
 <p>The text is not held in memory: only a compact index is, and lines are decoded as
-they are displayed. On a 119 MB server log (991,392 lines):</p>
+they are displayed. On a 130 MB server log (954,086 entries):</p>
 <table>
 <thead>
 <tr>
@@ -4066,20 +4062,16 @@ they are displayed. On a 119 MB server log (991,392 lines):</p>
 </thead>
 <tbody>
 <tr>
-<td>First lines readable</td>
-<td>0.3 s</td>
+<td>Window shown</td>
+<td>0.04 s</td>
 </tr>
 <tr>
 <td>Full indexing</td>
-<td>8.6 s, in the background</td>
+<td>2.4 s, in the background</td>
 </tr>
 <tr>
-<td>Memory</td>
-<td>37 MB</td>
-</tr>
-<tr>
-<td>Search</td>
-<td>0.65 s</td>
+<td>Memory, log open</td>
+<td>116 MB</td>
 </tr>
 </tbody>
 </table>
@@ -4165,9 +4157,9 @@ button to stop it — whatever is already indexed stays usable.</p>
 </tbody>
 </table>
 <h2 id="adding-your-own-rules">Adding your own rules<a class="headerlink" href="#adding-your-own-rules" title="Permanent link">&para;</a></h2>
-<p>Recognised sources, colours and noise families all live in one file,
-<code>veaf_logs/rules.json</code>, which the <strong>Règles</strong> menu opens and reloads (<code>F5</code>)
-without leaving the application.</p>
+<p>Recognised sources, colours and noise families all live in one catalogue, <code>rules.json</code>, built into the executable.
+The <strong>Règles</strong> menu opens an editable copy of it, which <code>F5</code> reloads without leaving the application.
+That copy only lasts for the current session: a rule meant to stay goes into the repository's <code>src/python/veaf-tools/veaf_logs/rules.json</code>, and ships with the next release.</p>
 <p>A script of your own takes one entry:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;monscript&quot;</span><span class="p">,</span>
@@ -4204,11 +4196,11 @@ log's lines only. Source prefixes (<code>match</code>) apply to <code>dcs.log</c
 <tbody>
 <tr>
 <td>Session (open files, filters, geometry, font, panels shown)</td>
-<td><code>%APPDATA%\veaf-logs\session.json</code></td>
+<td><code>%APPDATA%\veaf_logs\session.json</code></td>
 </tr>
 <tr>
 <td>Profiles</td>
-<td><code>%APPDATA%\veaf-logs\profiles.json</code></td>
+<td><code>%APPDATA%\veaf_logs\profiles.json</code></td>
 </tr>
 <tr>
 <td>Remote servers (<code>servers:</code>)</td>
