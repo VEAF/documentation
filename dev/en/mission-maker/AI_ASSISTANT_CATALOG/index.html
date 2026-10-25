@@ -1388,6 +1388,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#set-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Write the players' flight plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#set-briefing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4644,6 +4655,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#set-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Write the players' flight plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#set-briefing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5485,6 +5507,13 @@ commits (the directory ignores itself) — and only the last 20 of each file are
 <td>Folder (built)</td>
 <td>⭐</td>
 </tr>
+<tr>
+<td>55</td>
+<td><a href="#set-route">Write the players' flight plan</a></td>
+<td>🕰️ Mission settings</td>
+<td>Recipe (folder)</td>
+<td>⭐</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -5760,6 +5789,12 @@ from it, and the VEAF scripts announce positions relative to it: place it early,
 <blockquote>
 <p>💬 <em>"Put the blue bullseye on Point Alpha, in the Fulda Gap."</em></p>
 </blockquote>
+<h3 id="set-route">Write the players' flight plan<a class="headerlink" href="#set-route" title="Permanent link">&para;</a></h3>
+<p><em>Recipe (folder) · ⭐</em> — The route the players' aircraft carry, in one call: the points in order (place or coordinates), each set on the ground, the names checked — two points with one name cannot be told apart in the cockpit or the briefing — and the plan that gives them to the chosen aircraft.
+It returns each leg's heading and distance, for the briefing and the F10 labels, and names any plan of the file that would still win over it.</p>
+<blockquote>
+<p>💬 <em>"Lion's route: feet wet off Anaklia, push, IP, the depot, egress, feet dry."</em></p>
+</blockquote>
 <h3 id="set-briefing">Write the briefing<a class="headerlink" href="#set-briefing" title="Permanent link">&para;</a></h3>
 <p><em>Recipe + built · ⭐</em> — The mission's name, the situation and each coalition's task; only the texts
 given change. A mission saved by the editor keeps these texts in its dictionary: the assistant writes
@@ -5815,7 +5850,9 @@ disabled, or configured (with their settings).</p>
 many), a position, and optionally a route (with a looping patrol). Adding twice creates two
 groups — like two placements in the editor. The AI <strong>names the group correctly itself</strong> from your
 intent: attached to a combat zone (zone-name prefix), <strong>Late Activation</strong> for a QRA, or a spawn
-template (<code>veafSpawn-</code>).</p>
+template (<code>veafSpawn-</code>).
+It also sets the <strong>AI skill</strong> of the units (Average to Excellent, or Random), the level of the opposition you chose; a combat zone takes it too.
+A static placed where the clear-ground data says the ground is not clear is not moved, but the AI is told where the nearest clear spot is.</p>
 <blockquote>
 <p>💬 <em>"Add a section of 3 T-72s patrolling around this point."</em>
 💬 <em>"Put two armor groups in the North combat zone."</em>
@@ -6001,7 +6038,9 @@ the <strong>recipe</strong> (durable) or the <strong>built mission</strong> (fas
 <h3 id="password-security">Enable / disable password security<a class="headerlink" href="#password-security" title="Permanent link">&para;</a></h3>
 <p><em>Recipe + built · ◽</em> — Enables or disables the VEAF security flag (the password required for
 protected commands). On the <strong>recipe</strong> it also handles the <strong>password hashes</strong> (JTF / Mission
-Master) — which the built mission does not.</p>
+Master) — which the built mission does not.
+You make a hash yourself, never the AI: <code>.\veaf-tools.exe password-hash</code> asks for the password with the input hidden and prints the hash to give it.
+Outside the VEAF servers no pilot is known to the mission, so only a password opens the protected commands, and the one shipped with the tools is public: turn security off for a mission among friends, or set your own.</p>
 <blockquote>
 <p>💬 <em>"Turn off password security on this test mission."</em></p>
 </blockquote>
@@ -6046,7 +6085,8 @@ Avoid putting the same picture on both sides: a player whose side the briefing d
 No script: an AI with no command line on your PC (Claude Desktop in chat mode) does it too.
 Build the mission first, and run it again after every change: it replaces its own pictures.
 The PPTX imports into Google Slides. <code>docs/briefing.pdf</code> is written beside it — the same pages, maps and words with a layout of its own, no PowerPoint or other program needed on your PC. The tool also warns the AI when a waypoint number of its text does not match the route, and when its French text lacks its accents.
-OpenStreetMap background, or OpenTopoMap (relief) for a desert; without the network, the maps are drawn on a plain background.</p>
+OpenStreetMap background, or OpenTopoMap (relief) for a desert or a low-level mission; without the network, the maps are drawn on a plain background.
+The pictures go into every built <code>.miz</code>, each weather variant included, and the <strong>kneeboard</strong> of every aircraft gets the maps drawn for its page, a flight card (points, heading and distance of each leg, highest ground, radios) and the targets.</p>
 <blockquote>
 <p>💬 <em>"Make the mission's briefing, topo background."</em></p>
 </blockquote>
