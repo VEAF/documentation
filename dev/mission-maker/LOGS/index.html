@@ -1648,6 +1648,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Journal d&#39;un serveur distant">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remote-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Par l'API de DCSServerBot, sans compte SSH
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3487,6 +3504,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Journal d&#39;un serveur distant">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remote-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Par l'API de DCSServerBot, sans compte SSH
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3753,6 +3787,44 @@ compte <strong>administrateur</strong>, la clé publique va dans
 <code>~\.ssh\authorized_keys</code>, et le fichier doit n'être lisible que par
 <code>SYSTEM</code> et <code>Administrators</code>.</p>
 <p><code>veaf-tools.exe</code> n'embarque pas cette fonction : elle vit dans <code>veaf-logs</code>.</p>
+<h3 id="remote-api">Par l'API de DCSServerBot, sans compte SSH<a class="headerlink" href="#remote-api" title="Permanent link">&para;</a></h3>
+<p>Un serveur qui fait tourner DCSServerBot avec son plugin RestAPI se lit aussi sans compte sur la machine : une clé API suffit, et le bot ne fait que lire.
+On déclare l'API à la place de <code>host</code> (un serveur a l'un ou l'autre, jamais les deux) :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">servers</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">veaf-api</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">api</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://dcs.veaf.org/serverapi</span><span class="w">       </span><span class="c1"># l&#39;API, préfixe compris s&#39;il y en a un</span>
+<span class="w">      </span><span class="nt">api_key_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.veaf/dcssb-api-key</span><span class="w">       </span><span class="c1"># un fichier qui ne contient que la clé</span>
+<span class="w">    </span><span class="c1"># logs:                                     # facultatif : restreindre ou renommer</span>
+<span class="w">    </span><span class="c1">#   private1: {instance: VEAF Private 1}    # le nom du serveur côté bot</span>
+<span class="w">    </span><span class="c1">#   bot: {node: dcs-veaf-org}               # le journal du bot d&#39;un nœud</span>
+</code></pre></div>
+<p>Sans <code>logs:</code>, le menu demande à l'API ce qu'elle a : chaque serveur DCS qu'elle connaît (<code>veaf-api › VEAF Private 1</code>…) et le journal du bot (<code>veaf-api › bot</code>).
+Les onglets se rouvrent au lancement comme ceux d'un serveur SSH.</p>
+<p><strong>Sur dcs.veaf.org</strong>, l'adresse est <code>https://dcs.veaf.org/serverapi</code>, et le fichier de clé contient la <strong>clé technicien que donne David</strong>, pas celle du bot : depuis Internet, seule la clé technicien passe.
+Une autre clé y reçoit la même réponse qu'une route absente ; l'outil la présente comme une authentification refusée.</p>
+<p><code>Fichier › Ouvrir un ancien journal…</code>, sur un onglet ouvert par l'API, liste les fichiers de ce journal avec leur taille et leur date : <code>dcs.log.old</code>, les copies <code>dcs-AAAAMMJJ-HHMMSS.log</code> que le bot fait à chaque arrêt, ou les <code>dcssb-&lt;nœud&gt;.log.1</code> à <code>.5</code> du bot.
+Le fichier choisi s'ouvre dans un onglet en lecture seule, chargé du début à la fin par morceaux ; il n'est pas rouvert au lancement suivant.</p>
+<p>Ce qui change par rapport à SSH :</p>
+<ul>
+<li>un onglet s'ouvre sur les 2 000 dernières entrées du journal, puis suit ce qui s'écrit ; pour remonter plus loin, ouvrir le fichier par <code>Ouvrir un ancien journal…</code> ;</li>
+<li>l'API rend des entrées, que l'outil réécrit en lignes : seuls l'alignement du niveau (les espaces après <code>INFO</code>) et une ligne de plus de 8 Kio (coupée par le bot) diffèrent du fichier d'origine, et aucune règle ne les lit ;</li>
+<li>quand le journal redémarre et que le bot ne retrouve plus la fin de l'ancien fichier, la barre d'état le dit : des lignes ont été perdues ;</li>
+<li>la barre d'état dit aussi pourquoi un journal ne se lit pas : clé refusée, pas encore de journal, serveur ou fichier inconnu, journal sur un autre nœud, serveur injoignable.</li>
+</ul>
+<p>Côté serveur, il faut :</p>
+<ul>
+<li>DCSServerBot avec les routes de lecture des journaux (<code>/instance/logs</code>, <code>/instance/log</code>, <code>/node/logs</code>, <code>/node/log</code>) : la branche <code>veaf</code> de <a href="https://github.com/VEAF/DCSServerBot">VEAF/DCSServerBot</a>, en attendant la version de DCSServerBot qui les publiera ;</li>
+<li>le plugin RestAPI avec une <code>api_key</code> dans son <code>restapi.yaml</code> : sans clé, ces routes n'existent pas ;</li>
+<li>un <em>reverse proxy</em> en HTTPS devant l'API (Caddy, nginx, IIS), le service web du bot n'écoutant que sur <code>127.0.0.1</code> ;</li>
+<li>à partir de la version 3.0.5 de DCSServerBot, qui demande par défaut un JWT aux connexions venues d'Internet : autoriser la clé API sur les routes de journaux <strong>et</strong> sur <code>servers</code>, que le menu interroge (<code>endpoints.&lt;route&gt;.security.remote: api_key</code> dans <code>restapi.yaml</code>).</li>
+</ul>
+<p>Sécurité :</p>
+<ul>
+<li>la clé vit dans un fichier lisible par toi seul, jamais dans <code>veafmct.yaml</code> ; l'outil la lit à l'ouverture d'un onglet et ne l'écrit nulle part, ni dans la session, ni dans un message, ni dans le rapport <code>/bug</code> ;</li>
+<li>l'outil refuse une URL en <code>http://</code> sauf vers <code>127.0.0.1</code> ou <code>localhost</code> (le bout d'un tunnel SSH) : la clé et les journaux traversent le réseau ;</li>
+<li>les journaux contiennent des noms de joueurs et des adresses IP : une clé se donne à qui administre le serveur.</li>
+</ul>
 <h2 id="les-trois-états">Les trois états<a class="headerlink" href="#les-trois-états" title="Permanent link">&para;</a></h2>
 <p>Chaque niveau, chaque source et chaque famille de bruit se règle d'un clic, en
 faisant défiler trois états :</p>
@@ -4227,6 +4299,10 @@ eux, qu'aux lignes de <code>dcs.log</code>.</p>
 <tr>
 <td>Serveurs distants (<code>servers:</code>)</td>
 <td><code>~\veafmct.yaml</code></td>
+</tr>
+<tr>
+<td>Clé de l'API d'un serveur</td>
+<td>le fichier de son <code>api_key_file</code></td>
 </tr>
 <tr>
 <td>Miroir local d'un journal distant</td>
