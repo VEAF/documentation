@@ -1504,6 +1504,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mission-maker/custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porting a mission with its own script layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mission-maker/FOOTHOLD/" class="md-nav__link">
         
   
@@ -1659,10 +1687,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_16" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_17" >
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="0">
             
   
   
@@ -1680,8 +1708,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4995,6 +5023,12 @@ generated <code>mission-script.lua</code>, under "Settings NOT migrated".</p>
 <td><em>(global)</em></td>
 <td>Override log level for this module only</td>
 </tr>
+<tr>
+<td><code>initialized_by_mission</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>true</code>: the module's script is loaded and its configuration applied, but the build does not call its <code>initialize()</code> — your own scripts do. For a mission that starts a module itself (otherwise it is initialized twice); also accepted under <code>SKYNET</code>, <code>CTLD</code> and <code>CSAR</code>, for which <code>false</code> would drop the script. See <a href="../mission-maker/custom-script-layer/#initialized-by-mission">Porting a mission with its own script layer</a></td>
+</tr>
 </tbody>
 </table>
 <p>Additional <code>init:</code> or data fields are module-specific — see each module's documentation page.</p>
@@ -5029,6 +5063,31 @@ generated <code>mission-script.lua</code>, under "Settings NOT migrated".</p>
 <span class="w">    </span><span class="nt">init</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">create_menus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">       </span><span class="c1"># no VEAF radio menu; commands via markers only</span>
 </code></pre></div>
+<p><strong><code>CARRIER</code> <code>init:</code> fields:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>include_carrier_operations_radio</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td><code>false</code>: no carrier menu in F10</td>
+</tr>
+<tr>
+<td><code>operations_scheduler</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td><code>false</code>: no VEAF operations loop (every 60 s), for a mission that drives its carriers — see <a href="../mission-maker/scripts/veafCarrierOperations/">veafCarrierOperations</a></td>
+</tr>
+</tbody>
+</table>
 <p><strong><code>RADIO</code> diagnostic option</strong> (outside <code>init:</code>): <code>menu_stats: true</code> writes to <code>dcs.log</code>, on every refresh, the F10 menu's size and what changed. Turn it on temporarily in a real mission to watch the menu in multiplayer — see <a href="../mission-maker/scripts/veafRadio/#menu-stats">Watching the F10 menu</a>.</p>
 <p><strong>Community scripts</strong> are listed in the same block, using their IDs (case does not matter: <code>CTLD:</code> and <code>ctld:</code> are equivalent). When a script is absent from <code>modules:</code>, it keeps its default state — included for the <em>opt-out</em> scripts, excluded for the two <em>opt-in</em> ones (<code>MIST</code> and <code>TUM</code>, see below). Set a script to <code>false</code> to exclude it:</p>
 <p>Because that default is easy to misread, generated files (<code>prepare --template</code>, <code>convert-v5</code>) and the shipped <code>mission.yaml</code> <strong>always</strong> write the five <em>opt-out</em> scripts (<code>STTS</code>, <code>CTLD</code>, <code>AIEN</code>, <code>CSAR</code>, <code>SKYNET</code>) out, at <code>true</code> or <code>false</code>: the state of a community script is never inferred from silence.</p>

@@ -1513,6 +1513,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porter une mission à couche de scripts maison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../FOOTHOLD/" class="md-nav__link">
         
   
@@ -1671,10 +1699,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_16" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_17" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="">
             
   
   
@@ -1692,8 +1720,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2325,6 +2353,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Prédéfinir des points dans mission-script.lua">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declare-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un lot de points déclaré par un script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3454,6 +3499,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Prédéfinir des points dans mission-script.lua">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declare-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un lot de points déclaré par un script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3645,6 +3707,15 @@
 <span class="p">})</span>
 </code></pre></div>
 <p><code>addAirbases()</code> ajoute en bloc toutes les bases aériennes de la carte (appelée automatiquement par <code>initialize()</code>) ; il n'existe pas de fonction d'ajout par base aérienne. <code>addCities()</code> ajoute de la même façon les villes du théâtre, en points cachés : un nom de ville sert alors de destination à un convoi, de position à un raccourci ou de départ à une mission de transport, et la météo « au point le plus proche » les connaît. Les listes viennent des fichiers du jeu (voir <a href="../../../developer/dcs-data/#cities">Les villes des théâtres</a>) ; un théâtre qui n'en a pas encore (Kola, Iraq) le signale dans <code>dcs.log</code> au démarrage.</p>
+<h3 id="declare-points">Un lot de points déclaré par un script<a class="headerlink" href="#declare-points" title="Permanent link">&para;</a></h3>
+<p><code>addPoint</code> écrit dans la table des points, que <code>initialize()</code> vide avant de la remplir : un point ajouté avant <code>initialize()</code> est perdu.
+Une mission qui construit ses propres points depuis ses données (BFR, avec les TACAN de ses terrains) les déclare plutôt en lot, avant ou après <code>initialize()</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">declarePoints</span><span class="p">({</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Kobuleti&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">addDataToPoint</span><span class="p">(</span><span class="nv">coord</span><span class="p">.</span><span class="nf">LLtoLO</span><span class="p">(</span><span class="mf">41.93</span><span class="p">,</span><span class="w"> </span><span class="mf">41.86</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">tacan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;67X KBL&quot;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Senaki&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">281000</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">648000</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>Chaque entrée a la forme de <code>initialize(customPoints)</code> ; une entrée sans nom ou sans position est sautée, avec une ligne dans le journal.</p>
 <hr />
 <h2 id="commande-de-marqueur-joueur">Commande de marqueur joueur<a class="headerlink" href="#commande-de-marqueur-joueur" title="Permanent link">&para;</a></h2>
 <p>Les joueurs peuvent créer des points nommés via des marqueurs de carte (si la sécurité le permet) :</p>

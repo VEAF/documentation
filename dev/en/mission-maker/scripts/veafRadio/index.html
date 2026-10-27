@@ -1513,6 +1513,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porting a mission with its own script layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../FOOTHOLD/" class="md-nav__link">
         
   
@@ -1671,10 +1699,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_16" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_17" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="">
             
   
   
@@ -1692,8 +1720,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2481,6 +2509,56 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#group-and-pilot-menus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus reserved to some groups, menus per pilot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menus reserved to some groups, menus per pilot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-submenu-reserved-to-some-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A submenu reserved to some groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-submenu-per-pilot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A submenu per pilot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-follow-the-pilots-present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands follow the pilots present
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3724,6 +3802,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-and-pilot-menus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus reserved to some groups, menus per pilot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Menus reserved to some groups, menus per pilot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-submenu-reserved-to-some-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A submenu reserved to some groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-submenu-per-pilot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A submenu per pilot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-follow-the-pilots-present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands follow the pilots present
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#low-level-api" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4150,6 +4278,36 @@ still sees the parent, simply without that entry.</p>
 <p>Used by combat zones, which offer their menu to the side playing them — see
 <a href="../veafCombatZone/#f10-menu-audience">veafCombatZone</a>.</p>
 </blockquote>
+<hr />
+<h2 id="group-and-pilot-menus">Menus reserved to some groups, menus per pilot<a class="headerlink" href="#group-and-pilot-menus" title="Permanent link">&para;</a></h2>
+<h3 id="a-submenu-reserved-to-some-groups">A submenu reserved to some groups<a class="headerlink" href="#a-submenu-reserved-to-some-groups" title="Permanent link">&para;</a></h3>
+<p><code>addSubMenuForGroups</code> shows a submenu, and everything under it, only to the groups with a pilot who passes the filter <code>filter(unitName, groupId)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">carrierAircraft</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Unit</span><span class="p">.</span><span class="nf">getByName</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">return</span><span class="w"> </span><span class="nv">unit</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">unit</span><span class="p">:</span><span class="nf">getTypeName</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;FA-18C_hornet&quot;</span>
+<span class="kr">end</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">carrierMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addSubMenuForGroups</span><span class="p">(</span><span class="s2">&quot;Carrier&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nv">carrierAircraft</span><span class="p">)</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span><span class="s2">&quot;Deck status&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">carrierMenu</span><span class="p">,</span><span class="w"> </span><span class="nv">deckStatus</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;CVN-74&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The <code>USAGE_ForAll</code> commands under it are posted for each of those groups, with their parameters unchanged.
+A filter that raises hides the menu and leaves a line in the log; it does not stop the rebuild.
+A fourth argument restricts the menu to one coalition as well.</p>
+<h3 id="a-submenu-per-pilot">A submenu per pilot<a class="headerlink" href="#a-submenu-per-pilot" title="Permanent link">&para;</a></h3>
+<p>In a multi-slot group, a <code>USAGE_ForGroup</code> command is seen by every pilot of the group, and knows only the first one.
+<code>addSubMenuPerPilot</code> gives each pilot present his own submenu, named after him, under which <code>USAGE_ForGroup</code> and <code>USAGE_ForUnit</code> commands receive <strong>his</strong> unit name:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">menu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addSubMenuPerPilot</span><span class="p">(</span><span class="s2">&quot;Recovery&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">addCommandToSubmenu</span><span class="p">(</span><span class="s2">&quot;Request my pass&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">,</span><span class="w"> </span><span class="nv">requestPass</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nv">veafRadio</span><span class="p">.</span><span class="py">USAGE_ForGroup</span><span class="p">)</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nf">requestPass</span><span class="p">(</span><span class="nv">unitName</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">veaf</span><span class="p">.</span><span class="nf">outTextForUnit</span><span class="p">(</span><span class="nv">unitName</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Pass noted&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="c1">-- to the pilot who clicked only</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>A pilot alone in his group gets the commands directly, without the level named after him.
+The menu takes the same group filter as <code>addSubMenuForGroups</code>.</p>
+<h3 id="commands-follow-the-pilots-present">Commands follow the pilots present<a class="headerlink" href="#commands-follow-the-pilots-present" title="Permanent link">&para;</a></h3>
+<p>A per-group command is bound to a pilot <strong>still in his unit</strong>.
+When a pilot leaves his slot, dies, ejects or crashes, he is forgotten, the menu is rebuilt and his wingmen get the group's commands back; when he returns, he is registered again.
+A message addressed to a unit that no longer exists is shown to nobody, instead of going to every player.</p>
 <hr />
 <h2 id="low-level-api">Low-level API<a class="headerlink" href="#low-level-api" title="Permanent link">&para;</a></h2>
 <p>For finer control, build the menu tree directly:</p>

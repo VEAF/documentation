@@ -1513,6 +1513,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porting a mission with its own script layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../FOOTHOLD/" class="md-nav__link">
         
   
@@ -1671,10 +1699,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_16" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_17" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="">
             
   
   
@@ -1692,8 +1720,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2325,6 +2353,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Pre-defining Points in mission-script.lua">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declare-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A batch of points declared by a script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3454,6 +3499,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Pre-defining Points in mission-script.lua">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declare-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A batch of points declared by a script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3645,6 +3707,15 @@
 <span class="p">})</span>
 </code></pre></div>
 <p><code>addAirbases()</code> bulk-adds every airbase on the map (called automatically by <code>initialize()</code>); there is no per-airbase add function. <code>addCities()</code> likewise adds the theatre's cities, as hidden points: a city name then works as a convoy's destination, a shortcut's position or a transport mission's start, and the weather "at the closest point" knows them. The lists come from the game's files (see <a href="../../../developer/dcs-data/#cities">The theatres' cities</a>); a theatre that has none yet (Kola, Iraq) says so in <code>dcs.log</code> at start.</p>
+<h3 id="declare-points">A batch of points declared by a script<a class="headerlink" href="#declare-points" title="Permanent link">&para;</a></h3>
+<p><code>addPoint</code> writes into the points table, which <code>initialize()</code> empties before filling it: a point added before <code>initialize()</code> is lost.
+A mission that builds its own points from its data (BFR, with its airfields' TACAN) declares them as a batch instead, before or after <code>initialize()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">declarePoints</span><span class="p">({</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Kobuleti&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">veafNamedPoints</span><span class="p">.</span><span class="nf">addDataToPoint</span><span class="p">(</span><span class="nv">coord</span><span class="p">.</span><span class="nf">LLtoLO</span><span class="p">(</span><span class="mf">41.93</span><span class="p">,</span><span class="w"> </span><span class="mf">41.86</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">tacan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;67X KBL&quot;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Senaki&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">281000</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">648000</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>Each entry has the shape of <code>initialize(customPoints)</code>; an entry without a name or a position is skipped, with a line in the log.</p>
 <hr />
 <h2 id="player-marker-command">Player Marker Command<a class="headerlink" href="#player-marker-command" title="Permanent link">&para;</a></h2>
 <p>Players can create named points via map markers (if allowed by security):</p>

@@ -1656,6 +1656,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#own-script-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A mission with its own script layer
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1954,6 +1965,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porting a mission with its own script layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../FOOTHOLD/" class="md-nav__link">
         
   
@@ -2112,10 +2151,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_16" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_17" >
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="">
             
   
   
@@ -2133,8 +2172,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3791,6 +3830,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#own-script-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A mission with its own script layer
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4289,6 +4339,14 @@ current directory — on purpose. <code>cmd.exe</code> accepts both forms, so <c
 <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">&quot;feat: migrate my-mission to VEAF MCT v6&quot;</span>
 </code></pre></div>
 <p>Add <code>published/</code> and <code>*.miz</code> to <code>.gitignore</code> — they are build artifacts.</p>
+<h4 id="own-script-layer">A mission with its own script layer<a class="headerlink" href="#own-script-layer" title="Permanent link">&para;</a></h4>
+<p>When your v5 mission loads scripts of its own through the <code>scriptsToLoad</code> list of <code>veafDynamicConfig.lua</code>, <code>convert v5</code> also:</p>
+<ul>
+<li>writes that list into <code>custom_scripts:</code>, in the same order (<code>missionConfig.lua</code> excepted, since it is migrated);</li>
+<li>reads every script of <code>src/scripts</code>, not only <code>missionConfig.lua</code>: a module one of them calls into is enabled, and a module one of them <strong>starts</strong> (<code>veafXxx.initialize(…)</code>, or the carrier's <code>initializeCarrierGroups</code>) is enabled with <code>initialized_by_mission: true</code>, so the build does not start it a second time — CSAR and Skynet included (CTLD is only enabled: its v6 start stays with VEAF);</li>
+<li>says apart, among the settings it cannot carry, those your script <strong>computes</strong> (read from data, a function call) rather than writes as a value.</li>
+</ul>
+<p>The whole method is in <a href="../custom-script-layer/">Porting a mission with its own script layer</a>.</p>
 <hr />
 <h2 id="integrating-veaf-mct-into-a-vanilla-dcs-mission">Integrating VEAF MCT into a Vanilla DCS Mission<a class="headerlink" href="#integrating-veaf-mct-into-a-vanilla-dcs-mission" title="Permanent link">&para;</a></h2>
 <p>A <strong>vanilla</strong> mission has no VEAF MCT scripts, no special triggers, and was built entirely with the DCS Mission Editor.</p>

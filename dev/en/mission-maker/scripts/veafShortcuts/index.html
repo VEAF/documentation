@@ -1513,6 +1513,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porting a mission with its own script layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../FOOTHOLD/" class="md-nav__link">
         
   
@@ -1671,10 +1699,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_16" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_17" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="">
             
   
   
@@ -1692,8 +1720,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2554,6 +2582,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bypass-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What may follow a security-bypassing alias
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3554,6 +3599,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bypass-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What may follow a security-bypassing alias
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3815,6 +3877,65 @@
 <p>Most aliases respect the security system (<code>veafSecurity</code>). <strong>Nine</strong> utility aliases bypass it and stay
 available to every player: <code>-smoke</code>, <code>-longsmoke</code>, <code>-signal</code>, <code>-light</code>, <code>-point</code>, <code>-tacan</code>, <code>-jtac</code>,
 <code>-afac</code>, <code>-beacon</code>.</p>
+<h3 id="bypass-options">What may follow a security-bypassing alias<a class="headerlink" href="#bypass-options" title="Permanent link">&para;</a></h3>
+<p>After such an alias, a player's marker admits only the options that <strong>tune</strong> its effect, each in a strict form:</p>
+<table>
+<thead>
+<tr>
+<th>Alias</th>
+<th>Admitted options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-smoke</code>, <code>-longsmoke</code></td>
+<td><code>color</code> (red, green, orange, blue, white)</td>
+</tr>
+<tr>
+<td><code>-signal</code></td>
+<td><code>color</code> (red, green, white, yellow)</td>
+</tr>
+<tr>
+<td><code>-light</code></td>
+<td><code>alt</code>, <code>radius</code> (integers)</td>
+</tr>
+<tr>
+<td><code>-jtac</code></td>
+<td><code>laser</code> (4 digits), <code>freq</code> (MHz), <code>mod</code> (am, fm)</td>
+</tr>
+<tr>
+<td><code>-afac</code></td>
+<td><code>laser</code>, <code>freq</code>, <code>mod</code>, <code>alt</code>, <code>speed</code>, <code>hdg</code> / <code>heading</code> (integers), <code>immortal</code></td>
+</tr>
+<tr>
+<td><code>-tacan</code></td>
+<td><code>channel</code> (1 to 3 digits), <code>band</code> (x, y), <code>code</code> (1 to 4 letters or digits), <code>radius</code> (0 to 999 m)</td>
+</tr>
+<tr>
+<td><code>-point</code></td>
+<td>a name, without a comma</td>
+</tr>
+<tr>
+<td><code>-beacon</code></td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>Anything else refuses the marker <strong>whole</strong>: nothing runs, and only the marker's author gets a message saying what the alias accepts.
+A VEAF command keyword (<code>_spawn</code>, <code>_cas</code>…) is refused anywhere after these aliases.
+The refused text is never written to the log: it may carry a password.</p>
+<p>Unchanged: the bare alias, <code>#…</code> coordinates and the <code>!N</code> delay, aliases run by a script (alias batches, combat zones), and a mission with security disabled.</p>
+<p>A security-bypassing alias of your own admits nothing after it, unless it declares its options in <code>mission-script.lua</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafShortcuts</span><span class="p">.</span><span class="nf">AddAlias</span><span class="p">(</span>
+<span class="w">  </span><span class="nv">VeafAlias</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">    </span><span class="p">:</span><span class="nf">setName</span><span class="p">(</span><span class="s2">&quot;-mysmoke&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">:</span><span class="nf">setVeafCommand</span><span class="p">(</span><span class="s2">&quot;_spawn smoke&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">:</span><span class="nf">setBypassSecurity</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="w">    </span><span class="p">:</span><span class="nf">setAllowedOptions</span><span class="p">({</span><span class="w"> </span><span class="nv">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;color&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">shells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^[1-3]$&quot;</span><span class="w"> </span><span class="p">})</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>A form is the name of a <code>veafShortcuts.OptionForms</code> form (<code>color</code>, <code>flareColor</code>, <code>laser</code>, <code>frequency</code>, <code>modulation</code>, <code>integer</code>, <code>tacanChannel</code>, <code>tacanBand</code>, <code>morseCode</code>, <code>radius999</code>, <code>flag</code>), or an anchored Lua pattern.
+An alias declared in <code>mission.yaml</code> with <code>bypass_security: true</code> admits nothing after it.</p>
 <p><strong>Skipping the password does not mean keeping quiet.</strong> Those two ideas were the same setting in the code
 for a long time, and it showed: a pilot who dropped a <code>-tacan</code> marker got <em>no</em> confirmation at all — no
 channel, no band. Silence now depends on one thing only: <strong>who asked</strong>.</p>

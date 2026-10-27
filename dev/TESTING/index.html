@@ -1504,6 +1504,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mission-maker/custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porter une mission à couche de scripts maison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mission-maker/FOOTHOLD/" class="md-nav__link">
         
   
@@ -1659,10 +1687,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_16" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_17" >
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="0">
             
   
   
@@ -1680,8 +1708,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3888,6 +3916,8 @@ poetry<span class="w"> </span>run<span class="w"> </span>test-lua<span class="w"
 <ul>
 <li><code>poetry install</code> doit avoir été exécuté une fois</li>
 <li>Lua 5.1 dans le PATH (<code>lua5.1</code>, <code>lua51</code> ou <code>lua</code>, ou <code>C:\Program Files (x86)\Lua\5.1\lua.exe</code> sous Windows)</li>
+<li>ou, à défaut, DCS installé : sous Windows, <code>test-lua</code> lit son dossier d'installation dans le registre (<code>HKCU\Software\Eagle Dynamics\DCS World</code>, puis <code>DCS World OpenBeta</code>) et prend le Lua 5.1.5 qu'il livre, <code>bin\luae.exe</code>.
+  La couverture (<code>--coverage</code>) demande en plus que luacov soit trouvable par cet interpréteur (<code>LUA_PATH</code>).</li>
 <li>Aucune autre dépendance (luaunit est embarqué dans <code>test/lua/luaunit.lua</code>)</li>
 </ul>
 <p>La version <strong>5.1</strong> est vérifiée : chaque candidat est interrogé avec <code>lua -v</code>, et un interpréteur
@@ -4006,6 +4036,10 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 <td>Chaque script communautaire vendorisé se charge sans lever, avec les seuls mocks DCS — la porte qui manquait quand CTLD rc8 a livré un fichier qui ne se chargeait pas (#957). TUM en est exclu et le dit : il s'auto-initialise et exige des zones de territoire</td>
 </tr>
 <tr>
+<td><code>test_stts.lua</code></td>
+<td>La synthèse vocale SRS valide ses paramètres avant la commande système</td>
+</tr>
+<tr>
 <td><code>test_veafInterpreter.lua</code></td>
 <td>Tokeniseur de texte marqueur</td>
 </tr>
@@ -4032,6 +4066,10 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 <tr>
 <td><code>test_veafShortcuts.lua</code></td>
 <td>Enregistrement et résolution des raccourcis</td>
+</tr>
+<tr>
+<td><code>test_veafShortcuts_bypass.lua</code></td>
+<td>Ce qu'un joueur peut taper après un raccourci qui contourne la sécurité</td>
 </tr>
 <tr>
 <td><code>test_veafWeather.lua</code></td>
@@ -4112,6 +4150,10 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 <tr>
 <td><code>test_veafRadio.lua</code></td>
 <td>Construction de l'arbre de menus radio</td>
+</tr>
+<tr>
+<td><code>test_veafRadio_pilots.lua</code></td>
+<td>Menu F10 en multijoueur : commandes liées aux pilotes présents, menus réservés à des groupes, menus par pilote</td>
 </tr>
 <tr>
 <td><code>test_veafQraManager.lua</code></td>
@@ -4268,7 +4310,7 @@ luarocks<span class="w"> </span>install<span class="w"> </span>luacov
 <p><strong><code>lua-coverage</code></strong> — Ubuntu latest
 1. Checkout du dépôt
 2. Installation de <code>lua5.1</code> + <code>luacov</code> via LuaRocks, puis de Poetry et des dépendances
-3. Exécution de <code>poetry run test-lua --cov-fail-under 81</code> (couverture ligne via luacov)
+3. Exécution de <code>poetry run test-lua --cov-fail-under 83.0</code> (couverture ligne via luacov)
 4. Échec si la couverture passe sous le plancher à cliquet (le nombre ne fait que monter)</p>
 <h3 id="exécuter-stylua-localement">Exécuter StyLua localement<a class="headerlink" href="#exécuter-stylua-localement" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c"># Vérification seule (pas d&#39;écriture)</span>

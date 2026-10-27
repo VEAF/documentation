@@ -1656,6 +1656,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#own-script-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une mission avec sa propre couche de scripts
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1954,6 +1965,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../custom-script-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porter une mission à couche de scripts maison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../FOOTHOLD/" class="md-nav__link">
         
   
@@ -2112,10 +2151,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_16" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_17" >
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="">
             
   
   
@@ -2133,8 +2172,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3791,6 +3830,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#own-script-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une mission avec sa propre couche de scripts
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4289,6 +4339,14 @@ le dossier courant — exprès. <code>cmd.exe</code> accepte les deux formes, do
 <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">&quot;feat: migration de ma-mission vers VEAF MCT v6&quot;</span>
 </code></pre></div>
 <p>Ajoutez <code>published/</code> et <code>*.miz</code> à <code>.gitignore</code> — ce sont des artefacts de build.</p>
+<h4 id="own-script-layer">Une mission avec sa propre couche de scripts<a class="headerlink" href="#own-script-layer" title="Permanent link">&para;</a></h4>
+<p>Quand votre mission v5 charge ses propres scripts par la liste <code>scriptsToLoad</code> de <code>veafDynamicConfig.lua</code>, <code>convert v5</code> en plus :</p>
+<ul>
+<li>reporte cette liste dans <code>custom_scripts:</code>, dans le même ordre (sauf <code>missionConfig.lua</code>, qui est migré) ;</li>
+<li>lit tous les scripts de <code>src/scripts</code>, pas seulement <code>missionConfig.lua</code> : un module que l'un d'eux appelle est activé, et un module que l'un d'eux <strong>démarre</strong> (<code>veafXxx.initialize(…)</code>, ou <code>initializeCarrierGroups</code> du porte-avions) est activé avec <code>initialized_by_mission: true</code>, pour que le build ne le démarre pas une seconde fois — CSAR et Skynet compris (CTLD est seulement activé : son démarrage v6 reste à VEAF) ;</li>
+<li>distingue, parmi les réglages qu'il ne peut pas reporter, ceux que votre script <strong>calcule</strong> (lus dans des données, par un appel) au lieu de les écrire comme une valeur.</li>
+</ul>
+<p>La méthode complète est dans <a href="../custom-script-layer/">Porter une mission à couche de scripts maison</a>.</p>
 <hr />
 <h2 id="intégration-de-veaf-mct-dans-une-mission-dcs-vanilla">Intégration de VEAF MCT dans une mission DCS vanilla<a class="headerlink" href="#intégration-de-veaf-mct-dans-une-mission-dcs-vanilla" title="Permanent link">&para;</a></h2>
 <p>Une mission <strong>vanilla</strong> n'a pas de scripts VEAF MCT, pas de triggers spéciaux, et a été construite entièrement avec l'éditeur de missions DCS.</p>
