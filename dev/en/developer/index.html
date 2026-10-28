@@ -3615,8 +3615,9 @@
 <span class="n">poetry</span> <span class="n">install</span>
 
 <span class="n">poetry</span> <span class="n">run</span> <span class="nb">test-lua</span>   <span class="c"># should show &quot;OK&quot; for every suite</span>
-<span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span>     <span class="c"># should show &quot;passed&quot; with no failures</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span>     <span class="c"># should show &quot;passed&quot; with no failures; in parallel, one worker per core</span>
 </code></pre></div>
+<p><code>pytest</code> spreads the tests over one <code>pytest-xdist</code> worker per core; <code>poetry run pytest -n0</code> runs them serially, which <code>--pdb</code> needs.</p>
 <hr />
 <h2 id="quality-gates--before-each-commit">Quality Gates — before each commit<a class="headerlink" href="#quality-gates--before-each-commit" title="Permanent link">&para;</a></h2>
 <p>These commands must pass without errors before committing. CI also runs them automatically — a failing job blocks the merge.</p>

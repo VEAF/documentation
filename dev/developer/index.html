@@ -3615,8 +3615,9 @@
 <span class="n">poetry</span> <span class="n">install</span>
 
 <span class="n">poetry</span> <span class="n">run</span> <span class="nb">test-lua</span>   <span class="c"># doit afficher &quot;OK&quot; pour toutes les suites</span>
-<span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span>     <span class="c"># doit afficher &quot;passed&quot; sans échec</span>
+<span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span>     <span class="c"># doit afficher &quot;passed&quot; sans échec ; en parallèle, un worker par cœur</span>
 </code></pre></div>
+<p><code>pytest</code> répartit les tests sur un worker <code>pytest-xdist</code> par cœur ; <code>poetry run pytest -n0</code> les lance en série, ce qu'exige <code>--pdb</code>.</p>
 <hr />
 <h2 id="quality-gates--avant-chaque-commit">Quality Gates — avant chaque commit<a class="headerlink" href="#quality-gates--avant-chaque-commit" title="Permanent link">&para;</a></h2>
 <p>Ces commandes doivent passer sans erreur avant de committer. La CI les exécute aussi automatiquement — un job rouge bloque le merge.</p>
