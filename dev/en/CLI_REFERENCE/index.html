@@ -3682,6 +3682,78 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#mission-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs mission-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-photos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reconnaissance photos — recon-prepare, recon-plan, recon-shoot, recon-render
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reconnaissance photos — recon-prepare, recon-plan, recon-shoot, recon-render">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recon-prepare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-prepare
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-shoot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-shoot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-render" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-render
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4372,6 +4444,78 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#mission-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs mission-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-photos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reconnaissance photos — recon-prepare, recon-plan, recon-shoot, recon-render
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reconnaissance photos — recon-prepare, recon-plan, recon-shoot, recon-render">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recon-prepare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-prepare
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-shoot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-shoot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recon-render" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs recon-render
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4481,7 +4625,7 @@
 
 
 <h1 id="cli-reference--veaf-tools">CLI reference — <code>veaf-tools</code><a class="headerlink" href="#cli-reference--veaf-tools" title="Permanent link">&para;</a></h1>
-<p>All <strong>39 <code>veaf-tools</code> commands</strong>, with their arguments and <strong>every</strong> option. This is a reference
+<p>All <strong>44 <code>veaf-tools</code> commands</strong>, with their arguments and <strong>every</strong> option. This is a reference
 page: it says what each command accepts, not how to take a mission from start to finish. For that,
 read the <a href="../mission-maker/GUIDE/">mission maker's guide</a>, which tells the story in order, and the
 <a href="../PIPELINE_REFERENCE/">pipeline reference</a>, which details each build step.</p>
@@ -7033,6 +7177,273 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools smoke-test</code></em></p>
 <p><strong>See also</strong> : <a href="../developer/smoke-harness/">developer/smoke-harness.md</a></p>
+<h3 id="mission-check"><code>veaf-tools dcs mission-check</code><a class="headerlink" href="#mission-check" title="Permanent link">&para;</a></h3>
+<p>Checks the mission <strong>running in DCS</strong> (the test build, which you launched yourself) through the dcs-fiddle hook, and prints one line per check and a verdict:</p>
+<ul>
+<li><strong>F10 menus</strong>: every entry of the VEAF radio menu has a label; an empty one is reported with its path (<code>VEAF &gt; Zones &gt; ∅</code>);</li>
+<li><strong>combat zones and missions</strong>: each one is switched on then off, its units counted each time, and it is <strong>left as it was found</strong>; a CAP is checked under each of its variant names (<code>&lt;name&gt;/&lt;skill&gt;/&lt;scale&gt;</code>); an <em>operation</em> is reported but not toggled (it would take its zones with it);</li>
+<li><strong>columns</strong>: every ground group with a route of more than one waypoint — from the mission or spawned by a zone — must drive within 60 seconds. This is the check that finds a column frozen by an "On Road" leg with no road to follow.</li>
+</ul>
+<p>Keep DCS running <strong>unpaused</strong> during the check: paused, nothing spawns and nothing drives. Expect a few minutes (the command says how many). Exit code 1 when a check fails.</p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--only</code></td>
+<td><code>str</code></td>
+<td><em>(all)</em></td>
+<td>Zone or combat mission name to check; repeat for several. The menus and the mission's own columns are checked either way.</td>
+</tr>
+<tr>
+<td><code>--url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:12080</code></td>
+<td>URL of the fiddle server started inside the mission scripting environment, where the VEAF modules live.</td>
+</tr>
+<tr>
+<td><code>--fiddle-token</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The hook's per-session Basic password (default: read from <code>%USERPROFILE%\dcs-fiddle-token.txt</code>, or <code>$env:DCS_FIDDLE_TOKEN</code>).</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debug information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">mission-check</span>
+</code></pre></div>
+<p><em>Flat alias : <code>veaf-tools mission-check</code></em></p>
+<h3 id="recon-photos">Reconnaissance photos — <code>recon-prepare</code>, <code>recon-plan</code>, <code>recon-shoot</code>, <code>recon-render</code><a class="headerlink" href="#recon-photos" title="Permanent link">&para;</a></h3>
+<p>Four commands, one per step, because you act between each: they produce one reconnaissance photo per objective, taken <strong>in DCS</strong> along the planned engagement axis, with the look of a reconnaissance print (contrasted black and white, grain, banner, heading rose) and the targets circled <strong>in red felt pen</strong>. Units are drawn where DCS actually put them, the zones' random draws included. The result (a JPEG + JSON per shot, and a <code>recon.json</code> index) goes into the briefing.</p>
+<p>The whole sequence:</p>
+<ol>
+<li><code>.\veaf-tools.exe dcs recon-prepare MyMission.miz</code> writes <code>MyMission_RECON.miz</code> beside it: clear sky, chosen time, every combat zone active at start, readable group names. The original mission is not touched.</li>
+<li>In DCS: open <code>MyMission_RECON.miz</code>, take a <strong>spectator</strong> slot, press <strong>F11</strong> (free camera). Keep the DCS window on the <strong>primary screen</strong>.</li>
+<li><code>.\veaf-tools.exe dcs recon-plan --operation "Golan Hammer"</code> writes <code>shots.yaml</code>: one shot per zone, with the names of the groups found.</li>
+<li>Complete <code>shots.yaml</code>: for each shot, the engagement <code>heading</code> (the direction the attacker looks), and if needed <code>pitch</code> (degrees below the horizon), <code>slant</code> (distance in metres), <code>mark: units</code> to circle each vehicle, <code>labels</code> to name the targets.</li>
+<li><code>.\veaf-tools.exe dcs recon-shoot</code>: the command puts the camera on each shot and grabs the window. Do not touch the mouse or the keyboard until it is done.</li>
+<li><code>.\veaf-tools.exe dcs recon-render</code> writes the photos into <code>docs\recon\</code>, where the briefing (<code>build_mission_briefing</code>) looks for them.</li>
+</ol>
+<p>Run the commands from the mission folder: the raw shots go to <code>docs\build\recon\raw\</code>, the finished photos to <code>docs\recon\</code>.</p>
+<p>A completed <code>shots.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Golan Hammer</span>
+<span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span>
+<span class="nt">shots</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">03-sa11</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kiswah SA-11 battery</span>
+<span class="w">    </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">SA11Kiswah</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">70</span>
+<span class="w">    </span><span class="nt">pitch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">slant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1100</span>
+<span class="w">    </span><span class="nt">mark</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">units</span>
+<span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;SA-11</span><span class="nv"> </span><span class="s">Buk</span><span class="nv"> </span><span class="s">SR&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;RADAR</span><span class="nv"> </span><span class="s">9S18&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;SA-11</span><span class="nv"> </span><span class="s">Buk</span><span class="nv"> </span><span class="s">LN&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;TEL&quot;</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>The camera stands <code>slant</code> metres from the target, <code>pitch</code> degrees above the horizon, looking along <code>heading</code>. The marks are placed by projection with an 80° horizontal field, measured: the six vehicles of an SA-11 fall within a few pixels of their projection.</p>
+<h4 id="recon-prepare"><code>veaf-tools dcs recon-prepare</code><a class="headerlink" href="#recon-prepare" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MISSION</code></td>
+<td><code>Path</code></td>
+<td>The built mission (.miz); it is not modified.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--time</code></td>
+<td><code>str</code></td>
+<td><code>11:30</code></td>
+<td>Time of day of the photos, HH:MM on the theatre's clock.</td>
+</tr>
+<tr>
+<td><code>--out</code></td>
+<td><code>Path</code></td>
+<td><em>(beside it, <code>_RECON</code> appended)</em></td>
+<td>Where to write the copy.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debug information.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Flat alias : <code>veaf-tools recon-prepare</code></em></p>
+<h4 id="recon-plan"><code>veaf-tools dcs recon-plan</code><a class="headerlink" href="#recon-plan" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--out</code></td>
+<td><code>Path</code></td>
+<td><code>shots.yaml</code></td>
+<td>The shots file to write.</td>
+</tr>
+<tr>
+<td><code>--coalition</code></td>
+<td><code>str</code></td>
+<td><code>red</code></td>
+<td>The side to photograph: <code>red</code> or <code>blue</code>.</td>
+</tr>
+<tr>
+<td><code>--operation</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The operation's name, printed on every photo.</td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Overwrite an existing shots file.</td>
+</tr>
+<tr>
+<td><code>--url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:12081</code></td>
+<td>Base URL of the dcs-fiddle-server.lua hook's GUI port.</td>
+</tr>
+<tr>
+<td><code>--fiddle-token</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The hook's per-session Basic password.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debug information.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Flat alias : <code>veaf-tools recon-plan</code></em></p>
+<h4 id="recon-shoot"><code>veaf-tools dcs recon-shoot</code><a class="headerlink" href="#recon-shoot" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--shots</code></td>
+<td><code>Path</code></td>
+<td><code>shots.yaml</code></td>
+<td>The shots file.</td>
+</tr>
+<tr>
+<td><code>--raw-dir</code></td>
+<td><code>Path</code></td>
+<td><code>docs\build\recon\raw</code></td>
+<td>Folder of the raw shots (PNG + JSON).</td>
+</tr>
+<tr>
+<td><code>--only</code></td>
+<td><code>str</code></td>
+<td><em>(all)</em></td>
+<td>Shot name to take; repeat for several.</td>
+</tr>
+<tr>
+<td><code>--url</code></td>
+<td><code>str</code></td>
+<td><code>http://127.0.0.1:12081</code></td>
+<td>Base URL of the dcs-fiddle-server.lua hook's GUI port.</td>
+</tr>
+<tr>
+<td><code>--fiddle-token</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The hook's per-session Basic password.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debug information.</td>
+</tr>
+</tbody>
+</table>
+<p>The DCS window must be on the primary screen and visible: a grab of all screens returns the DirectX window black, and a black grab is retried up to eight times.</p>
+<p><em>Flat alias : <code>veaf-tools recon-shoot</code></em></p>
+<h4 id="recon-render"><code>veaf-tools dcs recon-render</code><a class="headerlink" href="#recon-render" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--shots</code></td>
+<td><code>Path</code></td>
+<td><code>shots.yaml</code></td>
+<td>The shots file (the order and the operation's name).</td>
+</tr>
+<tr>
+<td><code>--raw-dir</code></td>
+<td><code>Path</code></td>
+<td><code>docs\build\recon\raw</code></td>
+<td>Folder of the raw shots.</td>
+</tr>
+<tr>
+<td><code>--out-dir</code></td>
+<td><code>Path</code></td>
+<td><code>docs\recon</code></td>
+<td>Folder of the finished photos.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debug information.</td>
+</tr>
+</tbody>
+</table>
+<p>Writes <code>&lt;shot&gt;.jpg</code>, <code>&lt;shot&gt;.json</code> and <code>recon.json</code>, the ordered list of shots. The JSON carries what the briefing reads — <code>zone</code> (the objective's combat zone: the shot's <code>zone</code> key, otherwise the one of the first <code>groups</code> prefix), <code>title</code>, <code>heading</code>, <code>pitch</code> (negative looking down), <code>x</code>/<code>y</code> and <code>altitude_m</code> (the camera, in mission coordinates), <code>order</code> — then the rest of the shot: camera, target in DCS coordinates, latitude/longitude and DMS, time, units.</p>
+<p><em>Flat alias : <code>veaf-tools recon-render</code></em></p>
 <h2 id="the-tool-itself">The tool itself<a class="headerlink" href="#the-tool-itself" title="Permanent link">&para;</a></h2>
 <h3 id="about"><code>veaf-tools about</code><a class="headerlink" href="#about" title="Permanent link">&para;</a></h3>
 <p>Show information about VEAF Mission Creation Tools.</p>
