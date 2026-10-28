@@ -5473,6 +5473,12 @@ une mission adoptée reproduit donc l'étalement de l'amont sans que vous ayez �
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># défaut true — injecte les préréglages radio ; false = désactive toute l&#39;étape</span>
 <span class="w">    </span><span class="nt">kneeboards</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># défaut true — si false, aucune planchette PNG (KNEEBOARD/&lt;type&gt;/IMAGES/presets[-&lt;coalition&gt;].png) n&#39;est générée</span>
 </code></pre></div>
+<p>Le catalogue livré de l'étape <code>dynamic_slot_templates</code> n'injecte que les templates des coalitions qui ont au moins une base à slots dynamiques (une base dont l'entrepôt dit <code>dynamicSpawn</code>, ou une coalition que <code>warehouses.yaml</code> déclare) : les autres ne serviraient à personne.
+Ton propre fichier est injecté tel quel ; quand l'entrepôt source ne se lit pas, rien n'est écarté. Une coalition qui prend une base en jeu (capture) a besoin des siens dès le départ :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dynamic_slot_templates</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">all_sides</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">     </span><span class="c1"># défaut false — garde les templates des deux coalitions</span>
+</code></pre></div>
 <p>L'étape <code>waypoints</code> accepte le même genre de mapping, pour l'injection automatique du bullseye de la
 mission (voir <a href="../mission-maker/GUIDE/#automatic-bullseye">Le bullseye, injecté tout seul</a>) :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">pipeline</span><span class="p">:</span>
@@ -5601,7 +5607,7 @@ Ces paramètres sont normalement définis via la CLI (<code>--dev-mode</code>, <
 </table>
 <p><strong>Règles</strong>
 - Sans <code>build_variants:</code> (ou liste vide) → un seul <code>.miz</code>, comportement inchangé.
-- <code>--profile &lt;nom&gt;</code> est l'<strong>échappatoire</strong> : il force la construction d'une seule variante (ce profil), sans suffixe — <code>build_variants:</code> est ignoré.
+- <code>--profile &lt;nom&gt;</code> est l'<strong>échappatoire</strong> : il force la construction d'une seule variante (ce profil), suffixée de son nom comme une variante — <code>build_variants:</code> est ignoré.
 - Les variantes sont construites dans l'ordre déclaré ; chaque nom doit correspondre à un profil de <code>profiles:</code> (sinon avertissement + config de base, comme <code>--profile</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">MODERN</span><span class="p">:</span>
@@ -5616,7 +5622,7 @@ Ces paramètres sont normalement définis via la CLI (<code>--dev-mode</code>, <
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COLD_WAR</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>          <span class="c"># produit &lt;base&gt;_MODERN.miz ET &lt;base&gt;_COLD_WAR.miz</span>
-<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># ne produit que la variante MODERN (sans suffixe)</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># ne produit que la variante MODERN (&lt;base&gt;_MODERN.miz)</span>
 </code></pre></div>
 <hr />
 <h2 id="keys-documented-elsewhere">Clés documentées ailleurs<a class="headerlink" href="#keys-documented-elsewhere" title="Permanent link">&para;</a></h2>

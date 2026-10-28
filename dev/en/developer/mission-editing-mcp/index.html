@@ -5461,10 +5461,60 @@ is written when the file is absent (the step does not run) or the side is not de
   wrapped <code>TransmitMessage</code>, <code>file</code> = the key, <code>loop</code>, <code>duration</code>, <code>subtitle</code> written to the
   dictionary).</li>
 <li><code>set_briefing_picture(mission_path, source_path, side, resource_name)</code> — copies a <code>.png</code>/<code>.jpg</code> into <code>l10n/DEFAULT</code>, declares it in <code>mapResource</code> as <code>MCP_Picture_&lt;name&gt;</code> and appends the key to the side's <code>pictureFileNameB</code> / <code>R</code> / <code>N</code>, keeping the pictures it had (FIX-DEMO-MISSION-FINDINGS 07).</li>
-<li><code>build_mission_briefing(mission_path, title, strategic_situation, context, mission_bullets, objectives, threats, air_opposition, air_defences, other, deployment, waypoint_notes, flights, diversions, kneeboard, pilots, loadouts, basemap, side)</code> — an objective mission's VEAF briefing with no script (FEAT-MCP-MISSION-BRIEFING): <code>docs/briefing.pptx</code>, its PDF <code>docs/briefing.pdf</code> (drawn by <code>fpdf2</code> with the bundled DejaVu font: the same pages and words, a layout of its own, no Office needed; <code>pdf_pages</code> in the result), <code>docs/maps/</code> and the DCS briefing pictures, in the folder <strong>and</strong> the built <code>.miz</code>, first in <code>pictureFileNameB</code> / <code>N</code> under <code>MCP_Briefing_*</code> keys replaced on every call. The assistant passes the words; the rest is read from the built <code>.miz</code> (<code>mission_briefing/</code>), the injected presets (<code>Radio[n].channelsNames</code>) included for the frequency plan. <code>basemap: topo</code> takes OpenTopoMap tiles, with their credit and their own cache folder.
+<li><code>build_mission_briefing(mission_path, title, strategic_situation, context, mission_bullets, objectives, threats, air_opposition, air_defences, other, deployment, waypoint_notes, flights, code_words, recon_folder, diversions, kneeboard, pilots, loadouts, basemap, side)</code> — an objective mission's VEAF briefing with no script (FEAT-MCP-MISSION-BRIEFING): <code>docs/briefing.pptx</code>, its PDF <code>docs/briefing.pdf</code> (drawn by <code>fpdf2</code> with the bundled DejaVu font: the same pages and words, a layout of its own, no Office needed; <code>pdf_pages</code> in the result), <code>docs/maps/</code> and the DCS briefing pictures, in the folder <strong>and</strong> the built <code>.miz</code>, first in <code>pictureFileNameB</code> / <code>N</code> under <code>MCP_Briefing_*</code> keys replaced on every call. The assistant passes the words; the rest is read from the built <code>.miz</code> (<code>mission_briefing/</code>), the injected presets (<code>Radio[n].channelsNames</code>) included for the frequency plan. <code>basemap: topo</code> takes OpenTopoMap tiles, with their credit and their own cache folder.
   FEAT-OBJECTIVE-BRIEFING-QUALITY: <code>strategic_situation</code> and <code>deployment</code> make a page each, left out when empty; a string is prose, its paragraphs separated by a blank line (<code>mission_bullets</code> as a string loses its dashes); <code>flights</code> names a dynamic-slot package's flights, listed under their base instead of the types it offers; <code>waypoint_notes</code> (by waypoint name) goes on the flight plan's step-by-step sheets.
-  The overview is framed by <code>MapCanvas(width=…, rotation=…)</code>: 2000 px at least, symbols in proportion, turned by <code>best_rotation</code> when the 2:1 frame gains 15 %, a north arrow, its key drawn inside; the zooms carry an inset (<code>Inset</code>). The targets and the steps are <code>CardSection</code>s (<code>mission_briefing/briefing_cards.py</code>), drawn in the deck and the PDF; the deck and the PDF embed the maps as JPEG.</li>
+  The overview is framed by <code>MapCanvas(width=…, rotation=…)</code>: 2000 px at least, symbols in proportion, turned by <code>best_rotation</code> when the 2:1 frame gains 15 %, a north arrow, its key drawn inside; the zooms carry an inset (<code>Inset</code>). The targets and the steps are <code>CardSection</code>s (<code>mission_briefing/briefing_cards.py</code>), drawn in the deck and the PDF; the deck and the PDF embed the maps as JPEG.
+  FEAT-OBJECTIVE-MISSION-V2: a "combat area" map (<code>render_overview_map(combat_area=True)</code>, <code>docs/maps/combat-area.png</code>, a DCS briefing picture too) follows the overview; the kneeboard maps are turned attack axis up (<code>attack_axis_rotation</code>, true bearing from the base to the objectives), a north arrow on each; <code>code_words</code> (<code>word</code>, <code>meaning</code>, <code>who</code>) makes a "Code words" page after the deployment, and a kneeboard page.
+  <strong>Recon photos</strong> (<code>mission_briefing/briefing_recon.py</code>) — the interface the in-game lot fills: a folder (<code>recon_folder</code>, relative to the mission folder or absolute; <code>docs/recon/</code> by default, ignored when absent) of pairs <code>&lt;stem&gt;.jpg</code> (or <code>.jpeg</code>) + <code>&lt;stem&gt;.json</code>, UTF-8:</li>
+<li><code>build_mission_promotion(mission_path, title, event, tagline, pitch, program, practical, aircraft, closing, calendar_url, briefing_url, recon_folder, side)</code> — a built mission's announcement (FEAT-OBJECTIVE-MISSION-V2): <code>docs/poster.jpg</code> (1920 × 1080), <code>docs/calendar-banner.jpg</code> (2400 × 432, the VEAF calendar's 5.55:1) and <code>docs/discord-post.md</code>, refused beyond Discord's 2,000 characters (<code>mission_briefing/mission_promotion.py</code>). Background: the first recon photo (by <code>order</code>) graded, or the map; the <code>build_mission_briefing</code> combat-area map and the photo pinned on it. The post's practical lines come from the built <code>.miz</code> (theatre, time of day, sky, dynamic-slot bases or flights). <code>event</code> (local date and hour) and the links are parameters, never invented: missing, <code>warnings</code> says so. The result gives the text back (<code>discord_post</code>, <code>discord_chars</code>).</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>required</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zone</code></td>
+<td>yes</td>
+<td>the objective's combat zone, as <code>objectives[].zone</code> (case-insensitive)</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>yes</td>
+<td>the caption, in the mission's language</td>
+</tr>
+<tr>
+<td><code>heading</code></td>
+<td>no</td>
+<td>camera heading, degrees true: the photo's axis</td>
+</tr>
+<tr>
+<td><code>pitch</code></td>
+<td>no</td>
+<td>camera pitch, degrees, negative looking down</td>
+</tr>
+<tr>
+<td><code>x</code>, <code>y</code></td>
+<td>no</td>
+<td>camera position, DCS map coordinates (x north, y east); printed as DMS</td>
+</tr>
+<tr>
+<td><code>altitude_m</code></td>
+<td>no</td>
+<td>camera altitude, metres; printed in feet</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>no</td>
+<td>sorting within the zone (then file name), default 0</td>
+</tr>
+</tbody>
+</table>
+<p>After each objective's zoom, its photos two to a slide (deck and PDF) and two to a kneeboard page, captioned "title — heading 095°, pitch -12°, from <DMS>, <ft>" with what the sidecar gives. The <code>recon.json</code> index <code>veaf-tools dcs recon-render</code> writes beside them is ignored. A photo with no sidecar, a sidecar with no photo, no <code>zone</code> or <code>title</code>, or a zone that is no objective: skipped, in <code>warnings</code>. The result lists the photos used in <code>recon</code>.</p>
 <h3 id="syria-open-training-fix-open-training-syria-findings">Syria Open Training (FIX-OPEN-TRAINING-SYRIA-FINDINGS)<a class="headerlink" href="#syria-open-training-fix-open-training-syria-findings" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Callsign from the name</strong>: a western flight named like its callsign (<code>Texaco 2</code>, <code>Magic 1</code>) gets that
@@ -5751,7 +5801,8 @@ with its rule and the consuming module. Check a proposed name against these befo
 <h3 id="describe_module"><code>describe_module</code><a class="headerlink" href="#describe_module" title="Permanent link">&para;</a></h3>
 <p>Read-only. A <strong>locator</strong> (not a schema validator): confirms a VEAF module exists (via the
 canonical <code>lua_module_scanner</code> list), returns its doc page, and — when <code>mission_yaml_path</code> is
-given — its enabled state. Each module's config keys live in its doc page.</p>
+given — its enabled state. Each module's config keys live in its doc page.
+It knows the community scripts the build ships too (CTLD, CSAR, AIEN, STTS, TUM, MIST): <code>kind</code> is <code>veaf</code> or <code>community</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;module_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;QRA&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mission_yaml_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission.yaml&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h2 id="composites--one-pass-both-worlds-wave-8">Composites — one pass, both worlds (wave 8)<a class="headerlink" href="#composites--one-pass-both-worlds-wave-8" title="Permanent link">&para;</a></h2>
@@ -5784,6 +5835,8 @@ An interceptor <strong>takes off from the runway</strong> by default: <code>airf
 (<code>group_name: &lt;name&gt;</code>, un-prefixed — the build resolves it to the <code>OnDemand-</code> group). The first point
 carries the <code>EngageTargets</code> task (<code>Air</code> targets) the editor adds on its own to a CAP task, numbered
 <strong>before</strong> the orbit: without it the flight patrols and never engages.</p>
+<p><code>menu_name</code> is the name the F10 MISSIONS menu shows (the mission name when omitted: an empty one made a blank entry whose "Infos" failed), <code>briefing</code> what its Infos say.
+A <code>cap</code> key the build does not read (<code>friendly_name</code>, the combat zones' word) comes back in <code>warnings</code>, and <code>validate_mission</code> warns about it too.</p>
 <h2 id="scaffolding-a-mission-folder-wave-9">Scaffolding a mission folder (wave 9)<a class="headerlink" href="#scaffolding-a-mission-folder-wave-9" title="Permanent link">&para;</a></h2>
 <p>Every action above assumes a mission folder <strong>already exists</strong>. Wave 9 provides the upstream piece:
 create that folder from an <strong>empty</strong> one, driving the real VEAF binaries the way a Mission Maker
