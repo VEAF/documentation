@@ -3672,10 +3672,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dcs-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Talking to a mission running in DCS: the VEAF bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
         veaf-tools dcs smoke-test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-check-prepare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs mission-check-prepare
       
     </span>
   </a>
@@ -4434,10 +4456,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dcs-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Talking to a mission running in DCS: the VEAF bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
         veaf-tools dcs smoke-test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-check-prepare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs mission-check-prepare
       
     </span>
   </a>
@@ -7099,8 +7143,15 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>terrain-sweep<span class="w"> </span>Caucasus
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools terrain-sweep</code></em></p>
-<h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
-<p>Assert VEAF runtime behaviour inside a running DCS, over the dcs-fiddle hook.</p>
+<h3 id="dcs-bridge">Talking to a mission running in DCS: the VEAF bridge<a class="headerlink" href="#dcs-bridge" title="Permanent link">&para;</a></h3>
+<p><code>smoke-test</code>, <code>mission-check</code>, <code>recon-plan</code> and <code>recon-shoot</code> talk to the mission <strong>you</strong> launched in DCS, on this computer, one way only: the <strong>VEAF bridge</strong>. It is the <code>dcs-bridge.lua</code> script, embedded in the mission, connecting to <code>dcs-serve</code>, the small local server the commands go through.</p>
+<ul>
+<li><strong>The mission must carry the bridge.</strong> <code>recon-prepare</code> and <code>mission-check-prepare</code> embed it in the copy they write; for <code>smoke-test</code>, build the mission with the <code>dcs_bridge</code> section of <code>mission.yaml</code> enabled, or pass it through <a href="#inject-bridge"><code>inject-bridge</code></a>.</li>
+<li><strong><code>dcs-serve</code> is started for you.</strong> When none answers, the command starts one as <a href="#clear-ground-sweep"><code>clear-ground-sweep</code></a> does: found next to <code>veaf-tools.exe</code>, on the <code>PATH</code>, or through <code>--dcs-serve</code>, with a generated key and listening on this computer only, and stopped at the end.</li>
+<li><strong>One change to make once on your DCS</strong>: allow mission scripts to talk to the outside, by editing <code>Scripts\MissionScripting.lua</code> in the DCS install. It is the same as for <code>clear-ground-sweep</code> and the airbase capture; it is described step by step in <a href="../developer/capture-airbases/">Capturing a map's airbases</a>, step 0, and must be redone after every DCS update.</li>
+<li><strong>The bridge reconnects at its own pace</strong>: up to a minute of mission time when <code>dcs-serve</code> starts after the mission. The command waits (<code>--wait</code>, 180 s by default) and says what it is waiting for. The mission must run <strong>unpaused</strong>: paused, the bridge does not answer.</li>
+</ul>
+<p>These four commands share these options:</p>
 <table>
 <thead>
 <tr>
@@ -7112,17 +7163,49 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>--url</code></td>
+<td><code>--serve-url</code></td>
 <td><code>str</code></td>
-<td><code>http://127.0.0.1:12081</code></td>
-<td>Base URL of the dcs-fiddle-server.lua hook (default: http://127.0.0.1:12081).</td>
+<td><code>http://127.0.0.1:8080</code></td>
+<td>Base URL of dcs-serve.</td>
 </tr>
 <tr>
-<td><code>--timeout</code></td>
-<td><code>float</code></td>
-<td><code>10.0</code></td>
-<td>Per-request socket timeout, in seconds.</td>
+<td><code>--dcs-serve</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The dcs-serve executable to start when none runs; default: next to veaf-tools.exe, then on PATH.</td>
 </tr>
+<tr>
+<td><code>--api-key</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The key of a dcs-serve you started yourself. (environment variable <code>DCS_BRIDGE_API_KEY</code>)</td>
+</tr>
+<tr>
+<td><code>--config</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>The dcs-serve.yaml of a dcs-serve you started yourself, to read its key from.</td>
+</tr>
+<tr>
+<td><code>--wait</code></td>
+<td><code>int</code></td>
+<td><code>180</code></td>
+<td>Seconds to wait for the mission's bridge to connect.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="smoke-test"><code>veaf-tools dcs smoke-test</code><a class="headerlink" href="#smoke-test" title="Permanent link">&para;</a></h3>
+<p>Assert VEAF runtime behaviour inside the mission running in DCS, through the <a href="#dcs-bridge">VEAF bridge</a>: the mission must be built with <code>dcs_bridge</code>. One line per check; exit code 1 when one fails.</p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td><code>--suite</code></td>
 <td><code>str</code></td>
@@ -7130,40 +7213,10 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 <td>Which set of checks to run: <code>default</code> (every mission) or <code>spotter</code> (the demo-spotter-network rig only).</td>
 </tr>
 <tr>
-<td><code>--probe-only</code></td>
-<td><code>boolean</code></td>
-<td><code>false</code></td>
-<td>Only report what a running DCS lets the harness do, run no checks.</td>
-</tr>
-<tr>
-<td><code>--full</code></td>
-<td><code>boolean</code></td>
-<td><code>false</code></td>
-<td>Launch DCS, load --mission, assert, then quit — a full unattended run.</td>
-</tr>
-<tr>
-<td><code>--mission</code></td>
-<td><code>str</code></td>
-<td><em>(none)</em></td>
-<td>Path to the .miz to load for a --full run.</td>
-</tr>
-<tr>
-<td><code>--dcs-exe</code></td>
-<td><code>str</code></td>
-<td><em>(none)</em></td>
-<td>Path to DCS.exe for a --full run (default: discovered from a running DCS's install dir).</td>
-</tr>
-<tr>
-<td><code>--allow-running</code></td>
-<td><code>boolean</code></td>
-<td><code>false</code></td>
-<td>For --full: use a DCS that is already running instead of refusing (it loads the mission over the current session).</td>
-</tr>
-<tr>
-<td><code>--fiddle-token</code></td>
-<td><code>str</code></td>
-<td><em>(none)</em></td>
-<td>The hook's per-session Basic-auth password (default: read from ~/dcs-fiddle-token.txt, or $DCS_FIDDLE_TOKEN).</td>
+<td><code>--timeout</code></td>
+<td><code>float</code></td>
+<td><code>10.0</code></td>
+<td>Per-check timeout, in seconds.</td>
 </tr>
 <tr>
 <td><code>--verbose</code></td>
@@ -7173,12 +7226,64 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code>veaf-tools<span class="w"> </span>dcs<span class="w"> </span>smoke-test
+<p>Plus the <a href="#dcs-bridge">bridge options</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">smoke-test</span>
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools smoke-test</code></em></p>
 <p><strong>See also</strong> : <a href="../developer/smoke-harness/">developer/smoke-harness.md</a></p>
+<h3 id="mission-check-prepare"><code>veaf-tools dcs mission-check-prepare</code><a class="headerlink" href="#mission-check-prepare" title="Permanent link">&para;</a></h3>
+<p>Writes the test copy <code>mission-check</code> runs against: the built mission, the <a href="#dcs-bridge">VEAF bridge</a> embedded, nothing else changed. The original mission is not touched.</p>
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MISSION</code></td>
+<td><code>Path</code></td>
+<td>The built mission (.miz); it is not modified.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--out</code></td>
+<td><code>Path</code></td>
+<td><em>(beside it, <code>_CHECK</code> appended)</em></td>
+<td>Where to write the copy.</td>
+</tr>
+<tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>A local dcs-bridge.lua to embed; downloaded from the VEAF-dcs-bridge repository otherwise.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, prints detailed debug information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">mission-check-prepare</span> <span class="n">MyMission</span><span class="p">.</span><span class="n">miz</span>
+</code></pre></div>
+<p><em>Flat alias : <code>veaf-tools mission-check-prepare</code></em></p>
 <h3 id="mission-check"><code>veaf-tools dcs mission-check</code><a class="headerlink" href="#mission-check" title="Permanent link">&para;</a></h3>
-<p>Checks the mission <strong>running in DCS</strong> (the test build, which you launched yourself) through the dcs-fiddle hook, and prints one line per check and a verdict:</p>
+<p>Checks the mission <strong>running in DCS</strong> — the copy written by <a href="#mission-check-prepare"><code>mission-check-prepare</code></a>, which you launched yourself — through the <a href="#dcs-bridge">VEAF bridge</a>, and prints one line per check and a verdict:</p>
 <ul>
 <li><strong>F10 menus</strong>: every entry of the VEAF radio menu has a label; an empty one is reported with its path (<code>VEAF &gt; Zones &gt; ∅</code>);</li>
 <li><strong>combat zones and missions</strong>: each one is switched on then off, its units counted each time, and it is <strong>left as it was found</strong>; a CAP is checked under each of its variant names (<code>&lt;name&gt;/&lt;skill&gt;/&lt;scale&gt;</code>); an <em>operation</em> is reported but not toggled (it would take its zones with it);</li>
@@ -7202,18 +7307,6 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 <td>Zone or combat mission name to check; repeat for several. The menus and the mission's own columns are checked either way.</td>
 </tr>
 <tr>
-<td><code>--url</code></td>
-<td><code>str</code></td>
-<td><code>http://127.0.0.1:12080</code></td>
-<td>URL of the fiddle server started inside the mission scripting environment, where the VEAF modules live.</td>
-</tr>
-<tr>
-<td><code>--fiddle-token</code></td>
-<td><code>str</code></td>
-<td><em>(none)</em></td>
-<td>The hook's per-session Basic password (default: read from <code>%USERPROFILE%\dcs-fiddle-token.txt</code>, or <code>$env:DCS_FIDDLE_TOKEN</code>).</td>
-</tr>
-<tr>
 <td><code>--verbose</code></td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
@@ -7221,6 +7314,7 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 </tr>
 </tbody>
 </table>
+<p>Plus the <a href="#dcs-bridge">bridge options</a>.</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">mission-check</span>
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools mission-check</code></em></p>
@@ -7228,7 +7322,7 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 <p>Four commands, one per step, because you act between each: they produce one reconnaissance photo per objective, taken <strong>in DCS</strong> along the planned engagement axis, with the look of a reconnaissance print (contrasted black and white, grain, banner, heading rose) and the targets circled <strong>in red felt pen</strong>. Units are drawn where DCS actually put them, the zones' random draws included. The result (a JPEG + JSON per shot, and a <code>recon.json</code> index) goes into the briefing.</p>
 <p>The whole sequence:</p>
 <ol>
-<li><code>.\veaf-tools.exe dcs recon-prepare MyMission.miz</code> writes <code>MyMission_RECON.miz</code> beside it: clear sky, chosen time, every combat zone active at start, readable group names. The original mission is not touched.</li>
+<li><code>.\veaf-tools.exe dcs recon-prepare MyMission.miz</code> writes <code>MyMission_RECON.miz</code> beside it: clear sky, chosen time, every combat zone active at start, readable group names, and the <a href="#dcs-bridge">VEAF bridge</a> embedded, through which <code>recon-plan</code> and <code>recon-shoot</code> talk to the mission. The original mission is not touched.</li>
 <li>In DCS: open <code>MyMission_RECON.miz</code>, take a <strong>spectator</strong> slot, press <strong>F11</strong> (free camera). Keep the DCS window on the <strong>primary screen</strong>.</li>
 <li><code>.\veaf-tools.exe dcs recon-plan --operation "Golan Hammer"</code> writes <code>shots.yaml</code>: one shot per zone, with the names of the groups found.</li>
 <li>Complete <code>shots.yaml</code>: for each shot, the engagement <code>heading</code> (the direction the attacker looks), and if needed <code>pitch</code> (degrees below the horizon), <code>slant</code> (distance in metres), <code>mark: units</code> to circle each vehicle, <code>labels</code> to name the targets.</li>
@@ -7291,6 +7385,12 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 <td>Where to write the copy.</td>
 </tr>
 <tr>
+<td><code>--bridge-lua</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>A local dcs-bridge.lua to embed; downloaded from the VEAF-dcs-bridge repository otherwise.</td>
+</tr>
+<tr>
 <td><code>--verbose</code></td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
@@ -7335,18 +7435,6 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 <td>Overwrite an existing shots file.</td>
 </tr>
 <tr>
-<td><code>--url</code></td>
-<td><code>str</code></td>
-<td><code>http://127.0.0.1:12081</code></td>
-<td>Base URL of the dcs-fiddle-server.lua hook's GUI port.</td>
-</tr>
-<tr>
-<td><code>--fiddle-token</code></td>
-<td><code>str</code></td>
-<td><em>(none)</em></td>
-<td>The hook's per-session Basic password.</td>
-</tr>
-<tr>
 <td><code>--verbose</code></td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
@@ -7354,6 +7442,7 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 </tr>
 </tbody>
 </table>
+<p>Plus the <a href="#dcs-bridge">bridge options</a>.</p>
 <p><em>Flat alias : <code>veaf-tools recon-plan</code></em></p>
 <h4 id="recon-shoot"><code>veaf-tools dcs recon-shoot</code><a class="headerlink" href="#recon-shoot" title="Permanent link">&para;</a></h4>
 <table>
@@ -7385,18 +7474,6 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 <td>Shot name to take; repeat for several.</td>
 </tr>
 <tr>
-<td><code>--url</code></td>
-<td><code>str</code></td>
-<td><code>http://127.0.0.1:12081</code></td>
-<td>Base URL of the dcs-fiddle-server.lua hook's GUI port.</td>
-</tr>
-<tr>
-<td><code>--fiddle-token</code></td>
-<td><code>str</code></td>
-<td><em>(none)</em></td>
-<td>The hook's per-session Basic password.</td>
-</tr>
-<tr>
 <td><code>--verbose</code></td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
@@ -7404,7 +7481,8 @@ Sweep a theatre when it is not published, or to replace a downloaded grid.</p>
 </tr>
 </tbody>
 </table>
-<p>The DCS window must be on the primary screen and visible: a grab of all screens returns the DirectX window black, and a black grab is retried up to eight times.</p>
+<p>Plus the <a href="#dcs-bridge">bridge options</a>.</p>
+<p>The F11 camera is moved from DCS's <code>export</code> state, which the bridge reaches through <code>net.dostring_in</code>; the window is grabbed on this computer. The DCS window must be on the primary screen and visible: a grab of all screens returns the DirectX window black, and a black grab is retried up to eight times.</p>
 <p><em>Flat alias : <code>veaf-tools recon-shoot</code></em></p>
 <h4 id="recon-render"><code>veaf-tools dcs recon-render</code><a class="headerlink" href="#recon-render" title="Permanent link">&para;</a></h4>
 <table>

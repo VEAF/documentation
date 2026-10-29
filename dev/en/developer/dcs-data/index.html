@@ -3900,8 +3900,11 @@ has no frequency in the file and four in DCS (measured 2026-10-01 on the seven i
 Where DCS completes them is not visible in the install: reading the file is therefore wrong, only a
 running DCS is authoritative. The table is built in two steps.</p>
 <ol>
-<li><strong>Capture</strong>, guided, one map after the other, through the fiddle hook (GUI environment,
-   <code>dcs-fiddle-server.lua</code> installed — the command checks it is there). For each installed map not
+<li><strong>Capture</strong>, guided, one map after the other, through the VEAF bridge: each capture mission
+   embeds <code>dcs-bridge.lua</code>, the command starts <code>dcs-serve</code> when none runs, and the capture is sent to
+   DCS's GUI state through <code>net.dostring_in</code>, where the editor's terrain data lives. It needs the
+   <code>MissionScripting.lua</code> change described in <a href="../../CLI_REFERENCE/#dcs-bridge">the CLI reference</a>.
+   For each installed map not
    captured yet (or those named with <code>--theatre</code>), the command writes an empty mission in DCS's
    <code>Missions\VEAF-capture-frequencies\</code> folder, says what to do (open it, launch it, take the
    spectator slot), <strong>sees on its own</strong> the map arrive in DCS, captures, then names the next one; at

@@ -3033,17 +3033,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#la-source-qui-tranche--la-doc-ded-livrée-avec-dcs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        La source qui tranche : la doc d'ED, livrée avec DCS
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#csar-over-water" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3476,17 +3465,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#la-source-qui-tranche--la-doc-ded-livrée-avec-dcs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        La source qui tranche : la doc d'ED, livrée avec DCS
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#csar-over-water" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3535,160 +3513,33 @@ d'attente : quelqu'un devait piloter.</p>
 <p>Ce harnais exécute des assertions <strong>à l'intérieur d'un DCS qui tourne</strong>, sans personne devant.</p>
 <h2 id="ce-quil-ne-sera-jamais">Ce qu'il ne sera jamais<a class="headerlink" href="#ce-quil-ne-sera-jamais" title="Permanent link">&para;</a></h2>
 <p><strong>Une porte CI.</strong> Les runners GitHub n'ont ni DCS, ni licence, ni GPU. C'est un outil <strong>local</strong>, lancé
-par qui possède une installation. Il <strong>passe</strong> (<code>skip</code>) avec une explication au lieu d'échouer quand il
-n'y a rien à interroger — sinon il deviendrait rouge sur chaque machine et personne ne le lancerait.</p>
+par qui possède une installation.</p>
 <h2 id="prérequis">Prérequis<a class="headerlink" href="#prérequis" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>DCS lancé.</strong> Le menu principal suffit : <code>onSimulationFrame</code> bat à ~28 Hz <strong>sans mission
-   chargée</strong> — 2 305 ticks mesurés avant qu'une mission existe (voir
-   <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/exploration/DCS-HOOK-ENVIRONMENT-BOUNDARIES.md">DCS-HOOK-ENVIRONMENT-BOUNDARIES</a>).
-   C'est cette mesure qui rend le pilotage automatique possible.</li>
-<li><strong>Le hook installé</strong> : copier <code>src/scripts/other/dcs-fiddle-server.lua</code> dans
-   <code>Saved Games/DCS/Scripts/Hooks/</code>. Il écoute sur <code>127.0.0.1:12081</code>.</li>
-</ol>
-<p>!!! danger "Ce hook exécute du Lua dans votre DCS. Retirez-le après usage, jamais sur un serveur."</p>
-<pre><code>   Ce hook est le fork **omltcat/dcs-lua-runner** avec authentification. Depuis `FIX-SECREV2`, il
-   **exige un mot de passe par session** (`FIDDLE.AUTH = true`, `BYPASS_LOCAL = false`) : à chaque
-   démarrage il tire un secret et l'écrit dans `%USERPROFILE%\dcs-fiddle-token.txt`, puis rejette
-   toute requête sans l'auth Basic correspondante. Le contournement local, qui laissait passer une
-   page web sur loopback via le Host header (falsifiable), est **désactivé** — c'est le vecteur que
-   l'[ADR 0019](https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/adr/0019-dcs-fiddle-server-stays-unauthenticated-for-now.md)
-   décrivait, et il est fermé.
-
-   Ce qui reste vrai : **tout processus local capable de lire ce fichier peut exécuter du Lua dans
-   votre DCS**. Installez le hook pour lancer le harnais, retirez-le ensuite, et **ne le déployez
-   jamais sur un serveur**. (L'interface web amont de DCS Fiddle, qui dépendait du contournement
-   local, n'est plus supportée par ce build.)
-</code></pre>
-<p>Le harnais lit le même fichier automatiquement (username <code>veaf</code>). Si votre installation écrit le
-   secret ailleurs (fonction <code>os</code> du hook indisponible → repli sur le <code>writedir</code>), passez-le avec
-   <code>--fiddle-token</code> ou la variable <code>DCS_FIDDLE_TOKEN</code>.</p>
-<ol>
-<li>
-<p><strong><code>net.dostring_in</code> disponible</strong> — c'est le seul chemin vers l'environnement de mission, donc sans lui
-   aucune assertion ne peut tourner. <strong>Rien à configurer : mesuré présent sur une installation
-   standard</strong> (2026-08-06), <code>autoexec.cfg</code> ne listant ni <code>net.allow_unsafe_api</code> ni
-   <code>net.allow_dostring_in</code>. La doc d'ED laisse entendre le contraire ; voir la section sur cette doc
-   plus bas. Si un jour il manque, le harnais le nomme précisément plutôt que d'accuser la mission.</p>
-</li>
-<li>
-<p><strong>Une mission chargée</strong> pour les assertions — l'environnement de mission n'existe qu'à partir de là.</p>
-</li>
+<li><strong>DCS lancé et une mission chargée</strong>, par vous : la mission bâtie avec la section <code>dcs_bridge</code> du
+   <code>mission.yaml</code> activée (ou passée par <code>veaf-tools dcs inject-bridge</code>). La mission de test
+   <code>test/veaf-tools/verify-mission-c</code> l'active déjà.</li>
+<li><strong>La manip <code>MissionScripting.lua</code></strong> faite une fois sur votre DCS, pour que le bridge charge la
+   bibliothèque <code>socket</code> : c'est la même que pour <code>clear-ground-sweep</code>, décrite dans
+   <a href="../../CLI_REFERENCE/#dcs-bridge">la référence CLI</a>.</li>
+<li><strong><code>dcs-serve</code></strong> : la commande le démarre si aucun ne tourne, comme les autres commandes du bridge.</li>
 </ol>
 <h2 id="utilisation">Utilisation<a class="headerlink" href="#utilisation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>veaf-tools dcs smoke-test --probe-only
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">smoke-test</span>
 </code></pre></div>
-<p>Ne lance aucune assertion : rapporte seulement <strong>ce que ce DCS autorise</strong>. À lancer en premier, c'est
-la même discipline que la sonde <code>Disposition</code> — mesurer avant de bâtir dessus.</p>
-<p>Ce qu'il mesure, en un aller-retour : quelle table de contrôle répond (<code>Sim</code>, <code>DCS</code>, ou les deux), si
-<code>exitProcess</code> / <code>stopMission</code> / <code>setUserCallbacks</code> sont là, si <code>net.load_mission</code> existe <strong>et</strong> si
-cette instance se déclare serveur, si <code>net.dostring_in</code> est permis, et — ce que seul le processus en
-cours sait — <strong>quel dossier d'installation et quel dossier <code>Saved Games</code> cette instance utilise</strong>.</p>
-<p>Il termine par <strong>le blocage à corriger en premier</strong>, et l'ordre compte : « pas de hook », puis « pas de
-permission », puis « pas de mission ». La version précédente rapportait le manque de permission comme
-« aucune mission chargée », ce qui envoyait chercher une mission à charger là où charger une mission ne
-pouvait rien changer.</p>
-<div class="highlight"><pre><span></span><code>veaf-tools dcs smoke-test
-</code></pre></div>
-<p>Sonde, puis exécute les vérifications. Sort en 1 si l'une échoue, en 0 si tout passe <strong>ou si le run a
-été sauté</strong>. Suppose que DCS tourne déjà, avec une mission chargée.</p>
-<div class="highlight"><pre><span></span><code>veaf-tools dcs smoke-test --full --mission &lt;chemin.miz&gt;
-</code></pre></div>
-<p>Le run <strong>complet, sans surveillance</strong> : localise <code>DCS.exe</code> (via le dossier d'installation que la sonde
-rapporte, ou <code>--dcs-exe</code>), le lance, attend que le hook réponde, appelle <code>net.load_mission</code>, attend que
-la mission soit active, exécute les vérifications, puis <strong>quitte DCS</strong> — toujours, même en cas d'échec,
-sinon le run suivant hérite d'une instance restée ouverte. Chaque attente est bornée et nomme l'étape
-qui expire. Par sécurité, il <strong>refuse</strong> un DCS déjà lancé (charger une mission écraserait la session en
-cours) ; <code>--allow-running</code> lève ce garde-fou et, dans ce cas, ne quitte pas l'instance qu'il n'a pas
-démarrée.</p>
-<div class="admonition warning">
-<p class="admonition-title">Limite mesurée : <code>net.load_mission</code> ne charge rien en solo</p>
-<p>Mesuré le 2026-08-15 : <code>net.load_mission</code> est <em>présent</em> et <code>isServer()</code> est vrai en solo, mais
-l'appeler depuis le menu <strong>renvoie nil et aucune mission ne devient active</strong> — ED le documente
-SERVER ONLY, et en pratique il faut un serveur en cours (<code>net.start_server</code>), pas seulement une
-instance locale. Donc <code>--full</code> <strong>ne peut pas charger une mission en solo</strong> : il échoue proprement
-au bout du délai en le disant, plutôt que de mentir. Pour vérifier en solo, chargez la mission à la
-main et lancez <code>smoke-test</code> (sans <code>--full</code>). <strong>Le chargement sans surveillance en solo est acté hors
-scope</strong> (aucune API DCS ne le permet ; la seule voie serait le mode serveur, non retenu) —
-<code>--full</code> n'est bout-en-bout que dans un contexte serveur hébergé (<code>FEAT-DCS-SMOKE-HARNESS</code> ticket 02).</p>
-</div>
+<p>Exécute les vérifications dans la mission, une ligne par vérification, et sort en 1 si l'une échoue.
+<code>--suite spotter</code> lance les vérifications du banc <code>demo-spotter-network</code> à la place.</p>
+<p>Il n'y a plus de run sans surveillance (<code>--full</code>, qui lançait DCS et chargeait la mission) : mesuré le
+2026-08-15, <code>net.load_mission</code> ne charge rien en solo — ED le documente SERVER ONLY — et c'est vous qui
+lancez DCS et la mission. Le hook DCS Fiddle qui servait à ce pilotage a été retiré
+(<code>REFACTOR-BRIDGE-ONLY</code>, 2026-10-29).</p>
 <h2 id="comment-ça-parle-à-dcs">Comment ça parle à DCS<a class="headerlink" href="#comment-ça-parle-à-dcs" title="Permanent link">&para;</a></h2>
-<p><strong>Deux transports, chacun pour ce qu'il atteint</strong> (ticket 04). Une vérification déclare le sien via
-<code>Check.transport</code> :</p>
-<table>
-<thead>
-<tr>
-<th>Transport</th>
-<th>Ce qu'il voit</th>
-<th>Pour quelles vérifications</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>hook</strong> (<code>dcs-fiddle-server.lua</code>)</td>
-<td>un état de script <strong>nu</strong> : les globals de DCS (<code>Disposition</code>, <code>missionCommands</code>, <code>coalition</code>) y sont, <strong>pas</strong> les scripts de la mission</td>
-<td>les vérifications DCS natives, et le pilotage (charger/quitter)</td>
-</tr>
-<tr>
-<td><strong>bridge</strong> (<code>dcs-serve</code> → <code>dcs-bridge.lua</code>, injecté <strong>dans</strong> la mission)</td>
-<td>l'état où tournent les scripts de la mission — là où vit <code>veaf</code></td>
-<td>toute assertion <strong>VEAF</strong> (<code>veaf-loaded</code>, <code>findspawnpoint-exists</code>)</td>
-</tr>
-</tbody>
-</table>
-<p>Pourquoi le split : le hook atteint un état où <code>env</code> est une table mais où les scripts de la mission
-n'ont jamais tourné, donc <code>veaf</code> y est <code>nil</code>. La sonde le <strong>mesure</strong> désormais (<code>type(veaf)</code> sur la
-route du hook) au lieu de le déduire de <code>env</code> — car <code>env</code> existe dans <em>tout</em> état de script, chargé ou
-nu, et c'est ce qui faisait conclure à tort « les scripts sont là ». Une assertion VEAF passe donc par
-le bridge, ou elle lit <code>veaf-absent</code> pour toujours. Si le bridge est absent, la vérification <strong>échoue
-en nommant <code>dcs-serve</code></strong>, jamais en rapportant <code>veaf-absent</code> : le pont est un prérequis énoncé, pas
-« rien à qui parler ».</p>
-<p>Le transport du hook, lu dans <code>dcs-fiddle-server.lua</code> plutôt que supposé : le Lua voyage <strong>en base64
-dans le chemin de l'URL</strong>, l'environnement cible dans <code>?env=</code>, et la réponse est un JSON <code>{result=…}</code>
-ou <code>{error=…}</code>.</p>
-<table>
-<thead>
-<tr>
-<th><code>?env=</code></th>
-<th>Ce que ça atteint</th>
-<th>À quoi ça sert</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>default</code></td>
-<td>l'environnement du hook, via <code>loadstring</code></td>
-<td>le seul qui contient <code>net.*</code> — donc le pilotage</td>
-</tr>
-<tr>
-<td><code>mission</code></td>
-<td>l'état <strong>trigger</strong>, via <code>net.dostring_in</code></td>
-<td>là où vivent <code>a_do_script</code> et les actions <code>a_*</code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="admonition-title"><code>env=mission</code> n'est pas là où vivent les scripts VEAF</p>
-<p>C'était l'hypothèse de la première tranche, et elle est fausse — <strong>mesuré le 2026-08-06</strong>, mission
-chargée et pilote dans le cockpit : un chunk envoyé là renvoie
-<code>:1: attempt to index global 'env' (a nil value)</code>. Le chunk <strong>a tourné</strong> — c'est une erreur
-d'exécution Lua venue de l'intérieur de l'état ciblé, pas un refus — donc cet état n'a simplement
-pas de <code>env</code>. C'est l'état <strong>trigger</strong>.</p>
-<p>Notre propre dépôt l'avait déjà établi sans en tirer la conséquence : le ticket 01 de
-<code>FEAT-ASSIST-CHECKLISTS</code> avait situé <code>a_cockpit_highlight</code> « à un <code>net.dostring_in</code> de distance ».
-Et le hook le dit en une ligne, dans son propre amorçage :
-<code>net.dostring_in("mission", 'a_do_script("dofile(…)")')</code> — il atteint l'état de script <strong>à travers</strong>
-<code>a_do_script</code>, pas directement.</p>
-<p>Conséquence : les six vérifications de la première tranche visaient un état trop court. Elles
-passent maintenant par une <strong>route mesurée</strong>, que la sonde découvre en essayant
-<code>a_do_script</code> (le chemin qu'ED documente comme actuel, et qui renvoie ses valeurs directement) puis
-<code>net.dostring_in("scripting", …)</code>. Le test de la route est <code>return type(env)</code> et la réponse doit
-<strong>valoir</strong> <code>table</code> : une route qui exécute le chunk ailleurs renvoie une erreur Lua, que ce
-transport rend comme une chaîne ordinaire — « quelque chose est revenu » ne prouve rien.</p>
-</div>
-<p>C'est le <strong>même</strong> bridge que <code>capture-map</code> (<code>dcs-serve</code> + <code>dcs-bridge.lua</code>) : il vit <em>dans</em> la mission,
-il ne peut donc ni la charger ni répondre avant qu'elle existe — d'où le hook pour le pilotage et le
-bridge pour les assertions VEAF, chacun là où il répond.</p>
+<p><strong>Un seul transport : le bridge VEAF.</strong> <code>dcs-serve</code> reçoit le Lua, <code>dcs-bridge.lua</code> — embarqué <strong>dans</strong>
+la mission — l'exécute dans l'état de script de la mission. Cet état voit à la fois les globals de DCS
+(<code>Disposition</code>, <code>missionCommands</code>, <code>coalition</code>) et les scripts de la mission (<code>veaf</code>, <code>csar</code>), donc
+toutes les vérifications y tournent.</p>
+<p>Le bridge renvoie <code>tostring</code> du résultat ; une erreur Lua revient en <code>{"error": …}</code> et la vérification
+échoue en la citant. Le bridge tourne sur l'horloge de la mission : <strong>en pause, il ne répond pas</strong>.</p>
 <h2 id="le-contrat-de-la-mission-de-test">Le contrat de la mission de test<a class="headerlink" href="#le-contrat-de-la-mission-de-test" title="Permanent link">&para;</a></h2>
 <p>Emprunté à <a href="https://github.com/nielsvaes/dcs-sms">nielsvaes/dcs-sms</a>, et c'est le <strong>contre-exemple</strong>
 qui vaut le détour :</p>
@@ -3701,9 +3552,8 @@ qui vaut le détour :</p>
 et conclurait que le code est cassé. C'est une journée perdue sur un non-bug, et ça ne se déduit pas.</p>
 <blockquote>
 <p>⚠️ <strong>Ces coordonnées ne sont pas encore vérifiées ici.</strong> Elles viennent de leur dépôt, et ce dépôt a
-déjà trouvé <strong>deux</strong> affirmations fausses dans leur documentation (le partage de VM entre le hook et
-l'éditeur, et le « ça meurt au menu principal »). Tuer une unité à cette ancre et observer
-l'événement arriver fait partie du ticket 01 du lot.</p>
+déjà trouvé deux affirmations fausses dans leur documentation. Tuer une unité à cette ancre et
+observer l'événement arriver fait partie du ticket 01 du lot.</p>
 </blockquote>
 <h2 id="ajouter-une-vérification">Ajouter une vérification<a class="headerlink" href="#ajouter-une-vérification" title="Permanent link">&para;</a></h2>
 <p>Les assertions sont des <strong>données</strong>, pas du code : une entrée dans <code>CHECKS</code>
@@ -3711,7 +3561,7 @@ l'événement arriver fait partie du ticket 01 du lot.</p>
 on veut le savoir</strong>. Une vérification dont personne n'a écrit la raison est une vérification que
 personne n'osera supprimer.</p>
 <h3 id="la-règle--votre-lua-doit-renvoyer-une-chaîne-toujours">La règle : votre Lua doit renvoyer une <strong>chaîne</strong>. Toujours.<a class="headerlink" href="#la-règle--votre-lua-doit-renvoyer-une-chaîne-toujours" title="Permanent link">&para;</a></h3>
-<p>Mesuré le 2026-08-06 en mission, et tout le reste en découle :</p>
+<p>Le bridge renvoie <code>tostring(result ~= nil and result or "")</code> :</p>
 <table>
 <thead>
 <tr>
@@ -3730,67 +3580,28 @@ personne n'osera supprimer.</p>
 </tr>
 <tr>
 <td><code>true</code></td>
+<td><code>'true'</code></td>
+</tr>
+<tr>
+<td><code>false</code>, <code>nil</code></td>
 <td><code>''</code> — <strong>détruit</strong></td>
 </tr>
 <tr>
 <td><code>{1, 2}</code></td>
-<td><code>''</code> — <strong>détruit</strong></td>
+<td><code>'table: 0x…'</code> — une adresse, pas le contenu</td>
 </tr>
 </tbody>
 </table>
-<p>Un booléen et une table sont donc indiscernables l'un de l'autre <em>et</em> d'un chunk qui n'a rien renvoyé.
-Deux des six vérifications d'origine en sont mortes : l'une attendait un nombre, l'autre <code>true</code> — et la
-seconde était pire qu'impossible, elle était <strong>muette sur la seule question qu'elle devait trancher</strong>.</p>
-<p>Corollaire pratique : <strong>taguez</strong> vos valeurs numériques (<code>count:10</code> plutôt que <code>10</code>), pour que « j'ai
-demandé, il n'y a rien » (<code>count:0</code>) reste distinct de « la réponse a été détruite » (<code>''</code>). Un test
-balaie toutes les vérifications contre <code>''</code> : une attente que <code>''</code> satisfait est une attente incapable de
-distinguer un succès d'une valeur perdue.</p>
+<p>Corollaire pratique : <strong>taguez</strong> vos valeurs (<code>count:10</code> plutôt que <code>10</code>, un mot plutôt qu'un booléen),
+pour que « j'ai demandé, il n'y a rien » (<code>count:0</code>) reste distinct de « la réponse a été détruite »
+(<code>''</code>). Un test balaie toutes les vérifications contre <code>''</code> : une attente que <code>''</code> satisfait est une
+attente incapable de distinguer un succès d'une valeur perdue.</p>
 <p>Un piège à connaître : les extraits renvoient des <strong>sentinelles</strong> (<code>veaf-absent</code>, <code>no-singleton</code>,
 <code>not-a-table</code>, <code>raised: …</code>) plutôt que de lever, pour qu'un prérequis manquant soit lisible. Ce sont
 des chaînes <strong>non vides, donc vraies</strong> — une attente écrite avec un simple test de vérité passe donc
-exactement dans le cas qu'elle devait attraper. C'est arrivé pendant l'écriture ; un test balaie
-maintenant toutes les vérifications contre toutes les sentinelles.</p>
-<h2 id="la-source-qui-tranche--la-doc-ded-livrée-avec-dcs">La source qui tranche : la doc d'ED, livrée avec DCS<a class="headerlink" href="#la-source-qui-tranche--la-doc-ded-livrée-avec-dcs" title="Permanent link">&para;</a></h2>
-<p><code>&lt;installation DCS&gt;/API/Sim_ControlAPI.md</code> documente l'API du hook. <strong>Lisez-la avant d'ajouter un appel
-ici</strong> : trois de ses affirmations contredisent ce que ce module supposait au départ.</p>
-<table>
-<thead>
-<tr>
-<th>Ce qu'on supposait</th>
-<th>Ce qu'ED documente</th>
-<th>Conséquence</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>la table de contrôle est <code>DCS.*</code></td>
-<td>c'est <code>Sim.*</code></td>
-<td><strong>mesuré : <code>Sim</code> et <code>DCS</code> sont la <em>même table</em></strong> — les deux noms marchent, mais la sonde le rapporte au lieu d'en supposer un</td>
-</tr>
-<tr>
-<td><code>net.load_mission</code> charge une mission</td>
-<td><code>net.load_mission</code> est <strong>SERVER ONLY</strong></td>
-<td>mesuré : <code>isServer=true</code> en solo, donc l'appel est légitime sur une instance locale</td>
-</tr>
-<tr>
-<td><code>net.dostring_in</code> est disponible</td>
-<td><strong>OBSOLETE et UNSAFE</strong>, conditionné à <code>autoexec.cfg</code></td>
-<td><strong>la restriction ne s'applique pas telle quelle</strong> : mesuré présent sans aucune des deux clés. Le harnais vérifie donc la <em>fonction</em>, pas la config</td>
-</tr>
-</tbody>
-</table>
-<p>Et une chose qu'aucune doc ne dit : <strong>le transport ment sur l'échec.</strong> <code>net.dostring_in(state, string)</code>
-renvoie une erreur Lua <strong>comme résultat</strong>, en HTTP 200 avec un corps <code>{result=…}</code> — une erreur dans
-l'environnement de mission a donc exactement la forme d'une réponse réussie. Mesuré au menu principal :
-<code>return env.mission.theatre</code> a renvoyé <code>:1: attempt to index global 'env' (a nil value)</code>, et la sonde a
-conclu « l'environnement de mission a répondu ». C'est la <strong>troisième</strong> fois que ce lot se fait prendre
-par un échec véridique — les sentinelles, le check de sous-menu qui renvoyait une constante, et
-celui-ci. Dans ce transport, « ça est revenu » n'est pas « ça a marché ».</p>
-<p>Deux autres choses utiles y sont documentées et pas encore exploitées :
-<code>onMissionLoadBegin</code> / <code>onMissionLoadProgress(progress, message)</code> / <code>onMissionLoadEnd</code> — un signal
-d'<strong>événement</strong> pour savoir qu'un chargement est terminé, bien meilleur que de surveiller un compteur
-d'images qui gèle pendant le chargement ; et <code>Sim.getLogHistory(from)</code>, qui rend le <code>dcs.log</code> lisible à
-travers le hook au lieu d'être analysé sur disque.</p>
+exactement dans le cas qu'elle devait attraper. Un test balaie toutes les vérifications contre toutes
+les sentinelles, et contre la forme d'une erreur Lua (<code>:1: attempt to …</code>), que <code>net.dostring_in</code> rend
+comme un résultat ordinaire.</p>
 <h2 id="csar-over-water">Les vérifications CSAR sur l'eau<a class="headerlink" href="#csar-over-water" title="Permanent link">&para;</a></h2>
 <p><code>csar-avoids-water-open-sea</code> et <code>csar-avoids-water-coast</code> répondent à
 <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/issues/245">#245</a> — « le pilote CSAR apparaît dans
@@ -3806,9 +3617,6 @@ relire la position, demander ce qu'il y a dessous.</p>
 <p>Aucune coordonnée n'est écrite en dur : la vérification s'ancre sur le premier aérodrome et balaye
 jusqu'à trouver de l'eau, puis classe le point selon ce qui l'entoure à 150 m. Elle fonctionne donc sur
 n'importe quel théâtre.</p>
-<p>Elle tourne en transport <code>BRIDGE</code> : <code>csar</code> est un global de l'environnement de mission, chargé par
-<code>mission-script.lua</code>. Dans l'environnement du hook, elle répondrait <code>csar-absent</code> sur une mission qui
-l'a pourtant — un faux négatif.</p>
 <div class="admonition warning">
 <p class="admonition-title">Toute réponse autre qu'un placement au sec est un échec</p>
 <p>Y compris celles qui disent que la question n'a pas pu être posée (<code>csar-absent</code>, <code>no-water-found</code>,
@@ -3817,12 +3625,7 @@ et c'est précisément le mode d'échec contre lequel ce banc d'essai est écrit
 </div>
 <hr />
 <h2 id="ce-qui-reste-à-faire">Ce qui reste à faire<a class="headerlink" href="#ce-qui-reste-à-faire" title="Permanent link">&para;</a></h2>
-<p>Le lot <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/.backlog/archive/FEAT-DCS-SMOKE-HARNESS.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> porte le détail. Le
-cycle launch → load → assert → quit est désormais <strong>écrit</strong> (mode <code>--full</code> ci-dessus), sur les faits que
-la sonde a établis — <code>net.load_mission</code> présent et <code>isServer=true</code> en solo. L'orchestration est couverte
-par des tests avec des doublures ; le comportement réel des appels DCS eux-mêmes se valide par un run en
-jeu, qu'un test unitaire ne peut pas rejouer. Reste aussi la mission de test committée (ticket 01) et sa
-vérification d'ancre en jeu.</p>
+<p>Le lot <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/.backlog/archive/FEAT-DCS-SMOKE-HARNESS.md"><code>FEAT-DCS-SMOKE-HARNESS</code></a> porte le détail : la mission de test committée (ticket 01) et sa vérification d'ancre en jeu.</p>
 
 
 
