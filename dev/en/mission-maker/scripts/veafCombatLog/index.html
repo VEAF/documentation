@@ -3455,11 +3455,12 @@ A Tacview recording does not say it: it names no shooter, records no destruction
 <div class="highlight"><pre><span></span><code><span class="nt">modules</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">COMBATLOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>The file is written only when DCS's scripting environment keeps <code>io</code>, <code>os</code> and <code>lfs</code>, as VEAF servers do.
+<p>The file is written only when DCS's scripting environment keeps <code>io</code> and <code>lfs</code>, as VEAF servers do (they remove <code>os</code>).
 Otherwise the module says so once in <code>dcs.log</code> and writes nothing: the mission runs as usual.</p>
 <hr />
 <h2 id="the-file">The file<a class="headerlink" href="#the-file" title="Permanent link">&para;</a></h2>
 <p><code>veaf-combat-log-&lt;date&gt;-&lt;time&gt;.jsonl</code>, in <code>VEAF_EXPORT_DIR</code> when it is set, else in the DCS write folder (<code>Saved Games\DCS…</code>).
+Where the scripting environment removes <code>os</code>, as on the VEAF servers, the real date is unknown: the file is <code>veaf-combat-log-&lt;mission date&gt;-&lt;n&gt;.jsonl</code> in the DCS write folder, <code>&lt;n&gt;</code> being the first free number (<code>-1</code>, <code>-2</code> after a restart…).
 One file per mission start, never deleted by the tools: on a server that restarts often, clean up from time to time.
 The file is flushed to disk every 10 seconds (a crash loses at most those 10 seconds), not at every line: a gun run raises one event per shell.</p>
 <table>
