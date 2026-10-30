@@ -3391,6 +3391,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="profiles:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#profile-zone-edits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing a combat zone without copying the list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4059,6 +4076,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="profiles:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#profile-zone-edits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing a combat zone without copying the list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -5557,7 +5591,7 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 </table>
 <p><strong>Merge rules</strong>
 - Nested dicts are merged recursively (only the keys you specify are overridden).
-- Scalar values and lists are replaced wholesale.
+- Scalar values and lists are replaced wholesale; for combat zones, see <a href="#profile-zone-edits"><code>zone_edits</code></a>.
 - <code>profiles:</code> is stripped from the effective config — it is never passed to the Lua generator or the pipeline.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">TEST</span><span class="p">:</span>
@@ -5578,6 +5612,23 @@ These settings are normally set via the CLI (<code>--dev-mode</code>, <code>--sc
 <blockquote>
 <p>If the named profile does not exist in <code>mission.yaml</code>, a warning is emitted and the base config is used unchanged.</p>
 </blockquote>
+<h4 id="profile-zone-edits">Editing a combat zone without copying the list<a class="headerlink" href="#profile-zone-edits" title="Permanent link">&para;</a></h4>
+<p><code>combat_zones</code> is a list: a profile that gives it replaces it whole. To change two zones, a profile gives <code>modules.COMBATZONE.zone_edits</code> instead, mapping a <code>zone_name</code> (case-insensitive) to the keys to set on that entry.
+The <code>"*"</code> key sets its keys on <strong>every</strong> entry; named edits are applied after it.
+The rest of each entry is kept, and <code>zone_edits</code> never reaches the Lua generator.
+A name no zone carries is reported by the build and does nothing.</p>
+<p>Example: a training version of the mission, with no QRA, two SAM batteries off at start, every zone in training.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">TRAINING</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">modules</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">QRA</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">COMBATZONE</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">zone_edits</span><span class="p">:</span>
+<span class="w">          </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> training</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">SA6Sasa</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> active_at_start</span><span class="p">:</span><span class="w"> </span><span class="nv">false</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">SA11Kiswah</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> active_at_start</span><span class="p">:</span><span class="w"> </span><span class="nv">false</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
 <hr />
 <h3 id="build-variants"><code>build_variants:</code><a class="headerlink" href="#build-variants" title="Permanent link">&para;</a></h3>
 <p>A list of build profiles to <strong>emit together</strong>: a single <code>veaf-tools mission build</code> then produces <strong>one <code>.miz</code> per variant</strong> (the "moulinette" goal — typically Modern and Cold-War from one mission folder, the variant being only a <strong>config</strong> difference). Each variant builds the full pipeline with its merged profile (see <a href="#profiles"><code>profiles:</code></a>) and its <code>.miz</code> is suffixed with the variant name (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
