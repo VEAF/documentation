@@ -1588,6 +1588,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../mission-maker/TRAINING_VERSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versions d'entraînement par rôle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../mission-maker/LOGS/" class="md-nav__link">
         
   
@@ -1687,10 +1715,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_17" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_18" >
         
           
-          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_18" id="__nav_4_18_label" tabindex="0">
             
   
   
@@ -1708,8 +1736,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_17">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3573,6 +3601,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#propose_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        propose_training_plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_training_plan
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4786,6 +4836,28 @@
     <span class="md-ellipsis">
       
         build_mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propose_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        propose_training_plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_training_plan
       
     </span>
   </a>
@@ -6023,6 +6095,17 @@ Implémentation : <code>veaf_mission_mcp/inspect_built.py</code>.</p>
 dans la commande CLI, on la réexécute telle quelle. Un échec de build est remonté (<code>RuntimeError</code>).
 <code>profile</code> (optionnel) est passé en <code>--profile</code> — <code>LOCAL_TEST</code> pour un build de test local.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCAL_TEST&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Le résultat liste dans <code>missions</code> les <code>.miz</code> écrits par le build : celui de la soirée, et ses versions d'entraînement quand <code>mission.yaml</code> porte un bloc <code>training:</code>.</p>
+<h3 id="propose_training_plan"><code>propose_training_plan</code><a class="headerlink" href="#propose_training_plan" title="Permanent link">&para;</a></h3>
+<p>Lecture. Brouillon du bloc <code>training:</code> d'un dossier de mission (<a href="../../mission-maker/TRAINING_VERSIONS/">versions d'entraînement par rôle</a>) : vols IA ennemis à tâche air-air → <code>enemy_cap</code>, <code>cap_missions</code> → <code>enemy_cap</code>, définitions QRA du camp ennemi → <code>qra</code>, groupes portant un type que DCS classe <code>LR SAM</code> → <code>sam_lr</code>, combat zones → <code>a2g_target</code>, autres défenses aériennes dans une combat zone ou à moins de 15 km → <code>sam_threat</code>.
+Tout est proposé <strong>tel que placé</strong>, chaque élément avec sa raison : le tri entre précis et vague se fait en lisant le briefing, pas dans l'action.
+Le camp ennemi est l'opposé de celui qui porte le plus de slots joueurs (bleu par défaut).</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="set_training_plan"><code>set_training_plan</code><a class="headerlink" href="#set_training_plan" title="Permanent link">&para;</a></h3>
+<p>Écriture. Écrit le bloc <code>training:</code> de <code>mission.yaml</code> (commentaires préservés, sauvegarde avant), après les contrôles du build (<code>mission_builder.training_variants.check_training</code>) : refusé avec la liste de tous les problèmes, sinon le build suivant produit aussi <code>_TRAINING_A2G</code>, <code>_CAP</code>, <code>_SEAD</code> et <code>_ALL</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;training&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;elements&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;SA-10 *&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sam_lr&quot;</span><span class="p">}],</span><span class="w"> </span><span class="nt">&quot;randomize&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]}}</span>
 </code></pre></div>
 <h2 id="prochaines-vagues-hors-périmètre">Prochaines vagues (hors périmètre)<a class="headerlink" href="#prochaines-vagues-hors-périmètre" title="Permanent link">&para;</a></h2>
 <ul>

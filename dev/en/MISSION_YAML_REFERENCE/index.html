@@ -1588,6 +1588,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mission-maker/TRAINING_VERSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training versions, one per role
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mission-maker/LOGS/" class="md-nav__link">
         
   
@@ -1687,10 +1715,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_17" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_18" >
         
           
-          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_18" id="__nav_4_18_label" tabindex="0">
             
   
   
@@ -1708,8 +1736,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_17">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3433,6 +3461,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#profile-remove-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing Mission Editor groups
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3443,6 +3482,17 @@
     <span class="md-ellipsis">
       
         build_variants:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        training:
       
     </span>
   </a>
@@ -4119,6 +4169,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#profile-remove-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing Mission Editor groups
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4129,6 +4190,17 @@
     <span class="md-ellipsis">
       
         build_variants:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        training:
       
     </span>
   </a>
@@ -5657,6 +5729,13 @@ A name no zone carries is reported by the build and does nothing.</p>
 <span class="w">          </span><span class="nt">SA6Sasa</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> active_at_start</span><span class="p">:</span><span class="w"> </span><span class="nv">false</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">          </span><span class="nt">SA11Kiswah</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> active_at_start</span><span class="p">:</span><span class="w"> </span><span class="nv">false</span><span class="w"> </span><span class="p p-Indicator">}</span>
 </code></pre></div>
+<h4 id="profile-remove-groups">Removing Mission Editor groups<a class="headerlink" href="#profile-remove-groups" title="Permanent link">&para;</a></h4>
+<p>A profile changes configuration only, except <code>remove_groups:</code>: a list of group names, exact or as patterns (<code>"SA-10 *"</code>), that the build takes out of that profile's <code>.miz</code> — whether placed by hand, carrying a <code>#veafInterpreter</code>, members of a combat zone or statics.
+A pattern that matches no group is reported by the build.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">NO_SA10</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">remove_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;SA-10</span><span class="nv"> </span><span class="s">*&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;EWR</span><span class="nv"> </span><span class="s">Gudauta&quot;</span><span class="p p-Indicator">]</span>
+</code></pre></div>
 <hr />
 <h3 id="build-variants"><code>build_variants:</code><a class="headerlink" href="#build-variants" title="Permanent link">&para;</a></h3>
 <p>A list of build profiles to <strong>emit together</strong>: a single <code>veaf-tools mission build</code> then produces <strong>one <code>.miz</code> per variant</strong> (the "moulinette" goal — typically Modern and Cold-War from one mission folder, the variant being only a <strong>config</strong> difference). Each variant builds the full pipeline with its merged profile (see <a href="#profiles"><code>profiles:</code></a>) and its <code>.miz</code> is suffixed with the variant name (<code>&lt;base&gt;_&lt;VARIANT&gt;.miz</code>).</p>
@@ -5695,6 +5774,15 @@ A name no zone carries is reported by the build and does nothing.</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span>          <span class="c"># produces &lt;base&gt;_MODERN.miz AND &lt;base&gt;_COLD_WAR.miz</span>
 <span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="n">MODERN</span>   <span class="c"># produces only the MODERN variant (&lt;base&gt;_MODERN.miz)</span>
 </code></pre></div>
+<hr />
+<h3 id="training"><code>training:</code><a class="headerlink" href="#training" title="Permanent link">&para;</a></h3>
+<p>The mission's training versions, one per role: with this block, the build also produces <code>&lt;base&gt;_TRAINING_A2G.miz</code>, <code>_TRAINING_CAP</code>, <code>_TRAINING_SEAD</code> and <code>_TRAINING_ALL</code>, on the same setting and with the same briefing.
+<code>elements</code> classifies what the mission holds (<code>enemy_cap</code>, <code>qra</code>, <code>sam_lr</code>, <code>a2g_target</code>, <code>sam_threat</code>); <code>randomize</code> declares the briefing's vague elements, drawn again at every launch.
+The rules, examples and what is refused: <a href="../mission-maker/TRAINING_VERSIONS/">Training versions, one per role</a>.</p>
+<ul>
+<li>Cannot be combined with <code>build_variants:</code>.</li>
+<li><code>--profile TRAINING_SEAD</code> builds that version only.</li>
+</ul>
 <hr />
 <h2 id="keys-documented-elsewhere">Keys documented elsewhere<a class="headerlink" href="#keys-documented-elsewhere" title="Permanent link">&para;</a></h2>
 <p>Four top-level keys are read by the build but explained on the page that introduced them. They are
@@ -5945,6 +6033,10 @@ exactly one of them.</p>
 <tr>
 <td><a href="#build-variants"><code>build_variants:</code></a></td>
 <td>Produce one <code>.miz</code> variant per named profile</td>
+</tr>
+<tr>
+<td><a href="#training"><code>training:</code></a></td>
+<td>Training versions, one per role, built with the mission</td>
 </tr>
 </tbody>
 </table>

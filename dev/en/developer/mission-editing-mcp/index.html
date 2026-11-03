@@ -1588,6 +1588,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../mission-maker/TRAINING_VERSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training versions, one per role
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../mission-maker/LOGS/" class="md-nav__link">
         
   
@@ -1687,10 +1715,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_17" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_18" >
         
           
-          <label class="md-nav__link" for="__nav_4_17" id="__nav_4_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_18" id="__nav_4_18_label" tabindex="0">
             
   
   
@@ -1708,8 +1736,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_17">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3573,6 +3601,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#propose_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        propose_training_plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_training_plan
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4792,6 +4842,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#propose_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        propose_training_plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_training_plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_training_plan
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5989,6 +6061,17 @@ binary <code>scaffold_mission</code> installed, or <code>veaf-tools</code> on PA
 command and is re-run as-is. A build failure is surfaced (<code>RuntimeError</code>). <code>profile</code> (optional) is
 passed as <code>--profile</code> — <code>LOCAL_TEST</code> for a local test build.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission-folder&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCAL_TEST&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>The result lists in <code>missions</code> the <code>.miz</code> the build wrote: the night's, and its training versions when <code>mission.yaml</code> holds a <code>training:</code> block.</p>
+<h3 id="propose_training_plan"><code>propose_training_plan</code><a class="headerlink" href="#propose_training_plan" title="Permanent link">&para;</a></h3>
+<p>Read. Drafts the <code>training:</code> block of a mission folder (<a href="../../mission-maker/TRAINING_VERSIONS/">training versions, one per role</a>): enemy AI flights tasked for air combat → <code>enemy_cap</code>, <code>cap_missions</code> → <code>enemy_cap</code>, the enemy side's QRA definitions → <code>qra</code>, groups holding a type DCS rates <code>LR SAM</code> → <code>sam_lr</code>, combat zones → <code>a2g_target</code>, other air defences inside a combat zone or within 15 km of one → <code>sam_threat</code>.
+Everything is proposed <strong>as placed</strong>, each element with its reason: sorting what is stated from what is vague is done by reading the briefing, not in the action.
+The enemy side is the one opposite the side holding the most player slots (blue players by default).</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission-folder&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="set_training_plan"><code>set_training_plan</code><a class="headerlink" href="#set_training_plan" title="Permanent link">&para;</a></h3>
+<p>Write. Writes the <code>training:</code> block of <code>mission.yaml</code> (comments preserved, backed up first), after the build's own checks (<code>mission_builder.training_variants.check_training</code>): refused with every problem listed, otherwise the next build also produces <code>_TRAINING_A2G</code>, <code>_CAP</code>, <code>_SEAD</code> and <code>_ALL</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mission_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/mission-folder&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;training&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;elements&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;SA-10 *&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sam_lr&quot;</span><span class="p">}],</span><span class="w"> </span><span class="nt">&quot;randomize&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]}}</span>
 </code></pre></div>
 <h2 id="next-waves-out-of-scope">Next waves (out of scope)<a class="headerlink" href="#next-waves-out-of-scope" title="Permanent link">&para;</a></h2>
 <ul>
