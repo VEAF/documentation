@@ -1253,6 +1253,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le vent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#gotcha" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3430,6 +3441,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le vent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#gotcha" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3521,6 +3543,28 @@ côté de la mission de base, dans <code>missions/</code>. Une seule mission sou
 <li><strong>Dates</strong> : <code>"AAAA-MM-JJ"</code>, <code>today</code>, <code>tomorrow</code>, <code>+N</code> / <code>-N</code> jours.</li>
 <li><strong><code>metar:</code></strong> remplace le bloc <code>weather:</code> par une observation réelle.</li>
 </ul>
+<h2 id="wind">Le vent<a class="headerlink" href="#wind" title="Permanent link">&para;</a></h2>
+<p><strong><code>wind_speed</code> et <code>wind_direction</code> sont le vent voulu à 10 m au-dessus d'un terrain de référence</strong>, tel qu'un METAR ou l'ATIS le donnera là-bas — pas le réglage de l'éditeur de mission.
+DCS multiplie son « vent au sol » par 2,14 au niveau de la mer, et le réduit près du sol d'autant moins que le terrain est haut : 9 m/s réglés (17 kt) ont soufflé 24 kt à 10 m au-dessus de Rosh Pina et 36 kt à 1 000 ft (<a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/whitepapers/dcs-wind-model.fr.md">le modèle du vent de DCS</a>).
+Le build écrit donc le réglage qui donne le vent voulu, et le journal dit pour quel terrain.</p>
+<ul>
+<li><strong>Le terrain de référence</strong> est, dans l'ordre : la station du METAR quand elle est sur la carte ; sinon <code>reference_airfield</code> ; sinon le terrain de départ du premier groupe joueur ; sinon le niveau de la mer, avec un avertissement (le vent sera plus fort sur tout terrain à l'intérieur des terres).</li>
+<li><strong>En altitude</strong>, le vent à 2 000 m vaut 2,2 fois le réglage au sol, tourné de 20° vers la droite (<code>wind_veer</code>, de 0 à 30°) ; à 8 000 m, 3 m/s de plus. Le vent ne fait ainsi que forcir avec la hauteur.
+  <code>wind_speed_2000</code> / <code>wind_direction_2000</code> et <code>wind_speed_8000</code> / <code>wind_direction_8000</code> (d'où vient le vent, en degrés) les règlent à la main ; un vent à 2 000 m sous 2,14 fois le réglage au sol fait un jet entre 300 et 600 m sol, et le build le signale.
+  Ne réglez jamais un vent d'altitude opposé à celui du sol : DCS fait entre les deux une couche sans vent.</li>
+<li><strong><code>clearsky: true</code></strong> plafonne le vent voulu à 15 kt, donc le vent simulé au sol au terrain de référence, et retire les rafales.</li>
+<li><strong>Les rafales</strong> : le groupe <code>G</code> d'un METAR (<code>27015G25KT</code>), ou <code>wind_gust</code> (m/s), devient la turbulence de DCS (<code>groundTurbulence</code>), d'après la mesure en jeu : un écart rafale − vent moyen de G demande une turbulence de G / 0,62, plafonnée à 3 m/s. <code>turbulence</code> (m/s, comme l'éditeur l'affiche) l'emporte sur la rafale.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">versions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windy</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10:00&quot;</span>
+<span class="w">    </span><span class="nt">weather</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7.7</span><span class="w">           </span><span class="c1"># 15 kt à 10 m au-dessus de Rosh Pina</span>
+<span class="w">      </span><span class="nt">wind_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">270.0</span>
+<span class="w">      </span><span class="nt">reference_airfield</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Rosh</span><span class="nv"> </span><span class="s">Pina&quot;</span>
+<span class="w">      </span><span class="nt">wind_gust</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.3</span><span class="w">           </span><span class="c1"># 20 kt</span>
+</code></pre></div>
+<p>Le briefing annonce le vent <strong>simulé</strong>, couche par couche : celui que donnent <code>inspect_built_mission</code> et le deck de briefing, et que <code>veaf-tools dcs mission-check</code> vérifie contre le briefing, sans DCS (<a href="../../../CLI_REFERENCE/#mission-check">mission-check</a>).</p>
 <h2 id="gotcha">Le piège<a class="headerlink" href="#gotcha" title="Permanent link">&para;</a></h2>
 <p><strong>Le fichier est livré non vide, donc l'étape s'exécute dès le premier build.</strong> Votre première
 mission produit deux <code>.miz</code> sans que vous ayez rien demandé : celui de la racine et

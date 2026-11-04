@@ -5115,7 +5115,7 @@ Also accepted: versions.yaml  (mission root)
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;12:00&quot;</span>
 <span class="w">    </span><span class="nt">weather</span><span class="p">:</span><span class="w">                            </span><span class="c1"># manual weather (alternative to metar)</span>
 <span class="w">      </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25.0</span><span class="w">                 </span><span class="c1"># °C, range -50..50</span>
-<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0</span><span class="w">                   </span><span class="c1"># m/s</span>
+<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0</span><span class="w">                   </span><span class="c1"># m/s, wanted 10 m above the reference airfield</span>
 <span class="w">      </span><span class="nt">wind_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">270.0</span><span class="w">             </span><span class="c1"># degrees (0=North)</span>
 <span class="w">      </span><span class="nt">visibility</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9999</span><span class="w">                  </span><span class="c1"># metres</span>
 <span class="w">      </span><span class="nt">cloud_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;clear&quot;</span><span class="w">               </span><span class="c1"># clear | few | scattered | broken | overcast</span>
@@ -5173,7 +5173,7 @@ Also accepted: versions.yaml  (mission root)
 <td><code>clearsky</code></td>
 <td>boolean</td>
 <td>No</td>
-<td>Caps the weather to visual-flight conditions: clouds at most FEW, wind under 15 kt, visibility 10 km or more, no rain, no fog. Keeps an <code>airport_icao</code>'s real weather flyable without instruments; the briefing's <a href="#briefing-variables"><code>${METAR}</code></a> describes the capped sky. Default <code>false</code></td>
+<td>Caps the weather to visual-flight conditions: clouds at most FEW, a simulated surface wind under 15 kt at the reference airfield, no gusts, visibility 10 km or more, no rain, no fog. Keeps an <code>airport_icao</code>'s real weather flyable without instruments; the briefing's <a href="#briefing-variables"><code>${METAR}</code></a> describes the capped sky. Default <code>false</code></td>
 </tr>
 </tbody>
 </table>
@@ -5322,7 +5322,7 @@ misspelt name tells you what to fix.</p>
 <td><code>wind_speed</code></td>
 <td>number</td>
 <td>—</td>
-<td>Wind speed in m/s</td>
+<td>Wind <strong>wanted 10 m above the reference airfield</strong>, in m/s — not the editor's setting, which DCS multiplies by up to 2.1: the build writes the setting that gives it (<a href="../mission-maker/concepts/weather-variants/#wind">the wind</a>)</td>
 </tr>
 <tr>
 <td><code>wind_direction</code></td>
@@ -5359,6 +5359,42 @@ misspelt name tells you what to fix.</p>
 <td>boolean</td>
 <td><code>false</code></td>
 <td>Rain: picks one of DCS's rainy cloud presets (<code>RainyPreset…</code>)</td>
+</tr>
+<tr>
+<td><code>reference_airfield</code></td>
+<td>string</td>
+<td>—</td>
+<td>Airfield the wind is wanted at (DCS name); the METAR's station on the map wins, the first player group's departure is the default, sea level the last resort</td>
+</tr>
+<tr>
+<td><code>wind_gust</code></td>
+<td>number</td>
+<td>—</td>
+<td>Gust in m/s, made into DCS turbulence (gap over the mean / 0.62, capped at 3 m/s)</td>
+</tr>
+<tr>
+<td><code>turbulence</code></td>
+<td>number</td>
+<td>—</td>
+<td>Turbulence in m/s, as the editor shows it; wins over <code>wind_gust</code></td>
+</tr>
+<tr>
+<td><code>wind_veer</code></td>
+<td>number</td>
+<td><code>20</code></td>
+<td>Turn of the wind to the right from the surface to 2,000 m, 0 to 30°</td>
+</tr>
+<tr>
+<td><code>wind_speed_2000</code> / <code>wind_direction_2000</code></td>
+<td>number</td>
+<td>—</td>
+<td>2,000 m wind set by hand (m/s, where it comes from); default: 2.2 times the ground setting, veered <code>wind_veer</code></td>
+</tr>
+<tr>
+<td><code>wind_speed_8000</code> / <code>wind_direction_8000</code></td>
+<td>number</td>
+<td>—</td>
+<td>8,000 m wind set by hand; default: the 2,000 m one plus 3 m/s</td>
 </tr>
 </tbody>
 </table>

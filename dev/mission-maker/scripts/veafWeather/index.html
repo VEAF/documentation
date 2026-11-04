@@ -2771,6 +2771,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#atis-wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le vent de l'ATIS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#commandes-chat--à-distance" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3652,6 +3663,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#atis-wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le vent de l'ATIS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#commandes-chat--à-distance" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3743,6 +3765,7 @@
 <p>La météo est injectée au moment du build (avant le chargement de la mission) avec <code>veaf-tools.exe</code> :</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-weather</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span><span class="o">-file</span> <span class="n">versions</span><span class="p">.</span><span class="n">yaml</span>
 </code></pre></div>
+<p>Le vent de <code>weather:</code> est le vent voulu à 10 m au-dessus d'un terrain de référence, pas le réglage de l'éditeur : voir <a href="../../concepts/weather-variants/#wind">Variantes météo — le vent</a>.</p>
 <h3 id="exemple-versionsyaml">Exemple versions.yaml<a class="headerlink" href="#exemple-versionsyaml" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span><span class="w">                    </span><span class="c1"># facultatif : ici une mission en Syrie</span>
 <span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span>
@@ -3856,6 +3879,51 @@
 <span class="w">    </span><span class="nv">veafWeather</span><span class="p">.</span><span class="py">FOG_ANIMATED_15M_HEAVY</span><span class="p">:</span><span class="nf">activate</span><span class="p">()</span>
 <span class="kr">end</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
+<hr />
+<h2 id="atis-wind">Le vent de l'ATIS<a class="headerlink" href="#atis-wind" title="Permanent link">&para;</a></h2>
+<p>L'ATIS, le rapport météo et la LASTE demandent le vent à DCS (<code>atmosphere.getWind</code>) au point qu'ils décrivent : le vent au sol est celui de 10 m au-dessus du terrain, le vent que DCS simule vraiment — pas le réglage de l'éditeur.</p>
+<ul>
+<li><strong>Les vitesses sont arrondies</strong>, au nœud ou au m/s le plus proche : 13,9 kt se lit 14 (elles étaient tronquées).</li>
+<li><strong>Vent max 0-2000 ft</strong> : l'ATIS ajoute une ligne avec le vent le plus fort entre le sol et 2 000 ft au-dessus du terrain, sa direction et sa hauteur, échantillonné tous les 100 ft — ce qu'il fallait aux pilotes d'hélico de <em>Marteau du Golan</em> (24 kt au sol, 36 kt à 1 000 ft). La ligne n'apparaît que quand ce maximum dépasse le vent au sol de 5 kt ou plus, pour qu'un profil calme n'allonge pas l'ATIS.</li>
+<li><strong>Rafales, en option</strong> : avec <code>veafWeather.announceGusts = true</code> (désactivé par défaut), l'ATIS échantillonne <code>atmosphere.getWindWithTurbulence</code> sur un cercle de 100 m autour du terrain et annonce la rafale, à la manière du METAR, quand la pointe dépasse le vent moyen de 10 kt ou plus. Désactivé par défaut parce que DCS ajoute un plancher de turbulence même sans réglage : un ATIS qui annoncerait des rafales que personne n'a réglées serait du bruit.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Réglage</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafWeather.MaxWindTopFeet</code></td>
+<td><code>2000</code></td>
+<td>Hauteur sol jusqu'où le vent max est cherché</td>
+</tr>
+<tr>
+<td><code>veafWeather.MaxWindStepFeet</code></td>
+<td><code>100</code></td>
+<td>Pas d'échantillonnage</td>
+</tr>
+<tr>
+<td><code>veafWeather.MaxWindShowAboveSurfaceKnots</code></td>
+<td><code>5</code></td>
+<td>Écart au vent au sol à partir duquel la ligne s'affiche</td>
+</tr>
+<tr>
+<td><code>veafWeather.announceGusts</code></td>
+<td><code>false</code></td>
+<td>Annoncer les rafales</td>
+</tr>
+<tr>
+<td><code>veafWeather.GustAboveMeanKnots</code></td>
+<td><code>10</code></td>
+<td>Écart au vent moyen à partir duquel une rafale est annoncée</td>
+</tr>
+</tbody>
+</table>
+<p>Pour le vent que la mission règle, voir <a href="../../concepts/weather-variants/#wind">Variantes météo — le vent</a>.</p>
 <hr />
 <h2 id="commandes-chat--à-distance">Commandes chat / à distance<a class="headerlink" href="#commandes-chat--à-distance" title="Permanent link">&para;</a></h2>
 <p>Ces commandes passent par le tchat (nécessite <code>veafRemote</code> et le <a href="../veafServerHook/">hook serveur</a>) —

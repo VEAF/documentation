@@ -5690,10 +5690,17 @@ targets a mission folder (durable) or a <code>.miz</code>, backed up first.</p>
   <code>l10n/DEFAULT/dictionary</code> behind it, so the reference stays valid; <code>write_mission_folder</code> now
   writes that dictionary back, only when it changes.</li>
 <li><code>set_weather(target, metar?, temperature?, wind_speed?, wind_direction?, visibility?, cloud_type?,
-  cloud_height?, precipitation?, fog_enabled?, clearsky?)</code> — the <strong>base</strong> mission's weather, in the
-  fields DCS reads (ticket 19: the blank mission has its clouds on the ground, <code>Preset1</code> at 0 m). Same
-  vocabulary and converter as <code>versions[].weather</code>, so a METAR works too; the variants still override
-  it at build.</li>
+  cloud_height?, precipitation?, fog_enabled?, clearsky?, reference_airfield?, wind_gust?, turbulence?,
+  wind_veer?, wind_speed_2000?, wind_direction_2000?, wind_speed_8000?, wind_direction_8000?)</code> — the
+  <strong>base</strong> mission's weather, in the fields DCS reads (ticket 19: the blank mission has its clouds on the
+  ground, <code>Preset1</code> at 0 m). Same vocabulary and converter as <code>versions[].weather</code>, so a METAR works too;
+  the variants still override it at build.
+  <code>wind_speed</code> is the wind <strong>wanted 10 m above the reference airfield</strong>, not a DCS setting
+  (FEAT-MISSION-WIND-CHECK): the answer gives <code>reference_airfield</code> (name, elevation, how it was chosen),
+  <code>simulated_wind</code> (the wind DCS will simulate above it, by layer: surface, 1,000 and 3,000 ft above the
+  ground, FL100, FL250) and <code>warnings</code> — sea level used for want of an airfield, a jet in the low layer,
+  and with a helicopter slot, every place where the simulated wind exceeds 20 kt 0-600 m above the ground
+  (<a href="../../mission-maker/concepts/weather-variants/#wind">the wind</a>).</li>
 </ul>
 <blockquote>
 <p>Password <strong>hashes</strong> (<code>veafSecurity.password_L9[...]</code> / <code>password_MM[...]</code>) — a multi-line

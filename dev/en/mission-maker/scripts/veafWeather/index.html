@@ -2771,6 +2771,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#atis-wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The ATIS wind
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#chat--remote-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3652,6 +3663,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#atis-wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The ATIS wind
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#chat--remote-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3743,6 +3765,7 @@
 <p>Weather is injected at build time (before the mission is loaded) using <code>veaf-tools.exe</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">content</span> <span class="n">inject-weather</span> <span class="n">mission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-config</span><span class="o">-file</span> <span class="n">versions</span><span class="p">.</span><span class="n">yaml</span>
 </code></pre></div>
+<p>The wind of <code>weather:</code> is the wind wanted 10 m above a reference airfield, not the editor's setting: see <a href="../../concepts/weather-variants/#wind">Weather variants — the wind</a>.</p>
 <h3 id="versionsyaml-example">versions.yaml example<a class="headerlink" href="#versionsyaml-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">position</span><span class="p">:</span><span class="w">                    </span><span class="c1"># optional: a Syria mission here</span>
 <span class="w">  </span><span class="nt">latitude</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">33.5</span>
@@ -3855,6 +3878,51 @@
 <span class="w">  </span><span class="nv">veafWeather</span><span class="p">.</span><span class="py">FOG_ANIMATED_15M_HEAVY</span><span class="p">:</span><span class="nf">activate</span><span class="p">()</span>
 <span class="kr">end</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nv">timer</span><span class="p">.</span><span class="nf">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
+<hr />
+<h2 id="atis-wind">The ATIS wind<a class="headerlink" href="#atis-wind" title="Permanent link">&para;</a></h2>
+<p>The ATIS, the weather report and the LASTE ask DCS for the wind (<code>atmosphere.getWind</code>) at the point they describe: the surface wind is the one 10 m above the airfield, the wind DCS really simulates — not the editor's setting.</p>
+<ul>
+<li><strong>Speeds are rounded</strong>, to the nearest knot or m/s: 13.9 kt reads 14 (they used to be truncated).</li>
+<li><strong>Max wind 0-2000 ft</strong>: the ATIS adds a line with the strongest wind between the surface and 2,000 ft above the airfield, its direction and its height, sampled every 100 ft — what the helicopter pilots of <em>Marteau du Golan</em> needed (24 kt at the surface, 36 kt at 1,000 ft). The line shows only when that maximum beats the surface wind by 5 kt or more, so a calm profile does not lengthen the ATIS.</li>
+<li><strong>Gusts, as an option</strong>: with <code>veafWeather.announceGusts = true</code> (off by default), the ATIS samples <code>atmosphere.getWindWithTurbulence</code> on a 100 m ring around the airfield and announces the gust, the METAR way, when the peak beats the mean wind by 10 kt or more. Off by default because DCS adds a turbulence floor even with none set: an ATIS announcing gusts nobody set would be noise.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>veafWeather.MaxWindTopFeet</code></td>
+<td><code>2000</code></td>
+<td>Height above the ground the max wind is looked for up to</td>
+</tr>
+<tr>
+<td><code>veafWeather.MaxWindStepFeet</code></td>
+<td><code>100</code></td>
+<td>Sampling step</td>
+</tr>
+<tr>
+<td><code>veafWeather.MaxWindShowAboveSurfaceKnots</code></td>
+<td><code>5</code></td>
+<td>Gap over the surface wind from which the line shows</td>
+</tr>
+<tr>
+<td><code>veafWeather.announceGusts</code></td>
+<td><code>false</code></td>
+<td>Announce gusts</td>
+</tr>
+<tr>
+<td><code>veafWeather.GustAboveMeanKnots</code></td>
+<td><code>10</code></td>
+<td>Gap over the mean wind from which a gust is announced</td>
+</tr>
+</tbody>
+</table>
+<p>For the wind the mission sets, see <a href="../../concepts/weather-variants/#wind">Weather variants — the wind</a>.</p>
 <hr />
 <h2 id="chat--remote-commands">Chat / Remote Commands<a class="headerlink" href="#chat--remote-commands" title="Permanent link">&para;</a></h2>
 <p>These commands go through the chat window (requires <code>veafRemote</code> and the

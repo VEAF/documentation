@@ -5117,7 +5117,7 @@ Aussi accepté : versions.yaml  (racine du dossier mission)
 <span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;12:00&quot;</span>
 <span class="w">    </span><span class="nt">weather</span><span class="p">:</span><span class="w">                            </span><span class="c1"># météo manuelle (alternative au metar)</span>
 <span class="w">      </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25.0</span><span class="w">                 </span><span class="c1"># °C, plage -50..50</span>
-<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0</span><span class="w">                   </span><span class="c1"># m/s</span>
+<span class="w">      </span><span class="nt">wind_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0</span><span class="w">                   </span><span class="c1"># m/s, voulu à 10 m au-dessus du terrain de référence</span>
 <span class="w">      </span><span class="nt">wind_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">270.0</span><span class="w">             </span><span class="c1"># degrés (0=Nord)</span>
 <span class="w">      </span><span class="nt">visibility</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9999</span><span class="w">                  </span><span class="c1"># mètres</span>
 <span class="w">      </span><span class="nt">cloud_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;clear&quot;</span><span class="w">               </span><span class="c1"># clear | few | scattered | broken | overcast</span>
@@ -5175,7 +5175,7 @@ Aussi accepté : versions.yaml  (racine du dossier mission)
 <td><code>clearsky</code></td>
 <td>booléen</td>
 <td>Non</td>
-<td>Plafonne la météo à des conditions de vol à vue : nuages au plus FEW, vent sous 15 kt, visibilité de 10 km ou plus, ni pluie ni brouillard. Garde la vraie météo d'un <code>airport_icao</code> tout en restant pilotable à vue ; le <a href="#briefing-variables"><code>${METAR}</code></a> du briefing décrit le ciel plafonné. Défaut <code>false</code></td>
+<td>Plafonne la météo à des conditions de vol à vue : nuages au plus FEW, vent simulé au sol du terrain de référence sous 15 kt, sans rafales, visibilité de 10 km ou plus, ni pluie ni brouillard. Garde la vraie météo d'un <code>airport_icao</code> tout en restant pilotable à vue ; le <a href="#briefing-variables"><code>${METAR}</code></a> du briefing décrit le ciel plafonné. Défaut <code>false</code></td>
 </tr>
 </tbody>
 </table>
@@ -5321,7 +5321,7 @@ nom visiblement mal orthographié vous dit quoi corriger.</p>
 <tr>
 <td><code>wind_speed</code></td>
 <td>nombre</td>
-<td>Vitesse du vent en m/s</td>
+<td>Vent <strong>voulu à 10 m au-dessus du terrain de référence</strong>, en m/s — pas le réglage de l'éditeur, que DCS multiplie jusqu'à 2,1 : le build écrit le réglage qui le donne (<a href="../mission-maker/concepts/weather-variants/#wind">le vent</a>)</td>
 </tr>
 <tr>
 <td><code>wind_direction</code></td>
@@ -5352,6 +5352,36 @@ nom visiblement mal orthographié vous dit quoi corriger.</p>
 <td><code>precipitation</code></td>
 <td>booléen</td>
 <td>Pluie : choisit un preset de nuages pluvieux de DCS (<code>RainyPreset…</code>)</td>
+</tr>
+<tr>
+<td><code>reference_airfield</code></td>
+<td>string</td>
+<td>Terrain où le vent est voulu (nom DCS) ; la station du METAR sur la carte l'emporte, le départ du premier groupe joueur est le défaut, le niveau de la mer le dernier recours</td>
+</tr>
+<tr>
+<td><code>wind_gust</code></td>
+<td>nombre</td>
+<td>Rafale en m/s, changée en turbulence DCS (écart à la moyenne / 0,62, plafonné à 3 m/s)</td>
+</tr>
+<tr>
+<td><code>turbulence</code></td>
+<td>nombre</td>
+<td>Turbulence en m/s, comme l'éditeur l'affiche ; l'emporte sur <code>wind_gust</code></td>
+</tr>
+<tr>
+<td><code>wind_veer</code></td>
+<td>nombre</td>
+<td>Rotation du vent vers la droite entre le sol et 2 000 m, de 0 à 30° (20 par défaut)</td>
+</tr>
+<tr>
+<td><code>wind_speed_2000</code> / <code>wind_direction_2000</code></td>
+<td>nombre</td>
+<td>Vent à 2 000 m réglé à la main (m/s, d'où il vient) ; défaut : 2,2 fois le réglage au sol, tourné de <code>wind_veer</code></td>
+</tr>
+<tr>
+<td><code>wind_speed_8000</code> / <code>wind_direction_8000</code></td>
+<td>nombre</td>
+<td>Vent à 8 000 m réglé à la main ; défaut : celui de 2 000 m plus 3 m/s</td>
 </tr>
 </tbody>
 </table>

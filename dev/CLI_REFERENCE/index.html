@@ -7417,8 +7417,11 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 </code></pre></div>
 <p><em>Alias plat : <code>veaf-tools mission-check-prepare</code></em></p>
 <h3 id="mission-check"><code>veaf-tools dcs mission-check</code><a class="headerlink" href="#mission-check" title="Permanent link">&para;</a></h3>
-<p>Vérifie la mission <strong>lancée dans DCS</strong> — la copie écrite par <a href="#mission-check-prepare"><code>mission-check-prepare</code></a>, que vous avez lancée vous-même — par le <a href="#dcs-bridge">bridge VEAF</a>, et écrit une ligne par vérification puis un verdict :</p>
+<p>Vérifie une mission et écrit une ligne par vérification puis un verdict. Avec la mission construite en argument (le <code>.miz</code> ou son dossier), elle commence par <strong>le vent, sans DCS</strong> ; puis elle vérifie la mission <strong>lancée dans DCS</strong> — la copie écrite par <a href="#mission-check-prepare"><code>mission-check-prepare</code></a>, que vous avez lancée vous-même — par le <a href="#dcs-bridge">bridge VEAF</a> :</p>
 <ul>
+<li><strong>vent</strong> (sans DCS) : à chaque départ des joueurs (terrain d'un slot <code>Client</code>, terrain à slots dynamiques), chaque zone de combat de <code>veaf-config.lua</code> et chaque point de route d'un hélico joueur — regroupés à 5 km —, le vent que DCS simulera, calculé par le <a href="https://github.com/VEAF/VEAF-Mission-Creation-Tools/blob/develop/docs/whitepapers/dcs-wind-model.fr.md">modèle du vent de DCS</a> depuis le <code>.miz</code>. Chaque vent qu'annoncent les textes du briefing (<code>descriptionText</code>, <code>descriptionBlueTask</code>, <code>descriptionRedTask</code>, et dans le dossier <code>docs/briefing-contenu.md</code> et <code>docs/briefing.pptx</code>, en français et en anglais : <code>270/17</code>, <code>270° 17 kt</code>, <code>17 kt from the west</code>, <code>vent du 270 pour 17 nœuds</code>…) est comparé au vent simulé à la couche qu'il nomme — au sol (10 m, aux terrains de départ), « en altitude » (1 000 ft sol à FL100), « basse altitude » (0 à 600 m sol), ou une hauteur en pieds. Une vitesse à plus de <strong>5 kt</strong> de la plage simulée, ou une direction à plus de <strong>30°</strong>, <strong>échoue</strong> ; un vent mentionné sans chiffre est relevé, pas jugé. Les pages de planchette sont dessinées depuis les mêmes textes : vérifier le deck les couvre.
+  Avec un slot hélico, la <strong>règle hélico</strong> — de 0 à 600 m sol, au plus <strong>20 kt</strong>, et pas plus de <strong>15 kt</strong> au-dessus du vent au sol — donne un <strong>avertissement</strong> par endroit : il ne fait pas échouer, sauf si le briefing n'annonce aucun vent au-dessus du sol (les pilotes ne sont pas prévenus). Les avertissements sont comptés à part dans le verdict.
+  Sans DCS lancé, le verdict du vent tient seul, et la commande dit que le reste demande le jeu ;</li>
 <li><strong>menus F10</strong> : chaque entrée du menu radio VEAF a un libellé ; une entrée vide est signalée avec son chemin (<code>VEAF &gt; Zones &gt; ∅</code>) ;</li>
 <li><strong>zones et missions de combat</strong> : chacune est activée puis désactivée, ses unités comptées à chaque fois, et elle est <strong>laissée comme elle était</strong> ; une CAP est vérifiée sous chacun de ses noms de variante (<code>&lt;nom&gt;/&lt;niveau&gt;/&lt;échelle&gt;</code>) ; une <em>opération</em> est signalée mais pas basculée (elle entraînerait ses zones) ;</li>
 <li><strong>colonnes</strong> : chaque groupe au sol qui a une route de plus d'un point — de la mission ou tiré par une zone — doit rouler dans les 60 secondes. C'est ce contrôle qui trouve une colonne figée par un tronçon « On Road » sans route à suivre.</li>
@@ -7435,10 +7438,28 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 </thead>
 <tbody>
 <tr>
+<td><code>MISSION</code></td>
+<td><code>chemin</code></td>
+<td><em>(aucun)</em></td>
+<td>Le <code>.miz</code> construit ou son dossier de mission : son vent est vérifié contre le briefing, sans DCS, avant les vérifications en jeu.</td>
+</tr>
+<tr>
 <td><code>--only</code></td>
 <td><code>str</code></td>
 <td><em>(toutes)</em></td>
 <td>Nom d'une zone ou mission de combat à vérifier ; répétez pour plusieurs. Les menus et les colonnes de la mission sont vérifiés dans tous les cas.</td>
+</tr>
+<tr>
+<td><code>--wind-only</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Ne vérifier que le vent, sans DCS.</td>
+</tr>
+<tr>
+<td><code>--measure-wind</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Avec la copie de test lancée, lire aussi <code>atmosphere.getWind</code> aux mêmes endroits et le comparer au modèle : un écart de plus de 0,5 kt échoue, avec la version de DCS et celle du modèle (2.9.31.29434) — DCS a changé son vent, la mesure du whitepaper est à refaire. La table mesurée est écrite à côté de la copie, <code>&lt;nom&gt;_CHECK.wind.json</code>.</td>
 </tr>
 <tr>
 <td><code>--verbose</code></td>
@@ -7449,7 +7470,8 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 </tbody>
 </table>
 <p>Plus les <a href="#dcs-bridge">options du bridge</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">mission-check</span>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">mission-check</span> <span class="n">MaMission</span><span class="p">.</span><span class="n">miz</span> <span class="p">-</span><span class="n">-wind-only</span>
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">mission-check</span> <span class="n">MaMission</span><span class="p">.</span><span class="n">miz</span>
 </code></pre></div>
 <p><em>Alias plat : <code>veaf-tools mission-check</code></em></p>
 <h3 id="recon-photos">Photos de reconnaissance — <code>recon-prepare</code>, <code>recon-plan</code>, <code>recon-shoot</code>, <code>recon-render</code><a class="headerlink" href="#recon-photos" title="Permanent link">&para;</a></h3>
