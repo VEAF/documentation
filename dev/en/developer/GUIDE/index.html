@@ -5074,10 +5074,13 @@ git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </
 <span class="c1"># 2. back-merge, so develop shares master&#39;s history again</span>
 git<span class="w"> </span>checkout<span class="w"> </span>develop
 git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>develop
-git<span class="w"> </span>merge<span class="w"> </span>origin/master
+git<span class="w"> </span>merge<span class="w"> </span>origin/master<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Merge branch &#39;master&#39; into develop [skip ci]&quot;</span>
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>develop
 </code></pre></div>
 <blockquote>
+<p><strong><code>[skip ci]</code> on the back-merge:</strong> it carries exactly the code the release pull request just tested, and running it again redid seven workflows for nothing.
+The <code>dev</code> docs and the bot's <code>develop</code> image catch up on the next merge into <code>develop</code>.
+For the same reason the checks no longer run on a push to <code>master</code>: only the workflows that publish something (the bot's <code>latest</code> image, the chatbot worker) still do.</p>
 <p><strong>Warning:</strong> pushing the tag is irreversible — only run after the PR is merged.</p>
 <p><strong>Both tags, or the documentation stays on the previous version.</strong> <code>published-v*</code> publishes the
 binaries; <code>vx.y.z</code> deploys the versioned documentation and moves the <code>latest</code> alias. Pushing only

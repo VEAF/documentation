@@ -5078,10 +5078,13 @@ git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </
 <span class="c1"># 2. fusion en retour, pour que develop partage l&#39;histoire de master</span>
 git<span class="w"> </span>checkout<span class="w"> </span>develop
 git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>develop
-git<span class="w"> </span>merge<span class="w"> </span>origin/master
+git<span class="w"> </span>merge<span class="w"> </span>origin/master<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Merge branch &#39;master&#39; into develop [skip ci]&quot;</span>
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>develop
 </code></pre></div>
 <blockquote>
+<p><strong><code>[skip ci]</code> sur la fusion en retour :</strong> elle porte exactement le code que la PR de release vient de tester, et la relancer refaisait sept workflows pour rien.
+La doc <code>dev</code> et l'image <code>develop</code> du bot se mettent à jour au merge suivant dans <code>develop</code>.
+Pour la même raison, les contrôles ne tournent plus sur un push vers <code>master</code> : seuls les workflows qui publient quelque chose (image <code>latest</code> du bot, worker du chatbot) y tournent encore.</p>
 <p><strong>Attention :</strong> pousser le tag est irréversible — uniquement après le merge de la PR.</p>
 <p><strong>Les deux tags, ou la documentation reste sur la version précédente.</strong> <code>published-v*</code> publie les
 binaires ; <code>vx.y.z</code> déploie la documentation et déplace l'alias <code>latest</code>. Ne pousser que le premier
