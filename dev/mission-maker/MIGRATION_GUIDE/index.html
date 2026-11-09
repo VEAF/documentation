@@ -1667,6 +1667,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#post-build-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vos propres étapes après le build
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3897,6 +3908,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#post-build-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vos propres étapes après le build
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4259,7 +4281,7 @@ le dossier courant — exprès. <code>cmd.exe</code> accepte les deux formes, do
 <tr>
 <td><strong>Script de build</strong></td>
 <td><code>build.cmd</code> complexe avec une ligne par commande d'injection</td>
-<td>Pas de <code>build.cmd</code> — lancez simplement <code>.\veaf-tools-updater.exe</code> puis <code>.\veaf-tools.exe mission build</code></td>
+<td>Pas de <code>build.cmd</code> — lancez simplement <code>.\veaf-tools-updater.exe</code> puis <code>.\veaf-tools.exe mission build</code> ; vos propres étapes vont dans un script à vous (<a href="#post-build-steps">Vos propres étapes après le build</a>)</td>
 </tr>
 <tr>
 <td><strong>Pipeline d'auto-injection</strong></td>
@@ -4403,6 +4425,22 @@ le dossier courant — exprès. <code>cmd.exe</code> accepte les deux formes, do
 <li>distingue, parmi les réglages qu'il ne peut pas reporter, ceux que votre script <strong>calcule</strong> (lus dans des données, par un appel) au lieu de les écrire comme une valeur.</li>
 </ul>
 <p>La méthode complète est dans <a href="../custom-script-layer/">Porter une mission à couche de scripts maison</a>.</p>
+<h4 id="post-build-steps">Vos propres étapes après le build<a class="headerlink" href="#post-build-steps" title="Permanent link">&para;</a></h4>
+<p>En v5, <code>build.cmd</code> était à vous : on y ajoutait ses propres étapes. En v6, VEAF ne fournit plus de script de build, mais rien ne vous empêche d'en écrire un qui lance le build, puis vos traitements à vous sur le <code>.miz</code> produit — par exemple injecter ou modifier vos propres triggers selon que vous construisez pour le serveur ou pour vos tests.</p>
+<p>Choisissez la variante avec un <a href="../GUIDE/#build-profiles">profil de build</a> (<code>--profile TEST</code>, <code>--profile SERVER</code>) : chaque profil écrit son propre <code>.miz</code>, suffixé de son nom (<code>MaMission_20261109_TEST.miz</code>). Un <code>build.ps1</code> dans le dossier de la mission :</p>
+<div class="highlight"><pre><span></span><code><span class="k">param</span><span class="p">(</span><span class="no">[string]</span><span class="nv">$BuildProfile</span> <span class="p">=</span> <span class="s2">&quot;TEST&quot;</span><span class="p">)</span>
+
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="nv">$BuildProfile</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$LASTEXITCODE</span> <span class="o">-ne</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="nv">$LASTEXITCODE</span> <span class="p">}</span>
+
+<span class="c"># Le .miz que ce build vient d&#39;écrire</span>
+<span class="nv">$miz</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">-Filter</span> <span class="s2">&quot;*_$BuildProfile.miz&quot;</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">LastWriteTime</span> <span class="n">-Descending</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">1</span>
+
+<span class="c"># Vos étapes à vous, sur ce fichier</span>
+<span class="p">.\</span><span class="n">mon-outil</span><span class="p">.</span><span class="n">exe</span> <span class="nv">$miz</span><span class="p">.</span><span class="n">FullName</span>
+</code></pre></div>
+<p>Lancez-le avec <code>.\build.ps1 -BuildProfile SERVER</code>. Si PowerShell refuse d'exécuter un script (« l'exécution de scripts est désactivée sur ce système »), lancez-le avec <code>powershell -ExecutionPolicy Bypass -File .\build.ps1</code>.</p>
+<p>Le fichier <code>mission</code> du <code>.miz</code> est écrit dans la même mise en forme que l'éditeur de mission (<code>["coalition"] =</code>, indentation par tabulations, commentaires <code>-- end of</code>) : un outil qui lit une mission sauvée par l'éditeur lit aussi celle de VEAF. L'ordre des clés, lui, n'est pas celui de l'éditeur, qui le change d'ailleurs à chaque sauvegarde : ne vous appuyez pas dessus.</p>
 <hr />
 <h2 id="intégration-de-veaf-mct-dans-une-mission-dcs-vanilla">Intégration de VEAF MCT dans une mission DCS vanilla<a class="headerlink" href="#intégration-de-veaf-mct-dans-une-mission-dcs-vanilla" title="Permanent link">&para;</a></h2>
 <p>Une mission <strong>vanilla</strong> n'a pas de scripts VEAF MCT, pas de triggers spéciaux, et a été construite entièrement avec l'éditeur de missions DCS.</p>

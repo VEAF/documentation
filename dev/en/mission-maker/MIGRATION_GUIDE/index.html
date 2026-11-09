@@ -1667,6 +1667,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#post-build-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your own steps after the build
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3897,6 +3908,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#post-build-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your own steps after the build
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4259,7 +4281,7 @@ current directory — on purpose. <code>cmd.exe</code> accepts both forms, so <c
 <tr>
 <td><strong>Build script</strong></td>
 <td>Complex <code>build.cmd</code> with one line per inject command</td>
-<td>No <code>build.cmd</code> — just run <code>.\veaf-tools-updater.exe</code> then <code>.\veaf-tools.exe mission build</code></td>
+<td>No <code>build.cmd</code> — just run <code>.\veaf-tools-updater.exe</code> then <code>.\veaf-tools.exe mission build</code>; your own steps go in a script of your own (<a href="#post-build-steps">Your own steps after the build</a>)</td>
 </tr>
 <tr>
 <td><strong>Auto-inject pipeline</strong></td>
@@ -4403,6 +4425,22 @@ current directory — on purpose. <code>cmd.exe</code> accepts both forms, so <c
 <li>says apart, among the settings it cannot carry, those your script <strong>computes</strong> (read from data, a function call) rather than writes as a value.</li>
 </ul>
 <p>The whole method is in <a href="../custom-script-layer/">Porting a mission with its own script layer</a>.</p>
+<h4 id="post-build-steps">Your own steps after the build<a class="headerlink" href="#post-build-steps" title="Permanent link">&para;</a></h4>
+<p>In v5, <code>build.cmd</code> was yours: you added your own steps to it. In v6, VEAF ships no build script any more, but nothing stops you from writing one that runs the build, then your own processing of the <code>.miz</code> it wrote — for instance injecting or changing your own triggers depending on whether you build for the server or for your tests.</p>
+<p>Pick the variant with a <a href="../GUIDE/#build-profiles">build profile</a> (<code>--profile TEST</code>, <code>--profile SERVER</code>): each profile writes its own <code>.miz</code>, suffixed with its name (<code>MyMission_20261109_TEST.miz</code>). A <code>build.ps1</code> in the mission folder:</p>
+<div class="highlight"><pre><span></span><code><span class="k">param</span><span class="p">(</span><span class="no">[string]</span><span class="nv">$BuildProfile</span> <span class="p">=</span> <span class="s2">&quot;TEST&quot;</span><span class="p">)</span>
+
+<span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">mission</span> <span class="n">build</span> <span class="p">-</span><span class="n">-profile</span> <span class="nv">$BuildProfile</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$LASTEXITCODE</span> <span class="o">-ne</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="nv">$LASTEXITCODE</span> <span class="p">}</span>
+
+<span class="c"># The .miz this build has just written</span>
+<span class="nv">$miz</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">-Filter</span> <span class="s2">&quot;*_$BuildProfile.miz&quot;</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">LastWriteTime</span> <span class="n">-Descending</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">1</span>
+
+<span class="c"># Your own steps, on that file</span>
+<span class="p">.\</span><span class="n">my-tool</span><span class="p">.</span><span class="n">exe</span> <span class="nv">$miz</span><span class="p">.</span><span class="n">FullName</span>
+</code></pre></div>
+<p>Run it with <code>.\build.ps1 -BuildProfile SERVER</code>. If PowerShell refuses to run a script ("running scripts is disabled on this system"), run it with <code>powershell -ExecutionPolicy Bypass -File .\build.ps1</code>.</p>
+<p>The <code>.miz</code>'s <code>mission</code> file is written in the Mission Editor's layout (<code>["coalition"] =</code>, tab indentation, <code>-- end of</code> comments): a tool that reads a mission saved by the editor reads VEAF's too. The key order is not the editor's, which changes it on every save anyway: do not rely on it.</p>
 <hr />
 <h2 id="integrating-veaf-mct-into-a-vanilla-dcs-mission">Integrating VEAF MCT into a Vanilla DCS Mission<a class="headerlink" href="#integrating-veaf-mct-into-a-vanilla-dcs-mission" title="Permanent link">&para;</a></h2>
 <p>A <strong>vanilla</strong> mission has no VEAF MCT scripts, no special triggers, and was built entirely with the DCS Mission Editor.</p>
