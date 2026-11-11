@@ -3620,11 +3620,15 @@ stays empty on the radio. A literal frequency, on the other hand, is never dropp
 after a build. It is only written when something is wrong, and deleted once nothing is.</p>
 <h2 id="capacity">A radio has a capacity<a class="headerlink" href="#capacity" title="Permanent link">&para;</a></h2>
 <p>A cockpit radio holds a fixed number of presets, and a longer list is <strong>cut at the end, with a warning at build</strong>.
+The cut goes by channel number: a channel dropped from a list (out of band) leaves its slot empty so that a pilot's channel N stays N, so the channels past the last slot go, and the others keep their number.
 The warning names the type, the radio, its capacity and how many channels were dropped: those are channels a pilot will not find in the cockpit.</p>
 <p>Example: the OH-58D Kiowa's two FM radios hold 21 presets, <code>C</code>, <code>M</code> then 1 to 19.
 A 30-entry <code>fm_supplement</code> gave them 32, and the DCS client crashed at spawn in multiplayer; the build now stops them at 21.
 For the Kiowa to get the whole list, keep FM lists at 20 entries or fewer.</p>
-<p>The declared capacities come from the channel count the aircraft's module declares itself (OH-58D, Mi-24P, CH-47F).</p>
+<p>Every radio of every aircraft has its capacity: the channel count the aircraft's module declares itself, in its <code>panelRadio</code> table.
+Warbird radios hold few (4 on the P-51D, 5 on the Spitfire), the AH-64D 10 per radio: a list the whole coalition shares is cut there, and the build says so.
+Those counts are read from the DCS datamine (<code>dcs-radio-specs.yaml</code>, field <code>channels</code>) and are refreshed with the rest of the radio data after a DCS update, by <code>veaf-build update-dcs-data --radio</code>.
+A few aircraft declare none (Flaming Cliffs, the La-7, the MiG-15bis): their lists go through whole.</p>
 <h2 id="kneeboard">The kneeboard<a class="headerlink" href="#kneeboard" title="Permanent link">&para;</a></h2>
 <p>Each aircraft type gets its page <code>KNEEBOARD/&lt;type&gt;/IMAGES/presets.png</code>: one column per radio, titled with the cockpit set (<code>1. COMM 1 · ARC-210</code>) and its band, then the channel number, the name and the frequency.
 A radio stops at its last channel; a page that is not enough continues on <code>presets_2.png</code>.</p>
