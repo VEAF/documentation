@@ -3045,10 +3045,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Installing hotload in the mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unlock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unlocking io and lfs
       
     </span>
   </a>
@@ -3067,10 +3078,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#load-order" class="md-nav__link">
+  <a href="#status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Load order
+        Checking with status
       
     </span>
   </a>
@@ -3078,10 +3089,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#per-mission-root" class="md-nav__link">
+  <a href="#load-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        One folder per mission
+        Load order
       
     </span>
   </a>
@@ -3449,10 +3460,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Installing hotload in the mission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unlock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unlocking io and lfs
       
     </span>
   </a>
@@ -3471,10 +3493,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#load-order" class="md-nav__link">
+  <a href="#status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Load order
+        Checking with status
       
     </span>
   </a>
@@ -3482,10 +3504,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#per-mission-root" class="md-nav__link">
+  <a href="#load-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        One folder per mission
+        Load order
       
     </span>
   </a>
@@ -3544,85 +3566,111 @@ It runs two ways:</p>
 </ul>
 <p>It opens no network port: everything goes through files.
 It is a third-party tool, written by Flogas; its full documentation is its <a href="https://github.com/MacFlorent/dcs-hotload#readme">README</a>.</p>
-<p>This page explains how to load it in a mission built with VMCT, <strong>without changing anything in VMCT</strong>: a small boot script, declared in <code>custom_scripts</code>.</p>
+<p>This page explains how to load it in a mission built with VMCT, <strong>without changing anything in VMCT</strong>, following hotload's own model: one copy of hotload <strong>per mission</strong>, in the mission folder, loaded by a small boot script declared in <code>custom_scripts</code>.</p>
 <blockquote>
 <p>⚠️ <strong>Recipe not tested in game yet.</strong>
-The boot script was checked with DCS's own Lua interpreter (<code>luae.exe</code>) against a mocked <code>lfs</code> and <code>env</code>, in the five cases listed <a href="#what-was-checked">below</a>; it has not run in a real mission yet.</p>
+The boot script was checked with DCS's Lua interpreter (<code>luae.exe</code>), in the cases described <a href="#what-was-checked">below</a>; it has not run in a real mission yet.</p>
 </blockquote>
 <h2 id="principle">The principle<a class="headerlink" href="#principle" title="Permanent link">&para;</a></h2>
-<p>dcs-hotload is installed <strong>once per machine</strong>, in <code>Saved Games\DCS\Scripts\dcs-hotload\</code>.
-The mission embeds a boot script that loads it <strong>when it is there</strong>, and does nothing otherwise.</p>
-<p>So the same <code>.miz</code> goes everywhere:</p>
+<p>Each mission has <strong>its own</strong> copy of hotload, in a <code>dcs-hotload\</code> folder next to its <code>mission.yaml</code>.
+Its F10 commands, its libraries and its mailbox live in that copy: two missions share nothing.</p>
+<p>hotload is only for a <strong>dynamic build</strong> (<code>--dynamic-mode</code>, or <code>build.dynamic_loading: true</code> in <code>mission.yaml</code>, see <a href="../../MISSION_YAML_REFERENCE/#build"><code>build:</code></a>).
+In a dynamic build, VMCT gives the mission the path of its folder on the machine that built it, in the <code>VEAF_DYNAMIC_MISSIONPATH</code> variable, and the mission reads its scripts from disk.
+The boot script uses it to find <code>dcs-hotload\</code>: there is no path to write by hand.</p>
 <table>
 <thead>
 <tr>
-<th>Where the mission runs</th>
+<th>How the mission is built and where it runs</th>
 <th>What happens</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Your machine, hotload installed, <code>io</code> and <code>lfs</code> unlocked</td>
+<td>Dynamic build, on your machine, <code>io</code> and <code>lfs</code> unlocked</td>
 <td>hotload starts, the <strong>Hotload</strong> F10 menu appears</td>
 </tr>
 <tr>
-<td>A server, a player, a machine without hotload</td>
-<td>nothing, and no error message</td>
+<td>Dynamic build, on your machine, after a DCS update locked <code>io</code> and <code>lfs</code> again</td>
+<td>hotload says so on screen: the unlock has to be done again</td>
 </tr>
 <tr>
-<td>A machine where <code>io</code> or <code>lfs</code> are still locked</td>
-<td>nothing, and no error message</td>
+<td>Static build, anywhere (server, player, your machine)</td>
+<td>one <code>HOTLOAD: not booted:</code> line in <code>dcs.log</code>, nothing on screen, the mission runs</td>
 </tr>
 </tbody>
 </table>
-<p>Writing the machine's path straight into the mission sources (<code>dofile([[D:\...\dcs-hotload.lua]])</code>) only works on that machine: anywhere else, the <code>dofile</code> fails while the mission loads.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>The script can therefore stay declared in the mission for good: there is no build profile to set up, and nothing to remove before handing out a static build.</p>
+<p>Why a boot script rather than the trigger <code>hotload-setup.py patch-miz</code> adds: VMCT <strong>regenerates</strong> the <code>.miz</code> on every build, and a trigger added to the <code>.miz</code> would be gone after the next build.
+The boot script lives in the mission's sources instead.
+It does what hotload's trigger does, and reuses its code.</p>
+<h2 id="install">Installing hotload in the mission<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Unlock <code>io</code> and <code>lfs</code></strong> in the DCS install's <code>Scripts\MissionScripting.lua</code>: comment out the lines <code>sanitizeModule('io')</code> and <code>sanitizeModule('lfs')</code>.
-   DCS updates put the original file back: redo the edit after each one.</li>
+<li>
+<p><strong>Download</strong> <code>dcs-hotload-&lt;version&gt;.zip</code> from hotload's <a href="https://github.com/MacFlorent/dcs-hotload/releases">GitHub releases</a>.</p>
+</li>
+<li>
+<p><strong>Extract it into the mission folder</strong>, the one holding <code>mission.yaml</code>. The archive holds a single <code>dcs-hotload\</code> folder, with <code>dcs-hotload.lua</code> inside:</p>
+</li>
 </ol>
+<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="s2">&quot;D:\Missions\my-mission&quot;</span>
+<span class="nb">Expand-Archive</span> <span class="s2">&quot;$env:USERPROFILE\Downloads\dcs-hotload-3.1.0.zip&quot;</span> <span class="p">.</span>
+</code></pre></div>
+<p>This gives:</p>
+<div class="highlight"><pre><span></span><code>my-mission\
+  mission.yaml
+  src\
+  build\
+  dcs-hotload\
+    dcs-hotload.lua
+    bin\
+</code></pre></div>
+<ol>
+<li><strong>Create <code>dcs-hotload\user-f10\</code></strong>: every <code>.lua</code> file in it becomes an F10 menu command.
+   The archive does not hold it, and without it hotload shows an error when the mission starts.
+   For the mailbox, also create <code>dcs-hotload\user-inbox\</code> and <code>dcs-hotload\user-outbox\</code> (see <a href="https://github.com/MacFlorent/dcs-hotload#mailbox">hotload's README</a>); create <code>user-lib\</code> when you need it.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">dcs-hotload</span><span class="p">\</span><span class="n">user-f10</span><span class="p">,</span> <span class="n">dcs-hotload</span><span class="p">\</span><span class="n">user-inbox</span><span class="p">,</span> <span class="n">dcs-hotload</span><span class="p">\</span><span class="n">user-outbox</span>
+</code></pre></div>
+<p>The <code>dcs-hotload\</code> folder is part of the mission's sources: your F10 commands and your libraries live in it, and it can go into the mission's git repository.</p>
+<h2 id="unlock">Unlocking <code>io</code> and <code>lfs</code><a class="headerlink" href="#unlock" title="Permanent link">&para;</a></h2>
+<p>hotload reads and writes files: it needs <code>io</code> and <code>lfs</code>, which DCS takes away from missions by default.
+hotload's setup script does the unlock; it needs Python 3.8 or later, and nothing else:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">dcs-hotload</span><span class="p">\</span><span class="n">bin</span><span class="p">\</span><span class="n">hotload-setup</span><span class="p">.</span><span class="n">py</span> <span class="n">unlock</span> <span class="p">-</span><span class="n">-dcs</span> <span class="s2">&quot;C:\Program Files\Eagle Dynamics\DCS World&quot;</span>
+</code></pre></div>
+<p><code>--dcs</code> is the DCS install folder, the one holding <code>Scripts\MissionScripting.lua</code>: nothing guesses it.
+The script comments out the <code>sanitizeModule('io')</code> and <code>sanitizeModule('lfs')</code> lines of that file and keeps the original as <code>MissionScripting.lua.bak</code>.
+If the install is under <code>C:\Program Files</code>, run PowerShell as administrator.
+By hand, it is the same edit: comment out those two lines.</p>
+<p>DCS updates put the original file back: the edit has to be redone after each one, and hotload says so on screen when it is missing.</p>
 <blockquote>
 <p>⚠️ <strong>This unlock applies to the whole DCS install, not to one mission.</strong>
-Once <code>io</code> and <code>lfs</code> are unlocked, <strong>any mission</strong> you load, including one downloaded from a multiplayer server, can read and write files on your disk.
+Once <code>io</code> and <code>lfs</code> are unlocked, <strong>any mission</strong> you load, including a mission downloaded from a multiplayer server, can read and write files on your disk.
+It also affects multiplayer integrity checks.
 That is the price of hotload, and of every tool that asks for the same edit.
 Do it on a development machine, knowingly.</p>
 </blockquote>
-<ol>
-<li><strong>Install dcs-hotload</strong>: download <code>dcs-hotload-&lt;version&gt;.zip</code> from its <a href="https://github.com/MacFlorent/dcs-hotload/releases">GitHub releases</a> and extract it into <code>Saved Games\DCS\Scripts\</code>. The archive holds a single <code>dcs-hotload\</code> folder, with <code>dcs-hotload.lua</code> inside.</li>
-</ol>
-<div class="highlight"><pre><span></span><code><span class="nb">Expand-Archive</span> <span class="s2">&quot;$env:USERPROFILE\Downloads\dcs-hotload-3.0.0.zip&quot;</span> <span class="s2">&quot;$env:USERPROFILE\Saved Games\DCS\Scripts&quot;</span>
-</code></pre></div>
-<p>If your DCS write folder is named <code>DCS.openbeta</code>, adapt the path.</p>
-<ol>
-<li><strong>Create the <code>user-f10\</code> folder</strong> next to <code>dcs-hotload.lua</code>: each <code>.lua</code> file in it becomes an F10 menu command.
-   For the mailbox, also create <code>user-inbox\</code> and <code>user-outbox\</code> (see <a href="https://github.com/MacFlorent/dcs-hotload#mailbox">hotload's README</a>).</li>
-</ol>
 <h2 id="boot-script">The boot script<a class="headerlink" href="#boot-script" title="Permanent link">&para;</a></h2>
-<p>In the mission folder, create <code>src\scripts\hotload-boot.lua</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- hotload-boot.lua: loads dcs-hotload when this machine has it, otherwise does nothing.</span>
-<span class="c1">-- One install per machine, in Saved Games\DCS\Scripts\dcs-hotload\.</span>
-<span class="c1">-- true: user-f10\, user-lib\ and the mailbox live in missions\&lt;sortie&gt;\ under the install.</span>
-<span class="kd">local</span><span class="w"> </span><span class="nv">PER_MISSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
-
-<span class="kr">if</span><span class="w"> </span><span class="nv">lfs</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">io</span><span class="w"> </span><span class="kr">then</span>
-<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">install</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">lfs</span><span class="p">.</span><span class="nf">writedir</span><span class="p">()</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s">[[Scripts\dcs-hotload]]</span>
-<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">install</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s">[[\dcs-hotload.lua]]</span>
-<span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">lfs</span><span class="p">.</span><span class="nf">attributes</span><span class="p">(</span><span class="nv">file</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">install</span>
-<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">PER_MISSION</span><span class="w"> </span><span class="kr">then</span>
-<span class="w">      </span><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">sortie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">pcall</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="nv">env</span><span class="p">.</span><span class="nf">getValueDictByKey</span><span class="p">(</span><span class="nv">env</span><span class="p">.</span><span class="py">mission</span><span class="p">.</span><span class="py">sortie</span><span class="p">)</span>
-<span class="w">      </span><span class="kr">end</span><span class="p">)</span>
-<span class="w">      </span><span class="kr">if</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nb">type</span><span class="p">(</span><span class="nv">sortie</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">sortie</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="kr">then</span>
-<span class="w">        </span><span class="nv">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">install</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s">[[\missions\]]</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="p">(</span><span class="nv">sortie</span><span class="p">:</span><span class="nf">gsub</span><span class="p">(</span><span class="s2">&quot;[^%w%-_]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;_&quot;</span><span class="p">))</span>
-<span class="w">      </span><span class="kr">end</span>
-<span class="w">    </span><span class="kr">end</span>
-<span class="w">    </span><span class="nv">Hotload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Hotload</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="p">{}</span>
-<span class="w">    </span><span class="nv">Hotload</span><span class="p">.</span><span class="py">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">root</span>
-<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">pcall</span><span class="p">(</span><span class="nb">dofile</span><span class="p">,</span><span class="w"> </span><span class="nv">file</span><span class="p">)</span>
-<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
-<span class="w">      </span><span class="nv">env</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="s2">&quot;hotload-boot: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">err</span><span class="p">))</span>
-<span class="w">    </span><span class="kr">end</span>
+<p>In the mission folder, create <code>src\scripts\hotload-boot.lua</code>; it is the same for every mission:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- hotload-boot.lua: loads the mission&#39;s copy of dcs-hotload, https://github.com/MacFlorent/dcs-hotload</span>
+<span class="c1">-- Only a dynamic build sets VEAF_DYNAMIC_MISSIONPATH, to the mission folder on the machine that</span>
+<span class="c1">-- built it; the copy is its dcs-hotload folder. In a static build, or where that folder is</span>
+<span class="c1">-- missing, the mission writes one &quot;HOTLOAD: not booted:&quot; line to dcs.log and runs on, with</span>
+<span class="c1">-- nothing on screen.</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">root</span><span class="p">,</span><span class="w"> </span><span class="nv">f</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span>
+<span class="kr">if</span><span class="w"> </span><span class="nb">type</span><span class="p">(</span><span class="nv">VEAF_DYNAMIC_MISSIONPATH</span><span class="p">)</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">VEAF_DYNAMIC_MISSIONPATH</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;VEAF_DYNAMIC_MISSIONPATH is not set (not a dynamic build)&quot;</span>
+<span class="kr">else</span>
+<span class="w">  </span><span class="nv">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VEAF_DYNAMIC_MISSIONPATH</span><span class="p">:</span><span class="nf">gsub</span><span class="p">(</span><span class="s2">&quot;[</span><span class="se">\\</span><span class="s2">/]+$&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;/dcs-hotload&quot;</span>
+<span class="w">  </span><span class="nv">f</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">loadfile</span><span class="p">(</span><span class="nv">root</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;/dcs-hotload.lua&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">f</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nv">env</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;HOTLOAD: not booted: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">err</span><span class="p">))</span>
+<span class="kr">else</span>
+<span class="w">  </span><span class="nv">Hotload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Hotload</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="nv">Hotload</span><span class="p">.</span><span class="py">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">root</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">crash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">pcall</span><span class="p">(</span><span class="nv">f</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">env</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="s2">&quot;HOTLOAD: boot failed: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">crash</span><span class="p">))</span>
 <span class="w">  </span><span class="kr">end</span>
 <span class="kr">end</span>
 </code></pre></div>
@@ -3632,19 +3680,38 @@ Do it on a development machine, knowingly.</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/hotload-boot.lua</span>
 </code></pre></div>
 <p>If the mission already has <code>custom_scripts</code>, add the line to the existing list.
-The build embeds it in the <code>.miz</code> and generates its load trigger (see <a href="../../MISSION_YAML_REFERENCE/#custom-scripts"><code>custom_scripts:</code></a>).</p>
-<p>To embed it in a development variant only, put it in a <a href="../../MISSION_YAML_REFERENCE/#profiles">build profile</a>; this is not needed, since it does nothing where hotload is not installed.</p>
+The build generates its loading (see <a href="../../MISSION_YAML_REFERENCE/#custom-scripts"><code>custom_scripts:</code></a>): in a dynamic build it is read from disk like the other mission scripts.</p>
+<p>What the script does:</p>
+<ul>
+<li><strong>it does nothing outside a dynamic build</strong>: in a static build, <code>VEAF_DYNAMIC_MISSIONPATH</code> is not set;</li>
+<li><strong>it takes the path in any form</strong>: with or without a trailing separator, <code>/</code> or <code>\</code>;</li>
+<li><strong>it does not depend on <code>io</code> or <code>lfs</code></strong>: <code>loadfile</code> stays available in a mission, unlocked or not. If the <code>dcs-hotload\</code> folder is missing, it fails cleanly and the script stops there;</li>
+<li><strong>it gives hotload its folder</strong> (<code>Hotload.root</code>): hotload looks there for <code>user-f10\</code>, <code>user-lib\</code> and the mailbox;</li>
+<li><strong>it shields the mission from a hotload error</strong>: if <code>dcs-hotload.lua</code> raises while starting, a <code>HOTLOAD: boot failed:</code> line goes to <code>dcs.log</code>, with no error window, and the rest of the mission loads.</li>
+</ul>
+<p>The <code>HOTLOAD:</code> lines are the ones hotload itself writes: a <code>grep HOTLOAD</code> on <code>dcs.log</code> finds them all.</p>
+<p><code>VEAF_DYNAMIC_MISSIONPATH</code> is the folder the build writes the <code>.miz</code> to.
+By default it is the mission folder; if you give the build a <code>.miz</code> path elsewhere, it is that folder, and VMCT's dynamic loading also looks there for <code>src\scripts\</code>.</p>
+<h2 id="status">Checking with <code>status</code><a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<p>The setup script can tell what is missing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">dcs-hotload</span><span class="p">\</span><span class="n">bin</span><span class="p">\</span><span class="n">hotload-setup</span><span class="p">.</span><span class="n">py</span> <span class="n">status</span> <span class="p">-</span><span class="n">-dcs</span> <span class="s2">&quot;C:\Program Files\Eagle Dynamics\DCS World&quot;</span> <span class="p">-</span><span class="n">-miz</span> <span class="s2">&quot;my-mission_20261111.miz&quot;</span>
+</code></pre></div>
+<p><code>--miz</code> is needed as soon as the folder holds several <code>.miz</code>, which happens fast: the build dates them (<code>&lt;name&gt;_&lt;date&gt;.miz</code>).
+On a mission set up as this page describes, the output looks like:</p>
+<div class="highlight"><pre><span></span><code>hotload-setup: dcs-hotload 3.1.0 in D:\Missions\my-mission\dcs-hotload
+hotload-setup: mailbox on
+hotload-setup: MissionScripting.lua: unlocked
+hotload-setup: my-mission_20261111.miz does not load dcs-hotload: run patch-miz
+</code></pre></div>
+<p>The first three lines are useful: the copy's version, the mailbox, the <code>io</code> and <code>lfs</code> unlock.
+<strong>The last one is wrong for us</strong>: <code>status</code> only recognizes the trigger <code>patch-miz</code> adds and a <code>dofile</code> written with a literal path, not our boot script, which starts from <code>VEAF_DYNAMIC_MISSIONPATH</code>.
+It therefore concludes that the mission does not load hotload, and exits with code 2.
+<strong>Do not run <code>patch-miz</code></strong>: it would add a second load to the <code>.miz</code>, which the next build would erase anyway.</p>
+<p>To know whether the mission really loads hotload, the surest way is to start it: the <code>dcs-hotload 3.1.0 ready</code> message on screen, and <code>HOTLOAD: ready</code> in <code>dcs.log</code>, with the root folder.</p>
 <h2 id="load-order">Load order<a class="headerlink" href="#load-order" title="Permanent link">&para;</a></h2>
 <p>Mission scripts always load in this order: <code>veaf-config.lua</code> → <code>mission-script.lua</code> → the <code>custom_scripts</code>, in declaration order.
 When the boot script runs, <strong>the VEAF modules are already loaded and initialized</strong>: a script run from hotload can call <code>veafSpawn</code>, <code>veafCombatZone</code> or any other module directly.</p>
 <p>If <code>hotload-boot.lua</code> is declared after other <code>custom_scripts</code>, those are loaded too.</p>
-<h2 id="per-mission-root">One folder per mission<a class="headerlink" href="#per-mission-root" title="Permanent link">&para;</a></h2>
-<p>By default, <code>user-f10\</code>, <code>user-lib\</code> and the mailbox are <strong>shared by every mission</strong>: they are the install folder's.</p>
-<p>For a mission to have its own, set <code>PER_MISSION</code> to <code>true</code> in the boot script.
-The root folder then becomes <code>Saved Games\DCS\Scripts\dcs-hotload\missions\&lt;mission name&gt;\</code>, where the name is the mission's <code>sortie</code> (the name typed in the Mission Editor), with every character other than a letter, a digit, <code>-</code> or <code>_</code> replaced by <code>_</code> (spaces included).
-A mission without a <code>sortie</code> keeps the shared folder.</p>
-<p>The folders are not created automatically: create <code>user-f10\</code> (and the mailbox, if needed) in that folder.
-If it is missing, hotload says so on screen when the mission starts.</p>
 <h2 id="caveats">Two reservations<a class="headerlink" href="#caveats" title="Permanent link">&para;</a></h2>
 <p><strong>The F10 menu has ten places at its root.</strong>
 DCS shows only ten entries per level of the F10 menu, and hotload adds its own, <strong>Hotload</strong>, at the root.
@@ -3656,38 +3723,52 @@ VEAF modules own radio menus, scheduled tasks and registered zones; reloading th
 hotload is for <strong>driving and testing</strong> a VEAF mission live: spawning a group, querying a zone's state, trying a piece of mission script.
 To test a change to a VEAF module, use the <a href="../GUIDE/#developer-mode">developer mode</a> and a mission restart.</p>
 <h2 id="what-was-checked">What was checked<a class="headerlink" href="#what-was-checked" title="Permanent link">&para;</a></h2>
-<p>The boot script above, extracted as is from this page, was run with the Lua 5.1 interpreter shipped with DCS (<code>bin\luae.exe</code>), against a mocked <code>lfs</code> and <code>env</code> and a fake <code>dcs-hotload.lua</code>:</p>
+<p>The boot script above, extracted as is from this page, was run with the Lua 5.1 interpreter shipped with DCS (<code>bin\luae.exe</code>), with mocked <code>env</code>, <code>trigger</code>, <code>timer</code>, <code>missionCommands</code> and <code>lfs</code>, against the real <code>dcs-hotload.lua</code> 3.1.0 and against a fake one that raises:</p>
 <table>
 <thead>
 <tr>
 <th>Case</th>
-<th>Expected and obtained</th>
+<th>Expected and observed result</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>hotload installed</td>
-<td>loaded, root = install folder</td>
+<td><code>VEAF_DYNAMIC_MISSIONPATH</code> ending with <code>/</code>, with <code>\</code>, or with no separator</td>
+<td>hotload starts, root = <code>&lt;mission folder&gt;/dcs-hotload</code>, <strong>Hotload</strong> menu created</td>
 </tr>
 <tr>
-<td>hotload installed, <code>PER_MISSION = true</code></td>
-<td>loaded, root = <code>missions\&lt;sortie&gt;</code> with special characters replaced</td>
+<td><code>VEAF_DYNAMIC_MISSIONPATH</code> not set (static build)</td>
+<td>one <code>HOTLOAD: not booted:</code> line in the log, nothing on screen, no error</td>
 </tr>
 <tr>
-<td>hotload absent</td>
-<td>nothing, no error</td>
+<td><code>VEAF_DYNAMIC_MISSIONPATH</code> empty</td>
+<td>one <code>HOTLOAD: not booted:</code> line, nothing on screen</td>
 </tr>
 <tr>
-<td><code>io</code> or <code>lfs</code> locked</td>
-<td>nothing, no error</td>
+<td>dynamic build without a <code>dcs-hotload\</code> folder</td>
+<td>one <code>HOTLOAD: not booted:</code> line, nothing on screen, no error</td>
 </tr>
 <tr>
-<td><code>dcs-hotload.lua</code> raising an error</td>
-<td>a <code>hotload-boot:</code> line in the log, the mission keeps loading</td>
+<td><code>io</code> and <code>lfs</code> locked, static build (a player)</td>
+<td>one <code>HOTLOAD: not booted:</code> line, nothing on screen, no error</td>
+</tr>
+<tr>
+<td><code>io</code> and <code>lfs</code> locked, dynamic build (your machine after an update)</td>
+<td>hotload shows on screen that the unlock has to be done again</td>
+</tr>
+<tr>
+<td><code>dcs-hotload.lua</code> that raises</td>
+<td>one <code>HOTLOAD: boot failed:</code> line in the log, nothing on screen, the mission load goes on</td>
+</tr>
+<tr>
+<td>folder present without <code>user-f10\</code></td>
+<td>hotload starts and shows on screen that it cannot read <code>user-f10</code></td>
 </tr>
 </tbody>
 </table>
-<p>It still has to be seen running in DCS.</p>
+<p>On the build side, VMCT's code was read: the trigger that sets <code>VEAF_DYNAMIC_MISSIONPATH</code> has the condition <code>return false</code> in a static build, and a default build of a test mission does carry that condition.</p>
+<p><code>hotload-setup.py status</code> 3.1.0 was run on a <code>.miz</code> built by VMCT (the demo mission), with this script added under <code>l10n/DEFAULT/</code>, where the build puts <code>custom_scripts</code>: it answers <code>does not load dcs-hotload: run patch-miz</code> and exits with code 2, as described <a href="#status">above</a>.</p>
+<p>It remains to see it run in DCS.</p>
 
 
 

@@ -5607,16 +5607,19 @@ une mission adoptée reproduit donc l'étalement de l'amont sans que vous ayez �
 <div class="highlight"><pre><span></span><code><span class="nt">custom_scripts</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">scripts</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">   </span><span class="c1"># toujours chargé (les deux variantes)</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgDebug.lua</span>
+<span class="w">      </span><span class="nt">generate_load_trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1"># déclaré, mais pas chargé par le build par défaut</span>
 
 <span class="nt">profiles</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">DEV</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">custom_scripts</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">scripts</span><span class="p">:</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgMission.lua</span><span class="w">    </span><span class="c1"># ⚠️ doit répéter les scripts de base</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgDebug.lua</span><span class="w">      </span><span class="c1"># en plus, dev seulement</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/scripts/FgDebug.lua</span><span class="w">      </span><span class="c1"># sans le flag : chargé en DEV</span>
 </code></pre></div>
 <p>Buildez la variante dev avec <code>veaf-tools mission build --profile DEV</code> (elle charge <code>FgMission.lua</code> + <code>FgDebug.lua</code>) ; le build par défaut ne charge que <code>FgMission.lua</code>.</p>
 <blockquote>
+<p>⚠️ <strong>Déclarer le script dans le profil seulement ne suffit pas</strong> : un fichier <code>.lua</code> de <code>src/scripts/</code> que <code>custom_scripts:</code> ne déclare pas est chargé quand même, avec un warning au build. C'est pourquoi la base déclare <code>FgDebug.lua</code> avec <code>generate_load_trigger: false</code>. Le build par défaut l'embarque quand même dans le <code>.miz</code>, mais ne le charge dans aucun des deux modes.</p>
 <p>⚠️ <strong>Piège</strong> : le deep-merge des profils <strong>remplace les listes, il ne les concatène pas</strong> (voir <a href="#profiles"><code>profiles:</code></a>). Le <code>custom_scripts.scripts</code> du profil doit donc <strong>répéter</strong> les scripts de base et ajouter celui spécifique à la variante — sinon les scripts de base sont perdus dans ce profil.</p>
 </blockquote>
 <hr />
