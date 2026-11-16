@@ -3734,6 +3734,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#forest-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs forest-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#scenery-objects" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4522,6 +4533,17 @@
     <span class="md-ellipsis">
       
         veaf-tools dcs clear-ground-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forest-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        veaf-tools dcs forest-check
       
     </span>
   </a>
@@ -6864,7 +6886,7 @@ catalogue predicted, and a disagreement is reported as a question about the cata
 markers (<code>#command</code>) are not checked: their group is drawn at runtime, which moves it off scenery
 itself. Same flow as <code>clear-ground-sweep</code>: <code>dcs-serve</code>, survey mission, instructions, waiting.</p>
 <p>A "0 vehicles in the scenery" is only as good as the DCS probe, and the probe does not see every forest: on Syria it found no tree on the Akamas peninsula, where a T-72 it called clear stood in the middle of a wood (known limitation <code>disposition-blind-to-akamas-forest</code>, measured on 2026-11-12).
-Where the map is wooded, look at the vehicles in game (F10 view, or smoke on each position) before concluding.</p>
+Where the map is wooded, run <a href="#forest-check"><code>forest-check</code></a> as well, which reads the forests from the map files, and look at the vehicles in game (F10 view, or smoke on each position) before concluding.</p>
 <table>
 <thead>
 <tr>
@@ -6952,6 +6974,65 @@ Where the map is wooded, look at the vehicles in game (F10 view, or smoke on eac
 <div class="highlight"><pre><span></span><code>.<span class="se">\v</span>eaf-tools.exe<span class="w"> </span>dcs<span class="w"> </span>clear-ground-check<span class="w"> </span>build<span class="se">\M</span>yMission.miz
 </code></pre></div>
 <p><em>Flat alias : <code>veaf-tools clear-ground-check</code></em></p>
+<h3 id="forest-check"><code>veaf-tools dcs forest-check</code><a class="headerlink" href="#forest-check" title="Permanent link">&para;</a></h3>
+<p>List the ground vehicles of a built mission standing <strong>in a forest</strong>, from the map files installed with DCS.
+The game is not launched: the command reads the forests where the F10 "Map" view takes them from to draw them, in <code>Mods\terrains\&lt;map&gt;\surface\&lt;map&gt;.surface5</code>, and loads only the parts of the map around the vehicles; it answers in a few seconds.
+The positions are read from the <code>.miz</code>; combat-zone markers (<code>#command</code>) are not checked, their group is drawn at runtime.</p>
+<p>It completes <a href="#clear-ground-check"><code>clear-ground-check</code></a> where the DCS probe does not see the trees: on Syria, the probe called the Akamas firing range and the Ceyhan helicopter range clear, both in the middle of a wood; <code>forest-check</code> finds both (known limitation <code>disposition-blind-to-akamas-forest</code>).
+It sees forests only: buildings, towns and lone trees stay with <code>clear-ground-check</code>.
+It reads all eleven DCS maps. Checked on 2026-11-16 against the airfields' parking spots: none or almost none in a forest, against 3 to 36% of the same spots moved 3 km; only Marianas WWII puts a third of them in a forest, unexplained so far (known limitation <code>forest-check-unexplained-on-marianas-wwii</code>).</p>
+<p>The DCS folder is the one DCS wrote in the Windows registry; <code>--dcs-dir</code> gives another one (the folder holding <code>Mods</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MISSION</code></td>
+<td><code>str</code></td>
+<td>yes</td>
+<td>The .miz to check. It is read, never loaded in DCS.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dcs-dir</code></td>
+<td><code>str</code></td>
+<td><em>(Windows registry)</em></td>
+<td>The DCS install folder (the one holding Mods).</td>
+</tr>
+<tr>
+<td><code>--report</code></td>
+<td><code>str</code></td>
+<td><em>(none)</em></td>
+<td>Also write the report as JSON to this file.</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If enabled, displays detailed debugging information.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">dcs</span> <span class="n">forest-check</span> <span class="n">build</span><span class="p">\</span><span class="n">MyMission</span><span class="p">.</span><span class="n">miz</span>
+</code></pre></div>
+<p><em>Flat alias : <code>veaf-tools forest-check</code></em></p>
 <h3 id="scenery-objects"><code>veaf-tools dcs scenery-objects</code><a class="headerlink" href="#scenery-objects" title="Permanent link">&para;</a></h3>
 <p>Lists the <strong>map objects</strong> — bridges, buildings that are part of the map itself — around one or more
 points, with their DCS id, their type and their distance to the point, nearest first. That id is what a
