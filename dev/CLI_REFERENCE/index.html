@@ -7590,30 +7590,47 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 <p>Quatre commandes, une par étape, parce que vous intervenez entre chacune : elles produisent une photo de reco par objectif, prise <strong>dans DCS</strong> dans l'axe d'engagement prévu, au rendu « photo de reconnaissance » (noir et blanc contrasté, grain, bandeau, rose de cap) avec les cibles entourées <strong>au feutre rouge</strong>. Les unités sont placées là où DCS les a vraiment mises, tirages au hasard des zones compris. Le résultat (JPEG + JSON par prise, et un index <code>recon.json</code>) s'intègre au briefing.</p>
 <p>Le déroulé complet :</p>
 <ol>
-<li><code>.\veaf-tools.exe dcs recon-prepare MaMission.miz</code> écrit <code>MaMission_RECON.miz</code> à côté : ciel dégagé, heure choisie, toutes les zones de combat actives au démarrage, noms de groupes lisibles, et le <a href="#dcs-bridge">bridge VEAF</a> embarqué, par lequel <code>recon-plan</code> et <code>recon-shoot</code> parlent à la mission. La mission d'origine n'est pas touchée.</li>
-<li>Dans DCS : ouvrez <code>MaMission_RECON.miz</code>, prenez un slot <strong>spectateur</strong>, appuyez sur <strong>F11</strong> (caméra libre). Laissez la fenêtre DCS sur l'<strong>écran principal</strong>.</li>
-<li><code>.\veaf-tools.exe dcs recon-plan --operation "Marteau du Golan"</code> écrit <code>shots.yaml</code> : une prise par zone, avec les noms des groupes présents.</li>
-<li>Complétez <code>shots.yaml</code> : pour chaque prise, le <code>heading</code> d'engagement (la direction dans laquelle regarde l'attaquant, en degrés sur la grille de la mission, comme DCS tourne sa caméra : le bandeau de la photo et le briefing l'impriment en magnétique), et si besoin <code>pitch</code> (degrés sous l'horizon), <code>slant</code> (distance en mètres), <code>mark: units</code> pour entourer chaque véhicule, <code>labels</code> pour nommer les cibles.</li>
-<li><code>.\veaf-tools.exe dcs recon-shoot</code> : la commande place la caméra sur chaque prise et capture la fenêtre. Ne touchez ni la souris ni le clavier avant la fin.</li>
+<li><code>.\veaf-tools.exe dcs recon-prepare MaMission.miz</code> écrit <code>MaMission_RECON.miz</code> à côté : ciel dégagé, heure choisie, noms de groupes lisibles, et le <a href="#dcs-bridge">bridge VEAF</a> embarqué, par lequel <code>recon-plan</code> et <code>recon-shoot</code> parlent à la mission. La mission d'origine n'est pas touchée. Une mission qui contient la base de spawn sans qu'aucun déclencheur la charge est refusée : ses zones ne feraient rien apparaître.</li>
+<li>Dans DCS : ouvrez <code>MaMission_RECON.miz</code>, prenez un slot <strong>spectateur</strong>, appuyez sur <strong>F11</strong> (caméra libre). La fenêtre DCS peut ensuite passer en arrière-plan.</li>
+<li><code>.\veaf-tools.exe dcs recon-plan --operation "Marteau du Golan" --from "Kutaisi"</code> écrit <code>shots.yaml</code> : une prise par zone de combat, le cap allant de la base <code>--from</code> vers la zone. Avec un <code>docs\kneeboard.json</code> (les mots du briefing d'une Open Training), les prises suivent ses objectifs, dans son ordre et avec ses titres.</li>
+<li>Relisez <code>shots.yaml</code> : le <code>heading</code> (la direction dans laquelle regarde la caméra, en degrés sur la grille de la mission, comme DCS tourne sa caméra : le bandeau de la photo et le briefing l'impriment en magnétique), et si besoin <code>pitch</code> (degrés sous l'horizon), <code>slant</code> (distance en mètres, <code>auto</code> par défaut), <code>mark: units</code> pour entourer chaque véhicule, <code>labels</code> pour nommer les cibles.</li>
+<li><code>.\veaf-tools.exe dcs recon-shoot</code> : pour chaque prise, la commande active <strong>seule</strong> sa zone de combat, place la caméra, laisse le terrain charger, relit les positions et prend la photo par la capture d'écran de DCS. Vous gardez votre poste : la fenêtre DCS peut rester derrière les autres.</li>
 <li><code>.\veaf-tools.exe dcs recon-render</code> écrit les photos dans <code>docs\recon\</code>, là où le briefing (<code>build_mission_briefing</code>) les cherche.
    Une prise rattachée à un préfixe de groupe nu (<code>Sasa [r]</code>) rejoint sa zone (<code>Sasa</code>) quand on relance <code>recon-render</code> : inutile de la refaire.</li>
 </ol>
 <p>Lancez les commandes depuis le dossier de la mission : les prises brutes vont dans <code>docs\build\recon\raw\</code>, les photos finies dans <code>docs\recon\</code>.</p>
-<p>Un <code>shots.yaml</code> complété :</p>
+<p>Un <code>shots.yaml</code> relu :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Marteau du Golan</span>
 <span class="nt">coalition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">red</span>
 <span class="nt">shots</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">03-sa11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">01-kiswah</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kiswah - SA-11</span>
+<span class="w">    </span><span class="nt">zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">combatZone_Kiswah</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">70</span>
+<span class="w">    </span><span class="nt">pitch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">slant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">02-sa11</span>
 <span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Batterie SA-11 de Kiswah</span>
 <span class="w">    </span><span class="nt">groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">SA11Kiswah</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">70</span>
-<span class="w">    </span><span class="nt">pitch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 <span class="w">    </span><span class="nt">slant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1100</span>
 <span class="w">    </span><span class="nt">mark</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">units</span>
 <span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;SA-11</span><span class="nv"> </span><span class="s">Buk</span><span class="nv"> </span><span class="s">SR&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;RADAR</span><span class="nv"> </span><span class="s">9S18&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;SA-11</span><span class="nv"> </span><span class="s">Buk</span><span class="nv"> </span><span class="s">LN&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;TEL&quot;</span><span class="p p-Indicator">}</span>
 </code></pre></div>
-<p>La caméra est placée à <code>slant</code> mètres de la cible, <code>pitch</code> degrés au-dessus de l'horizon, en regardant au cap <code>heading</code>. Les marques sont posées par projection avec un champ horizontal de 80°, mesuré : les six véhicules d'un SA-11 tombent à quelques pixels de leur projection.</p>
-<p><strong>Une prise par objectif, deux au plus</strong> : le briefing garde les deux premières et ignore les autres. <strong>Un groupe de véhicules qui se déplacent</strong> — chars, blindés légers, camions, 4x4 — <strong>n'est jamais entouré</strong>, quoi que dise <code>mark</code> : la photo montre sa zone, pas la place de chaque véhicule, qui aura bougé. Un groupe qui porte un SAM, un radar ou de l'artillerie est un site, et il est entouré. Le bandeau donne la position de la cible en DDM et en MGRS.</p>
+<p>Une prise vise soit une <strong>zone de combat</strong> (<code>zone</code>), soit des groupes par le début de leur nom (<code>groups</code>).
+Pour une zone de combat, <code>recon-shoot</code> désactive toutes les zones actives et active celle de la prise <strong>seule</strong> : les niveaux facile, moyen et difficile d'un même site partagent la même zone, et actifs ensemble ils se superposaient sur la photo. Les cibles sont alors les groupes que la zone a fait apparaître, quel que soit leur nom ; <code>groups</code> restreint la prise à certains d'entre eux.</p>
+<p>La caméra est placée à <code>slant</code> mètres de la cible, <code>pitch</code> degrés au-dessus de l'horizon, en regardant au cap <code>heading</code>. <code>slant: auto</code> cadre les unités : trois fois leur dispersion, entre 600 m et 6 km. Les marques sont posées par projection avec un champ horizontal de 80°, mesuré : les six véhicules d'un SA-11 tombent à quelques pixels de leur projection.</p>
+<p><strong>Une prise par objectif, deux au plus</strong> : le briefing garde les deux premières et ignore les autres.</p>
+<p>Les marques, en mode <code>groups</code> (par défaut) :</p>
+<ul>
+<li><strong>Un cercle par groupe</strong>, véhicules qui roulent compris : leurs positions sont relues juste avant la photo.</li>
+<li><strong>L'étiquette dit la catégorie</strong>, au pluriel : Blindés lourds, Blindés légers, DCA courte, moyenne ou longue portée, Radars d'alerte, Missiles sol-sol, Artillerie, Infanterie, Logistique, Navires armés, Navires, Cibles. Une batterie prend la catégorie de son radar de recherche longue ou moyenne portée ; sinon un groupe prend sa catégorie la plus fréquente.</li>
+<li><strong>Une zone faite seulement de statiques</strong> (un champ de tir) reçoit un seul cercle, « Zone cibles ».</li>
+<li><strong>Chaque navire a son cercle</strong> : les navires d'un groupe naviguent à des kilomètres les uns des autres.</li>
+<li><strong>Les cercles proches de même catégorie fusionnent</strong>, pour que les étiquettes ne s'empilent pas.</li>
+<li><code>labels</code> donné dans la prise l'emporte sur la catégorie.</li>
+</ul>
+<p>Le bandeau donne la position de la cible en DDM et en MGRS.</p>
 <h4 id="recon-prepare"><code>veaf-tools dcs recon-prepare</code><a class="headerlink" href="#recon-prepare" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
@@ -7698,6 +7715,18 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 <td>Le nom de l'opération, imprimé sur chaque photo.</td>
 </tr>
 <tr>
+<td><code>--from</code></td>
+<td><code>str</code></td>
+<td><em>(aucune)</em></td>
+<td>Base (nom DCS) d'où regardent les prises : chaque cap va de la base vers sa zone. Sans elle, le cap vaut 0, à régler à la main.</td>
+</tr>
+<tr>
+<td><code>--objectives</code></td>
+<td><code>Path</code></td>
+<td><code>docs\kneeboard.json</code> s'il existe</td>
+<td>Les mots du briefing (JSON avec une liste <code>objectives</code> de <code>zone</code> et <code>title</code>) : les prises suivent ses objectifs, dans son ordre et avec ses titres. Sans fichier, une prise par zone de combat.</td>
+</tr>
+<tr>
 <td><code>--force</code></td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
@@ -7712,6 +7741,7 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 </tbody>
 </table>
 <p>Plus les <a href="#dcs-bridge">options du bridge</a>.</p>
+<p>La commande ne liste que les zones de combat : un AWACS, un ravitailleur ou un radar isolé n'est pas un objectif. Un objectif sans zone de combat de ce nom dans la mission est signalé et laissé de côté. Le dossier de <code>--out</code> est créé s'il n'existe pas.</p>
 <p><em>Alias plat : <code>veaf-tools recon-plan</code></em></p>
 <h4 id="recon-shoot"><code>veaf-tools dcs recon-shoot</code><a class="headerlink" href="#recon-shoot" title="Permanent link">&para;</a></h4>
 <table>
@@ -7743,6 +7773,24 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 <td>Nom d'une prise à faire ; répétez pour plusieurs.</td>
 </tr>
 <tr>
+<td><code>--capture</code></td>
+<td><code>str</code></td>
+<td><code>dcs</code></td>
+<td>Comment la photo est prise : <code>dcs</code> (la capture d'écran de DCS, fenêtre libre d'être en arrière-plan) ou <code>window</code> (capture de la fenêtre DCS, qui doit rester devant).</td>
+</tr>
+<tr>
+<td><code>--screenshots-dir</code></td>
+<td><code>Path</code></td>
+<td><code>Saved Games\DCS\Screenshots</code></td>
+<td>Dossier où DCS écrit ses captures d'écran.</td>
+</tr>
+<tr>
+<td><code>--warmup</code></td>
+<td><code>float</code></td>
+<td><code>10</code></td>
+<td>Secondes pendant lesquelles la caméra reste sur une prise pour que le terrain charge.</td>
+</tr>
+<tr>
 <td><code>--verbose</code></td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
@@ -7751,7 +7799,15 @@ Relève un théâtre quand il n'est pas publié, ou pour remplacer une grille t�
 </tbody>
 </table>
 <p>Plus les <a href="#dcs-bridge">options du bridge</a>.</p>
-<p>La caméra F11 est déplacée depuis l'état <code>export</code> de DCS, que le bridge atteint par <code>net.dostring_in</code> ; la capture de la fenêtre se fait sur cet ordinateur. La fenêtre DCS doit être sur l'écran principal et visible : une capture de tous les écrans rend la fenêtre DirectX noire, et une image noire est recommencée jusqu'à huit fois.</p>
+<p>La caméra F11 est déplacée depuis l'état <code>export</code> de DCS, que le bridge atteint par <code>net.dostring_in</code>. Pour chaque prise :</p>
+<ol>
+<li>Une prise sur une zone de combat active cette zone seule et attend qu'elle apparaisse (10 s).</li>
+<li>La caméra se pose sur la prise et y reste <code>--warmup</code> secondes : après un long saut, 2,5 s laissaient des photos floues.</li>
+<li>Les positions sont relues et la caméra replacée sur elles.</li>
+<li>Les positions sont relues une dernière fois juste avant la photo, pour que les cercles tombent sur les véhicules qui roulent.</li>
+<li>La zone est désactivée.</li>
+</ol>
+<p>Avec <code>--capture dcs</code>, la photo vient de la commande de capture d'écran de DCS (<code>LoSetCommand(257)</code>), envoyée par le bridge : DCS écrit l'image dans son dossier <code>Screenshots</code>, la commande la lit puis l'efface. Avec <code>--capture window</code>, la fenêtre DCS doit être sur l'écran principal et visible : une capture de tous les écrans rend la fenêtre DirectX noire, et une image noire est recommencée jusqu'à huit fois.</p>
 <p><em>Alias plat : <code>veaf-tools recon-shoot</code></em></p>
 <h4 id="recon-render"><code>veaf-tools dcs recon-render</code><a class="headerlink" href="#recon-render" title="Permanent link">&para;</a></h4>
 <table>
