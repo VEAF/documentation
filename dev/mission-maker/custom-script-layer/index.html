@@ -3677,6 +3677,9 @@ Le déclarer à <code>false</code> n'est pas une issue pour <code>SKYNET</code> 
 <p>Elle vaut pour tout module de <code>modules:</code>, et pour <code>SKYNET</code>, <code>CTLD</code> et <code>CSAR</code>.
 Pour <code>CTLD</code>, vos scripts doivent alors appeler <code>veaf.ctld_initialize()</code>, pas le <code>ctld.initialize()</code> de CTLD v1 : c'est lui qui démarre CTLD 2 avec son menu et la logistique des aérodromes ; <code>convert v5</code> ne confie donc jamais CTLD à la mission.
 <code>veaf.initialize()</code> saute aussi un tel module, si votre couche s'en sert.</p>
+<p>Déclarez aussi <code>initialized_by_mission</code> pour un module dont votre couche <strong>surcharge une fonction</strong>.
+<code>veaf-config.lua</code> se charge avant vos scripts : un module qu'il démarre appelle la fonction d'origine, sans erreur, avant que votre surcharge existe.
+Exemple : une couche qui enveloppe <code>veaf.getCarrierATCdata</code> déclare <code>CARRIER</code> avec <code>initialized_by_mission: true</code>, puis appelle <code>veafCarrierOperations.initialize(true, false)</code> après sa surcharge (<code>false</code> : pas de boucle des opérations).</p>
 <h2 id="functions">Les fonctions qui servent à une couche maison<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3810,7 +3813,7 @@ Une couche qui lisait l'intérieur de CTLD v1 passe par ses événements et ses 
 <tbody>
 <tr>
 <td><code>ctld.builtFOBS</code>, <code>buildTimeFOB</code></td>
-<td>événements <code>OnFOBDeployed</code>, <code>OnFOBDestroyed</code> ; <code>CTLDFOBManager.getInstance():getFOBsForCoalition(coalition)</code> ; le délai de construction est dans <code>ctld-config.yaml</code></td>
+<td>événements <code>OnFOBDeployed</code>, <code>OnFOBDestroyed</code> ; <code>CTLDFOBManager.getInstance():getFOBsForCoalition(coalition)</code> ; la construction est une scène fixe de 120 s, sans réglage</td>
 </tr>
 <tr>
 <td><code>ctld.pickupZones</code></td>

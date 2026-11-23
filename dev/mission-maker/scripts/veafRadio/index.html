@@ -2647,6 +2647,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remove-root-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retirer un menu racine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-bas-niveau" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3992,6 +4003,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remove-root-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retirer un menu racine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-bas-niveau" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4431,7 +4453,7 @@ l'autre camp continue de voir le parent, simplement vide de cette entrée.</p>
 </code></pre></div>
 <p>Les commandes <code>USAGE_ForAll</code> qu'il contient sont posées pour chacun de ces groupes, avec leurs paramètres inchangés.
 Un filtre qui lève une erreur cache le menu et laisse une ligne dans le journal ; il n'interrompt pas la reconstruction.
-Un quatrième argument restreint en plus le menu à une coalition.</p>
+Un quatrième argument restreint en plus le menu à une coalition, à n'importe quelle profondeur : même placé sous un menu par pilote, un menu réservé aux bleus n'est jamais montré à un groupe rouge.</p>
 <h3 id="un-sous-menu-par-pilote">Un sous-menu par pilote<a class="headerlink" href="#un-sous-menu-par-pilote" title="Permanent link">&para;</a></h3>
 <p>Dans un groupe à plusieurs places, une commande <code>USAGE_ForGroup</code> est vue par tous les pilotes du groupe, et ne connaît que le premier.
 <code>addSubMenuPerPilot</code> donne à chaque pilote présent son propre sous-menu, à son nom, sous lequel les commandes <code>USAGE_ForGroup</code> et <code>USAGE_ForUnit</code> reçoivent <strong>son</strong> nom d'unité :</p>
@@ -4443,12 +4465,22 @@ Un quatrième argument restreint en plus le menu à une coalition.</p>
 <span class="kr">end</span>
 </code></pre></div>
 <p>Un pilote seul dans son groupe reçoit les commandes directement, sans le niveau à son nom.
-Le menu accepte le même filtre de groupes que <code>addSubMenuForGroups</code>.</p>
+Le menu accepte le même filtre de groupes que <code>addSubMenuForGroups</code>.
+Le sous-menu porte le nom que le hook serveur VEAF connaît pour le joueur ; sans ce hook, le nom du joueur dans DCS, et à défaut l'indicatif de l'unité.</p>
 <h3 id="les-commandes-suivent-les-pilotes-présents">Les commandes suivent les pilotes présents<a class="headerlink" href="#les-commandes-suivent-les-pilotes-présents" title="Permanent link">&para;</a></h3>
 <p>Une commande par groupe est liée à un pilote <strong>encore dans son unité</strong>.
 Quand un pilote quitte son slot, meurt, s'éjecte ou s'écrase, il est oublié, le menu est reconstruit et ses équipiers retrouvent les commandes du groupe ; à son retour, il est réinscrit.
 Un message adressé à une unité qui n'existe plus n'est montré à personne, au lieu de partir vers tous les joueurs.</p>
 <hr />
+<h2 id="remove-root-menu">Retirer un menu racine<a class="headerlink" href="#remove-root-menu" title="Permanent link">&para;</a></h2>
+<p>Chaque module garde le menu qu'il pose à la racine dans une variable, sa <strong>poignée</strong> :
+<code>veaf.ctldRootPath</code> (CTLD), <code>veafAssets.rootPath</code>, <code>veafAssist.rootPath</code>, <code>veafCampaign.rootPath</code>, <code>veafCarrierOperations.rootPath</code>, <code>veafCasMission.rootPath</code>, <code>veafCombatMission.rootPath</code>, <code>veafCombatZone.rootPath</code>, <code>veafMissileGuardian.rootPath</code>, <code>veafMove.rootPath</code>, <code>veafNamedPoints.rootPath</code>, <code>veafOpposition.rootPath</code>, <code>veafSpawn.rootPath</code>, <code>veafTransportMission.rootPath</code>, <code>veafWeather.rootPath</code>.</p>
+<p>Pour retirer un de ces menus, passez sa poignée à <code>delSubmenu</code>, puis reconstruisez le menu :</p>
+<div class="highlight"><pre><span></span><code><span class="nv">veafRadio</span><span class="p">.</span><span class="nf">delSubmenu</span><span class="p">(</span><span class="nv">veaf</span><span class="p">.</span><span class="py">ctldRootPath</span><span class="p">)</span>
+<span class="nv">veafRadio</span><span class="p">.</span><span class="nf">refreshRadioMenu</span><span class="p">()</span>
+</code></pre></div>
+<p>Passez la poignée, pas le titre : <code>delSubmenu</code> accepte aussi un titre, mais le titre change avec la langue de la mission, et un titre qui ne correspond plus ne retire rien, sans erreur.
+Retirez le menu <strong>après</strong> que le module l'a construit : à son <code>initialize()</code>, ou à <code>veaf.ctld_initialize()</code> pour CTLD.</p>
 <h2 id="api-bas-niveau">API bas niveau<a class="headerlink" href="#api-bas-niveau" title="Permanent link">&para;</a></h2>
 <p>Pour un contrôle plus fin, construire l'arbre de menus directement :</p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- Ajouter un sous-menu de premier niveau sous la racine VEAF</span>

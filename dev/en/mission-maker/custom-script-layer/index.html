@@ -3677,6 +3677,9 @@ Declaring it <code>false</code> is no way out for <code>SKYNET</code> or <code>C
 <p>It works for any module of <code>modules:</code>, and for <code>SKYNET</code>, <code>CTLD</code> and <code>CSAR</code>.
 For <code>CTLD</code>, your scripts must then call <code>veaf.ctld_initialize()</code>, not CTLD v1's <code>ctld.initialize()</code>: it is what starts CTLD 2 with its menu and the airbase logistics; <code>convert v5</code> therefore never hands CTLD to the mission.
 <code>veaf.initialize()</code> skips such a module too, if your layer uses it.</p>
+<p>Also declare <code>initialized_by_mission</code> for a module one of whose functions your layer <strong>overrides</strong>.
+<code>veaf-config.lua</code> loads before your scripts: a module it starts calls the original function, with no error, before your override exists.
+Example: a layer that wraps <code>veaf.getCarrierATCdata</code> declares <code>CARRIER</code> with <code>initialized_by_mission: true</code>, then calls <code>veafCarrierOperations.initialize(true, false)</code> after its override (<code>false</code>: no operations loop).</p>
 <h2 id="functions">Functions a layer of your own can use<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3810,7 +3813,7 @@ A layer that read CTLD v1's internals goes through its events and its managers:<
 <tbody>
 <tr>
 <td><code>ctld.builtFOBS</code>, <code>buildTimeFOB</code></td>
-<td>events <code>OnFOBDeployed</code>, <code>OnFOBDestroyed</code>; <code>CTLDFOBManager.getInstance():getFOBsForCoalition(coalition)</code>; the build delay is in <code>ctld-config.yaml</code></td>
+<td>events <code>OnFOBDeployed</code>, <code>OnFOBDestroyed</code>; <code>CTLDFOBManager.getInstance():getFOBsForCoalition(coalition)</code>; building is a fixed 120 s scene, with no setting</td>
 </tr>
 <tr>
 <td><code>ctld.pickupZones</code></td>
