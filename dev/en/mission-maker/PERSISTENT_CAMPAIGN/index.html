@@ -4254,7 +4254,10 @@ It is the other mode of the <a href="../CAMPAIGN/">multi-mission campaign</a>: s
 <li><strong>A zone never changes hands directly</strong>: when its garrison is destroyed it turns <strong>neutral</strong> (grey).
   A neutral zone is taken by holding the ground: ground units of a single side staying there for <code>capture_seconds</code> (120 s by default) — CTLD 2 troops or crate, a convoy, a <code>_spawn</code> group, a Combined Arms vehicle, a <strong>landed</strong> helicopter.
   Landed helicopters alone take <code>helicopter_capture_seconds</code> (600 s), and leave a token garrison: what a helicopter carries, <code>helicopter_garrison</code> soldiers (6) and no vehicle, whatever the zone's size class.
-  The new garrison appears at once.</li>
+  The F10 map and the situation show the time left until the zone is taken.
+  The new garrison appears at once.
+  Its infantry holds one position, within <code>infantry_radius</code> (600 m) of the zone's centre, off the concrete and the buildings; armour and air defence keep the whole zone.
+  A garrison already in the save keeps its positions: only a garrison drawn anew (a capture, a new draw) is placed this way.</li>
 <li><strong>A pilot on the ground after an ejection is nobody's enemy</strong>: the survivor the CSAR module puts down neither holds nor contests a zone, wakes no zone and stops no convoy, in every VEAF script.</li>
 <li><strong>Slots follow the bases</strong>: an airfield taken goes to the side that took it, with its dynamic slots.
   Every airfield of the campaign has its slots ready from the build, even those the players' side does not hold yet (see <a href="#build">Building the mission</a>).
@@ -5143,6 +5146,7 @@ These are starting values, to be tuned on a server: one factory pays for about o
   After the zone's delay, the delivery brings back the dead units of its first damaged group, <strong>cheapest first and up to what it paid</strong>: a unit killed since the order stays dead.
   The units brought back appear in their places; the living ones do not move.
   <strong>A zone under fire</strong> — a unit lost less than <code>network.under_fire_seconds</code> (600 s) ago — is not reinforced: the delivery waits.
+  <strong>A zone under siege</strong> — a living vehicle of an enemy convoy within <code>network.threat_radius</code> (5,000 m) of its centre — is not either: the delivery waits for the convoy to be gone or destroyed.
   A zone lost meanwhile receives nothing; a delivery with nothing left to repair, or what it did not spend, goes back to the stock.
   Players who fly logistics go faster: a crate, troops or a helicopter reinforce at once, without waiting for the network; the units brought back are paid from the stock, at their spawn price (see <strong>Resupply</strong> in <a href="#front">A front that moves on its own</a>).</li>
 <li><strong>A zone cut off</strong> from every factory and depot is still served, from the background production, after <code>network.isolated_seconds</code> (3,600 s).</li>
@@ -5458,6 +5462,11 @@ A <code>KO</code> line is enough to know where to look.</p>
 <td>metres: a zone with one of those players this close to its centre is defended, a counter-attack leaves it aside</td>
 </tr>
 <tr>
+<td><code>infantry_radius</code></td>
+<td>600</td>
+<td>metres: a drawn garrison's infantry holds one position this close to the zone's centre</td>
+</tr>
+<tr>
 <td><code>supply</code></td>
 <td><code>[red]</code></td>
 <td>the sides whose AI helicopters capture and resupply</td>
@@ -5570,7 +5579,7 @@ A <code>KO</code> line is enough to know where to look.</p>
 <tr>
 <td><code>network</code></td>
 <td>see <a href="#network">the network</a></td>
-<td><code>hop_seconds</code> (600), <code>isolated_seconds</code> (3600), <code>depot_store</code> (4), <code>max_deliveries</code> (3), <code>under_fire_seconds</code> (600), <code>depot_buildings</code> (3), <code>depot_types</code>, <code>depot_rebuild_seconds</code> (2700)</td>
+<td><code>hop_seconds</code> (600), <code>isolated_seconds</code> (3600), <code>depot_store</code> (4), <code>max_deliveries</code> (3), <code>under_fire_seconds</code> (600), <code>threat_radius</code> (5000), <code>depot_buildings</code> (3), <code>depot_types</code>, <code>depot_rebuild_seconds</code> (2700)</td>
 </tr>
 <tr>
 <td><code>demolition</code></td>

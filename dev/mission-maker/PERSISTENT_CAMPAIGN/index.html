@@ -4254,7 +4254,10 @@ C'est l'autre mode de la <a href="../CAMPAIGN/">campagne multi-missions</a> : m�
 <li><strong>Une zone ne change jamais de camp directement</strong> : quand sa garnison est détruite, elle devient <strong>neutre</strong> (grise).
   Une zone neutre se prend en y tenant le terrain : des unités au sol d'un seul camp y restent <code>capture_seconds</code> (120 s par défaut) — troupes ou caisse CTLD 2, convoi, groupe <code>_spawn</code>, véhicule Combined Arms, hélicoptère <strong>posé</strong>.
   Des hélicoptères posés, seuls, mettent <code>helicopter_capture_seconds</code> (600 s), et ne laissent qu'une garnison symbolique : ce qu'emporte un hélicoptère, <code>helicopter_garrison</code> fantassins (6) et aucun véhicule, quelle que soit la classe de la zone.
-  La nouvelle garnison apparaît aussitôt.</li>
+  La carte F10 et la situation montrent le temps qui reste avant la prise.
+  La nouvelle garnison apparaît aussitôt.
+  Son infanterie tient une seule position, à moins de <code>infantry_radius</code> (600 m) du centre de la zone, hors du béton et des bâtiments ; blindés et défense sol-air gardent toute la zone.
+  Une garnison déjà dans la sauvegarde garde ses positions : seule une garnison tirée de nouveau (une prise, un nouveau tirage) se place ainsi.</li>
 <li><strong>Un pilote au sol après une éjection n'est l'ennemi de personne</strong> : le rescapé que pose le module CSAR ne tient ni ne conteste une zone, ne réveille aucune zone et n'arrête aucun convoi, dans tous les scripts VEAF.</li>
 <li><strong>Les slots suivent les bases</strong> : un aérodrome pris passe dans le camp du preneur, avec ses slots dynamiques.
   Tous les aérodromes de la campagne ont leurs slots prêts dès la construction, même ceux que le camp des joueurs ne tient pas encore (voir <a href="#build">Construire la mission</a>).
@@ -5143,6 +5146,7 @@ Ce sont des valeurs de départ, qui se régleront sur un serveur : une usine pai
   Après le délai de la zone, la livraison ramène les unités mortes de son premier groupe touché, <strong>les moins chères d'abord et à hauteur de ce qu'elle a payé</strong> : une unité tuée depuis la commande reste morte.
   Les unités ramenées apparaissent à leur place, les vivantes ne bougent pas.
   <strong>Une zone sous le feu</strong> — une unité perdue il y a moins de <code>network.under_fire_seconds</code> (600 s) — n'est pas renforcée : la livraison attend.
+  <strong>Une zone assiégée</strong> — un véhicule vivant d'un convoi ennemi à moins de <code>network.threat_radius</code> (5 000 m) de son centre — non plus : la livraison attend que le convoi soit parti ou détruit.
   Une zone perdue entre-temps ne reçoit rien ; une livraison qui n'a plus rien à réparer, ou ce qu'elle n'a pas dépensé, retourne au stock.
   Les joueurs qui font de la logistique vont plus vite : une caisse, des troupes ou un hélicoptère renforcent sur-le-champ, sans attendre le réseau ; les unités ramenées se paient sur le stock, au prix de leur spawn (voir <strong>Ravitaillement</strong> dans <a href="#front">Un front qui bouge tout seul</a>).</li>
 <li><strong>Une zone coupée</strong> de toute usine et de tout dépôt est encore servie, sur la production de fond, au bout de <code>network.isolated_seconds</code> (3 600 s).</li>
@@ -5458,6 +5462,11 @@ Une ligne <code>KO</code> suffit à dire où regarder.</p>
 <td>mètres : une zone avec un de ces joueurs aussi près de son centre est défendue, une contre-attaque la laisse de côté</td>
 </tr>
 <tr>
+<td><code>infantry_radius</code></td>
+<td>600</td>
+<td>mètres : l'infanterie d'une garnison tirée tient une seule position aussi près du centre de la zone</td>
+</tr>
+<tr>
 <td><code>supply</code></td>
 <td><code>[red]</code></td>
 <td>les camps dont les hélicoptères IA capturent et ravitaillent</td>
@@ -5570,7 +5579,7 @@ Une ligne <code>KO</code> suffit à dire où regarder.</p>
 <tr>
 <td><code>network</code></td>
 <td>voir <a href="#network">le réseau</a></td>
-<td><code>hop_seconds</code> (600), <code>isolated_seconds</code> (3600), <code>depot_store</code> (4), <code>max_deliveries</code> (3), <code>under_fire_seconds</code> (600), <code>depot_buildings</code> (3), <code>depot_types</code>, <code>depot_rebuild_seconds</code> (2700)</td>
+<td><code>hop_seconds</code> (600), <code>isolated_seconds</code> (3600), <code>depot_store</code> (4), <code>max_deliveries</code> (3), <code>under_fire_seconds</code> (600), <code>threat_radius</code> (5000), <code>depot_buildings</code> (3), <code>depot_types</code>, <code>depot_rebuild_seconds</code> (2700)</td>
 </tr>
 <tr>
 <td><code>demolition</code></td>
