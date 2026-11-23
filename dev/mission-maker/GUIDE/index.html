@@ -5824,6 +5824,17 @@ Revers de la médaille, c'est le comportement de CTLD dans toute zone de troupes
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">CTLD 2.1.0 : trois comportements de la v1 reviennent par défaut</p>
+<p>Les outils livrent CTLD 2.1.0 depuis la 6.39.0. Trois défauts changent par rapport à CTLD 2.0.0 :</p>
+<ul>
+<li><strong>Les groupes déposés agissent seuls.</strong> Troupes et véhicules déposés vont vers l'ennemi le plus proche dans <code>maximumSearchDistance</code> (4000 m), sinon marchent vers un point au hasard dans <code>maximumMoveDistance</code> (2000 m). Mettez les deux à <code>0</code> pour qu'ils restent où ils sont déposés.</li>
+<li><strong>Ce que CTLD crée se conduit</strong> (joueurs Combined Arms, game masters). <code>spawnedUnitsPlayerCanDrive: false</code> rend le comportement de 2.0.0.</li>
+<li><strong>Une zone <code>troopZones</code> ou <code>wpZones</code> marquée <code>no</code> reste inactive</strong> jusqu'à son activation.</li>
+</ul>
+<p>Un <code>ctld-config.yaml</code> existant garde ses valeurs : <code>validate</code> signale les nouveaux réglages, <code>ctld-upgrade</code> les écrit à leur valeur par défaut.
+Le groupe d'un système SAM s'appelle désormais <code>&lt;type&gt;_CTLD_AA_&lt;id&gt;</code> : adaptez un script de mission qui cherchait l'ancien nom.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Missions construites avec veaf-tools 6.14.0 ou antérieur : reconstruisez-les</p>
 <p>Ces versions n'écrivaient pas la ligne qui démarre CTLD. Dans le jeu, cela se voit ainsi :

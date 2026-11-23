@@ -5819,6 +5819,17 @@ The other side of it, as in any CTLD troop zone: unloading troops <strong>inside
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">CTLD 2.1.0: three v1 behaviours are back by default</p>
+<p>The tools ship CTLD 2.1.0 since 6.39.0. Three defaults change from CTLD 2.0.0:</p>
+<ul>
+<li><strong>Dropped groups act on their own.</strong> Dropped troops and vehicles go for the nearest enemy within <code>maximumSearchDistance</code> (4000 m), otherwise walk to a random point within <code>maximumMoveDistance</code> (2000 m). Set both to <code>0</code> to keep them where they are dropped.</li>
+<li><strong>What CTLD creates can be driven</strong> (Combined Arms players, game masters). <code>spawnedUnitsPlayerCanDrive: false</code> gives back the 2.0.0 behaviour.</li>
+<li><strong>A <code>troopZones</code> or <code>wpZones</code> entry marked <code>no</code> stays inactive</strong> until it is activated.</li>
+</ul>
+<p>An existing <code>ctld-config.yaml</code> keeps its values: <code>validate</code> reports the new settings, <code>ctld-upgrade</code> writes them at their default.
+A SAM system's group is now named <code>&lt;type&gt;_CTLD_AA_&lt;id&gt;</code>: adapt a mission script that looked for the old name.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Missions built with veaf-tools 6.14.0 or earlier: rebuild them</p>
 <p>Those versions did not write the line that starts CTLD. In game this shows up as <strong>no CTLD
