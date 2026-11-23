@@ -1588,6 +1588,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mission-maker/PERSISTENT_CAMPAIGN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campagne persistante
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mission-maker/TRAINING_VERSIONS/" class="md-nav__link">
         
   
@@ -1715,10 +1743,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_18" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_19" >
         
           
-          <label class="md-nav__link" for="__nav_4_18" id="__nav_4_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_19" id="__nav_4_19_label" tabindex="0">
             
   
   
@@ -1736,8 +1764,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_18">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2350,6 +2378,34 @@
     
   
     veafSanctuary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mission-maker/scripts/veafSupport/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    veafSupport
   
 
     
@@ -4598,6 +4654,13 @@
 <td><code>MODERN</code> | <code>COLD_WAR</code> | <code>WW2</code> — affecte les groupes disponibles au spawn. <strong>Absent, il est déduit à chaque build</strong> depuis le contenu de la mission de base : un type d'unité WW2 ou une année ≤ 1945 donne <code>WW2</code>, une année ≤ 1991 <code>COLD_WAR</code>, sinon <code>MODERN</code> (<code>era_detector.py</code>). La valeur déduite n'est <strong>pas</strong> écrite dans votre <code>mission.yaml</code> — elle est recalculée ; renseignez la clé pour la figer.</td>
 </tr>
 <tr>
+<td><code>date_suffix</code></td>
+<td>booléen</td>
+<td><code>true</code></td>
+<td>Non</td>
+<td><code>false</code> : le <code>.miz</code> construit s'appelle <code>&lt;nom&gt;.miz</code>, sans date — voir la note de nommage ci-dessous</td>
+</tr>
+<tr>
 <td><code>silence_atc_on_all_airbases</code></td>
 <td>booléen</td>
 <td><code>false</code></td>
@@ -4638,6 +4701,8 @@
 <p><code>mission.name</code> devient le nom du fichier construit : <code>&lt;nom&gt;_&lt;AAAAMMJJ&gt;.miz</code>, plus un suffixe
 <code>_&lt;VARIANTE&gt;</code> si <a href="#build-variants"><code>build_variants:</code></a> est utilisé. Donnez plutôt un nom
 terminé par <code>.miz</code> et il est repris <strong>tel quel</strong>, sans date.</p>
+<p>Pour garder le nom dans le dossier de la mission sans la date, posez <code>date_suffix: false</code> : le build écrit <code>&lt;nom&gt;.miz</code>.
+C'est ce que fait une <a href="../mission-maker/PERSISTENT_CAMPAIGN/#mission-file">campagne persistante</a> qui nomme son fichier : un serveur qui remplace le fichier à chaque redéploiement garde le même nom.</p>
 <p>C'est important parce que <strong>l'outillage serveur lit le nom du fichier</strong>. Sur les serveurs VEAF,
 l'extension RealWeather de <a href="https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot">DCSServerBot</a>
 cherche <strong><code>_ICAO_&lt;code&gt;</code></strong> dans le nom du <code>.miz</code> et récupère le METAR réel de cet aérodrome au
@@ -4685,7 +4750,8 @@ Le bloc les fixe à chaque build :</p>
 <p>Les Open Training VEAF ouvrent 5 slots par rôle et par camp, véhicules pilotables, comme en v5.</p>
 <h4 id="forced-options"><code>forced_options</code> : les options imposées à tous les joueurs<a class="headerlink" href="#forced-options" title="Permanent link">&para;</a></h4>
 <p>Le panneau <em>Options de mission</em> de l'éditeur impose à chaque joueur certaines options, quels que soient ses propres réglages : étiquettes, vue de la carte F10, vues externes, turbulence de sillage…
-Le bloc les fixe à chaque build, dans la table <code>forcedOptions</code> de la mission :</p>
+Le bloc les fixe à chaque build, dans la table <code>forcedOptions</code> de la mission.
+Une mission créée par VMCT part déjà avec le trafic civil coupé, sans oiseaux et sans pannes aléatoires, comme les Foothold VEAF ; le bloc reprend la main sur ces trois-là aussi :</p>
 <div class="highlight"><pre><span></span><code><span class="nt">mission</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">forced_options</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span><span class="w">               </span><span class="c1"># full | abbreviated | symbol_only | dot_neutral | none</span>
