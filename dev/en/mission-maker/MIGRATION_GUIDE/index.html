@@ -4446,8 +4446,17 @@ current directory — on purpose. <code>cmd.exe</code> accepts both forms, so <c
 <li><strong><code>mission.yaml</code> generation</strong> — creates <code>mission.yaml</code> with the correct <code>modules:</code> and <code>pipeline:</code> sections.</li>
 <li><strong><code>src/mission/</code> promotion to v6</strong> — rewrites the exploded <code>.miz</code> (<code>src/mission/</code>) to v6: a base build migrates the legacy v5 triggers <strong>on disk</strong>, after backing up the original to <code>backup_v5/src/mission/</code>. On by default; all editor content (groups, routes, units) is preserved — only the legacy v5 trigger layer is purged. Use <code>--no-promote</code> to skip it.</li>
 <li><strong>Leftover v5 file triage</strong> — obsolete v5 tooling (<code>*.cmd</code>, <code>*.ps1</code>, <code>package.json</code>, <code>yarn.lock</code>, <code>configuration.json</code>, …) is moved to <code>backup_v5/</code>; regenerable artifacts (<code>node_modules/</code>, <code>build/</code>, <code>cache/</code>) are deleted; any other unmanaged file is just <strong>listed</strong> in the report for you to decide. <code>configuration.json</code> is flagged because it may hold a v5 API key (unused in v6: real weather goes through <code>avwx-engine</code>, no key).</li>
-<li><strong>Conversion report</strong> — saves <code>convert-v5-report.md</code> with all actions taken and any items requiring manual review.</li>
+<li><strong>Conversion report</strong> — saves <code>backup_v5/convert-v5-report.md</code> with all actions taken and any items requiring manual review.</li>
 </ul>
+<blockquote>
+<p><strong>The converted mission keeps its v5 behaviour.</strong> The generated <code>mission.yaml</code> turns off what v6 adds and the v5 mission did not have.
+A <code>pipeline:</code> step with no file in the v5 mission is <code>false</code>: presets, waypoints, aircraft groups, weather.
+Dynamic slot templates and warehouses are <code>false</code>, unless the editor already granted dynamic slots.
+On a converted step, the presets' kneeboard pages and the BULLSEYE waypoint are <code>false</code>.
+AIEN and REMOTE are enabled only when the v5 mission loaded or started them.
+<code>mission.language</code> is always written, and <code>silence_all</code> is kept even with no QRA in YAML.
+The report lists these lines under "Behaviour kept from v5": set one to <code>true</code> to get the v6 feature.</p>
+</blockquote>
 <p>If your pipeline contains <code>realweather</code> weather versions, supply the ICAO airport code via the <code>--icao</code> option to embed it in the generated config. If you omit it, the conversion still succeeds: the tool writes <code>airport_icao: TODO</code> into the generated config (<code>versions.yaml</code>) and prints a warning. Set it afterwards either by editing the <code>TODO</code> in <code>versions.yaml</code>, or by re-running <code>convert-v5 --icao UGGG --force</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">convert</span> <span class="n">v5</span> <span class="p">.</span> <span class="p">-</span><span class="n">-icao</span> <span class="n">UGGG</span>
 </code></pre></div>
