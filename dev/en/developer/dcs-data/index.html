@@ -3814,7 +3814,7 @@ interchangeable:</p>
 <td><strong>In-DCS export</strong></td>
 <td>capture a dump in-game (dcs-bridge <code>world.getAirbases()</code>, or <code>dcsDataExport.lua</code>), commit the dump</td>
 <td>yes (DCS running)</td>
-<td>airbases of a theatre the reference database lacks, weapons</td>
+<td>airbases the reference database lacks (a missing theatre, or airfields DCS added since), weapons</td>
 </tr>
 <tr>
 <td><strong>DCS install files</strong></td>
@@ -3984,7 +3984,10 @@ It is downloaded at a pinned release and checked against its SHA-256: an asset r
 Measured on 2026-10-08 against <code>v0.5.0</code>: its 798 airbases of 13 theatres carry the same names and ids as our runtime dumps, without exception.
 Its position is the terrain's <strong>reference point</strong>, which sits on the runways' centre (median gap 0 m); <code>Airbase:getPoint()</code>, what the dumps hold, lands about 1 km away.
 <code>airdrome-positions.yaml</code> has therefore carried the reference point since FEAT-DCS-REFERENCE-DATA.</p>
-<p><strong>Runtime dumps now only serve the theatres the database lacks</strong> (TheChannel at <code>v0.5.0</code>): for a theatre the database knows, the database wins.
+<p><strong>Runtime dumps now only serve what the database lacks.</strong> They cover a theatre the database does not have (TheChannel at <code>v0.5.0</code>).
+For a theatre the database knows, the database wins on every id it has, and the dump only adds the ids it lacks: the airfields a DCS update added after it was read (20 on Cold War Germany in DCS 2.9.32).
+The join is on the id: an airbase DCS renamed keeps its id, so an older dump never brings the old name back.
+For those added airfields the position is the dump's, <code>Airbase:getPoint()</code>, not the reference point.
 Each dump is captured once in-game with the <strong>VEAF dcs-bridge</strong> (<code>world.getAirbases()</code>, category <code>AIRDROME</code> — everything, airfields <strong>and</strong> terrain helipads, all valid <code>Airbase</code> objects with a warehouse).
 Both sources being pinned or committed, both files are <strong>CI-guarded</strong> (<code>dcs-data-consistency.yml</code>):</p>
 <div class="highlight"><pre><span></span><code>veaf-build<span class="w"> </span>update-dcs-data<span class="w"> </span>--airdromes
@@ -3999,10 +4002,10 @@ veaf-tools<span class="w"> </span>dcs<span class="w"> </span>inject-bridge<span 
 veaf-tools<span class="w"> </span>dcs<span class="w"> </span>capture-map<span class="w"> </span>--api-key<span class="w"> </span>&lt;dcs-serve<span class="w"> </span>superuser<span class="w"> </span>token&gt;<span class="w"> </span>--out-dir<span class="w"> </span>&lt;folder&gt;
 </code></pre></div>
 <p>On the dev side, <code>veaf-build update-dcs-data --airdromes</code> then merges the committed
-<code>.json</code> under <code>veaf_build/dcs_data/airbase_dumps/</code> into the YAML, for the theatres the reference database does not know.
+<code>.json</code> under <code>veaf_build/dcs_data/airbase_dumps/</code> into the YAML, for the theatres and the airbases the reference database does not know.
 Full procedure for helpers: <a href="../capture-airbases/">capture-airbases</a>. See the
 <a href="https://github.com/VEAF/VEAF-dcs-bridge">VEAF-dcs-bridge repo</a> for <code>dcs-serve</code>.</p>
-<p><code>veaf_libs.dcs_airdromes.airdrome_id_for_name(theatre, name)</code> reads it. Coverage: <strong>all 14 DCS theatres</strong> (810 airbases: 798 from the reference database, 12 from the TheChannel dump). Residual caveat:
+<p><code>veaf_libs.dcs_airdromes.airdrome_id_for_name(theatre, name)</code> reads it. Coverage: <strong>all 14 DCS theatres</strong> (830 airbases: 798 from the reference database, 12 from the TheChannel dump, 20 from the Cold War Germany dump captured on DCS 2.9.32). Residual caveat:
 the table only covers theatres the database knows or <strong>already dumped</strong>; any other theatre yields no
 entries — callers fall back to ids. Resolution is case-insensitive.</p>
 <h2 id="parking">Parking spots<a class="headerlink" href="#parking" title="Permanent link">&para;</a></h2>
