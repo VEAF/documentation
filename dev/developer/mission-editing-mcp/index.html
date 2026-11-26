@@ -2956,6 +2956,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#context-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Budget de contexte (lot MCP-CONTEXT-BUDGET)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_mission" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3518,6 +3529,17 @@
     <span class="md-ellipsis">
       
         scaffold_mission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adapt_scaffold-lot-mcp-context-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        adapt_scaffold (lot MCP-CONTEXT-BUDGET)
       
     </span>
   </a>
@@ -4225,6 +4247,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#context-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Budget de contexte (lot MCP-CONTEXT-BUDGET)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_mission" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4793,6 +4826,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#adapt_scaffold-lot-mcp-context-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        adapt_scaffold (lot MCP-CONTEXT-BUDGET)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5062,8 +5106,8 @@ fixe, à l'image du serveur MCP <code>dcs-bridge</code> (pont vers une mission q
 <td>Identité du serveur (nom, version).</td>
 </tr>
 <tr>
-<td><code>list_catalog(full=False)</code></td>
-<td>Liste les actions enregistrées en <code>{name, summary}</code> — la première phrase de la description, une dizaine de ko pour toutes ; <code>full=true</code> rend chaque <code>description</code> et <code>parameters_schema</code> (quelque 70 ko, qu'un client range dans un fichier au lieu de les montrer). <code>describe_action</code> en donne une en entier.</td>
+<td><code>list_catalog(full=False, offset=0)</code></td>
+<td>Liste les actions enregistrées en <code>{name, summary}</code> — la première phrase de la description, une quinzaine de ko pour toutes ; <code>full=true</code> rend chaque <code>description</code> et <code>parameters_schema</code>. En profil compact : résumés coupés à 60 caractères (7 652 caractères en tout), et <code>full=true</code> par pages, <code>{actions, total, next_offset}</code>. <code>describe_action</code> en donne une en entier.</td>
 </tr>
 <tr>
 <td><code>describe_action(name)</code></td>
@@ -5077,6 +5121,34 @@ fixe, à l'image du serveur MCP <code>dcs-bridge</code> (pont vers une mission q
 </table>
 <p>Les actions elles-mêmes sont enregistrées par
 <code>veaf_mission_mcp.actions.register_default_actions</code> (<code>src/python/veaf-tools/veaf_mission_mcp/actions.py</code>).</p>
+<h3 id="context-budget">Budget de contexte (lot MCP-CONTEXT-BUDGET)<a class="headerlink" href="#context-budget" title="Permanent link">&para;</a></h3>
+<p>Une réponse d'outil reste dans le contexte du modèle jusqu'à la fin de la session.
+Le 2026-11-25, la chaîne de référence (guide, limitations, catalogue, scaffold, adaptation du squelette, zone de combat, validation, build, inspection) renvoyait 177 186 caractères : un modèle local à 65 000 tokens de contexte débordait avant le build.
+Le serveur a deux <strong>profils de réponse</strong>, choisis par la variable d'environnement <code>VEAF_MCP_PROFILE</code> de sa configuration MCP :</p>
+<ul>
+<li><code>standard</code>, le défaut : le serveur répond comme il l'a toujours fait, pour Claude et tous les clients à grand contexte. Le guide et un prompt arrivent entiers, une réponse n'est jamais coupée.</li>
+<li><code>compact</code>, pour un modèle local : le guide et les prompts se lisent par sections, toute réponse est coupée au-delà de 8 000 caractères, les listes sont plus courtes.</li>
+</ul>
+<p>Une économie coûte des allers-retours à un client qui a la place : elle est donc choisie, jamais imposée.
+La configuration <code>llama-server</code> du tutoriel porte <code>"env": {"VEAF_MCP_PROFILE": "compact"}</code>, et le pilote n'a rien à régler.
+En profil compact, la chaîne tient en 38 826 caractères, une QRA comprise, schéma des outils compris ; <code>test_context_budget.py</code> vérifie qu'elle reste sous 50 000.
+Le gros du gain vient de la section <code>recipe</code> du guide : les appels d'une mission simple, chacun avec son JSON exact. Sans elle, un modèle local lisait le schéma de chaque action qu'il envisageait : 19 <code>describe_action</code>, 30 555 des 106 857 caractères d'un essai.</p>
+<p>Dans les deux profils :</p>
+<ul>
+<li><code>list_catalog</code>, <code>describe_action</code> et <code>run_action</code> répondent un seul bloc texte de JSON compact, sans copie <code>structuredContent</code> : <code>mcp</code> indentait chaque objet et rendait une liste en un bloc par élément. Le contenu est le même.</li>
+<li><code>adapt_scaffold</code> adapte le squelette en un appel : le modèle ne lit plus <code>src/presets.yaml</code> (48 777 octets).</li>
+<li><code>build_mission</code> rend son journal sans les lignes de progression ni le chemin du dossier ; la sortie brute est dans <code>build.log</code>.</li>
+</ul>
+<p>En profil compact seulement :</p>
+<ul>
+<li>Une réponse de plus de 8 000 caractères (un schéma : 16 000) est remplacée par <code>{truncated, total_chars, shown_chars, how_to_read_the_rest, head}</code> : son début, et la façon propre à l'action de lire la suite. À 16 000, un seul <code>describe_units</code> sans filtre ajoutait 9 500 tokens et faisait déborder 65 536 tokens de contexte juste après le build. Sous 8 000, la réponse par défaut du guide (7 515) et sa section <code>combat-zone-vs-qra</code> (7 549) seraient coupées elles-mêmes.</li>
+<li>Une demande explicite de tout n'est pas coupée : <code>describe_authoring_guide</code> avec <code>section: all</code>, <code>describe_mission_prompt</code> avec <code>part: all</code>.</li>
+<li>Le guide et les prompts de mission se lisent par sections, la liste des limitations par identifiants, et <code>read_mission_file</code> par tranches de 6 000 caractères au plus.</li>
+<li>La réponse par défaut du guide s'ouvre sur <code>start_here</code> : une demande qui dit ce que la mission contient est une mission simple, quel que soit le mot employé (« entraînement »…), et suit la recette ; un prompt de mission ne se charge que si l'utilisateur le veut, avec son poids. Le mot « entraînement » avait fait charger le prompt Open Training (77 622 caractères) et rien construire.</li>
+<li><code>list_catalog</code> résume <code>describe_mission_prompt</code> et <code>describe_authoring_guide</code> pour orienter le modèle vers la recette, et <code>list_payloads</code> donne les noms d'armement sans les CLSID (464 caractères au lieu de 6 424 pour le MiG-29A).</li>
+<li><code>build_mission</code> retire aussi de son journal les lignes d'étape sans information (fichier lu, écrit, YAML valide), reconnues par leurs clés de traduction ; <code>inspect_built_mission</code> compte les types de slots et les jeux de presets au lieu de les lister (<code>detail: true</code> les rend). Trois builds et trois inspections d'un essai répétaient ces listes.</li>
+<li>Dans les deux profils, un paramètre inventé courant est lu comme celui que l'action publie : <code>type_contains</code> pour <code>name_contains</code>, <code>which</code> pour <code>file</code>.</li>
+</ul>
 <h3 id="describe_mission"><code>describe_mission</code><a class="headerlink" href="#describe_mission" title="Permanent link">&para;</a></h3>
 <p>Lecture seule. Liste les groupes (nom, coalition, pays, catégorie) et zones de déclenchement
 (nom, position, rayon) déjà présents dans le <code>.miz</code> — pour que l'appelant vérifie l'état courant
@@ -5950,25 +6022,29 @@ ne lèvent aucune erreur (<code>kind: dcs</code>, toujours renvoyés, avec la da
 entrée : <code>id</code>, <code>kind</code>, <code>area</code>, <code>title</code>, <code>symptom</code>, <code>workaround</code>, éventuellement <code>cost</code> et <code>theatres</code>. Le
 fichier est la seule source : <code>docs/agents/dcs-runtime-traps.md</code> en est généré.</p>
 <p>Le texte entier fait environ 74 000 caractères, plus qu'un résultat d'outil n'en porte. <strong>Sans argument,
-l'action renvoie une liste courte</strong> — <code>id</code>, <code>kind</code>, <code>area</code> et <code>theatres</code> s'il y en a, sans titre, environ 7 000 caractères — et le nombre
-d'entrées de chaque <code>area</code>. <code>area</code> (<code>spawning</code>, <code>air-defence</code>, <code>players</code>, <code>radio</code>, <code>ground-ai</code>, <code>scripting</code>, <code>mcp</code>, <code>pipeline</code>, <code>runtime</code>),
+l'action renvoie une liste courte</strong> — <code>id</code>, <code>kind</code>, <code>area</code> et <code>theatres</code> s'il y en a, sans titre, environ 13 000 caractères — et le nombre d'entrées de chaque <code>area</code>. En profil compact, les identifiants seuls, groupés par <code>area</code> (<code>by_area</code>), environ 4 700 caractères (MCP-CONTEXT-BUDGET). <code>area</code> (<code>spawning</code>, <code>air-defence</code>, <code>players</code>, <code>radio</code>, <code>ground-ai</code>, <code>scripting</code>, <code>mcp</code>, <code>pipeline</code>, <code>runtime</code>),
 <code>kind</code> et <code>theatre</code> resserrent cette liste et la gardent courte ; <code>theatre</code> écarte les entrées qui ne concernent que d'autres théâtres
 (une entrée sans <code>theatres</code> vaut partout). Lisez en entier celles dont vous avez besoin avec <code>id</code> ou <code>ids</code> (une liste) ; <code>full: true</code> renvoie
 tout ce qui est retenu. Une <code>area</code> revenait en entier : trois d'entre elles faisaient 46 000 caractères en un appel, portés jusqu'à la fin de la session (FIX-OPENCODE-TEST-FINDINGS).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ai-ground-start-needs-a-parking-capture&quot;</span><span class="p">]}</span>
 </code></pre></div>
 <h3 id="describe_authoring_guide-lot-feat-ai-assistant-any-client"><code>describe_authoring_guide</code> (lot FEAT-AI-ASSISTANT-ANY-CLIENT)<a class="headerlink" href="#describe_authoring_guide-lot-feat-ai-assistant-any-client" title="Permanent link">&para;</a></h3>
-<p>Lecture seule, sans paramètre. Renvoie <code>{"guide": …}</code> : le guide de création, <code>veaf_mission_mcp/data/authoring-guide.md</code>, tel quel.
+<p>Lecture seule. Le guide de création, <code>veaf_mission_mcp/data/authoring-guide.md</code>.
+Sans paramètre, l'action le renvoie entier, <code>{"guide": …}</code>.
+En profil compact, il fait 41 555 caractères d'un bloc ; sans paramètre, l'action renvoie alors <code>{"start_here", "guide", "sections", "read_more"}</code> (MCP-CONTEXT-BUDGET) : quand charger un prompt de mission, les sections dont toute mission a besoin (<code>recipe</code> — les appels d'une mission simple avec leurs paramètres, AWACS et ravitailleurs compris —, <code>report-back</code>) et l'index des autres, <code>{id: when}</code> : chaque <code>id</code> avec quand lire sa section. La section <code>more</code> donne, avec leurs paramètres, les appels des paliers et du délai d'une QRA, des groupes au sol à des positions données, d'un statique, d'un JTAC et du briefing.
+<code>section</code> lit une section ou une liste de sections ; <code>section: all</code> rend le guide entier, sans coupure.
+Chaque titre <code>##</code> du fichier porte son identifiant (<code>{#combat-zone-vs-qra}</code>) et, juste dessous, une ligne <code>&lt;!-- when: … --&gt;</code> ; le serveur retire les deux avant de servir le texte.
 Le build embarque tout le dossier <code>veaf_mission_mcp/data/</code> dans l'exe ; en développement l'action lit le fichier du paquet.</p>
 <p>Les <strong>consignes du serveur</strong> (<code>instructions</code> du protocole MCP, envoyées au client à la connexion) demandent d'appeler cette action en premier, puis <code>describe_known_limitations</code>.
 Elles tiennent en quelques lignes exprès : un client les met dans le prompt de chaque session, elles désignent donc le guide au lieu de le contenir.
 Tous les clients n'en tiennent pas compte ; <a href="../../mission-maker/AI_ASSISTANT_INSTALL/#other-mcp-client">la page d'installation</a> fait donc commencer la conversation par la demande explicite.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;section&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;combat-zone-vs-qra&quot;</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="read_mission_file--edit_mission_file-lot-feat-ai-zero-setup"><code>read_mission_file</code> / <code>edit_mission_file</code> (lot FEAT-AI-ZERO-SETUP)<a class="headerlink" href="#read_mission_file--edit_mission_file-lot-feat-ai-zero-setup" title="Permanent link">&para;</a></h3>
 <p>Les sources YAML d'un dossier de mission — <code>mission.yaml</code> et <code>src/*.yaml</code>, rien d'autre, ni <code>..</code> ni chemin absolu — pour une IA sans accès direct aux fichiers.
 En mode chat de Claude Desktop, une IA à qui l'on demandait de renommer une mission a répondu qu'aucune action ne le pouvait ; <code>mission.name</code>, <code>mission.era</code> et les fichiers <code>src/*.yaml</code> que la liste du guide lui demande d'adapter n'avaient aucune action.
 <code>read_mission_file</code> renvoie <code>{file, first_line, last_line, total_lines, content}</code>, 400 lignes par défaut (<code>start_line</code>, <code>line_count</code>) : le catalogue de slots en compte 11 000.
+En profil compact, une tranche s'arrête aussi avant 6 000 caractères, une ligne au moins : 400 lignes de <code>src/presets.yaml</code> en faisaient jusqu'à 13 823 (MCP-CONTEXT-BUDGET). On reprend à <code>last_line + 1</code>.
 Ses lignes finissent par <code>\n</code>, quel que soit le fichier.
 Sans <code>mission_path</code>, elle lit le gabarit livré avec les outils — ce que <code>scaffold_mission</code> pose : les templates de slots dynamiques, le plan de presets, <code>mission.yaml</code> avec l'exemple commenté de chaque module — et le dit par <code>shipped: true</code>, pour vérifier un plan avant qu'un dossier existe.
 <code>edit_mission_file</code> remplace un passage exact (<code>search</code> / <code>replace</code>), refusé s'il apparaît zéro ou plusieurs fois, ou si le résultat ne se relit plus en YAML ; sauvegarde avant écriture.
@@ -5983,7 +6059,10 @@ Implémentation : <code>veaf_mission_mcp/mission_files.py</code>.</p>
 <code>kind</code> vaut <code>objective</code> (une mission jouée une fois, en une séance), <code>open-training</code> (une mission d'entraînement VEAF sur une carte entière) ou <code>persistent-campaign</code> (une campagne persistante, fichier <code>new-persistent-campaign.&lt;lang&gt;.md</code>) ; <code>lang</code> vaut <code>en</code> (par défaut) ou <code>fr</code>.
 Les prompts vivent dans <code>veaf_mission_mcp/data/mission-prompts/</code>, embarqués avec le guide ; ils étaient dans le <code>.prompts/</code> du dépôt, à coller par l'utilisateur.
 Le guide de création envoie ici un utilisateur qui demande une nouvelle mission : « crée une mission » suffit.
-Le prompt objectif vient en deux parties, coupées à une ligne <code>&lt;!-- part: build --&gt;</code> : <code>part: scenario</code> (par défaut, environ 13 000 caractères, qui finit en disant comment charger la suite) et <code>part: build</code>, une fois un scénario approuvé ; <code>part: all</code> renvoie les deux.
+Le prompt objectif vient en deux parties, coupées à une ligne <code>&lt;!-- part: build --&gt;</code> : <code>part: scenario</code> (par défaut, environ 13 000 caractères, qui finit en disant comment charger la suite) et <code>part: build</code>, une fois un scénario approuvé ; <code>part: all</code> renvoie les deux, d'un bloc et sans coupure.
+Une partie vient entière. En profil compact, ou quand <code>section</code> est donné, elle vient par pages de sections numérotées entières, 7 000 caractères au plus mais une section au moins : le prompt Open Training faisait 55 635 caractères d'un bloc (MCP-CONTEXT-BUDGET).
+Chaque page donne <code>sections</code> (l'index de sa partie : <code>id</code> et titre) et <code>next_section</code> tant que la partie continue ; <code>section</code> (<code>0</code>, <code>2.1</code>, <code>4.6</code>…, ou <code>intro</code>, le même numéro en français et en anglais) fait commencer une page n'importe où, et la page reste dans la partie de cette section.
+<code>next_part: build</code> vient sur la dernière page du scénario.
 Les sections 4 à 9, 21 000 de ses 34 000 caractères, ne servent qu'après l'approbation, et étaient portées à chaque tour de la discussion du scénario (FIX-OPENCODE-TEST-FINDINGS).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objective&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lang&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fr&quot;</span><span class="p">}</span>
 </code></pre></div>
@@ -6051,6 +6130,7 @@ runtime, coalition indifférente) + bloc <code>modules.COMBATZONE.combat_zones[]
 Chaque groupe accepte <code>route</code> et <code>patrol</code>, de la même forme qu'<code>add_group</code> : un convoi qui traverse la
 zone est un groupe de la zone, pas un appel séparé. En catégorie <code>ship</code>, les navires sont espacés de
 600 m (ceux d'un véhicule, 20 m, les faisaient se percuter à l'apparition).</p>
+<p>Un groupe peut porter <code>command</code> (un alias de <code>list_shortcuts</code>, <code>-armor</code>) : l'outil nomme sa première unité <code>#command="-armor" &lt;nom du groupe&gt;</code>, le porteur de l'alias VEAF. Sans <code>units</code>, il pose lui-même un porteur de la classe que l'alias fait apparaître (<code>Osa 9A33 ln</code> pour <code>-sa8</code>, <code>T-72B</code> pour <code>-armor</code>) : un modèle avait mis un T-72B sous <code>-sa8</code>. Un marqueur écrit dans le nom du groupe y est déplacé, et des guillemets échappés deux fois (<code>\"</code>) sont rétablis : un petit modèle faisait les deux (MCP-CONTEXT-BUDGET).</p>
 <h3 id="add_combat_operation"><code>add_combat_operation</code><a class="headerlink" href="#add_combat_operation" title="Permanent link">&para;</a></h3>
 <p>Écrit dans <code>mission.yaml</code> seulement une entrée <code>combat_zones[]</code> de type <code>operation</code> : <code>tasking_orders</code> (chaque tâche, ses <code>dependencies</code>), <code>friendly_name</code>, <code>briefing</code>, <code>active_at_start</code>.
 Le nom d'une opération est une étiquette, pas une zone de déclenchement : rien n'est écrit dans <code>src/mission/</code>.
@@ -6105,6 +6185,23 @@ ferait un Mission Maker à sa première installation.</p>
   après l'updater, remonte comme une erreur explicite.</li>
 </ul>
 <p>C'est l'<strong>étape 0</strong> d'une mission créée de zéro, avant les composites de la vague 8.</p>
+<h3 id="adapt_scaffold-lot-mcp-context-budget"><code>adapt_scaffold</code> (lot MCP-CONTEXT-BUDGET)<a class="headerlink" href="#adapt_scaffold-lot-mcp-context-budget" title="Permanent link">&para;</a></h3>
+<p>Écriture. Juste après <code>scaffold_mission</code>, adapte le squelette à la mission demandée, en un appel : les étapes 1 à 5 de la section <code>after-scaffold</code> du guide.
+Un modèle les faisait en lisant les fichiers : 68 759 caractères, et un modèle local à 49 152 tokens de contexte débordait avant d'avoir rien posé.
+Chaque valeur est contrôlée avant toute écriture ; ce qui n'est pas donné reste tel que le scaffold l'a posé, sauf deux choses toujours fausses pour une vraie mission.</p>
+<ul>
+<li><code>src/presets.yaml</code> : les listes d'aérodromes des autres théâtres partent toujours (48 777 → environ 8 700 octets sur le Caucase), sauf sur un théâtre qui n'a pas la sienne (Afghanistan, TheChannel, MarianaIslandsWWII), où elles restent toutes ; <code>airfields</code> met les aérodromes donnés sur la deuxième radio (<code>primary_2</code>), canal 1 en tête, et un nom inconnu du théâtre est refusé avec la liste des siens. Les canaux de vol, ravitailleurs et AWACS restent.</li>
+<li><code>src/versions.yaml</code> : <code>date</code> devient <code>base_date</code>, <code>start_time</code> l'heure de la variante, nommée d'après l'heure (<code>morning</code>, <code>noon</code>…) sauf <code>variant</code> ; <code>position</code> (<code>{x, y}</code> sur la carte ou <code>{latitude, longitude}</code>, <code>timezone</code> facultatif : la zone nominale de la longitude par défaut) sert au lever et au coucher du soleil.</li>
+<li><code>src/waypoints.yaml</code> : les points d'exemple du scaffold partent ; une route déjà écrite reste quand <code>waypoints</code> n'est pas donné ; <code>waypoints</code> (<code>[{name, x, y, alt?}]</code>, altitude en mètres, 6 096 par défaut) donne la route de chaque vol joueur, puis le BULLSEYE. Sans eux, le BULLSEYE seul.</li>
+<li><code>src/dynamic-slot-templates.yaml</code> : <code>dynamic_slot_coalitions</code> copie le catalogue livré pour ces camps seulement, et <code>dynamic_slot_aircraft</code> (<code>F/A-18C</code>) pour ces appareils seulement (un nom absent du catalogue est refusé avec ses types) ; omis tous deux, le fichier reste vide et le build prend tout le catalogue. Un modèle à qui l'on demandait des joueurs « en F/A-18C » lisait 31 384 caractères du catalogue pour trouver ce type.</li>
+<li><code>mission.yaml</code> : <code>mission_name</code>, <code>era</code> (<code>MODERN</code>, <code>COLD_WAR</code>, <code>WW2</code>), <code>language</code> (<code>fr</code>, <code>en</code>) et <code>skynet</code>.</li>
+<li>La mission vierge : <code>date</code> et <code>start_time</code> (<code>set_mission_date</code>).</li>
+</ul>
+<p>Le résultat rend <code>{folder, changes}</code>, une ligne par fichier, à redire à l'utilisateur.
+Chaque fichier réécrit est d'abord sauvegardé dans le <code>.veaf-backups/</code> du dossier, comme toute écriture du MCP.
+Implémentation : <code>veaf_mission_mcp/adapt_scaffold.py</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mission_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Test-Beslan&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;era&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MODERN&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-06-10&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;07:30&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-158841</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">842000</span><span class="p">},</span><span class="w"> </span><span class="nt">&quot;airfields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Beslan&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Mozdok&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;dynamic_slot_coalitions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;skynet&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span>
+</code></pre></div>
 <h2 id="carte--coordonnées-vague-10">Carte &amp; coordonnées (vague 10)<a class="headerlink" href="#carte--coordonnées-vague-10" title="Permanent link">&para;</a></h2>
 <p>Les actions de placement prennent des <strong>coordonnées locales DCS</strong> (<code>x</code>/<code>y</code>, en mètres dans la
 projection propre au théâtre) ; un Mission Maker raisonne plutôt en lat/long sur une carte. La vague
@@ -6129,7 +6226,8 @@ la projection du théâtre est connue (<code>lat</code>/<code>lon</code> sinon),
 <code>veaf-build update-dcs-data --airdromes</code>). La position est le point de référence de l'aérodrome, au centre des pistes. Avec <code>mission_path</code>, le théâtre de la mission ; sans
 mission, <code>theatre</code>.
 <code>name_contains</code> garde les bases dont le nom contient un texte ; <code>details: true</code> ajoute <code>lat</code>/<code>lon</code>, <code>parking</code> (les places utilisables par des <code>planes</code> et par des <code>helicopters</code>) et <code>atc</code> (<code>uhf</code>, <code>vhf</code>, <code>fm</code> en MHz et <code>tacan</code>, tels que DCS les donne).
-Court par défaut : tous les champs pour Syria faisaient 37 000 caractères, 21 000 maintenant (FIX-OPENCODE-TEST-FINDINGS).</p>
+Court par défaut : tous les champs pour Syria faisaient 37 000 caractères, 21 000 maintenant (FIX-OPENCODE-TEST-FINDINGS).
+En profil compact, avec une mission et sans <code>name_contains</code>, seules les bases qui ont un camp reviennent, avec <code>neutral_left_out</code>, le nombre des autres : un modèle local l'a appelée neuf fois dans un essai pour les 223 bases de Syria, dont deux rouges (MCP-CONTEXT-BUDGET).</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;theatre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Syria&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name_contains&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;incirlik&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="describe_airfield_channels"><code>describe_airfield_channels</code><a class="headerlink" href="#describe_airfield_channels" title="Permanent link">&para;</a></h3>
@@ -6196,7 +6294,9 @@ dans la commande CLI, on la réexécute telle quelle. Un échec de build est rem
 <code>profile</code> (optionnel) est passé en <code>--profile</code> — <code>LOCAL_TEST</code> pour un build de test local.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;folder_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemin/vers/dossier-mission&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCAL_TEST&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>Le résultat liste dans <code>missions</code> les <code>.miz</code> écrits par le build : celui de la soirée, et ses versions d'entraînement quand <code>mission.yaml</code> porte un bloc <code>training:</code>.</p>
+<p>Le résultat liste dans <code>missions</code> les <code>.miz</code> écrits par le build : celui de la soirée, et ses versions d'entraînement quand <code>mission.yaml</code> porte un bloc <code>training:</code>.
+<code>log</code> est la sortie du build, tous ses messages et avertissements, sans les lignes de progression (« ✓ … terminé ! ») ni le chemin du dossier, écrite sans retour à la ligne forcé (<code>COLUMNS=4000</code>) ; la sortie brute est dans <code>build.log</code> du dossier (<code>log_file</code>).
+Elle faisait 14 004 caractères, aux deux tiers le chemin du dossier et la progression (MCP-CONTEXT-BUDGET).</p>
 <h3 id="propose_training_plan"><code>propose_training_plan</code><a class="headerlink" href="#propose_training_plan" title="Permanent link">&para;</a></h3>
 <p>Lecture. Brouillon du bloc <code>training:</code> d'un dossier de mission (<a href="../../mission-maker/TRAINING_VERSIONS/">versions d'entraînement par rôle</a>) : vols IA ennemis à tâche air-air → <code>enemy_cap</code>, <code>cap_missions</code> → <code>enemy_cap</code>, définitions QRA du camp ennemi → <code>qra</code>, groupes portant un type que DCS classe <code>LR SAM</code> → <code>sam_lr</code>, combat zones → <code>a2g_target</code>, autres défenses aériennes dans une combat zone ou à moins de 15 km → <code>sam_threat</code>.
 Tout est proposé <strong>tel que placé</strong>, chaque élément avec sa raison : le tri entre précis et vague se fait en lisant le briefing, pas dans l'action.

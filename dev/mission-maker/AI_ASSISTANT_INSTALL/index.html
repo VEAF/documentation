@@ -952,6 +952,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Une autre IA compatible MCP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un modèle local
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3645,6 +3662,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Une autre IA compatible MCP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Un modèle local
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3857,6 +3891,16 @@ Le serveur demande à l'IA de lire son guide de création avant toute action, ma
 <blockquote>
 <p>« Avant toute chose, lis le guide de création VEAF avec l'action <code>describe_authoring_guide</code>, puis les limites connues avec <code>describe_known_limitations</code>. »</p>
 </blockquote>
+<h3 id="local-model">Un modèle local<a class="headerlink" href="#local-model" title="Permanent link">&para;</a></h3>
+<p>Un modèle qui tourne sur votre carte graphique (llama.cpp avec <code>llama-server --mcp-servers-config</code>, par exemple) a un contexte bien plus petit qu'une IA en ligne : souvent 32 000 à 80 000 tokens.
+Le serveur VEAF a pour lui un <strong>profil compact</strong> : il sert son guide par sections, lit les gros fichiers par tranches, coupe toute réponse au-delà de 8 000 caractères en disant comment lire la suite.
+Ajoutez la variable <code>VEAF_MCP_PROFILE</code> à la déclaration du serveur, à côté de <code>command</code> et <code>args</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;VEAF_MCP_PROFILE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;compact&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Sans elle, le serveur répond comme à Claude : entier, ce qui convient à une IA en ligne et déborde d'un petit contexte.
+Mesuré le 25 novembre 2026 en profil compact : une mission simple, du dossier vide au <code>.miz</code> construit et vérifié (une zone de combat), renvoie environ 42 000 caractères au modèle, soit environ 21 000 tokens (le JSON compte environ 2 caractères par token).
+Il faut y ajouter ce que le modèle écrit et réfléchit : prévoyez au moins 64 000 tokens de contexte.
+Une mission à objectifs ou un Open Training lisent en plus leur prompt, page par page : comptez plus large.</p>
 <h2 id="no-mcp">Une IA sans MCP<a class="headerlink" href="#no-mcp" title="Permanent link">&para;</a></h2>
 <p>Une IA de chat dans le navigateur ne peut pas lancer de programme sur votre PC : elle ne lit pas votre mission, ne la modifie pas, ne la construit pas.
 Elle reste utile pour <strong>comprendre</strong> et <strong>rédiger</strong> : expliquer une option, proposer un bloc de <code>mission.yaml</code>, relire un message d'erreur.

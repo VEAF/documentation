@@ -952,6 +952,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Another MCP-capable AI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A local model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3645,6 +3662,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Another MCP-capable AI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A local model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3857,6 +3891,16 @@ The server asks the AI to read its authoring guide before any action, but not ev
 <blockquote>
 <p>"Before anything else, read the VEAF authoring guide with the <code>describe_authoring_guide</code> action, then the known limitations with <code>describe_known_limitations</code>."</p>
 </blockquote>
+<h3 id="local-model">A local model<a class="headerlink" href="#local-model" title="Permanent link">&para;</a></h3>
+<p>A model running on your graphics card (llama.cpp with <code>llama-server --mcp-servers-config</code>, for instance) has a much smaller context than an online AI: often 32 000 to 80 000 tokens.
+The VEAF server has a <strong>compact profile</strong> for it: it serves its guide by section, reads the large files by slices, cuts any answer beyond 8 000 characters and says how to read the rest.
+Add the <code>VEAF_MCP_PROFILE</code> variable to the server's declaration, next to <code>command</code> and <code>args</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;VEAF_MCP_PROFILE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;compact&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Without it, the server answers as it answers Claude: whole, which suits an online AI and overflows a small context.
+Measured on 25 November 2026 in the compact profile: a simple mission, from the empty folder to the built and checked <code>.miz</code> (one combat zone), returns about 42 000 characters to the model, that is about 21 000 tokens (JSON counts about 2 characters a token).
+Add what the model writes and thinks: plan for at least 64 000 tokens of context.
+An objective mission or an Open Training also reads its prompt, page by page: allow more.</p>
 <h2 id="no-mcp">An AI without MCP<a class="headerlink" href="#no-mcp" title="Permanent link">&para;</a></h2>
 <p>A chat AI in the browser cannot run a program on your PC: it does not read your mission, change it or build it.
 It is still useful to <strong>understand</strong> and <strong>write</strong>: explain an option, propose a <code>mission.yaml</code> block, read an error message.

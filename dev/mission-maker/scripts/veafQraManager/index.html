@@ -4221,7 +4221,7 @@
 <span class="w">        </span><span class="nt">delay_before_rearming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># secondes avant réinitialisation après départ des intrus</span>
 <span class="w">        </span><span class="nt">rearm_while_occupied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># réarmer sans attendre que la zone se vide</span>
 <span class="w">        </span><span class="nt">scale_with_opposition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># palier choisi aussi d&#39;après le niveau d&#39;opposition</span>
-<span class="w">        </span><span class="nt">delay_before_activating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">      </span><span class="c1"># secondes après :start() avant mise en ligne de la QRA</span>
+<span class="w">        </span><span class="nt">delay_before_activating</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">      </span><span class="c1"># secondes entre la première intrusion et le décollage</span>
 <span class="w">        </span><span class="nt">react_on_helicopters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># true = déclencher aussi sur les hélicoptères ennemis</span>
 <span class="w">        </span><span class="nt">airport_link</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Batumi&quot;</span><span class="w">           </span><span class="c1"># en pause tant que cette base est perdue (raccourci de links)</span>
 <span class="w">        </span><span class="c1"># links: [&quot;Batumi&quot;, &quot;SA-10 Nord&quot;]   # bases, FARP, navires, groupes ou statics dont dépend la QRA</span>
@@ -4352,7 +4352,7 @@
 <td>entier</td>
 <td><code>0</code></td>
 <td>Non</td>
-<td>Secondes après le démarrage avant mise en ligne</td>
+<td>Secondes entre la première intrusion, une fois la QRA prête, et son décollage — <strong>pas</strong> depuis le début de la mission. Un intrus qui sort de la zone n'arrête pas le compte : la QRA décolle au premier contrôle après le délai qui trouve un intrus dans la zone, et le compte ne repart qu'une fois la QRA réarmée. Aucun réglage ne met une QRA en ligne à une heure donnée de la mission</td>
 </tr>
 <tr>
 <td><code>rearm_while_occupied</code></td>
@@ -4681,7 +4681,7 @@ Un multirôle en attaque au sol qui garde deux AIM-120 d'escorte compte : le men
 </tr>
 <tr>
 <td><code>:setDelayBeforeActivating(seconds)</code></td>
-<td>Délai avant mise en ligne après <code>:start()</code></td>
+<td>Secondes entre la première intrusion et le décollage</td>
 </tr>
 <tr>
 <td><code>:setMinimumAltitudeInFeet(feet)</code></td>
@@ -4897,7 +4897,7 @@ Un multirôle en attaque au sol qui garde deux AIM-120 d'escorte compte : le men
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MiG-29</span><span class="nv"> </span><span class="s">QRA</span><span class="nv"> </span><span class="s">North&quot;</span>
 </code></pre></div>
 <blockquote>
-<p>Une définition listée sous <code>definitions:</code> est démarrée automatiquement au chargement de la mission. Pour retarder sa mise en ligne, utilisez <code>delay_before_activating</code> ; pour la déclarer <strong>sans l'armer</strong>, mettez <code>active_at_start: false</code> (elle peut ensuite être armée par une commande radio <code>qra.start</code> ou un script) ; pour la supprimer complètement, retirez-la de <code>definitions:</code>.</p>
+<p>Une définition listée sous <code>definitions:</code> est démarrée automatiquement au chargement de la mission. Pour la faire attendre avant de décoller quand un intrus est dans sa zone, utilisez <code>delay_before_activating</code> ; pour la déclarer <strong>sans l'armer</strong>, mettez <code>active_at_start: false</code> (elle peut ensuite être armée par une commande radio <code>qra.start</code> ou un script) ; pour la supprimer complètement, retirez-la de <code>definitions:</code>.</p>
 </blockquote>
 <p><strong>Via <code>mission-script.lua</code></strong> — appelez le builder après <code>veafQraManager.initialize()</code>, puis <code>:start()</code> explicitement :</p>
 <div class="highlight"><pre><span></span><code><span class="nv">VeafQRA</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
