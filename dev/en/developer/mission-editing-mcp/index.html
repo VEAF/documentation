@@ -2967,6 +2967,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mcp-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP prompts (FEAT-MCP-PROMPTS lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_mission" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4258,6 +4269,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mcp-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP prompts (FEAT-MCP-PROMPTS lot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#describe_mission" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5146,6 +5168,61 @@ Most of the gain comes from the guide's <code>recipe</code> section: the calls o
 <li><code>list_catalog</code> summarises <code>describe_mission_prompt</code> and <code>describe_authoring_guide</code> so as to send the model to the recipe, and <code>list_payloads</code> gives the loadout names without their CLSIDs (464 characters instead of 6 424 for the MiG-29A).</li>
 <li><code>build_mission</code> also drops from its log the step lines that carry nothing (a file read, written, a YAML file valid), recognised by their message keys; <code>inspect_built_mission</code> counts the slot types and preset layouts instead of listing them (<code>detail: true</code> gives them). Three builds and three inspections of one run repeated those lists.</li>
 <li>In both profiles, a common invented parameter is read as the one the action publishes: <code>type_contains</code> for <code>name_contains</code>, <code>which</code> for <code>file</code>.</li>
+</ul>
+<h3 id="mcp-prompts">MCP prompts (FEAT-MCP-PROMPTS lot)<a class="headerlink" href="#mcp-prompts" title="Permanent link">&para;</a></h3>
+<p>Besides its tools, the server publishes <strong>four prompts</strong> (<code>prompts/list</code>, <code>prompts/get</code>), one per kind of mission: the guide starts by asking "which kind of mission?", and the prompt answers for the user.
+A client such as Cherry Studio offers them in its picker; when the user picks one, it opens a dialog listing the arguments (name, description), then inserts the returned text into the input box, which the user rereads and sends.
+The prompts are the same in both profiles (<code>VEAF_MCP_PROFILE</code>): they cost the model nothing until the user picks one.</p>
+<p>A prompt <strong>does not copy</strong> the mission prompt: it returns a short message that gives the answers already known and tells the model to read the guide, load the prompt of its kind with <code>describe_mission_prompt</code> (<code>lang</code> defaults to <code>fr</code>) and follow it from its first section. The guide and the mission prompts stay the single source.</p>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>Kind (<code>kind</code>)</th>
+<th>Required arguments</th>
+<th>Optional arguments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mission_one_shot</code></td>
+<td><code>objective</code></td>
+<td><code>carte</code></td>
+<td><code>appareils</code>, <code>duree</code> (2 h), <code>genre</code>, <code>opposition</code>, <code>langue</code> (<code>fr</code>), <code>dossier</code></td>
+</tr>
+<tr>
+<td><code>open_training</code></td>
+<td><code>open-training</code></td>
+<td><code>carte</code></td>
+<td><code>epoque</code> (modern), <code>gabarit</code> (<code>standard</code>), <code>langue</code>, <code>dossier</code></td>
+</tr>
+<tr>
+<td><code>mission_dynamique</code></td>
+<td><code>persistent-campaign</code></td>
+<td><code>carte</code>, <code>nom</code></td>
+<td><code>epoque</code> (modern), <code>camp</code> (blue), <code>fichier</code>, <code>langue</code>, <code>dossier</code></td>
+</tr>
+<tr>
+<td><code>campagne_persistante</code></td>
+<td>none</td>
+<td><code>carte</code>, <code>nom</code></td>
+<td><code>epoque</code> (modern), <code>camp</code> (blue), <code>histoire</code>, <code>langue</code>, <code>dossier</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>mission_dynamique</code></strong> is <strong>one mission</strong> on one map, in the spirit of Foothold: the campaign engine in its <code>persistent</code> mode (zones that change hands, a front that moves, a save). It is the <code>persistent-campaign</code> prompt.</li>
+<li>
+<p><strong><code>campagne_persistante</code></strong> is a <strong>real campaign</strong> of several missions, played evening after evening, each a step (<code>campaign_next</code>). No mission prompt describes its steps: the message carries the sequence itself (<code>campaign_init</code> with the <code>multi-mission</code> example, <code>campaign_validate</code>, <code>campaign_next</code>) and asks for one mission at a time. It is the only one of the four with no mission prompt behind it.</p>
+</li>
+<li>
+<p>An argument is a <strong>closed</strong> answer the mission prompt asks <strong>first</strong> (the map, the era, the template, the side, the name). What needs a discussion or a table to validate stays with the prompt: the scenario and objectives, a dynamic mission's front and zones, the escorts, the mission to take inspiration from.</p>
+</li>
+<li><strong>No date, time or weather</strong>: none of the three prompts asks for them (the scenario proposes them; the Open Training derives the date from the era; a dynamic mission fixes none, the server sets it at each load).</li>
+<li>The argument descriptions are in French, a pilot reads them. <code>langue</code> is <code>fr</code> or <code>en</code> (anything else is refused) and picks the language of the mission prompt and of the mission.</li>
+<li>An optional field left blank (an empty string or spaces, what some clients send) counts as absent. Without <code>dossier</code>, the message tells the model to ask where to create the mission: nothing is invented.</li>
+<li>A missing required argument is refused by the server (an internal error on the client side).</li>
+<li>The actions the text cites exist in the catalogue and the guide teaches them: <code>test_prompts.py</code> checks it, in both profiles (<code>campaign_init</code> and <code>campaign_validate</code>, which only the <code>campagne_persistante</code> message names, are checked against the catalogue only).</li>
 </ul>
 <h3 id="describe_mission"><code>describe_mission</code><a class="headerlink" href="#describe_mission" title="Permanent link">&para;</a></h3>
 <p>Read-only. Lists the groups (name, coalition, country, category) and trigger zones (name,
