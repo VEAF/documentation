@@ -964,6 +964,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="A local model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cherry-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cherry Studio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3685,6 +3702,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="A local model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cherry-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cherry Studio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3838,7 +3872,7 @@ That takes an AI that can run commands on your PC, such as Codex, OpenCode, Anti
 <ol>
 <li>The <code>%USERPROFILE%\VEAF\tools</code> folder receives the tools: it is their permanent place, apart from your missions.</li>
 <li><code>veaf-tools-updater.exe</code> downloads the latest version and installs <code>veaf-tools.exe</code> next to it.</li>
-<li><code>veaf-tools.exe ai-setup</code> connects the server to every AI assistant installed on the PC — Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI, OpenCode — and says for each what it did.</li>
+<li><code>veaf-tools.exe ai-setup</code> connects the server to every AI assistant installed on the PC — Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI, OpenCode, <a href="#cherry-studio">Cherry Studio</a> — and says for each what it did.</li>
 </ol>
 <p>Then <strong>quit the AI assistant completely and start it again</strong>: it reads its servers only at start-up.
 If you type the commands yourself for Claude Desktop, quit it <strong>before</strong> <code>ai-setup</code>: it keeps its settings in the same file, and could write its own copy back over it.</p>
@@ -3891,7 +3925,7 @@ To turn this off, the same setting also turns off the new-version notice in the 
 You can always update by hand, by running <code>.\veaf-tools-updater.exe</code> again in the tools folder: it puts a waiting version in place too, and warns you when a <code>veaf-tools.exe</code> is running — close the assistants first.</p>
 <p>If you move the tools folder, run <code>.\veaf-tools.exe ai-setup</code> again from its new place: the assistant starts the executable by its full path.</p>
 <h2 id="other-mcp-client">Another MCP-capable AI<a class="headerlink" href="#other-mcp-client" title="Permanent link">&para;</a></h2>
-<p><code>ai-setup</code> knows Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI and OpenCode.
+<p><code>ai-setup</code> knows Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI, OpenCode and Cherry Studio.
 The VEAF server is a standard program: any other AI that can start a <strong>local MCP server</strong> can use it, once declared by hand.
 All of them ask for the same two facts: the <strong>command</strong> (the full path of <code>veaf-tools.exe</code>) and its <strong>arguments</strong> (<code>mcp</code>).
 Most read them from a JSON file of this shape:</p>
@@ -3923,6 +3957,39 @@ Add the <code>VEAF_MCP_PROFILE</code> variable to the server's declaration, next
 Measured on 25 November 2026 in the compact profile: a simple mission, from the empty folder to the built and checked <code>.miz</code> (one combat zone), returns about 42 000 characters to the model, that is about 21 000 tokens (JSON counts about 2 characters a token).
 Add what the model writes and thinks: plan for at least 64 000 tokens of context.
 An objective mission or an Open Training also reads its prompt, page by page: allow more.</p>
+<h4 id="cherry-studio">Cherry Studio<a class="headerlink" href="#cherry-studio" title="Permanent link">&para;</a></h4>
+<p>Cherry Studio is the chat client we use with a local model.
+<code>ai-setup</code> sets up its MCP server named <code>veaf</code>, and creates it when it does not exist.</p>
+<p><strong>Close Cherry Studio before you run <code>ai-setup</code>.</strong>
+Cherry keeps its servers in its database, and rewrites the links of an assistant when it saves it: a change made while it runs can be lost.
+If Cherry is open, <code>ai-setup</code> says so and touches nothing.</p>
+<p>What <code>ai-setup</code> writes into the <code>veaf</code> server:</p>
+<ol>
+<li>the command: the full path of <code>veaf-tools.exe</code>, the one you run;</li>
+<li>the argument <code>mcp</code>;</li>
+<li>the variable <code>VEAF_MCP_PROFILE=compact</code>, added to the server's other variables, which stay;</li>
+<li>the server active, of type <code>stdio</code>: a disabled server, for instance imported through a <code>cherrystudio://</code> link, is enabled again.</li>
+</ol>
+<p>By default, <code>ai-setup</code> links the server to no Cherry assistant and unlinks none.
+The tutorial's starting backup holds no MCP server: name the assistant to link.</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">ai-setup</span> <span class="p">-</span><span class="n">-cherry-assistant</span> <span class="s2">&quot;VEAF - édition de mission&quot;</span>
+</code></pre></div>
+<p>The name must be exactly the assistant's name in Cherry: capitals, accents, spaces and dash included.
+Repeat the option to link several assistants; an unknown name is reported, without an error.</p>
+<p>If you start Cherry with <code>--user-data-dir</code>, give the same folder to <code>ai-setup</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">ai-setup</span> <span class="p">-</span><span class="n">-cherry-data-dir</span> <span class="s2">&quot;E:\AI\my-cherry-profile&quot;</span> <span class="p">-</span><span class="n">-cherry-assistant</span> <span class="s2">&quot;VEAF - édition de mission&quot;</span>
+</code></pre></div>
+<p>Without this option, <code>ai-setup</code> sets up the folder Cherry uses itself, usually <code>%APPDATA%\CherryStudio</code>.</p>
+<p>To set up Cherry alone, without touching the other AI assistants on the PC, add <code>--only cherry</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">ai-setup</span> <span class="p">-</span><span class="n">-only</span> <span class="n">cherry</span> <span class="p">-</span><span class="n">-cherry-assistant</span> <span class="s2">&quot;VEAF - édition de mission&quot;</span>
+</code></pre></div>
+<p>With <code>--only cherry</code>, a Cherry that cannot be found is an error.
+Before it writes, <code>ai-setup</code> copies the database next to itself, as <code>cherrystudio.sqlite.veaf-backup-&lt;date&gt;</code>, in the <code>Data</code> folder of that Cherry folder (usually <code>%APPDATA%\CherryStudio\Data</code>).
+Run again with nothing to change, it writes nothing.</p>
+<p><code>ai-setup</code> also refuses, writing nothing, when the database does not exist (Cherry 1.x, or never started), when its tables are not the ones it knows, or when two servers are named <code>veaf</code>.
+It was written and tested with Cherry Studio 2.2.3; if a newer version changes its tables, declare the server by hand in Cherry (its MCP settings, JSON import).
+The portable build of Cherry keeps its database next to its executable: <code>ai-setup</code> does not find it, so declare the server there by hand.
+Then start Cherry Studio again.</p>
 <h3 id="mcp-prompts">The VEAF server's prompts<a class="headerlink" href="#mcp-prompts" title="Permanent link">&para;</a></h3>
 <p>The VEAF server also offers four <strong>prompts</strong> (MCP prompts), one per kind of mission: <em>Mission one-shot</em> (one session), <em>Open Training</em> (a whole map), <em>Mission dynamique</em> (one Foothold-style mission: zones that change hands, a front that moves) and <em>Campagne persistante</em> (a persistent campaign: several missions, one per evening).
 A client that supports them, such as Cherry Studio, lists them in its prompt picker.

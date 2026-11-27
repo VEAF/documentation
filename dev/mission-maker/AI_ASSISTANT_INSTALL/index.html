@@ -964,6 +964,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Un modèle local">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cherry-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cherry Studio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3685,6 +3702,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Un modèle local">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cherry-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cherry Studio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3838,7 +3872,7 @@ Il faut pour cela une IA qui sait lancer des commandes sur votre PC, comme Codex
 <ol>
 <li>Le dossier <code>%USERPROFILE%\VEAF\outils</code> reçoit les outils : c'est leur place définitive, à part de vos missions.</li>
 <li><code>veaf-tools-updater.exe</code> télécharge la dernière version et installe <code>veaf-tools.exe</code> à côté de lui.</li>
-<li><code>veaf-tools.exe ai-setup</code> branche le serveur dans chaque assistant IA installé sur le PC — Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI, OpenCode — et dit pour chacun ce qu'il a fait.</li>
+<li><code>veaf-tools.exe ai-setup</code> branche le serveur dans chaque assistant IA installé sur le PC — Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI, OpenCode, <a href="#cherry-studio">Cherry Studio</a> — et dit pour chacun ce qu'il a fait.</li>
 </ol>
 <p>Ensuite, <strong>quittez complètement l'assistant IA et relancez-le</strong> : il ne lit ses serveurs qu'au démarrage.
 Si vous tapez les commandes vous-même pour Claude Desktop, quittez-le <strong>avant</strong> <code>ai-setup</code> : il garde ses réglages dans le même fichier, et pourrait réécrire sa propre copie par-dessus.</p>
@@ -3891,7 +3925,7 @@ Pour couper ce comportement, le même réglage coupe aussi l'annonce des nouvell
 On peut toujours mettre à jour à la main, en relançant <code>.\veaf-tools-updater.exe</code> dans le dossier des outils : il met aussi en place une version en attente, et prévient quand un <code>veaf-tools.exe</code> tourne — fermez d'abord les assistants.</p>
 <p>Si vous déplacez le dossier des outils, relancez <code>.\veaf-tools.exe ai-setup</code> depuis son nouvel emplacement : l'assistant lance l'exécutable par son chemin complet.</p>
 <h2 id="other-mcp-client">Une autre IA compatible MCP<a class="headerlink" href="#other-mcp-client" title="Permanent link">&para;</a></h2>
-<p><code>ai-setup</code> connaît Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI et OpenCode.
+<p><code>ai-setup</code> connaît Claude Desktop, Claude Code, Codex, Antigravity, Gemini CLI, OpenCode et Cherry Studio.
 Le serveur VEAF est un programme standard : n'importe quelle autre IA qui sait lancer un <strong>serveur MCP local</strong> peut s'en servir, une fois déclaré à la main.
 Toutes ces IA demandent les deux mêmes informations : la <strong>commande</strong> (le chemin complet de <code>veaf-tools.exe</code>) et ses <strong>arguments</strong> (<code>mcp</code>).
 La plupart les lisent dans un fichier JSON de cette forme :</p>
@@ -3923,6 +3957,39 @@ Ajoutez la variable <code>VEAF_MCP_PROFILE</code> à la déclaration du serveur,
 Mesuré le 25 novembre 2026 en profil compact : une mission simple, du dossier vide au <code>.miz</code> construit et vérifié (une zone de combat), renvoie environ 42 000 caractères au modèle, soit environ 21 000 tokens (le JSON compte environ 2 caractères par token).
 Il faut y ajouter ce que le modèle écrit et réfléchit : prévoyez au moins 64 000 tokens de contexte.
 Une mission à objectifs ou un Open Training lisent en plus leur prompt, page par page : comptez plus large.</p>
+<h4 id="cherry-studio">Cherry Studio<a class="headerlink" href="#cherry-studio" title="Permanent link">&para;</a></h4>
+<p>Cherry Studio est le client de chat que nous utilisons avec un modèle local.
+<code>ai-setup</code> y règle le serveur MCP nommé <code>veaf</code> : il le crée s'il n'existe pas.</p>
+<p><strong>Fermez Cherry Studio avant de lancer <code>ai-setup</code>.</strong>
+Cherry garde ses serveurs dans sa base de données, et réécrit les liens d'un assistant quand il l'enregistre : une modification faite pendant qu'il tourne peut être perdue.
+Si Cherry est ouvert, <code>ai-setup</code> le dit et ne touche à rien.</p>
+<p>Ce que <code>ai-setup</code> écrit dans le serveur <code>veaf</code> :</p>
+<ol>
+<li>la commande : le chemin complet de <code>veaf-tools.exe</code>, celui que vous lancez ;</li>
+<li>l'argument <code>mcp</code> ;</li>
+<li>la variable <code>VEAF_MCP_PROFILE=compact</code>, ajoutée aux autres variables du serveur, qui restent ;</li>
+<li>le serveur actif, de type <code>stdio</code> : un serveur désactivé, par exemple importé par un lien <code>cherrystudio://</code>, est réactivé.</li>
+</ol>
+<p>Par défaut, <code>ai-setup</code> ne relie le serveur à aucun assistant de Cherry et n'en délie aucun.
+La sauvegarde de départ du tutoriel ne contient pas de serveur MCP : nommez l'assistant à relier.</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">ai-setup</span> <span class="p">-</span><span class="n">-cherry-assistant</span> <span class="s2">&quot;VEAF - édition de mission&quot;</span>
+</code></pre></div>
+<p>Le nom doit être exactement celui de l'assistant dans Cherry : majuscules, accents, espaces et tiret compris.
+Répétez l'option pour relier plusieurs assistants ; un nom inconnu est signalé, sans erreur.</p>
+<p>Si vous lancez Cherry avec <code>--user-data-dir</code>, donnez le même dossier à <code>ai-setup</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">ai-setup</span> <span class="p">-</span><span class="n">-cherry-data-dir</span> <span class="s2">&quot;E:\AI\mon-profil-cherry&quot;</span> <span class="p">-</span><span class="n">-cherry-assistant</span> <span class="s2">&quot;VEAF - édition de mission&quot;</span>
+</code></pre></div>
+<p>Sans cette option, <code>ai-setup</code> règle le dossier que Cherry utilise lui-même, <code>%APPDATA%\CherryStudio</code> en général.</p>
+<p>Pour ne régler que Cherry, sans toucher aux autres assistants IA du PC, ajoutez <code>--only cherry</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">veaf-tools</span><span class="p">.</span><span class="n">exe</span> <span class="n">ai-setup</span> <span class="p">-</span><span class="n">-only</span> <span class="n">cherry</span> <span class="p">-</span><span class="n">-cherry-assistant</span> <span class="s2">&quot;VEAF - édition de mission&quot;</span>
+</code></pre></div>
+<p>Avec <code>--only cherry</code>, un Cherry introuvable est une erreur.
+Avant d'écrire, <code>ai-setup</code> copie la base à côté d'elle, sous le nom <code>cherrystudio.sqlite.veaf-backup-&lt;date&gt;</code>, dans le dossier <code>Data</code> de ce dossier Cherry (<code>%APPDATA%\CherryStudio\Data</code> en général).
+Relancé sans changement à faire, il n'écrit rien.</p>
+<p><code>ai-setup</code> refuse aussi, sans rien écrire, quand la base n'existe pas (Cherry 1.x, ou jamais lancé), quand ses tables ne sont pas celles qu'il connaît, ou quand deux serveurs s'appellent <code>veaf</code>.
+Il a été écrit et testé avec Cherry Studio 2.2.3 ; si une version plus récente change ses tables, déclarez le serveur à la main dans Cherry (ses réglages MCP, import JSON).
+La version portable de Cherry garde sa base à côté de son exécutable : <code>ai-setup</code> ne la trouve pas, déclarez-y le serveur à la main.
+Relancez ensuite Cherry Studio.</p>
 <h3 id="mcp-prompts">Les invites du serveur VEAF<a class="headerlink" href="#mcp-prompts" title="Permanent link">&para;</a></h3>
 <p>Le serveur VEAF propose aussi quatre <strong>invites</strong> (prompts MCP), une par type de mission : <em>Mission one-shot</em> (une séance), <em>Open Training</em> (une carte entière), <em>Mission dynamique</em> (une seule mission à la Foothold : zones qui changent de camp, front qui avance) et <em>Campagne persistante</em> (plusieurs missions, une par soir).
 Un client qui les gère, comme Cherry Studio, les liste dans son sélecteur d'invites.
