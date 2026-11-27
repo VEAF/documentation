@@ -5754,6 +5754,12 @@ modules) :</p>
 <li><code>set_airbase_coalition(folder_path, name, coalition, dynamic_spawn=True)</code> — assigne durablement un
   aérodrome DCS à une coalition, dans un <strong>dossier de mission</strong> ; <code>dynamic_spawn=False</code> laisse ses
   slots dynamiques fermés (une base ennemie).</li>
+<li><code>list_airfield_aircraft(mission_path, airfield, coalition?)</code> — lecture seule : les types d'appareils
+  qu'un aérodrome peut offrir en slots dynamiques, <strong>tels que le build les écrit</strong> (<code>F-16C_50</code>, <code>AV8BNA</code>),
+  chacun avec son gabarit. Source : le catalogue que le build injecte (<code>src/dynamic-slot-templates.yaml</code> du
+  dossier, sinon celui livré, réduit à <code>mission.era</code> pour une mission WW2 ou COLD_WAR), pour la coalition qui possède la base ou celle
+  demandée, et seulement les types que la base peut garer (<code>parkable_kinds</code>). Le build garnit déjà chaque
+  base avec tous ces types : la recette n'édite plus <code>src/warehouses.yaml</code> à la main.</li>
 </ul>
 <blockquote>
 <p>⚠️ La coalition d'un aérodrome vit dans <code>warehouses.airports[&lt;id&gt;].coalition</code>, <strong>pas</strong> dans
